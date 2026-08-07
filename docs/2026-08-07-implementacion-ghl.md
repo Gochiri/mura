@@ -207,8 +207,21 @@ Sonia no tiene que montar nada para la numeración.
 6. **Reembolso Stripe (paso 10)**: sin decidir si va por API de Stripe desde n8n o
    manual desde el dashboard.
 7. **Nacex "taquilla"**: no activa en la cuenta; v1 = solo recogida a domicilio.
-8. **Revisión visual recomendada** en el builder de "04 Solicitud de envío realizada"
+8. **Revisión visual recomendada** en el builder de "04a · Envio - webhook Nacex"
    y "02 · Etiquetado compra 1-2" (grafos con ramas creados por API).
+9. ⚠️ **Compras repetidas (detectado 7/8, pendiente tras la prueba Stripe):**
+   (a) SP01 tiene la re-entrada desactivada (`allowMultiple=false`) — una clienta
+   que compre por 2ª vez NO generaría segunda oportunidad. Hay que activar
+   re-entrada, y al hacerlo dejar UN solo trigger (order_submission O
+   payment_received) para evitar doble inscripción por compra.
+   (b) Los triggers "tag added" (pedido-confirmado, pedido-entregado,
+   email-04-listo…) NO saltan si el contacto ya tenía el tag de un pedido
+   anterior. Solución: quitar el tag antes de re-añadirlo (paso remove+add en
+   GHL, o remove+add desde n8n), o limpiar los tags del ciclo al cerrarse cada
+   pedido.
+10. **Nombres de workflows reordenados el 7/8** (para carpetas): flujo operativo
+   como `01`…`08c` (ver lista en GHL), drafts LS/AP/PS intactos, y los antiguos
+   SP02/SP04 marcados `ZZ (obsoleto)`.
 
 ## 9. Backups
 
