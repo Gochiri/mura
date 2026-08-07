@@ -101,9 +101,8 @@ Ahora: trigger por **tag `pedido-entregado`** → GHL **mueve la oportunidad a
 ## 6. Otros cambios
 
 - **SP01 · Nueva Compra Confirmada** — **PUBLICADO y activado** (triggers
-  `order_submission` y `payment_received` activos). El nombre de la oportunidad pasa
-  de `{{contact.name}}` a **`{{contact.order_id}}`** — imprescindible para que las
-  búsquedas de n8n funcionen (nombre de oportunidad = nº de pedido).
+  `order_submission` y `payment_received` activos). Nombre de oportunidad =
+  **`M{{custom_values.contador_pedidos}}`** (ver sección 6b).
 - Los webhooks de "04 Solicitud de envío realizada" envían
   **`numero_pedido` = `{{opportunity.name}}`** (no el custom field): como el nombre
   de la oportunidad ES el número de pedido, este valor está garantizado siempre.
@@ -119,35 +118,34 @@ Ahora: trigger por **tag `pedido-entregado`** → GHL **mueve la oportunidad a
 API interna de GHL no permite rellenar custom fields en el paso Create Opportunity
 (verificado empíricamente), ni existe merge tag con padding utilizable como ID.
 
-**Solución** — el número lo asigna **n8n** justo después de crearse la oportunidad:
+**Solución FINAL implementada** — contador **100% nativo en GHL** (la acción Math
+Operation la configuró el equipo desde la UI el 7/8; la vía n8n `nuevo-pedido`
+quedó descartada y sus pasos eliminados de SP01):
 
-1. **SP01** (ya publicado) tras crear la oportunidad llama a
-   `https://n8n.letsbebanana.com/webhook/nuevo-pedido` con:
-   - `contactId` = `{{contact.id}}`
-   - `opportunityId` = `{{opportunity.id}}`
-   - `order_id_ghl` = `{{contact.order_id}}`
-   - `email` = `{{contact.email}}`
-2. **n8n (a construir por Sonia)** en `nuevo-pedido`:
-   - Lee y suma +1 el contador (puede usar el custom value de GHL **"Contador
-     Pedidos"**, id `9EaNa5MGCw1wHGBv4cAJ`, ya creado con valor inicial `100000`:
-     `GET/PUT /locations/{lid}/customValues/{id}` con el PIT) — o su propio storage.
-   - Actualiza la oportunidad vía **API pública** (esto SÍ funciona, verificado):
-     ```
-     PUT https://services.leadconnectorhq.com/opportunities/{opportunityId}
-     {"name": "M100001",
-      "customFields": [{"id": "5p3I04zlvlct8CfuDNU5", "field_value": "M100001"}]}
-     ```
-     → deja nombre **y** `opportunity.numero_de_pedido` = `M100001` (7 chars ≤ 20 ✓).
-   - Fallback si `opportunityId` llegara vacío: buscar la oportunidad abierta más
-     reciente del `contactId`.
-   - Si el contador llega a 999999 → aviso Telegram a Sara (acordado el 29/7).
-3. SP01 espera **2 minutos** tras el webhook antes de enviar el email de
-   confirmación, para que el email ya pueda mostrar el número (vía
-   `{{opportunity.name}}` o `{{opportunity.numero_de_pedido}}`).
+Secuencia actual de SP01 (publicado y verificado end-to-end con contactos de test):
 
-Secuencia actual de SP01 (publicado): crear oportunidad → webhook `nuevo-pedido` →
-wait 2 min → email confirmación → SMS → wait 10 min → notificación interna →
-mover a "03 En Preparación" → tag `pedido-confirmado`.
+1. **Math Operation**: custom value **"Contador Pedidos"** (id
+   `9EaNa5MGCw1wHGBv4cAJ`) `+1`, guardado en el mismo custom value.
+2. **Create Opportunity**: nombre = `M{{custom_values.contador_pedidos}}` →
+   primer pedido real = **M100001** (7 chars ≤ 20 para Nacex ✓, 6 dígitos parejos
+   sin relleno de ceros hasta 999999).
+3. **Update Opportunity**: custom field `numero_de_pedido` =
+   `M{{custom_values.contador_pedidos}}` — ⚠️ ver caveat abajo.
+4. Email confirmación → SMS → wait 10 min → notificación a Sara → mover a
+   "03 En Preparación" → tag `pedido-confirmado`.
+
+**⚠️ Caveat del paso 3 (Update Opportunity / custom field):** en 3 pruebas
+replicadas por API el paso NO escribió el campo (ni con filtro de pipeline ni con
+wait previo). Puede que con el trigger real de compra sí funcione — **verificarlo
+en la prueba con Stripe test**. No es bloqueante: todo el sistema usa el NOMBRE
+(webhooks, búsqueda de n8n, referencia Nacex, formulario de devolución), y los
+emails pueden pinear `{{opportunity.name}}`. **Plan B garantizado**: que Sonia
+añada `numero_de_pedido` (id `5p3I04zlvlct8CfuDNU5`) al PUT que ya hace en su
+flujo de envío — la API pública sí escribe el campo (verificado).
+
+Contador reseteado a **100000** tras las pruebas (los tests consumieron 100001-3
+y se limpiaron). Si el contador llega a 999999 → aviso a Sara (acordado el 29/7,
+pendiente de montar la alerta).
 
 **Hechos verificados con pruebas reales** (contactos de test, luego borrados):
 - Los merge tags de custom values SÍ resuelven en el nombre de la oportunidad
@@ -161,8 +159,8 @@ mover a "03 En Preparación" → tag `pedido-confirmado`.
 
 ## 7. Claves que reciben los webhooks de n8n (referencia para Sonia)
 
-**`nuevo-pedido`** 🆕: `contactId`, `opportunityId`, `order_id_ghl`, `email`
-(n8n responde asignando el número M1xxxxx — ver sección 6b)
+~~`nuevo-pedido`~~ — DESCARTADO: el número lo genera GHL nativamente (sección 6b);
+Sonia no tiene que montar nada para la numeración.
 
 **`pedido-enviado-nacex`**: `contactId`, `nombre`, `direccion`, `cp`, `poblacion`,
 `pais`, `telefono`, `email`, `peso` (opp), `bultos` (opp),
