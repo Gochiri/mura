@@ -112,12 +112,64 @@ Ahora: trigger por **tag `pedido-entregado`** → GHL **mueve la oportunidad a
   de prueba y ninguno rellenó el campo — la cuenta quedó limpia después).
 - Borrado el duplicado vacío de **PS02 · Fidelización VIP / Recurrencia**.
 
+## 6b. Número de pedido interno — arquitectura implementada (para Sonia) 🆕
+
+**Problema**: el `orderId` de GHL mide 24 caracteres (verificado:
+`6a75deb092347a71e94939e7`) y la referencia de Nacex admite máximo 20. Además, la
+API interna de GHL no permite rellenar custom fields en el paso Create Opportunity
+(verificado empíricamente), ni existe merge tag con padding utilizable como ID.
+
+**Solución** — el número lo asigna **n8n** justo después de crearse la oportunidad:
+
+1. **SP01** (ya publicado) tras crear la oportunidad llama a
+   `https://n8n.letsbebanana.com/webhook/nuevo-pedido` con:
+   - `contactId` = `{{contact.id}}`
+   - `opportunityId` = `{{opportunity.id}}`
+   - `order_id_ghl` = `{{contact.order_id}}`
+   - `email` = `{{contact.email}}`
+2. **n8n (a construir por Sonia)** en `nuevo-pedido`:
+   - Lee y suma +1 el contador (puede usar el custom value de GHL **"Contador
+     Pedidos"**, id `9EaNa5MGCw1wHGBv4cAJ`, ya creado con valor inicial `100000`:
+     `GET/PUT /locations/{lid}/customValues/{id}` con el PIT) — o su propio storage.
+   - Actualiza la oportunidad vía **API pública** (esto SÍ funciona, verificado):
+     ```
+     PUT https://services.leadconnectorhq.com/opportunities/{opportunityId}
+     {"name": "M100001",
+      "customFields": [{"id": "5p3I04zlvlct8CfuDNU5", "field_value": "M100001"}]}
+     ```
+     → deja nombre **y** `opportunity.numero_de_pedido` = `M100001` (7 chars ≤ 20 ✓).
+   - Fallback si `opportunityId` llegara vacío: buscar la oportunidad abierta más
+     reciente del `contactId`.
+   - Si el contador llega a 999999 → aviso Telegram a Sara (acordado el 29/7).
+3. SP01 espera **2 minutos** tras el webhook antes de enviar el email de
+   confirmación, para que el email ya pueda mostrar el número (vía
+   `{{opportunity.name}}` o `{{opportunity.numero_de_pedido}}`).
+
+Secuencia actual de SP01 (publicado): crear oportunidad → webhook `nuevo-pedido` →
+wait 2 min → email confirmación → SMS → wait 10 min → notificación interna →
+mover a "03 En Preparación" → tag `pedido-confirmado`.
+
+**Hechos verificados con pruebas reales** (contactos de test, luego borrados):
+- Los merge tags de custom values SÍ resuelven en el nombre de la oportunidad
+  (`M{{custom_values.contador_pedidos}}` → `M100000`), por si algún día se prefiere
+  el contador nativo de GHL: solo falta configurar la acción Math Operation desde la
+  UI (por API no se pudo descubrir su esquema).
+- `{{right_now.date}}` / `{{right_now.time}}` resuelven con ceros
+  (`08/07/2026` / `10:34`); `year/month/day/hour/minute/second` resuelven sin ceros.
+- La API pública SÍ escribe custom fields de oportunidad en el UPDATE (no en el
+  CREATE del workflow interno).
+
 ## 7. Claves que reciben los webhooks de n8n (referencia para Sonia)
 
-**`pedido-enviado-nacex`**: `contactId`, `nombre`, `direccion`, `cp`, `poblacion`,
-`pais`, `telefono`, `email`, `peso` (opp), `bultos` (opp), **`numero_pedido`** (opp)
+**`nuevo-pedido`** 🆕: `contactId`, `opportunityId`, `order_id_ghl`, `email`
+(n8n responde asignando el número M1xxxxx — ver sección 6b)
 
-**`watchdog-entrega`**: `opportunityId`, `albaran` (opp), **`numero_pedido`** (opp)
+**`pedido-enviado-nacex`**: `contactId`, `nombre`, `direccion`, `cp`, `poblacion`,
+`pais`, `telefono`, `email`, `peso` (opp), `bultos` (opp),
+**`numero_pedido`** = `{{opportunity.name}}` (garantizado = M1xxxxx)
+
+**`watchdog-entrega`**: `opportunityId`, `albaran` (opp),
+**`numero_pedido`** = `{{opportunity.name}}`
 
 **`solicitud-devolucion`**: `opportunityId` (= nº tecleado por la clienta),
 **`numero_pedido`** (ídem), `contactId`, `email`, `nombre`, `direccion`, `cp`,
@@ -140,14 +192,10 @@ Ahora: trigger por **tag `pedido-entregado`** → GHL **mueve la oportunidad a
    **Verificar además que `contact.order_id` se rellena de verdad al confirmarse un
    pedido en la tienda** — si no, el nombre de la oportunidad saldrá vacío (probar
    con un pedido real de test).
-   ⚠️ **Límite Nacex — 20 caracteres** (llamada del 29 de julio, ver
-   `2026-07-29-llamada-sonia-henry.md`): la "referencia" que n8n pasa a Nacex admite
-   máximo 20 caracteres, y el Order ID de GHL/Stripe puede ser largo. En esa llamada
-   se acordó (sin implementar) generar un **ID secuencial interno de Mûra**
-   (`000001`, `000002`…) con un custom value + operación matemática al recibirse el
-   pago, y usarlo como nombre de oportunidad / referencia Nacex. Hay que decidir:
-   ¿`contact.order_id` (si mide ≤20 chars) o el contador interno? Si se opta por el
-   contador, cambiar `opportunity_name` en SP01 y avisar a Sonia.
+   ⚠️ **RESUELTO — Límite Nacex de 20 caracteres** (contexto en
+   `2026-07-29-llamada-sonia-henry.md`): se confirmó que el `orderId` de GHL tiene
+   **24 caracteres** → no vale como referencia Nacex. Se implementó la arquitectura
+   del **número secuencial interno asignado por n8n** — ver sección 6b.
 3. **Guard peso/bultos**: la condición usa el operador `!= ""` (no había ejemplo de
    "is not empty" que copiar). Revisar en el builder que la condición se muestre bien.
 4. **Multi-pedido**: mover la oportunidad por tag filtra por pipeline, no por número de
