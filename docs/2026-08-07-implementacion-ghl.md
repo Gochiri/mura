@@ -100,9 +100,16 @@ Ahora: trigger por **tag `pedido-entregado`** → GHL **mueve la oportunidad a
 
 ## 6. Otros cambios
 
-- **SP01 · Nueva Compra Confirmada** (draft): el nombre de la oportunidad pasa de
-  `{{contact.name}}` a **`{{contact.order_id}}`** — imprescindible para que las
-  búsquedas de n8n funcionen.
+- **SP01 · Nueva Compra Confirmada** — **PUBLICADO y activado** (triggers
+  `order_submission` y `payment_received` activos). El nombre de la oportunidad pasa
+  de `{{contact.name}}` a **`{{contact.order_id}}`** — imprescindible para que las
+  búsquedas de n8n funcionen (nombre de oportunidad = nº de pedido).
+- Los webhooks de "04 Solicitud de envío realizada" envían
+  **`numero_pedido` = `{{opportunity.name}}`** (no el custom field): como el nombre
+  de la oportunidad ES el número de pedido, este valor está garantizado siempre.
+  Verificado empíricamente: los pasos `create_opportunity` de la API interna **no
+  aceptan custom fields por API** (se probaron 3 esquemas de `fields[]` con contactos
+  de prueba y ninguno rellenó el campo — la cuenta quedó limpia después).
 - Borrado el duplicado vacío de **PS02 · Fidelización VIP / Recurrencia**.
 
 ## 7. Claves que reciben los webhooks de n8n (referencia para Sonia)
@@ -124,9 +131,15 @@ Ahora: trigger por **tag `pedido-entregado`** → GHL **mueve la oportunidad a
    de contacto, o hay que retocar las plantillas. Ojo: los triggers por tag no siempre
    llevan contexto de oportunidad, por eso los campos de contacto son el camino seguro
    para los emails (la oportunidad es la fuente de verdad para la lógica).
-2. **SP01 sigue en draft**: falta rellenar `opportunity.numero_de_pedido` al crear la
-   oportunidad (hacerlo desde la UI del builder en el paso "Create Opportunity") y
-   activarlo. Sin SP01 activo no se crean oportunidades ni fluye nada.
+2. **SP01 ya está publicado y activo.** Queda un detalle opcional: rellenar el custom
+   field `opportunity.numero_de_pedido` desde la UI del builder (añadir el campo en el
+   paso "Create Opportunity" con valor `{{contact.order_id}}`) — por API no se puede.
+   No es bloqueante: los webhooks y las búsquedas usan `{{opportunity.name}}`, que ya
+   lleva el número. Si algún email quiere pinear `{{opportunity.numero_de_pedido}}`,
+   puede usar `{{opportunity.name}}` en su lugar.
+   **Verificar además que `contact.order_id` se rellena de verdad al confirmarse un
+   pedido en la tienda** — si no, el nombre de la oportunidad saldrá vacío (probar
+   con un pedido real de test).
 3. **Guard peso/bultos**: la condición usa el operador `!= ""` (no había ejemplo de
    "is not empty" que copiar). Revisar en el builder que la condición se muestre bien.
 4. **Multi-pedido**: mover la oportunidad por tag filtra por pipeline, no por número de
