@@ -16,6 +16,6 @@ Cambios que te afectan, ya hechos:
 ✓ El webhook del formulario de devolución estaba leyendo campos equivocados (te llegaba vacío) — corregido
 ✓ Tag `etiqueta-por-imprimir` creado; emails 04 y 05 con las plantillas reales
 
-Un favor: en el PUT que ya haces al gestionar el envío (donde guardas albarán y URLs), añade también el campo `numero_de_pedido` (id `5p3I04zlvlct8CfuDNU5`) con el mismo valor que te llega en `numero_pedido` — así el custom field queda siempre relleno como querías. Una línea más en tu llamada y listo.
+Y el custom field `opportunity.numero_de_pedido` también se rellena solo desde GHL (ya probado con pedido de test: nombre y campo llegan con el mismo valor M1xxxxx) — así que puedes usar el que prefieras en tus flujos.
 
-¿Hacemos la prueba completa con Stripe en test esta semana? 🚀
+Ya hicimos la primera compra de prueba con Stripe test y el flujo de compra funciona de punta a punta. Cuando quieras coordinamos la prueba conjunta de envío + Nacex (necesitamos tus flujos de n8n al otro lado) 🚀

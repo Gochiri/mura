@@ -134,14 +134,17 @@ Secuencia actual de SP01 (publicado y verificado end-to-end con contactos de tes
 4. Email confirmación → SMS → wait 10 min → notificación a Sara → mover a
    "03 En Preparación" → tag `pedido-confirmado`.
 
-**⚠️ Caveat del paso 3 (Update Opportunity / custom field):** en 3 pruebas
-replicadas por API el paso NO escribió el campo (ni con filtro de pipeline ni con
-wait previo). Puede que con el trigger real de compra sí funcione — **verificarlo
-en la prueba con Stripe test**. No es bloqueante: todo el sistema usa el NOMBRE
-(webhooks, búsqueda de n8n, referencia Nacex, formulario de devolución), y los
-emails pueden pinear `{{opportunity.name}}`. **Plan B garantizado**: que Sonia
-añada `numero_de_pedido` (id `5p3I04zlvlct8CfuDNU5`) al PUT que ya hace en su
-flujo de envío — la API pública sí escribe el campo (verificado).
+**✅ RESUELTO (7/8 noche, prueba Stripe test):** el paso Update Opportunity solo
+funciona con el patrón **Create → Wait 20s → Find Opportunity → Update (dentro de
+la rama "Found")**. Sin el Find, el Update no tiene oportunidad en contexto y
+falla en silencio (eso explicaba las 3 pruebas por API fallidas); sin el Wait, el
+Find no encuentra la oportunidad recién creada (índice con retardo) y la ejecución
+sale por la rama None. Verificado end-to-end: M100002 quedó con
+`numero_de_pedido = M100002`. **El plan B de Sonia ya no es necesario** para este
+campo. Patrón replicable: wait+find antes de cualquier update de oportunidad
+creada en el mismo workflow.
+⚠️ Pendiente menor: poner una notificación interna en la rama "Opportunity Not
+Found" del Find (ahora está vacía → si fallara, salida silenciosa).
 
 Contador reseteado a **100000** tras las pruebas (los tests consumieron 100001-3
 y se limpiaron). Si el contador llega a 999999 → aviso a Sara (acordado el 29/7,
@@ -209,11 +212,12 @@ Sonia no tiene que montar nada para la numeración.
 7. **Nacex "taquilla"**: no activa en la cuenta; v1 = solo recogida a domicilio.
 8. **Revisión visual recomendada** en el builder de "04a · Envio - webhook Nacex"
    y "02 · Etiquetado compra 1-2" (grafos con ramas creados por API).
-9. ⚠️ **Compras repetidas (detectado 7/8, pendiente tras la prueba Stripe):**
-   (a) SP01 tiene la re-entrada desactivada (`allowMultiple=false`) — una clienta
-   que compre por 2ª vez NO generaría segunda oportunidad. Hay que activar
-   re-entrada, y al hacerlo dejar UN solo trigger (order_submission O
-   payment_received) para evitar doble inscripción por compra.
+9. ⚠️ **Compras repetidas:**
+   (a) ✅ RESUELTO 7/8: re-entrada de SP01 activada (`allowMultiple=true` +
+   `allowMultipleOpportunity=true`). **Queda por hacer**: dejar UN solo trigger
+   en SP01 (recomendado: `order_submission`; desactivar `payment_received`) para
+   evitar doble inscripción por compra — verificar con la próxima compra de test
+   si con ambos triggers se crean dos oportunidades.
    (b) Los triggers "tag added" (pedido-confirmado, pedido-entregado,
    email-04-listo…) NO saltan si el contacto ya tenía el tag de un pedido
    anterior. Solución: quitar el tag antes de re-añadirlo (paso remove+add en
