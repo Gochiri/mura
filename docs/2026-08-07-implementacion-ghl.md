@@ -235,3 +235,28 @@ En `datos/backups/` están las copias previas a los cambios:
 - `wf_envio_pre_surgery.json` — "04 Solicitud de envío realizada" antes del guard
 - `wf/*.json` — los 18 workflows tal y como estaban antes de tocar nada (definiciones
   + triggers)
+
+## 10. Estado de la batería de pruebas de triggers (7/8 noche)
+
+**Verificado FUNCIONANDO con evidencia:**
+- **SP01 cadena completa** con compra Stripe test real: contador +1 → oportunidad
+  M100002 → wait 20s → Find → Update (campo `numero_de_pedido` relleno ✓) →
+  email confirmación → SMS → 10 min → notificación Sara → mover a "03 En
+  Preparación" → tag `pedido-confirmado`. TODO OK.
+- **08b Email etiqueta** y **08c No encontrada**: dispararon por tag a las 23:02.
+- **Lógica de ramas del 02 Etiquetado**: verificada por inscripción directa
+  (añadió `compra-1`).
+- Checkout de la tienda arreglado: moneda EUR + zona de envío España (4,95 €
+  provisional) + funnel en Payment Mode Test.
+
+**Bloqueado al cierre (23:45 UTC):** desde ~23:10 NINGÚN evento de tag o etapa
+dispara workflows — ni siquiera 08b que funcionó a las 23:02 sin cambios. Los
+triggers recreados en UI (02, 03, 05, journey) están correctos en configuración.
+Sospecha: cola de eventos atascada o throttling tras la ráfaga de pruebas.
+**Reintentar por la mañana con un test limpio** (tag `pedido-confirmado` a un
+contacto nuevo → debe salir `compra-1`). Si sigue muerto, revisar Enrollment
+History en la UI de cada workflow y el status de HighLevel.
+
+**Datos de test pendientes de limpiar al terminar:** contacto German
+(GpHh0D2lqsdj83PFQ6AK) + M100001/M100002, contacto TestTriggers, pedido test
+6a765127, tags de test en contactos, y resetear "Contador Pedidos" a 100000.
