@@ -12,6 +12,7 @@ Proyecto de implementación de la subcuenta **Mûra** (tienda de moda, [stylebym
 | `datos/plantillas_ghl.json` | Mapa nombre → ID de cada plantilla en GHL |
 | `datos/productos_ghl.json` | Los 36 productos del catálogo cargados en GHL (ID, nombre, tallas) |
 | `datos/reporte_correos_v2.json` | Reporte de la actualización de correos del 2026-08-07 |
+| `docs/plan-workflows.md` | Guía de conexión plantilla → workflow: asuntos, disparadores, custom fields/values requeridos y checklist de activación |
 
 ## Estado del proyecto
 
@@ -28,7 +29,7 @@ Cada HTML lleva en su comentario de cabecera el **ASUNTO** y la **PREVISUALIZACI
 - **Chalequillo blanco**: producto sin crear — su ficha técnica (docx) venía vacía. Hay 3 fotos listas; falta la ficha correcta del cliente.
 - **Duplicado del correo 02**: existe un "02 · confirmación pedido" fuera de la carpeta Correos (creado manualmente) cuyo contenido difiere del oficial `02-confirmacion.html`. Decidir cuál conservar.
 - **Correo 13**: no existe en la numeración (nunca vino en los archivos del cliente).
-- **Workflows**: la subcuenta tiene workflows en borrador (AP01, AP02, AP03…) pendientes de conectar con estas plantillas.
+- **Workflows**: la subcuenta tiene workflows en borrador (AP01, AP02, AP03…) pendientes de conectar con estas plantillas. Plan completo de conexión en `docs/plan-workflows.md`.
 
 ## Notas técnicas
 
