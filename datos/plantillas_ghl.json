@@ -1,0 +1,113 @@
+{
+ "carpeta_correos_id": "6a6aa119fee4921a97537ba5",
+ "plantillas": [
+  {
+   "id": "6a6aa2e4a1ebd230f8649167",
+   "nombre": "01 · bienvenida newsletter",
+   "tipo": "html",
+   "actualizado": "2026-07-30T01:03:33.784Z"
+  },
+  {
+   "id": "6a6aa2e6e3d32f78af2869e2",
+   "nombre": "02 · confirmación",
+   "tipo": "html",
+   "actualizado": "2026-07-30T01:03:35.945Z"
+  },
+  {
+   "id": "6a6aa2e814830a62bce73c7a",
+   "nombre": "03 · preparación",
+   "tipo": "html",
+   "actualizado": "2026-07-30T01:03:38.063Z"
+  },
+  {
+   "id": "6a6aa2ea4eb3e6c4d953427c",
+   "nombre": "04 · envío",
+   "tipo": "html",
+   "actualizado": "2026-07-30T01:03:40.185Z"
+  },
+  {
+   "id": "6a6aa2ed3954360b6a94f117",
+   "nombre": "05 · entrega",
+   "tipo": "html",
+   "actualizado": "2026-07-30T01:03:42.355Z"
+  },
+  {
+   "id": "6a6aa2ef3fca8e1053eff501",
+   "nombre": "06 · experiencia",
+   "tipo": "html",
+   "actualizado": "2026-08-07T14:04:25.563Z"
+  },
+  {
+   "id": "6a75e5e973e37ca123637d76",
+   "nombre": "07 · reseña",
+   "tipo": "html",
+   "actualizado": "2026-08-07T14:04:27.294Z"
+  },
+  {
+   "id": "6a6aa2f161a2115039f0034f",
+   "nombre": "08 · solicitud devolución",
+   "tipo": "html",
+   "actualizado": "2026-07-30T01:03:47.112Z"
+  },
+  {
+   "id": "6a6aa2f38ea1ab2089eb114e",
+   "nombre": "09A · devolución verificada",
+   "tipo": "html",
+   "actualizado": "2026-07-30T01:03:49.288Z"
+  },
+  {
+   "id": "6a6aa2f661a2115039f00392",
+   "nombre": "09B · incidencia devolución",
+   "tipo": "html",
+   "actualizado": "2026-07-30T01:03:51.419Z"
+  },
+  {
+   "id": "6a6aa2f8301f379d94c7b7ce",
+   "nombre": "10 · reembolso",
+   "tipo": "html",
+   "actualizado": "2026-07-30T01:03:53.488Z"
+  },
+  {
+   "id": "6a6aa2fa8ea1ab2089eb119e",
+   "nombre": "11 · segunda compra",
+   "tipo": "html",
+   "actualizado": "2026-07-30T01:03:55.578Z"
+  },
+  {
+   "id": "6a6aa2fc61a2115039f003cf",
+   "nombre": "12 · hace tiempo",
+   "tipo": "html",
+   "actualizado": "2026-07-30T01:03:57.783Z"
+  },
+  {
+   "id": "6a6aa2fe0d3eda23ad6dc3d7",
+   "nombre": "14 · lanzamiento",
+   "tipo": "html",
+   "actualizado": "2026-07-30T01:03:59.861Z"
+  },
+  {
+   "id": "6a6aa30014830a62bce73d47",
+   "nombre": "15 · reposición",
+   "tipo": "html",
+   "actualizado": "2026-07-30T01:04:02.136Z"
+  },
+  {
+   "id": "6a75e5eb96dc697014d600f7",
+   "nombre": "16 · datos de devolución no coinciden",
+   "tipo": "html",
+   "actualizado": "2026-08-07T14:04:28.998Z"
+  },
+  {
+   "id": "6a75e5ed44a7d6989c157ce7",
+   "nombre": "17 · cumpleaños",
+   "tipo": "html",
+   "actualizado": "2026-08-07T14:04:30.737Z"
+  },
+  {
+   "id": "6a75e5ef7d94d21ac56215a0",
+   "nombre": "18 · reseña en Google",
+   "tipo": "html",
+   "actualizado": "2026-08-07T14:04:32.482Z"
+  }
+ ]
+}

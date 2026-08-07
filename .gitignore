@@ -1,0 +1,12 @@
+# CLI de GoHighLevel vendorizado (instalación local con credenciales — nunca subir)
+gohighlevel-cli/
+
+# Configuración local de Claude Code
+.claude/
+
+# Sistema
+.DS_Store
+
+# Secretos
+.env
+*.env

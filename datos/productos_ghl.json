@@ -1,0 +1,344 @@
+{
+ "total": 36,
+ "productos": [
+  {
+   "id": "6a4a785d316f38994c819a3b",
+   "nombre": "Blazer Blanca Arquitectónica",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "Única"
+   ]
+  },
+  {
+   "id": "6a4a7866316f38aebf819b70",
+   "nombre": "Blazer Encaje Esmeralda",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S/M",
+    "M/L"
+   ]
+  },
+  {
+   "id": "6a4a786c859ba93fcf1868e2",
+   "nombre": "Blazer Gris Arquitectónica",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "Única"
+   ]
+  },
+  {
+   "id": "6a4a78349e92121ed202ad7b",
+   "nombre": "Blazer Noir Atelier",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a78739e921244ca02b4a0",
+   "nombre": "Blazer Verde Broche Joya",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a787a6f8346406d6422a4",
+   "nombre": "Blusón Paisley Azul",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "Única"
+   ]
+  },
+  {
+   "id": "6a4a787e6f8346d15164233d",
+   "nombre": "Blusón paisley Blanco",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "Única"
+   ]
+  },
+  {
+   "id": "6a4a78826f834652f2642378",
+   "nombre": "Body Lencero Essential — Blanco roto",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S/M",
+    "M/L"
+   ]
+  },
+  {
+   "id": "6a4a78849e9212b54a02b63c",
+   "nombre": "Body Lencero Essential — Negro",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S/M",
+    "M/L"
+   ]
+  },
+  {
+   "id": "6a4a788e6b558dea8488bf75",
+   "nombre": "Bomber Encaje Atelier",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a78966b558d715f88bfea",
+   "nombre": "Camisa Abeja Joya Azul Marino",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "Única"
+   ]
+  },
+  {
+   "id": "6a4a78a56f83464b4a64275d",
+   "nombre": "Camisa Blanca Cuello Lazo",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a789a6b558d48eb88c03a",
+   "nombre": "Camisa Blanca Volantes Joya",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a78a16f834665df6426c4",
+   "nombre": "Camisa Encaje Relieve",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a78a96f8346200c6427a7",
+   "nombre": "Camisa Entalle Canela",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S/M",
+    "M/L"
+   ]
+  },
+  {
+   "id": "6a4a78be6f8346af06642a86",
+   "nombre": "Camisa Estructurada",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a78b9859ba936ff18708f",
+   "nombre": "Camisa Oliva",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S/M",
+    "M/L"
+   ]
+  },
+  {
+   "id": "6a4a78b06b558d19e388c2bd",
+   "nombre": "Camisa Perlas Eclipse",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S/M",
+    "M/L"
+   ]
+  },
+  {
+   "id": "6a4a78d39e92129e5e02bdac",
+   "nombre": "PANTALÓN ENCAJE Esmeralda",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a78dd6f83465dfc642d41",
+   "nombre": "Pantalón Animal Brillo Verde",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a78f9859ba97123187782",
+   "nombre": "Pantalón Crop Raya Diplomática",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a78e36b558dadc088c7a2",
+   "nombre": "Pantalón Encaje Eclipse",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S/M",
+    "M/L"
+   ]
+  },
+  {
+   "id": "6a4a78cc9e9212541102bcf6",
+   "nombre": "Pantalón Encaje Relieve",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a78fe6b558db20288cb25",
+   "nombre": "Pantalón Negro Detalle bajo",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ]
+  },
+  {
+   "id": "6a4a78ea9e9212398302c02d",
+   "nombre": "Pantalón Paisley Serena",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a78e59e9212069e02bf89",
+   "nombre": "Pantalón Paisley azul",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a78c56b558d842588c493",
+   "nombre": "Pantalón Palazzo Blanco",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a78ee9e921260a802c108",
+   "nombre": "Pantalón Pareo Oliva",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a78f39e9212758102c182",
+   "nombre": "Pantalón Print",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M"
+   ]
+  },
+  {
+   "id": "6a4a78d8316f38a65c81a647",
+   "nombre": "Pantalón Transparencia Satinada",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S/M",
+    "M/L"
+   ]
+  },
+  {
+   "id": "6a4a79046b558d53e088cb9c",
+   "nombre": "Pantalón Verde Cinturón Integrado",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a790c316f38573181abf6",
+   "nombre": "Sobrefalda Negra Bordado Lentejuelas",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "Única"
+   ]
+  },
+  {
+   "id": "6a4a79139e92120ee702c57a",
+   "nombre": "Top Animal Brillo Verde",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a78b4316f388a2181a391",
+   "nombre": "Top Negro Lazada Encaje",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S/M",
+    "M/L"
+   ]
+  },
+  {
+   "id": "6a4a79179e921250ae02c5f4",
+   "nombre": "Top Peplum print",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  },
+  {
+   "id": "6a4a791d859ba94861187a8a",
+   "nombre": "Vestido Asimetría Floral",
+   "tipo": "PHYSICAL",
+   "tallas": [
+    "S",
+    "M",
+    "L"
+   ]
+  }
+ ]
+}
