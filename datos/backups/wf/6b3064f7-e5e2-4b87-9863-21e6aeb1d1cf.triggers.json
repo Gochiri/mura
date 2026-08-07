@@ -1,0 +1,33 @@
+[
+ {
+  "id": "EQfcssMWOwqEkHqAFxZj",
+  "date_added": "2026-07-29T14:31:00.473Z",
+  "deleted": false,
+  "actions": [
+   {
+    "workflow_id": "6b3064f7-e5e2-4b87-9863-21e6aeb1d1cf",
+    "type": "add_to_workflow"
+   }
+  ],
+  "type": "form_submission",
+  "masterType": "highlevel",
+  "workflow_id": "6b3064f7-e5e2-4b87-9863-21e6aeb1d1cf",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "name": "Form Submitted",
+  "belongs_to": "workflow",
+  "schedule_config": {},
+  "active": true,
+  "date_updated": "2026-07-29T19:43:36.827Z",
+  "conditions": [
+   {
+    "operator": "is-any-of",
+    "field": "form.id",
+    "value": [
+     "HBK7tGDlcIFN0vaXoksg"
+    ],
+    "title": "Form is",
+    "type": "string"
+   }
+  ]
+ }
+]

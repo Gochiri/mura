@@ -1,0 +1,428 @@
+{
+ "_id": "ff7b0ec9-28f0-475a-a611-e3b6bcdafde8",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "name": "SP03 · Encuesta Post-Entrega",
+ "status": "draft",
+ "version": 2,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/ff7b0ec9-28f0-475a-a611-e3b6bcdafde8/2",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2Fff7b0ec9-28f0-475a-a611-e3b6bcdafde8%2F2?alt=media&token=5a659ed6-4199-4bef-ba2a-4998deb07f61",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "originId": "67303078-0739-4a04-9bda-a273c40b14fa",
+ "permission": 380,
+ "type": "workflow",
+ "meta": {
+  "advanceCanvasMeta": {
+   "enabled": false,
+   "disabledAt": "2026-03-12T21:32:16.242Z"
+  }
+ },
+ "updatedBy": "snapshot",
+ "createdAt": "2026-03-25T21:17:16.969Z",
+ "updatedAt": "2026-03-25T21:17:20.066Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "snapshot",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "dataVersion": 7,
+ "eventStartDate": null,
+ "senderAddress": null,
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/ff7b0ec9-28f0-475a-a611-e3b6bcdafde8/2",
+ "window": null,
+ "workflowNote": {
+  "content": "",
+  "createdBy": "snapshot",
+  "createdByName": "snapshot",
+  "createdAt": "2026-03-25T21:17:19.659Z",
+  "updatedBy": "snapshot",
+  "updatedByName": "snapshot",
+  "updatedAt": "2026-03-25T21:17:19.659Z"
+ },
+ "id": "ff7b0ec9-28f0-475a-a611-e3b6bcdafde8",
+ "workflowData": {
+  "templates": [
+   {
+    "next": "f924315e-dde8-4875-86d4-f9faaccf11f1",
+    "attributes": {
+     "startAfter": {
+      "when": "after",
+      "value": 2,
+      "type": "days",
+      "action_in": 2
+     },
+     "name": "Wait 2 Days After Tag Added",
+     "transitions": [],
+     "type": "link_clicked",
+     "hybridActionType": "wait",
+     "convertToMultipath": false,
+     "cat": "",
+     "isHybridAction": true,
+     "link": [
+      "K2PitLvfhgpKPvX6GeF4"
+     ],
+     "linksLabel": [
+      "TL-LS02-CONFIRMAR-OPTIN"
+     ]
+    },
+    "type": "wait",
+    "name": "Wait 2 Days After Tag Added",
+    "id": "35264144-e17e-4dd8-b263-d0770207e812",
+    "order": 0,
+    "cat": "",
+    "advanceCanvasMeta": {
+     "position": {
+      "x": 181.98909948051954,
+      "y": 255.9920769372295
+     }
+    }
+   },
+   {
+    "id": "f924315e-dde8-4875-86d4-f9faaccf11f1",
+    "order": 1,
+    "attributes": {
+     "currentRecipeType": "CUSTOM",
+     "branches": [
+      {
+       "id": "47edc060-5734-4659-82cc-6d4fceea24dd",
+       "name": "Cal del 1-3",
+       "segments": [
+        {
+         "__segmentId": "758e4102-7204-4efe-906d-bb544259965d",
+         "operator": "or",
+         "conditions": [
+          {
+           "conditionType": "contact_detail",
+           "conditionSubType": "7h9By9GaacziCO9qNQXm",
+           "conditionOperator": "==",
+           "conditionValue": "1",
+           "__conditionId": "68dc79d7-d8de-43ed-a6c1-1ad2651ba6b2",
+           "ifElseNodeId": "",
+           "__customFieldType__": "standard",
+           "isWait": false,
+           "nestedDropdownTypes": [
+            "inboundWebhookRequest",
+            "sheet",
+            "datetime_formatter",
+            "custom_webhook",
+            "array_functions",
+            "ivr_gather",
+            "ivr_connect_call",
+            "custom_code",
+            "ai_agent"
+           ],
+           "allowIsOperatorTypes": [
+            "contact_reply",
+            "inboundWebhookRequest",
+            "custom_webhook",
+            "custom_code",
+            "ai_agent",
+            "contact_detail",
+            "array_functions",
+            "appointment",
+            "service_booking",
+            "rental_booking"
+           ]
+          },
+          {
+           "conditionType": "contact_detail",
+           "conditionSubType": "7h9By9GaacziCO9qNQXm",
+           "conditionOperator": "==",
+           "conditionValue": "2",
+           "__conditionId": "e8498e5e-e8e4-49c6-9559-8c5ec0433932",
+           "ifElseNodeId": "",
+           "__customFieldType__": "standard",
+           "isWait": false,
+           "nestedDropdownTypes": [
+            "inboundWebhookRequest",
+            "sheet",
+            "datetime_formatter",
+            "custom_webhook",
+            "array_functions",
+            "ivr_gather",
+            "ivr_connect_call",
+            "custom_code",
+            "ai_agent"
+           ],
+           "allowIsOperatorTypes": [
+            "contact_reply",
+            "inboundWebhookRequest",
+            "custom_webhook",
+            "custom_code",
+            "ai_agent",
+            "contact_detail",
+            "array_functions",
+            "appointment",
+            "service_booking",
+            "rental_booking"
+           ]
+          },
+          {
+           "conditionType": "contact_detail",
+           "conditionSubType": "7h9By9GaacziCO9qNQXm",
+           "conditionOperator": "==",
+           "conditionValue": "3",
+           "__conditionId": "53b2bab2-53f6-48e0-9434-303518c6bd44",
+           "ifElseNodeId": "",
+           "__customFieldType__": "standard",
+           "isWait": false,
+           "nestedDropdownTypes": [
+            "inboundWebhookRequest",
+            "sheet",
+            "datetime_formatter",
+            "custom_webhook",
+            "array_functions",
+            "ivr_gather",
+            "ivr_connect_call",
+            "custom_code",
+            "ai_agent"
+           ],
+           "allowIsOperatorTypes": [
+            "contact_reply",
+            "inboundWebhookRequest",
+            "custom_webhook",
+            "custom_code",
+            "ai_agent",
+            "contact_detail",
+            "array_functions",
+            "appointment",
+            "service_booking",
+            "rental_booking"
+           ]
+          }
+         ]
+        }
+       ],
+       "operator": "and",
+       "showErrors": false,
+       "branchNameError": "Branch name cannot be empty!"
+      },
+      {
+       "id": "60666145-6384-4ea6-8066-db27e0f5aaba",
+       "name": "Cal 4-5",
+       "segments": [
+        {
+         "__segmentId": "758e4102-7204-4efe-906d-bb544259965d",
+         "operator": "or",
+         "conditions": [
+          {
+           "conditionType": "contact_detail",
+           "conditionSubType": "7h9By9GaacziCO9qNQXm",
+           "conditionOperator": "==",
+           "conditionValue": "4",
+           "__conditionId": "68dc79d7-d8de-43ed-a6c1-1ad2651ba6b2",
+           "ifElseNodeId": "",
+           "__customFieldType__": "standard",
+           "isWait": false,
+           "nestedDropdownTypes": [
+            "inboundWebhookRequest",
+            "sheet",
+            "datetime_formatter",
+            "custom_webhook",
+            "array_functions",
+            "ivr_gather",
+            "ivr_connect_call",
+            "custom_code",
+            "ai_agent"
+           ],
+           "allowIsOperatorTypes": [
+            "contact_reply",
+            "inboundWebhookRequest",
+            "custom_webhook",
+            "custom_code",
+            "ai_agent",
+            "contact_detail",
+            "array_functions",
+            "appointment",
+            "service_booking",
+            "rental_booking"
+           ]
+          },
+          {
+           "conditionType": "contact_detail",
+           "conditionSubType": "7h9By9GaacziCO9qNQXm",
+           "conditionOperator": "==",
+           "conditionValue": "5",
+           "__conditionId": "e8498e5e-e8e4-49c6-9559-8c5ec0433932",
+           "ifElseNodeId": "",
+           "__customFieldType__": "standard",
+           "isWait": false,
+           "nestedDropdownTypes": [
+            "inboundWebhookRequest",
+            "sheet",
+            "datetime_formatter",
+            "custom_webhook",
+            "array_functions",
+            "ivr_gather",
+            "ivr_connect_call",
+            "custom_code",
+            "ai_agent"
+           ],
+           "allowIsOperatorTypes": [
+            "contact_reply",
+            "inboundWebhookRequest",
+            "custom_webhook",
+            "custom_code",
+            "ai_agent",
+            "contact_detail",
+            "array_functions",
+            "appointment",
+            "service_booking",
+            "rental_booking"
+           ]
+          }
+         ]
+        }
+       ],
+       "operator": "and",
+       "showErrors": false,
+       "branchNameError": "Branch name cannot be empty!"
+      }
+     ],
+     "operator": "and",
+     "if": true,
+     "conditionName": "Calificacion",
+     "version": 2,
+     "noneBranchName": "None"
+    },
+    "name": "yes",
+    "type": "if_else",
+    "cat": "conditions",
+    "next": [
+     "47edc060-5734-4659-82cc-6d4fceea24dd",
+     "60666145-6384-4ea6-8066-db27e0f5aaba",
+     "f471a2a2-a760-4ab9-b8a8-2ef80e2b9c0c"
+    ],
+    "comments": [],
+    "nodeType": "condition-node",
+    "parentKey": "35264144-e17e-4dd8-b263-d0770207e812",
+    "advanceCanvasMeta": {
+     "position": {
+      "x": 861.9890994805196,
+      "y": 158.9920769372295
+     }
+    }
+   },
+   {
+    "id": "47edc060-5734-4659-82cc-6d4fceea24dd",
+    "parent": "f924315e-dde8-4875-86d4-f9faaccf11f1",
+    "order": 2,
+    "attributes": {
+     "if": false,
+     "conditionName": "Condition",
+     "operator": "and",
+     "branches": []
+    },
+    "name": "Cal del 1-3",
+    "type": "if_else",
+    "cat": "conditions",
+    "sibling": [
+     "60666145-6384-4ea6-8066-db27e0f5aaba",
+     "f471a2a2-a760-4ab9-b8a8-2ef80e2b9c0c"
+    ],
+    "comments": [],
+    "nodeType": "branch-yes",
+    "parentKey": "f924315e-dde8-4875-86d4-f9faaccf11f1",
+    "advanceCanvasMeta": {
+     "position": {
+      "x": 1091.9890994805196,
+      "y": -78.5079230627705
+     },
+     "hasAlerts": true
+    },
+    "next": "94de8aa7-764e-4c4a-b02b-9e1a139a796d"
+   },
+   {
+    "id": "94de8aa7-764e-4c4a-b02b-9e1a139a796d",
+    "parent": "47edc060-5734-4659-82cc-6d4fceea24dd",
+    "order": 0,
+    "attributes": {
+     "type": "sms",
+     "sms": {
+      "body": "El cliente {{contact.name}} califico de manera negativa con {{contact.calificacin_clienta}} estrellas el servicio de entraga.\n\nContáctalo a la brevedad para saber por que tuvo esa experiencia negativa.",
+      "userType": "assign",
+      "attachments": []
+     }
+    },
+    "name": "Internal Notification",
+    "type": "internal_notification",
+    "parentKey": "47edc060-5734-4659-82cc-6d4fceea24dd"
+   },
+   {
+    "id": "60666145-6384-4ea6-8066-db27e0f5aaba",
+    "parent": "f924315e-dde8-4875-86d4-f9faaccf11f1",
+    "order": 2,
+    "attributes": {
+     "if": false,
+     "conditionName": "Condition",
+     "operator": "and",
+     "branches": []
+    },
+    "name": "Cal 4-5",
+    "type": "if_else",
+    "cat": "conditions",
+    "sibling": [
+     "47edc060-5734-4659-82cc-6d4fceea24dd",
+     "f471a2a2-a760-4ab9-b8a8-2ef80e2b9c0c"
+    ],
+    "comments": [],
+    "nodeType": "branch-yes",
+    "parentKey": "f924315e-dde8-4875-86d4-f9faaccf11f1",
+    "advanceCanvasMeta": {
+     "position": {
+      "x": 1091.9890994805196,
+      "y": 151.4920769372295
+     },
+     "hasAlerts": true
+    },
+    "next": "58c5b932-7719-4f52-bbac-df100ff5bff0"
+   },
+   {
+    "id": "58c5b932-7719-4f52-bbac-df100ff5bff0",
+    "parent": "60666145-6384-4ea6-8066-db27e0f5aaba",
+    "order": 0,
+    "attributes": {
+     "input_trigger_params": false,
+     "type": "add_to_workflow",
+     "workflow_id": "bd86a6cc-6eb3-46a2-8295-514c2e871f46"
+    },
+    "name": "Add to Workflow",
+    "type": "add_to_workflow",
+    "parentKey": "60666145-6384-4ea6-8066-db27e0f5aaba"
+   },
+   {
+    "id": "f471a2a2-a760-4ab9-b8a8-2ef80e2b9c0c",
+    "parent": "f924315e-dde8-4875-86d4-f9faaccf11f1",
+    "order": 2,
+    "attributes": {
+     "else": true
+    },
+    "name": "None",
+    "type": "if_else",
+    "cat": "conditions",
+    "sibling": [
+     "47edc060-5734-4659-82cc-6d4fceea24dd",
+     "60666145-6384-4ea6-8066-db27e0f5aaba"
+    ],
+    "comments": [],
+    "nodeType": "branch-no",
+    "parentKey": "f924315e-dde8-4875-86d4-f9faaccf11f1",
+    "advanceCanvasMeta": {
+     "position": {
+      "x": 1091.9890994805196,
+      "y": 381.4920769372295
+     },
+     "hasAlerts": true
+    }
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

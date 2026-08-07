@@ -1,0 +1,35 @@
+[
+ {
+  "id": "fZHU48qEMC2E5vAAdQFp",
+  "date_added": "2026-03-25T21:17:19.605Z",
+  "date_updated": "2026-03-25T21:17:19.605Z",
+  "deleted": false,
+  "belongs_to": "workflow",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "origin_id": "0rHAbosOI9Fu7nAqioe9",
+  "active": false,
+  "workflow_id": "d62db499-ae1c-41bb-b868-67e3f0775f6b",
+  "masterType": "highlevel",
+  "name": "Formulario Devolución / Cambio Submitted",
+  "type": "form_submission",
+  "conditions": [
+   {
+    "operator": "is-any-of",
+    "field": "form.id",
+    "value": [
+     "gonRXu6ZI59VQzfKazOx"
+    ],
+    "title": "Form is",
+    "type": "string",
+    "id": "308f3e55-2a7c-49b2-b116-571e31afd91b"
+   }
+  ],
+  "actions": [
+   {
+    "workflow_id": "d62db499-ae1c-41bb-b868-67e3f0775f6b",
+    "type": "add_to_workflow"
+   }
+  ],
+  "schedule_config": {}
+ }
+]

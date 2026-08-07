@@ -1,0 +1,63 @@
+[
+ {
+  "id": "xkCwc0wT8gt6ukxlAB8T",
+  "date_added": "2026-03-25T21:17:19.616Z",
+  "date_updated": "2026-03-25T21:17:19.616Z",
+  "deleted": false,
+  "belongs_to": "workflow",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "origin_id": "ed4JeQ9nmuDVfPsl0Gib",
+  "active": false,
+  "workflow_id": "ae375ad8-4b97-4fa4-951d-00c65a92a3be",
+  "masterType": "highlevel",
+  "name": "Order Status Updated to Shipped (Enviado)",
+  "type": "contact_changed",
+  "conditions": [
+   {
+    "operator": "==",
+    "field": "contact.EMCHUfBVbMpDxzyOglhL",
+    "value": "Enviado",
+    "title": "Estado pedido",
+    "type": "select",
+    "id": "EMCHUfBVbMpDxzyOglhL"
+   }
+  ],
+  "actions": [
+   {
+    "workflow_id": "ae375ad8-4b97-4fa4-951d-00c65a92a3be",
+    "type": "add_to_workflow"
+   }
+  ],
+  "schedule_config": {}
+ },
+ {
+  "id": "yfmoM1cX1gI0chpWsuhV",
+  "date_added": "2026-03-25T21:17:19.613Z",
+  "date_updated": "2026-03-25T21:17:19.613Z",
+  "deleted": false,
+  "belongs_to": "workflow",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "origin_id": "ONl6QIV3VLwSCMHhSrDk",
+  "active": false,
+  "workflow_id": "ae375ad8-4b97-4fa4-951d-00c65a92a3be",
+  "masterType": "highlevel",
+  "name": "Stripe Checkout Abandoned",
+  "type": "shopify_abandoned_cart",
+  "conditions": [
+   {
+    "operator": "==",
+    "field": "duration",
+    "value": 10,
+    "title": "Duration (minutes)",
+    "type": "number"
+   }
+  ],
+  "actions": [
+   {
+    "workflow_id": "ae375ad8-4b97-4fa4-951d-00c65a92a3be",
+    "type": "add_to_workflow"
+   }
+  ],
+  "schedule_config": {}
+ }
+]

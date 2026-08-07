@@ -1,0 +1,32 @@
+[
+ {
+  "id": "EmbbCmWGjo4AAQE68XDr",
+  "date_added": "2026-03-25T21:17:19.607Z",
+  "date_updated": "2026-03-25T21:17:19.607Z",
+  "deleted": false,
+  "belongs_to": "workflow",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "origin_id": "WlPjGj91xt0NjeMPuDad",
+  "active": false,
+  "workflow_id": "ab8ade85-851b-47a3-b46f-62a7e9f80ccc",
+  "masterType": "highlevel",
+  "name": "New Instagram DM or Comment",
+  "type": "customer_reply",
+  "conditions": [
+   {
+    "operator": "==",
+    "field": "message.type",
+    "value": 18,
+    "title": "Reply channel",
+    "type": "select",
+    "id": "87574a74-0e44-43d1-be0b-b93ed87635e2"
+   }
+  ],
+  "actions": [
+   {
+    "workflow_id": "ab8ade85-851b-47a3-b46f-62a7e9f80ccc",
+    "type": "add_to_workflow"
+   }
+  ]
+ }
+]

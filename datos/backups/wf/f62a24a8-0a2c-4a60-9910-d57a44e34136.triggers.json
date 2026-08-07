@@ -1,0 +1,35 @@
+[
+ {
+  "id": "4E6ZGs9U9kBrNLNgjsoC",
+  "date_added": "2026-03-25T21:17:19.541Z",
+  "date_updated": "2026-03-25T21:17:19.541Z",
+  "deleted": false,
+  "belongs_to": "workflow",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "origin_id": "Zj5Tw2Zc2e1WMuf3T4op",
+  "active": false,
+  "workflow_id": "f62a24a8-0a2c-4a60-9910-d57a44e34136",
+  "masterType": "highlevel",
+  "name": "Opt-in Website Form Enviado",
+  "type": "form_submission",
+  "conditions": [
+   {
+    "operator": "is-any-of",
+    "field": "form.id",
+    "value": [
+     "fmuHvvOjkGBAkPU2LTZN"
+    ],
+    "title": "Form is",
+    "type": "string",
+    "id": "632e1e76-fdd0-48ef-b997-02d89fc73673"
+   }
+  ],
+  "actions": [
+   {
+    "workflow_id": "f62a24a8-0a2c-4a60-9910-d57a44e34136",
+    "type": "add_to_workflow"
+   }
+  ],
+  "schedule_config": {}
+ }
+]

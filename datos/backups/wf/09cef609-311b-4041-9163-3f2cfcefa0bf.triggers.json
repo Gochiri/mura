@@ -1,0 +1,40 @@
+[
+ {
+  "id": "SMuyKNbcqu8Wl7f24AG6",
+  "date_added": "2026-03-25T21:17:19.557Z",
+  "date_updated": "2026-03-25T21:17:19.557Z",
+  "deleted": false,
+  "belongs_to": "workflow",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "origin_id": "ypoFxbwVcAKXqPMduZHE",
+  "active": false,
+  "workflow_id": "09cef609-311b-4041-9163-3f2cfcefa0bf",
+  "masterType": "highlevel",
+  "name": "Opportunity Moves to 'P1-03 En Preparacion' in Pipeline 1 · Ventas / Pedidos",
+  "type": "pipeline_stage_updated",
+  "conditions": [
+   {
+    "operator": "==",
+    "field": "opportunity.pipelineId",
+    "value": "X7wvJysuBVmdXXl1b8zx",
+    "title": "In pipeline",
+    "type": "select",
+    "id": "ed2b875c-a13c-48a6-bc51-b5515dca6cf2"
+   },
+   {
+    "operator": "==",
+    "field": "opportunity.pipelineStageId",
+    "value": "f492640e-ddfc-4963-aaee-2b587a9065dc",
+    "title": "Pipeline stage",
+    "type": "select"
+   }
+  ],
+  "actions": [
+   {
+    "workflow_id": "09cef609-311b-4041-9163-3f2cfcefa0bf",
+    "type": "add_to_workflow"
+   }
+  ],
+  "schedule_config": {}
+ }
+]

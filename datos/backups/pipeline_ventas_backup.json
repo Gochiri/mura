@@ -1,0 +1,85 @@
+{
+  "id": "X7wvJysuBVmdXXl1b8zx",
+  "name": "Ventas / Pedidos",
+  "showInFunnel": true,
+  "showInPieChart": true,
+  "useOpportunityProbability": false,
+  "dateAdded": "2026-03-25T21:17:10.351Z",
+  "dateUpdated": "2026-07-21T14:30:24.987Z",
+  "stages": [
+    {
+      "id": "b24a170f-281f-4596-9c1d-667f415fcd2b",
+      "name": "01 · Carrito Abandonado",
+      "showInFunnel": true,
+      "showInPieChart": true,
+      "position": 0,
+      "stageWinProbability": 11.11,
+      "originId": "ODZlNGUwNTctMGIzYS00MzJjLWJlNDctZDAyZjYzM2E5YmY4"
+    },
+    {
+      "id": "169e313b-c8f0-47d4-956c-ff02da730fe5",
+      "name": "02 · Pedido Nuevo",
+      "showInFunnel": true,
+      "showInPieChart": true,
+      "position": 1,
+      "stageWinProbability": 22.22,
+      "originId": "MWQxMTEyNDEtOGJmOC00ZjQzLWFmNjctZjc4MjNhNjc3MTE2"
+    },
+    {
+      "id": "f492640e-ddfc-4963-aaee-2b587a9065dc",
+      "name": "03 En Preparacion",
+      "showInFunnel": true,
+      "showInPieChart": true,
+      "position": 2,
+      "stageWinProbability": 33.33,
+      "originId": "NGQ4MjAwN2EtZTgyNC00YjcyLTlkMGYtNGMzZDQ0OTRlMDA2"
+    },
+    {
+      "id": "a1a2f1fa-b9a2-4741-8f89-11ada366f227",
+      "name": "04 Enviado",
+      "showInFunnel": true,
+      "showInPieChart": true,
+      "position": 3,
+      "stageWinProbability": 44.44,
+      "originId": "MmY2YzUyOTgtZjhhZi00YzlmLTg5NzgtOWNmNWQzNjcyMmRi"
+    },
+    {
+      "id": "789b85f8-5a2b-468a-936c-d643308340c3",
+      "name": "05 Entregado",
+      "showInFunnel": true,
+      "showInPieChart": true,
+      "position": 4,
+      "stageWinProbability": 55.56,
+      "originId": "NTAwYTliZDctODg3Ni00M2UyLWIzNGMtZjI3NDc2ZDA1YjI0"
+    },
+    {
+      "id": "fb63bc74-f716-4b6e-b3de-df1c24304fde",
+      "name": "06 Devolucion o Cambio",
+      "showInFunnel": true,
+      "showInPieChart": true,
+      "position": 5,
+      "stageWinProbability": 66.67,
+      "originId": "ZThlYzU4M2QtNjk0Ni00MjUzLWFiZDItOTdhN2U4OGU2MjBh"
+    },
+    {
+      "id": "ad78ca83-2b17-4edf-8615-994db5f1194e",
+      "name": "07 Cerrado Ganado",
+      "showInFunnel": true,
+      "showInPieChart": true,
+      "position": 6,
+      "stageWinProbability": 77.78,
+      "originId": "ZjczYmI0NDEtZDc5Ny00YjIyLTgyZGUtZjBkNTJiNTVlNDgy"
+    },
+    {
+      "id": "1caed4f0-3a9f-4ae9-a702-341bc1c44be0",
+      "name": "08 Cerrado Perdido",
+      "showInFunnel": true,
+      "showInPieChart": true,
+      "position": 7,
+      "stageWinProbability": 88.89,
+      "originId": "M2Q0YmIzOWYtOTFlZS00NmQzLWE4NzgtNzBmYmNlMzgwM2E3"
+    }
+  ],
+  "locationId": "NxPF5fOicowujokEk5Hm",
+  "originId": "kJPWNtobz4igF54Y8rMB"
+}

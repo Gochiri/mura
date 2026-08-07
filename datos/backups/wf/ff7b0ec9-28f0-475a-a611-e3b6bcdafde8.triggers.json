@@ -1,0 +1,39 @@
+[
+ {
+  "id": "uqxIhooxctnORYGAhuB7",
+  "date_added": "2026-03-25T21:17:19.560Z",
+  "date_updated": "2026-03-25T21:17:19.560Z",
+  "deleted": false,
+  "belongs_to": "workflow",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "origin_id": "nkgFQphZPwBF6HgsKndm",
+  "active": false,
+  "workflow_id": "ff7b0ec9-28f0-475a-a611-e3b6bcdafde8",
+  "masterType": "highlevel",
+  "name": "Copy of Pedido Entregado Tag Added",
+  "type": "contact_tag",
+  "conditions": [
+   {
+    "operator": "index-of-true",
+    "field": "tagsAdded",
+    "value": "pedido-entregado",
+    "title": "Tag Added",
+    "type": "select",
+    "id": "tag-added"
+   }
+  ],
+  "actions": [
+   {
+    "workflow_id": "ff7b0ec9-28f0-475a-a611-e3b6bcdafde8",
+    "type": "add_to_workflow"
+   }
+  ],
+  "advanceCanvasMeta": {
+   "position": {
+    "x": -108.01090051948044,
+    "y": 255.9920769372295
+   }
+  },
+  "schedule_config": {}
+ }
+]

@@ -1,0 +1,278 @@
+{
+ "_id": "09cef609-311b-4041-9163-3f2cfcefa0bf",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "name": "AP01 · Gestión Operativa de Pedido",
+ "status": "draft",
+ "version": 2,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/09cef609-311b-4041-9163-3f2cfcefa0bf/2",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F09cef609-311b-4041-9163-3f2cfcefa0bf%2F2?alt=media&token=292c07eb-7279-42c5-813b-b99dcce3285d",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "originId": "c92f92a3-3b1e-4a92-af40-6c078771abd5",
+ "permission": 380,
+ "type": "workflow",
+ "meta": null,
+ "updatedBy": "snapshot",
+ "createdAt": "2026-03-25T21:17:14.684Z",
+ "updatedAt": "2026-03-25T21:17:20.022Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "snapshot",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "dataVersion": 7,
+ "eventStartDate": null,
+ "senderAddress": null,
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/09cef609-311b-4041-9163-3f2cfcefa0bf/2",
+ "window": null,
+ "workflowNote": {
+  "content": "",
+  "createdBy": "snapshot",
+  "createdByName": "snapshot",
+  "createdAt": "2026-03-25T21:17:19.626Z",
+  "updatedBy": "snapshot",
+  "updatedByName": "snapshot",
+  "updatedAt": "2026-03-25T21:17:19.626Z"
+ },
+ "id": "09cef609-311b-4041-9163-3f2cfcefa0bf",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "38825731-a788-450d-bca6-2ec42a4c1f73",
+    "name": "Notify Sara of Order in Preparation",
+    "attributes": {
+     "sms": {
+      "body": ""
+     },
+     "type": "notification",
+     "userType": "user",
+     "email": {
+      "subject": "",
+      "html": ""
+     },
+     "notification": {
+      "redirectPage": "contact",
+      "userType": "user",
+      "body": "Check pending orders with client details.<br>Include premium packaging and handwritten card.",
+      "title": "Order Preparation Reminder",
+      "selectedUser": ""
+     }
+    },
+    "type": "internal_notification",
+    "next": "095385b6-2348-4527-a31b-83a6d0a30f81",
+    "order": 0
+   },
+   {
+    "attributes": {
+     "name": "Wait 48 Hours in Europe/Madrid",
+     "isHybridAction": true,
+     "transitions": [],
+     "cat": "",
+     "startAfter": {
+      "when": "after",
+      "value": 48,
+      "type": "hour"
+     },
+     "type": "time",
+     "convertToMultipath": false,
+     "hybridActionType": "wait"
+    },
+    "name": "Wait 48 Hours in Europe/Madrid",
+    "id": "095385b6-2348-4527-a31b-83a6d0a30f81",
+    "parentKey": "38825731-a788-450d-bca6-2ec42a4c1f73",
+    "type": "wait",
+    "order": 1,
+    "cat": "",
+    "next": "6e072995-1028-4f7d-9574-27c599408bea"
+   },
+   {
+    "id": "6e072995-1028-4f7d-9574-27c599408bea",
+    "order": 2,
+    "attributes": {
+     "currentRecipeType": "CUSTOM",
+     "branches": [
+      {
+       "id": "d5215ebf-a9d8-4313-a80a-7bbc2392d92c",
+       "name": "Enviado",
+       "segments": [
+        {
+         "__segmentId": "ea208632-d83a-4876-acca-6fd8e3933b92",
+         "operator": "and",
+         "conditions": [
+          {
+           "conditionType": "opportunities",
+           "conditionSubType": "pipelineId",
+           "conditionOperator": "==",
+           "conditionValue": "X7wvJysuBVmdXXl1b8zx",
+           "__conditionId": "c2cd914f-b4b0-4ad7-9ff8-746c14cad541",
+           "ifElseNodeId": "",
+           "__customFieldType__": "standard",
+           "isWait": false,
+           "nestedDropdownTypes": [
+            "inboundWebhookRequest",
+            "sheet",
+            "datetime_formatter",
+            "custom_webhook",
+            "array_functions",
+            "ivr_gather",
+            "ivr_connect_call",
+            "custom_code",
+            "ai_agent"
+           ],
+           "allowIsOperatorTypes": [
+            "contact_reply",
+            "inboundWebhookRequest",
+            "custom_webhook",
+            "custom_code",
+            "ai_agent",
+            "contact_detail",
+            "array_functions",
+            "appointment",
+            "service_booking",
+            "rental_booking"
+           ]
+          },
+          {
+           "conditionType": "opportunities",
+           "conditionSubType": "pipelineStageId",
+           "conditionOperator": "==",
+           "conditionValue": "a1a2f1fa-b9a2-4741-8f89-11ada366f227",
+           "__conditionId": "31ee90b3-c35e-4253-849b-1b5a4f3b856d",
+           "ifElseNodeId": "",
+           "__customFieldType__": "standard",
+           "isWait": false,
+           "nestedDropdownTypes": [
+            "inboundWebhookRequest",
+            "sheet",
+            "datetime_formatter",
+            "custom_webhook",
+            "array_functions",
+            "ivr_gather",
+            "ivr_connect_call",
+            "custom_code",
+            "ai_agent"
+           ],
+           "allowIsOperatorTypes": [
+            "contact_reply",
+            "inboundWebhookRequest",
+            "custom_webhook",
+            "custom_code",
+            "ai_agent",
+            "contact_detail",
+            "array_functions",
+            "appointment",
+            "service_booking",
+            "rental_booking"
+           ]
+          }
+         ]
+        }
+       ],
+       "operator": "and",
+       "showErrors": false,
+       "branchNameError": "Branch name cannot be empty!"
+      }
+     ],
+     "operator": "and",
+     "if": true,
+     "conditionName": "Pedido Enviado?",
+     "version": 2,
+     "noneBranchName": "None"
+    },
+    "name": "yes",
+    "type": "if_else",
+    "cat": "conditions",
+    "next": [
+     "d5215ebf-a9d8-4313-a80a-7bbc2392d92c",
+     "8aa801ea-121c-4624-8c86-93635b5d9c78"
+    ],
+    "comments": [],
+    "nodeType": "condition-node",
+    "parentKey": "095385b6-2348-4527-a31b-83a6d0a30f81"
+   },
+   {
+    "id": "d5215ebf-a9d8-4313-a80a-7bbc2392d92c",
+    "parent": "6e072995-1028-4f7d-9574-27c599408bea",
+    "order": 3,
+    "attributes": {
+     "if": false,
+     "conditionName": "Condition",
+     "operator": "and",
+     "branches": []
+    },
+    "name": "Enviado",
+    "type": "if_else",
+    "cat": "conditions",
+    "sibling": [
+     "8aa801ea-121c-4624-8c86-93635b5d9c78"
+    ],
+    "comments": [],
+    "nodeType": "branch-yes",
+    "parentKey": "6e072995-1028-4f7d-9574-27c599408bea",
+    "next": "48100d5d-fef1-434c-b21e-1c910d784ac4"
+   },
+   {
+    "id": "48100d5d-fef1-434c-b21e-1c910d784ac4",
+    "parent": "d5215ebf-a9d8-4313-a80a-7bbc2392d92c",
+    "order": 0,
+    "attributes": {
+     "fields": [],
+     "type": "create_opportunity",
+     "pipeline_id": "X7wvJysuBVmdXXl1b8zx",
+     "pipeline_stage_id": "a1a2f1fa-b9a2-4741-8f89-11ada366f227",
+     "opportunity_name": "{{contact.name}}",
+     "opportunity_source": "{{contact.source}}",
+     "opportunity_status": "won",
+     "monetary_value": ""
+    },
+    "name": "Create Or Update Opportunity",
+    "type": "create_opportunity",
+    "parentKey": "d5215ebf-a9d8-4313-a80a-7bbc2392d92c"
+   },
+   {
+    "id": "8aa801ea-121c-4624-8c86-93635b5d9c78",
+    "parent": "6e072995-1028-4f7d-9574-27c599408bea",
+    "order": 3,
+    "attributes": {
+     "else": true
+    },
+    "name": "None",
+    "type": "if_else",
+    "cat": "conditions",
+    "next": "8468fbbf-77f6-43ef-bcb3-cc70a32bc795",
+    "sibling": [
+     "d5215ebf-a9d8-4313-a80a-7bbc2392d92c"
+    ],
+    "comments": [],
+    "nodeType": "branch-no",
+    "parentKey": "6e072995-1028-4f7d-9574-27c599408bea"
+   },
+   {
+    "id": "8468fbbf-77f6-43ef-bcb3-cc70a32bc795",
+    "parent": "8aa801ea-121c-4624-8c86-93635b5d9c78",
+    "order": 0,
+    "attributes": {
+     "type": "notification",
+     "notification": {
+      "type": "send_notification",
+      "body": "Enviar Pedido Urgente",
+      "title": "Urgente! Enviar Pedido",
+      "redirectPage": "opportunity",
+      "userType": "all"
+     }
+    },
+    "name": "Internal Notification",
+    "type": "internal_notification",
+    "parentKey": "8aa801ea-121c-4624-8c86-93635b5d9c78"
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

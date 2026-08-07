@@ -1,0 +1,216 @@
+{
+ "_id": "ae375ad8-4b97-4fa4-951d-00c65a92a3be",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "name": "SP02 · Seguimiento Estado Pedido",
+ "status": "draft",
+ "version": 2,
+ "allowMultiple": false,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/ae375ad8-4b97-4fa4-951d-00c65a92a3be/2",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2Fae375ad8-4b97-4fa4-951d-00c65a92a3be%2F2?alt=media&token=62a48f2b-f98a-4293-831d-34d9158bfe05",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "originId": "3c655292-cb13-4d8a-af60-6651bf210767",
+ "permission": 380,
+ "type": "workflow",
+ "meta": null,
+ "updatedBy": "snapshot",
+ "createdAt": "2026-03-25T21:17:16.755Z",
+ "updatedAt": "2026-03-25T21:17:21.183Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "snapshot",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "dataVersion": 7,
+ "eventStartDate": null,
+ "senderAddress": null,
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/ae375ad8-4b97-4fa4-951d-00c65a92a3be/2",
+ "window": null,
+ "workflowNote": {
+  "content": "",
+  "createdBy": "snapshot",
+  "createdByName": "snapshot",
+  "createdAt": "2026-03-25T21:17:19.683Z",
+  "updatedBy": "snapshot",
+  "updatedByName": "snapshot",
+  "updatedAt": "2026-03-25T21:17:19.683Z"
+ },
+ "id": "ae375ad8-4b97-4fa4-951d-00c65a92a3be",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "faa46f8f-2dca-4fed-ae3f-8bbc81007647",
+    "type": "email",
+    "name": "Send Shipment Confirmation Email",
+    "next": "1d95be06-e868-4481-8859-6bbf62ed3e8a",
+    "attributes": {
+     "subject": "Your Order Has Been Shipped - Tracking Details Inside",
+     "html": "<p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Dear {{contact.name}},<br><br>We are pleased to inform you that your order has been shipped and is on its way to you. Below you'll find the tracking details to monitor your package's journey.<br><br>Order Number: {{contact.order_id}}<br>Tracking Number: {{contact.n_tracking}}<br>Carrier: {{contact.transportista}}<br><br>Please use the tracking number on the carrier's website to get the latest updates on your delivery status.<br><br>If you have any questions or need further assistance, feel free to contact us at any time.<br><br>Thank you for choosing us!<br><br>Best regards,<br>{{user.name}}<br>{{user.email_signature}}</p>",
+     "trackingOptions": {
+      "hasTrackingLinks": true,
+      "hasUtmTracking": true,
+      "hasTags": false,
+      "sourceId": "3c655292-cb13-4d8a-af60-6651bf210767:faa46f8f-2dca-4fed-ae3f-8bbc81007647"
+     },
+     "conditions": [],
+     "attachments": []
+    },
+    "order": 0
+   },
+   {
+    "next": "62fc2339-908f-47bb-a441-50929b70bed4",
+    "attributes": {
+     "body": "Hello {{contact.name}},<br><br>Your order {{contact.order_id}} has been shipped.<br>Tracking number: {{contact.n_tracking}}.<br>You can track your package for updates.<br><br>Thank you for shopping with us!<br>{{user.email_signature}}"
+    },
+    "id": "1d95be06-e868-4481-8859-6bbf62ed3e8a",
+    "type": "sms",
+    "parentKey": "faa46f8f-2dca-4fed-ae3f-8bbc81007647",
+    "name": "Send Shipment Confirmation SMS",
+    "order": 1
+   },
+   {
+    "id": "62fc2339-908f-47bb-a441-50929b70bed4",
+    "type": "add_contact_tag",
+    "name": "Tag Order As Shipped",
+    "parentKey": "1d95be06-e868-4481-8859-6bbf62ed3e8a",
+    "next": "fccf87ab-1d7a-454f-97aa-4a801c7cf77b",
+    "attributes": {
+     "tags": [
+      "pedido-enviado"
+     ]
+    },
+    "order": 2
+   },
+   {
+    "next": "2ea2fa17-c190-49f6-8cd7-3c99f5fcacf8",
+    "attributes": {
+     "name": "Wait 5 Days",
+     "hybridActionType": "wait",
+     "type": "time",
+     "startAfter": {
+      "when": "after",
+      "value": 5,
+      "type": "days"
+     },
+     "transitions": [],
+     "convertToMultipath": false,
+     "isHybridAction": true,
+     "cat": "action"
+    },
+    "id": "fccf87ab-1d7a-454f-97aa-4a801c7cf77b",
+    "type": "wait",
+    "name": "Wait 5 Days",
+    "parentKey": "62fc2339-908f-47bb-a441-50929b70bed4",
+    "order": 3
+   },
+   {
+    "id": "2ea2fa17-c190-49f6-8cd7-3c99f5fcacf8",
+    "type": "email",
+    "parentKey": "fccf87ab-1d7a-454f-97aa-4a801c7cf77b",
+    "name": "Send Delivery Confirmation Email With Trigger Link",
+    "next": "1a1dc75c-ceb2-4d24-b883-d5f16d06d413",
+    "attributes": {
+     "subject": "¿Has recibido tu pedido? Confirma aquí",
+     "html": "Hola {{contact.name}},<br><br>Esperamos que te encuentres bien. Queríamos asegurarnos de que tu pedido con número {{contact.order_id}} haya llegado correctamente.<br><br>Por favor, haz clic en el siguiente enlace para confirmarnos que lo has recibido:<br><a href=\"{{appointment.reschedule_link}}\">Confirmar recepción del pedido</a><br><br>Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en contactarnos.<br><br>Muchas gracias por confiar en nosotros.<br><br>Saludos cordiales,<br>{{user.name}}<br>{{user.email_signature}}"
+    },
+    "order": 4
+   },
+   {
+    "convertToMultipath": true,
+    "attributes": {
+     "convertToMultipath": true,
+     "cat": "multi-path",
+     "link": [
+      "K2PitLvfhgpKPvX6GeF4"
+     ],
+     "name": "Wait for Confirmation or Timeout",
+     "hybridActionType": "wait",
+     "type": "link_clicked",
+     "linksLabel": [
+      "TL-LS02-CONFIRMAR-OPTIN"
+     ],
+     "transitions": [
+      {
+       "name": "wait",
+       "conditionType": "user-defined",
+       "id": "66b6b693-8926-4b3b-82af-8d566d9b6d7e",
+       "isPrimaryBranch": true,
+       "attributes": {
+        "type": "wait_link_clicked",
+        "description": "What will happen after TL-LS02-CONFIRMAR-OPTIN trigger link is clicked"
+       },
+       "condition": "primary"
+      },
+      {
+       "attributes": {
+        "type": "wait_timeout",
+        "description": "What will happen after 2 days"
+       },
+       "condition": "timeout",
+       "name": "timeout",
+       "id": "b166f8a1-d48e-424b-a684-e164a3866d01",
+       "isPrimaryBranch": false,
+       "conditionType": "user-defined"
+      }
+     ],
+     "startAfter": {
+      "action_in": 0,
+      "when": "after",
+      "value": 2,
+      "type": "days"
+     },
+     "isHybridAction": true
+    },
+    "cat": "multi-path",
+    "next": [
+     "66b6b693-8926-4b3b-82af-8d566d9b6d7e",
+     "b166f8a1-d48e-424b-a684-e164a3866d01"
+    ],
+    "parentKey": "2ea2fa17-c190-49f6-8cd7-3c99f5fcacf8",
+    "name": "Wait for Confirmation or Timeout",
+    "type": "wait",
+    "id": "1a1dc75c-ceb2-4d24-b883-d5f16d06d413",
+    "order": 5
+   },
+   {
+    "cat": "transition",
+    "parentKey": "1a1dc75c-ceb2-4d24-b883-d5f16d06d413",
+    "conditionType": "user-defined",
+    "id": "66b6b693-8926-4b3b-82af-8d566d9b6d7e",
+    "isPrimaryBranch": true,
+    "attributes": {
+     "type": "wait_link_clicked",
+     "description": "What will happen after TL-LS02-CONFIRMAR-OPTIN trigger link is clicked"
+    },
+    "condition": "primary",
+    "name": "wait",
+    "type": "transition",
+    "parent": "1a1dc75c-ceb2-4d24-b883-d5f16d06d413",
+    "order": 6
+   },
+   {
+    "cat": "transition",
+    "id": "b166f8a1-d48e-424b-a684-e164a3866d01",
+    "isPrimaryBranch": false,
+    "conditionType": "user-defined",
+    "parentKey": "1a1dc75c-ceb2-4d24-b883-d5f16d06d413",
+    "condition": "timeout",
+    "attributes": {
+     "type": "wait_timeout",
+     "description": "What will happen after 2 days"
+    },
+    "type": "transition",
+    "name": "timeout",
+    "parent": "1a1dc75c-ceb2-4d24-b883-d5f16d06d413",
+    "order": 6
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

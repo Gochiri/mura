@@ -1,0 +1,62 @@
+[
+ {
+  "id": "AtyPSRKbvpZD3rx08YcR",
+  "date_added": "2026-03-25T21:17:19.554Z",
+  "deleted": false,
+  "belongs_to": "workflow",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "origin_id": "HeDf0CrXAmOiNPLSTboV",
+  "active": false,
+  "workflow_id": "ba5d585c-8482-4810-b2f2-6983616b81a4",
+  "masterType": "highlevel",
+  "name": "Order Submitted",
+  "type": "order_submission",
+  "actions": [
+   {
+    "workflow_id": "ba5d585c-8482-4810-b2f2-6983616b81a4",
+    "type": "add_to_workflow"
+   }
+  ],
+  "schedule_config": {},
+  "date_updated": "2026-04-20T19:19:33.354Z",
+  "conditions": [
+   {
+    "operator": "is-in-array",
+    "field": "order.line_item_global_product_ids",
+    "value": "69c459f613d5d08c39bd1f9e",
+    "title": "Global Product",
+    "type": "select"
+   }
+  ]
+ },
+ {
+  "id": "r0btsA100MKvD0vPmOmn",
+  "date_added": "2026-03-25T21:17:19.562Z",
+  "deleted": false,
+  "belongs_to": "workflow",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "origin_id": "lpYH7dkWgtynJ50YjBWs",
+  "active": false,
+  "workflow_id": "ba5d585c-8482-4810-b2f2-6983616b81a4",
+  "masterType": "highlevel",
+  "name": "Pago recibido (Stripe, GHL Store MURA)",
+  "type": "payment_received",
+  "actions": [
+   {
+    "workflow_id": "ba5d585c-8482-4810-b2f2-6983616b81a4",
+    "type": "add_to_workflow"
+   }
+  ],
+  "date_updated": "2026-04-20T19:19:41.500Z",
+  "schedule_config": {},
+  "conditions": [
+   {
+    "operator": "==",
+    "field": "payment.payment_status",
+    "value": "succeeded",
+    "title": "Payment Status",
+    "type": "select"
+   }
+  ]
+ }
+]

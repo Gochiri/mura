@@ -1,0 +1,38 @@
+[
+ {
+  "id": "YfdMpFc3NDyuYFjQ59xQ",
+  "date_added": "2026-03-25T21:17:19.544Z",
+  "date_updated": "2026-03-25T21:17:19.544Z",
+  "deleted": false,
+  "belongs_to": "workflow",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "origin_id": "U2Krvg4XfOqTcE6X7jN1",
+  "active": false,
+  "workflow_id": "1e240ed6-846d-42ad-8e34-e4eecc36f67f",
+  "masterType": "highlevel",
+  "name": "Stripe Checkout Abandoned",
+  "type": "shopify_abandoned_cart",
+  "conditions": [
+   {
+    "operator": "==",
+    "field": "duration",
+    "value": 10,
+    "title": "Duration (minutes)",
+    "type": "number"
+   }
+  ],
+  "actions": [
+   {
+    "workflow_id": "1e240ed6-846d-42ad-8e34-e4eecc36f67f",
+    "type": "add_to_workflow"
+   }
+  ],
+  "advanceCanvasMeta": {
+   "position": {
+    "x": -556.0094722815676,
+    "y": 133.0007921962103
+   }
+  },
+  "schedule_config": {}
+ }
+]

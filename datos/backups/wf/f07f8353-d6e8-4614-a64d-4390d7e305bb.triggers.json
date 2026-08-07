@@ -1,0 +1,32 @@
+[
+ {
+  "id": "rvCRmmPzkOM829JTRupd",
+  "date_added": "2026-03-25T21:17:19.601Z",
+  "date_updated": "2026-03-25T21:17:19.601Z",
+  "deleted": false,
+  "belongs_to": "workflow",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "origin_id": "6iwHd0D0sWkYl5wZFyDo",
+  "active": false,
+  "workflow_id": "f07f8353-d6e8-4614-a64d-4390d7e305bb",
+  "masterType": "highlevel",
+  "name": "Contact Inactivity for 60 Days",
+  "type": "contact_changed",
+  "conditions": [
+   {
+    "operator": "add-index-of-true",
+    "field": "contact.tags",
+    "value": "newsletter-suscrita",
+    "title": "Tags",
+    "type": "select",
+    "id": "tag"
+   }
+  ],
+  "actions": [
+   {
+    "workflow_id": "f07f8353-d6e8-4614-a64d-4390d7e305bb",
+    "type": "add_to_workflow"
+   }
+  ]
+ }
+]
