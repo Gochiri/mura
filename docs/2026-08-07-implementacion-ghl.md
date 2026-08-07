@@ -140,6 +140,14 @@ Ahora: trigger por **tag `pedido-entregado`** → GHL **mueve la oportunidad a
    **Verificar además que `contact.order_id` se rellena de verdad al confirmarse un
    pedido en la tienda** — si no, el nombre de la oportunidad saldrá vacío (probar
    con un pedido real de test).
+   ⚠️ **Límite Nacex — 20 caracteres** (llamada del 29 de julio, ver
+   `2026-07-29-llamada-sonia-henry.md`): la "referencia" que n8n pasa a Nacex admite
+   máximo 20 caracteres, y el Order ID de GHL/Stripe puede ser largo. En esa llamada
+   se acordó (sin implementar) generar un **ID secuencial interno de Mûra**
+   (`000001`, `000002`…) con un custom value + operación matemática al recibirse el
+   pago, y usarlo como nombre de oportunidad / referencia Nacex. Hay que decidir:
+   ¿`contact.order_id` (si mide ≤20 chars) o el contador interno? Si se opta por el
+   contador, cambiar `opportunity_name` en SP01 y avisar a Sonia.
 3. **Guard peso/bultos**: la condición usa el operador `!= ""` (no había ejemplo de
    "is not empty" que copiar). Revisar en el builder que la condición se muestre bien.
 4. **Multi-pedido**: mover la oportunidad por tag filtra por pipeline, no por número de
