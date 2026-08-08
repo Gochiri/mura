@@ -260,3 +260,19 @@ History en la UI de cada workflow y el status de HighLevel.
 **Datos de test pendientes de limpiar al terminar:** contacto German
 (GpHh0D2lqsdj83PFQ6AK) + M100001/M100002, contacto TestTriggers, pedido test
 6a765127, tags de test en contactos, y resetear "Contador Pedidos" a 100000.
+
+## 11. Limpieza de drafts (8/8 madrugada)
+
+Borrados 4 drafts redundantes con el flujo vivo (revisión conjunta):
+- ZZ SP02 Seguimiento Estado (arquitectura vieja por campos de contacto)
+- ZZ SP04 Gestión Devolución (formulario antiguo; cubierto por 08a/b/c)
+- AP01 Gestión Operativa (duplicaba watchdog, notificación y creaba oportunidades duplicadas)
+- SP03 Encuesta Post-Entrega (cubierto por Journey + PS01)
+
+Inventario final: **10 publicados** (flujo operativo 01→08c + Journey) y **8 drafts**
+con funcionalidad única por construir: LS01-03 (captación), AP01 Control de Stock,
+AP02 Lanzamiento Cápsula (renumerados tras el borrado), PS01 Reseña, PS02 VIP,
+SP05 Reactivación.
+
+Nota PS01 vs Journey: decidir con Sara quién pide la reseña (si PS01 se activa,
+quitar el paso de reseña del Journey para no pedirla dos veces).
