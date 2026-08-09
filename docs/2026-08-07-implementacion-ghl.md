@@ -276,3 +276,30 @@ SP05 Reactivación.
 
 Nota PS01 vs Journey: decidir con Sara quién pide la reseña (si PS01 se activa,
 quitar el paso de reseña del Journey para no pedirla dos veces).
+
+## 12. Veredicto final de triggers (9/8 mañana, cola de eventos sana)
+
+| Trigger | Veredicto | Evidencia |
+|---|---|---|
+| 02 · Etiquetado (tag) | ✅ FUNCIONA | compra-1 en 1 min (test limpio contacto nuevo) |
+| 05 · Entrega (tag) | ✅ FUNCIONA | movió M100002 a "05 Entregado" (el evento nocturno se procesó con 7,5h de retraso) |
+| Journey (tag) | ✅ probable | comparte evento con 05; primer paso wait 3d impide verificación directa |
+| 08b / 08c (tag) | ✅ FUNCIONAN | verificados la noche del 7 |
+| 03 · Email preparación (etapa) | ⚠️ PENDIENTE | NO dispara con movimientos vía API pública (probado 2 veces con cola sana). Falta probar con las vías reales de producción: movimiento de SP01 (workflow) o arrastre manual en la UI (Sara). Test sugerido: arrastrar una oportunidad de test a "03 En Preparación" desde la UI |
+
+**Conclusión de la parálisis nocturna**: era la cola de eventos de GHL degradada
+(retrasos de horas); no era configuración. Los triggers recreados en UI funcionan.
+
+**Detalle abierto**: el workflow 05 movió M100002 pero su email de entrega no
+aparece en la conversación — revisar si el paso email del 05 ejecutó (posible
+supresión de duplicado o fallo silencioso). Verificable en Enrollment History.
+
+**Aviso**: German quedó inscrito en el Journey la madrugada del 8 — le llegará el
+email "06 experiencia" ~el día 11 si no se limpia antes.
+
+**Pendiente de fix (necesita OK)**: activar re-entrada (`allowMultiple`) en los 5
+workflows creados por API (02, 03, 08b, 08c, journey) — sin ella, una clienta
+recurrente solo dispararía cada uno UNA vez en su vida. SP01 ya la tiene activa.
+
+**Datos de test acumulados por limpiar**: contactos German/TestTriggers/TestManana,
+oportunidades M100001, M100002, TEST-TRIGGER03, pedido test, contador → 100000.
