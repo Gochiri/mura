@@ -303,3 +303,40 @@ recurrente solo dispararía cada uno UNA vez en su vida. SP01 ya la tiene activa
 
 **Datos de test acumulados por limpiar**: contactos German/TestTriggers/TestManana,
 oportunidades M100001, M100002, TEST-TRIGGER03, pedido test, contador → 100000.
+
+## 13. Diagnóstico: n8n no recibía el webhook de 04a (11/8)
+
+**Estado del lado GHL: correcto.** Workflow publicado, trigger de etapa activo,
+guard bien (pipeline + etapa 04 + `peso > 0` + `bultos > 0`), y M100001 en "04
+Enviado" con peso=1 y bultos=1, así que el guard pasaba y el webhook se disparaba.
+La URL de GHL (`/webhook/6b762db0-1c38-4dc1-b1b1-409b400cd686`) coincide con el
+`path` del nodo Webhook de n8n.
+
+**Causa raíz (lado n8n):** en el JSON del flujo, el nodo **Webhook no está
+conectado a ningún nodo**. El objeto `connections` no tiene entrada `"Webhook"`:
+la cadena arranca en "Construir data Nacex" y nadie la invoca. Aunque el POST
+llegue, no ejecuta nada. → Sonia debe unir Webhook → Construir data Nacex y
+**activar** el workflow (con el flujo inactivo, la URL de producción `/webhook/`
+devuelve 404; la de pruebas es `/webhook-test/` y solo escucha con el editor
+abierto).
+
+**Bug propio corregido:** el webhook no enviaba `opportunityId`, y el nodo
+"GHL: actualizar oportunidad" hace `PUT /opportunities/{{opportunityId}}` — habría
+fallado con URL vacía incluso tras conectar el webhook. Añadido a `customData`
+(el código de n8n ya lo lee vía `b.opportunityId`). Claves que se envían ahora:
+`opportunityId`, `contactId`, `nombre`, `direccion`, `cp`, `poblacion`, `pais`,
+`telefono`, `email`, `peso`, `bultos`, `numero_pedido`.
+
+**Verificado además:** los 3 IDs de campos de contacto que usa n8n existen y son
+los correctos (`py7TEhnvdIt7XjDtWjg5` url seguimiento, `CAN1vUcUenmvw2J0iQIJ`
+albaran nacex, `uFzLRUfvECe9q7Z47kwT` url etiqueta), igual que los 3 de
+oportunidad. Los tags que añade (`etiqueta-por-imprimir`, `email-04-listo`)
+existen, y `email-04-listo` dispara el workflow 04b.
+
+**A revisar en la prueba conjunta:** (a) el nodo de actualizar contacto usa
+`{id, value}` y el de oportunidad `{id, field_value}` — comprobar que ambos
+escriben de verdad; (b) `referencia` de Nacex = `numero_pedido` (M1xxxxx, 7
+caracteres ≤ 20 ✓); (c) los datos de recogida del código (Calle Arrayan 53, Lepe,
+tel 637251657, equipomura@gmail.com) no coinciden con el domicilio fiscal de los
+documentos legales (Calle Huerta Romana 1, Minas de Riotinto) — confirmar con Sara
+cuál es la dirección real de recogida.
