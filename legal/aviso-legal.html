@@ -550,6 +550,11 @@
     transition: none;
   }
 }
+
+/* El anexo cierra el documento sin numero: se suprime el contador solo ahi. */
+.mura-legal-anexo h2::before {
+  content: none;
+}
 </style>
 
 <div class="mura-legal">
