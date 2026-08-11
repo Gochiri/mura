@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="es">
+<!--
+  ============================================================
+  MÛRA · AVISO LEGAL
+  ============================================================
+  COMO SE USA EN GOHIGHLEVEL
+  1. Abre este archivo en el navegador y leelo entero.
+  2. Copia SOLO lo que hay entre las dos marcas de COPIAR.
+  3. Pegalo en un elemento de codigo personalizado de GHL.
+  El envoltorio <html>/<head>/<body> NO se copia: la pagina de
+  GHL ya tiene el suyo y anidarlos rompe el renderizado.
+
+  DOCUMENTO: Aviso Legal
+  URL PREVISTA: /aviso-legal
+  ============================================================
+-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aviso Legal · MÛRA</title>
+</head>
+<body style="margin:0; background-color:#F6F2EB;">
+
+<!-- ============================================================ -->
+<!--    COPIAR DESDE AQUÍ PARA GHL                              -->
+<!-- ============================================================ -->
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+/* Todo va prefijado con .mura-legal- para no chocar con el CSS del tema de GHL. */
+
+.mura-legal,
+.mura-legal *,
+.mura-legal *::before,
+.mura-legal *::after {
+  box-sizing: border-box;
+}
+
+.mura-legal {
+  /* Full-bleed sin desplazar el contenido: el fondo se pinta más allá del contenedor */
+  width: 100%;
+  box-shadow: 0 0 0 100vmax #F6F2EB;
+  clip-path: inset(0 -100vmax);
+  background-color: #F6F2EB;
+  color: #1E1B1A;
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.9;
+  margin: 0;
+  padding: 0 32px 96px 32px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Blindaje: GHL inyecta su propia tipografia en los descendientes. */
+.mura-legal h1,
+.mura-legal h2,
+.mura-legal h3,
+.mura-legal p,
+.mura-legal a,
+.mura-legal li,
+.mura-legal ol,
+.mura-legal ul,
+.mura-legal span,
+.mura-legal div,
+.mura-legal strong,
+.mura-legal em,
+.mura-legal dt,
+.mura-legal dd,
+.mura-legal th,
+.mura-legal td {
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+}
+
+.mura-legal a {
+  color: #1E1B1A;
+  text-decoration: none;
+  border-bottom: 1px solid #D9D1C5;
+  transition: border-color 240ms ease, color 240ms ease;
+}
+
+.mura-legal a:hover {
+  border-bottom-color: #1E1B1A;
+}
+
+.mura-legal a:focus-visible {
+  outline: 1px solid #1E1B1A;
+  outline-offset: 3px;
+}
+
+/* ---------- Cabecera ---------- */
+
+.mura-legal-cabecera {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 56px 0 0 0;
+  text-align: center;
+}
+
+.mura-legal-marca {
+  display: inline-block;
+  font-size: 21px;
+  font-weight: 400;
+  letter-spacing: 8px;
+  color: #1E1B1A;
+  border-bottom: 0;
+  padding-left: 8px;
+}
+
+.mura-legal-marca:hover {
+  border-bottom: 0;
+}
+
+.mura-legal-lema {
+  display: block;
+  font-size: 11px;
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: #8A7E71;
+  padding-top: 10px;
+}
+
+/* ---------- Titular ---------- */
+
+.mura-legal-titular {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 96px 0 72px 0;
+  border-bottom: 1px solid #D9D1C5;
+}
+
+.mura-legal-kicker {
+  margin: 0 0 22px 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #8A7E71;
+}
+
+.mura-legal-h1 {
+  margin: 0;
+  font-size: 46px;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+  color: #1E1B1A;
+}
+
+.mura-legal-fecha {
+  margin: 28px 0 0 0;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 300;
+  color: #8A7E71;
+}
+
+/* ---------- Cuerpo: indice + texto ---------- */
+
+.mura-legal-cuerpo {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 72px;
+  padding-top: 72px;
+}
+
+.mura-legal-indice {
+  position: sticky;
+  top: 48px;
+  flex: 0 0 200px;
+  width: 200px;
+}
+
+.mura-legal-indice-tit {
+  margin: 0 0 20px 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #8A7E71;
+}
+
+.mura-legal-indice ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: mura-idx;
+}
+
+.mura-legal-indice li {
+  counter-increment: mura-idx;
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.mura-legal-indice li a {
+  color: #8A7E71;
+  border-bottom: 0;
+}
+
+.mura-legal-indice li a::before {
+  content: counter(mura-idx, decimal-leading-zero);
+  color: #B5ADA2;
+  padding-right: 10px;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.mura-legal-indice li a:hover {
+  color: #1E1B1A;
+  border-bottom: 0;
+}
+
+.mura-legal-texto {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 640px;
+  counter-reset: mura-sec;
+}
+
+/* ---------- Secciones ---------- */
+
+.mura-legal-seccion {
+  counter-increment: mura-sec;
+  padding: 0 0 64px 0;
+  scroll-margin-top: 40px;
+}
+
+.mura-legal-seccion + .mura-legal-seccion {
+  border-top: 1px solid #D9D1C5;
+  padding-top: 64px;
+}
+
+.mura-legal-seccion h2 {
+  margin: 0 0 26px 0;
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.3px;
+  color: #1E1B1A;
+}
+
+.mura-legal-seccion h2::before {
+  content: counter(mura-sec, decimal-leading-zero);
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  color: #8A7E71;
+  padding-bottom: 14px;
+}
+
+.mura-legal-seccion h3 {
+  margin: 38px 0 16px 0;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: #1E1B1A;
+}
+
+.mura-legal-seccion p {
+  margin: 0 0 18px 0;
+}
+
+.mura-legal-seccion p:last-child {
+  margin-bottom: 0;
+}
+
+.mura-legal-seccion ul,
+.mura-legal-seccion ol {
+  margin: 0 0 18px 0;
+  padding-left: 22px;
+}
+
+.mura-legal-seccion li {
+  margin-bottom: 10px;
+  padding-left: 6px;
+}
+
+.mura-legal-seccion li::marker {
+  color: #B5ADA2;
+}
+
+.mura-legal-seccion strong {
+  font-weight: 500;
+}
+
+/* ---------- Bloque destacado ----------
+   Para lo que la clienta debe leer si o si: plazos, derechos,
+   lo que la garantia NO cubre. Mismo gesto que el bloque de
+   informacion automatica de los emails. */
+
+.mura-legal-nota {
+  background-color: #D9D1C5;
+  padding: 28px 32px;
+  margin: 0 0 18px 0;
+}
+
+.mura-legal-nota p {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+}
+
+.mura-legal-nota p:last-child {
+  margin-bottom: 0;
+}
+
+.mura-legal-nota-tit {
+  font-size: 10px !important;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #1E1B1A;
+  margin-bottom: 14px !important;
+}
+
+/* ---------- Tabla ----------
+   Para la relacion de cookies y para los plazos de envio. */
+
+.mura-legal-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 18px 0;
+  font-size: 15px;
+}
+
+.mura-legal-tabla th,
+.mura-legal-tabla td {
+  text-align: left;
+  vertical-align: top;
+  padding: 14px 16px 14px 0;
+  border-bottom: 1px solid #D9D1C5;
+  line-height: 1.6;
+}
+
+.mura-legal-tabla th {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #8A7E71;
+  border-bottom-color: #1E1B1A;
+  white-space: nowrap;
+}
+
+.mura-legal-tabla-marco {
+  overflow-x: auto;
+  margin: 0 0 18px 0;
+}
+
+/* ---------- Cierre y pie ----------
+   Firma a la izquierda, datos de contacto a la derecha.
+   La linea de enlaces cruza entera por debajo. */
+
+.mura-legal-cierre {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 0 0 0;
+  border-top: 1px solid #D9D1C5;
+}
+
+.mura-legal-cierre-fila {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.mura-legal-firma {
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: 7px;
+  color: #1E1B1A;
+}
+
+.mura-legal-firma-lema {
+  font-size: 11px;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 2px;
+  color: #8A7E71;
+  padding-top: 8px;
+}
+
+/* Ninguna de las dos columnas encoge: el interletrado de MÛRA y el
+   correo son intocables, y a 900 px se romperian si se dejasen. */
+.mura-legal-marca-cierre {
+  flex: 0 0 auto;
+}
+
+.mura-legal-datos {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.mura-legal-datos p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 2;
+  color: #8A7E71;
+}
+
+.mura-legal-cierre a {
+  color: #8A7E71;
+  border-bottom: 0;
+}
+
+.mura-legal-cierre a:hover {
+  color: #1E1B1A;
+  border-bottom: 0;
+}
+
+.mura-legal-enlaces {
+  margin: 40px 0 0 0;
+  font-size: 11px;
+  line-height: 2;
+  color: #8A7E71;
+}
+
+.mura-legal-cierre .mura-legal-enlaces a {
+  border-bottom: 1px solid #D9D1C5;
+}
+
+.mura-legal-cierre .mura-legal-enlaces a:hover {
+  border-bottom: 1px solid #1E1B1A;
+}
+
+.mura-legal-sep {
+  color: #B5ADA2;
+  padding: 0 8px;
+}
+
+/* ---------- Movil ---------- */
+
+@media screen and (max-width: 860px) {
+  .mura-legal {
+    padding: 0 24px 72px 24px;
+    font-size: 16px;
+  }
+
+  .mura-legal-titular {
+    padding: 64px 0 48px 0;
+  }
+
+  .mura-legal-h1 {
+    font-size: 34px;
+  }
+
+  .mura-legal-cuerpo {
+    display: block;
+    padding-top: 48px;
+  }
+
+  .mura-legal-indice {
+    position: static;
+    width: auto;
+    padding-bottom: 48px;
+    margin-bottom: 48px;
+    border-bottom: 1px solid #D9D1C5;
+  }
+
+  .mura-legal-texto {
+    max-width: none;
+  }
+
+  .mura-legal-seccion h2 {
+    font-size: 22px;
+  }
+
+  .mura-legal-nota {
+    padding: 24px;
+  }
+
+  /* El cierre se apila: la firma arriba, los datos debajo.
+     Todo alineado a la izquierda; centrarlo aqui volveria a
+     deshacer el gesto. */
+  .mura-legal-cierre-fila {
+    display: block;
+  }
+
+  .mura-legal-datos {
+    text-align: left;
+    padding-top: 36px;
+  }
+
+  .mura-legal-enlaces {
+    margin-top: 36px;
+  }
+}
+
+/* ---------- Impresion ----------
+   Estos documentos se guardan y se imprimen: es la prueba de
+   que estaban publicados el dia de la compra. Que salgan bien. */
+
+@media print {
+  .mura-legal {
+    padding: 0;
+    font-size: 11pt;
+    line-height: 1.6;
+    background-color: #F8F6F2;
+  }
+
+  .mura-legal-indice {
+    display: none;
+  }
+
+  .mura-legal-cuerpo {
+    display: block;
+    padding-top: 24px;
+  }
+
+  .mura-legal-texto {
+    max-width: none;
+  }
+
+  .mura-legal-seccion {
+    page-break-inside: avoid;
+    padding-bottom: 28px;
+  }
+
+  .mura-legal-seccion + .mura-legal-seccion {
+    padding-top: 28px;
+  }
+
+  .mura-legal-h1 {
+    font-size: 24pt;
+  }
+
+  .mura-legal a {
+    border-bottom: 0;
+  }
+}
+
+/* ---------- Accesibilidad ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .mura-legal {
+    scroll-behavior: auto;
+  }
+
+  .mura-legal a {
+    transition: none;
+  }
+}
+</style>
+
+<div class="mura-legal">
+
+  <!-- CABECERA — tipografica, nunca imagen. Identica en los cuatro documentos. -->
+  <header class="mura-legal-cabecera">
+    <a class="mura-legal-marca" href="https://www.stylebymura.com/">MÛRA</a>
+    <span class="mura-legal-lema">Vestir con intención</span>
+  </header>
+
+  <!-- TITULAR -->
+  <div class="mura-legal-titular">
+    <p class="mura-legal-kicker">Información legal</p>
+    <h1 class="mura-legal-h1">Aviso Legal</h1>
+    <p class="mura-legal-fecha">Última actualización · 9 de agosto de 2026</p>
+  </div>
+
+  <div class="mura-legal-cuerpo">
+
+    <!-- INDICE — un <li> por seccion, en el mismo orden que las secciones. -->
+    <nav class="mura-legal-indice" aria-label="Índice del documento">
+      <p class="mura-legal-indice-tit">Contenido</p>
+      <ol>
+        <li><a href="#titular">Titular del sitio web</a></li>
+        <li><a href="#objeto">Objeto y ámbito</a></li>
+        <li><a href="#uso">Condiciones de uso</a></li>
+        <li><a href="#propiedad">Propiedad intelectual e industrial</a></li>
+        <li><a href="#imagen">Derechos de imagen</a></li>
+        <li><a href="#responsabilidad">Responsabilidad y disponibilidad</a></li>
+        <li><a href="#datos">Protección de datos</a></li>
+        <li><a href="#reclamaciones">Reclamaciones y resolución de conflictos</a></li>
+        <li><a href="#legislacion">Legislación aplicable</a></li>
+      </ol>
+    </nav>
+
+    <!-- TEXTO -->
+    <main class="mura-legal-texto">
+
+      <section class="mura-legal-seccion" id="titular">
+        <h2>Titular del sitio web</h2>
+        <p>
+          <strong>Sara Domínguez Fernández</strong><br />
+          NIF: 49546983S<br />
+          Domicilio fiscal: Calle Huerta Romana 1, 21660 Minas de Riotinto, Huelva<br />
+          Correo electrónico: <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a><br />
+          Teléfono: <a href="tel:+34637681234">637 681 234</a>
+        </p>
+        <p>En cumplimiento del artículo 10 de la Ley 34/2002, de Servicios de la Sociedad de la Información y de Comercio Electrónico, se ponen a disposición de las personas usuarias los datos de identificación anteriores.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="objeto">
+        <h2>Objeto y ámbito</h2>
+        <p>Este Aviso Legal regula el acceso y el uso de <a href="https://www.stylebymura.com/">www.stylebymura.com</a>, el sitio a través del cual MÛRA presenta sus colecciones y su actividad. El acceso al sitio atribuye la condición de persona usuaria y supone la aceptación de las condiciones aquí recogidas, sin perjuicio de las que se indiquen en otras páginas del sitio.</p>
+        <p>Las condiciones propias de la compra —precio, formas de pago, envío, desistimiento y garantía— se regulan en las <a href="https://www.stylebymura.com/condiciones-contratacion">Condiciones de Contratación</a>, que prevalecen sobre este documento en todo lo relativo a la venta.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="uso">
+        <h2>Condiciones de uso</h2>
+        <p>La persona usuaria se compromete a hacer un uso lícito y diligente del sitio, conforme a la ley, a la buena fe y al orden público, y a no emplearlo con fines fraudulentos o lesivos de derechos de terceros.</p>
+        <p>Queda prohibido introducir o difundir contenidos contrarios a la ley, interferir en el funcionamiento del sitio o intentar acceder a áreas o sistemas no destinados al público.</p>
+        <p>MÛRA no se encuentra adherida a ningún código de conducta ni sello de confianza en línea al que la persona usuaria pueda acudir en relación con el uso del sitio.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="propiedad">
+        <h2>Propiedad intelectual e industrial</h2>
+        <p>El sitio en su conjunto, y en particular los diseños, los patrones, las fotografías y los textos, están protegidos por derechos de propiedad intelectual cuya titularidad corresponde a la persona titular identificada en el apartado 01. Cada colección se produce en edición limitada: la visita al sitio no concede a la persona usuaria licencia alguna sobre estos elementos.</p>
+        <p>El nombre y el signo MÛRA no se amparan en la propiedad intelectual, sino en la normativa de marcas y demás signos distintivos. La persona titular ostenta los derechos que sobre ellos le corresponden, sin que su presencia en el sitio autorice a terceros a emplearlos.</p>
+        <p>Queda prohibida la reproducción, la distribución, la comunicación pública o la transformación de cualquiera de los elementos anteriores, así como el uso del nombre o el signo MÛRA, sin autorización previa y por escrito de su titular.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="imagen">
+        <h2>Derechos de imagen</h2>
+        <p>MÛRA publica en el sitio web y en sus perfiles de redes sociales imágenes en las que pueden aparecer clientas identificables. Solo se difunden imágenes de esta naturaleza cuando la persona que aparece en ellas ha otorgado su consentimiento previo y expreso, recabado caso por caso para cada imagen.</p>
+        <p>Que una clienta mencione o etiquete a MÛRA en sus propias publicaciones no autoriza por sí solo a reproducirlas. Para compartir en sus canales una imagen publicada por una clienta, MÛRA recaba igualmente el consentimiento de la persona que aparece en ella.</p>
+        <p>Este consentimiento es voluntario y puede revocarse en cualquier momento, sin necesidad de justificación, escribiendo a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a>. Atendida la solicitud, MÛRA dejará de utilizar la imagen en los canales que estén bajo su control.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="responsabilidad">
+        <h2>Responsabilidad y disponibilidad</h2>
+        <p>MÛRA no garantiza la disponibilidad ininterrumpida del sitio ni la ausencia de errores, y actuará con la diligencia debida para restablecer el servicio ante cualquier incidencia.</p>
+        <p>El sitio puede enlazar a páginas de terceros. MÛRA no asume responsabilidad por el contenido ni por las políticas de esos sitios, ajenos a su control.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="datos">
+        <h2>Protección de datos</h2>
+        <p>El tratamiento de los datos personales facilitados a través del sitio se rige por la <a href="https://www.stylebymura.com/politica-privacidad">Política de Privacidad</a>. Allí se detallan las finalidades, la base jurídica, los plazos de conservación y los derechos de las personas usuarias.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="reclamaciones">
+        <h2>Reclamaciones y resolución de conflictos</h2>
+        <p>Toda queja o reclamación puede dirigirse a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a> o al teléfono <a href="tel:+34637681234">637 681 234</a>. Las que se refieran a una compra se tramitan conforme al apartado 15 de las <a href="https://www.stylebymura.com/condiciones-contratacion">Condiciones de Contratación</a>, y las vías extrajudiciales disponibles para resolverlas se detallan en su apartado 16. Con independencia de ello, quien lo desee puede dirigirse en cualquier momento a los organismos de consumo competentes en su lugar de residencia.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="legislacion">
+        <h2>Legislación aplicable</h2>
+        <p>Este Aviso Legal se rige por la legislación española. Cualquier controversia derivada del acceso o del uso del sitio se somete a los juzgados y tribunales que resulten competentes conforme a la normativa de protección de personas consumidoras.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- CIERRE — firma tipografica a la izquierda, contacto a la derecha.
+       Identico en los cuatro documentos. Sin "Cancelar suscripcion":
+       eso es cosa de los emails, aqui no pinta nada. -->
+  <footer class="mura-legal-cierre">
+
+    <div class="mura-legal-cierre-fila">
+      <div class="mura-legal-marca-cierre">
+        <div class="mura-legal-firma">MÛRA</div>
+        <div class="mura-legal-firma-lema">Vestir con intención</div>
+      </div>
+      <div class="mura-legal-datos">
+        <p>
+          <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a><br />
+          <a href="tel:+34637681234">Tel. 637 681 234</a><br />
+          <a href="https://www.stylebymura.com/">www.stylebymura.com</a>
+        </p>
+      </div>
+    </div>
+
+    <p class="mura-legal-enlaces">
+      <a href="https://www.instagram.com/bymurastudio/">Instagram</a>
+      <span class="mura-legal-sep">·</span>
+      <a href="https://www.stylebymura.com/politica-privacidad">Política de Privacidad</a>
+      <span class="mura-legal-sep">·</span>
+      <a href="https://www.stylebymura.com/politica-cookies">Política de Cookies</a>
+      <span class="mura-legal-sep">·</span>
+      <a href="https://www.stylebymura.com/condiciones-contratacion">Condiciones de Contratación</a>
+    </p>
+
+  </footer>
+
+</div>
+
+<!-- ============================================================ -->
+<!--    HASTA AQUÍ                                              -->
+<!-- ============================================================ -->
+
+</body>
+</html>
