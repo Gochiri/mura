@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+<!--
+  ============================================================
+  MÛRA · POLÍTICA DE PRIVACIDAD
+  ============================================================
+  COMO SE USA EN GOHIGHLEVEL
+  1. Abre este archivo en el navegador y leelo entero.
+  2. Copia SOLO lo que hay entre las dos marcas de COPIAR.
+  3. Pegalo en un elemento de codigo personalizado de GHL.
+  El envoltorio <html>/<head>/<body> NO se copia: la pagina de
+  GHL ya tiene el suyo y anidarlos rompe el renderizado.
+
+  DOCUMENTO: Política de Privacidad
+  URL PREVISTA: /politica-privacidad
+  ============================================================
+-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Política de Privacidad · MÛRA</title>
+</head>
+<body style="margin:0; background-color:#F6F2EB;">
+
+<!-- ============================================================ -->
+<!--    COPIAR DESDE AQUÍ PARA GHL                              -->
+<!-- ============================================================ -->
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+/* Todo va prefijado con .mura-legal- para no chocar con el CSS del tema de GHL. */
+
+.mura-legal,
+.mura-legal *,
+.mura-legal *::before,
+.mura-legal *::after {
+  box-sizing: border-box;
+}
+
+.mura-legal {
+  /* Full-bleed sin desplazar el contenido: el fondo se pinta más allá del contenedor */
+  width: 100%;
+  box-shadow: 0 0 0 100vmax #F6F2EB;
+  clip-path: inset(0 -100vmax);
+  background-color: #F6F2EB;
+  color: #1E1B1A;
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.9;
+  margin: 0;
+  padding: 0 32px 96px 32px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Blindaje: GHL inyecta su propia tipografia en los descendientes. */
+.mura-legal h1,
+.mura-legal h2,
+.mura-legal h3,
+.mura-legal p,
+.mura-legal a,
+.mura-legal li,
+.mura-legal ol,
+.mura-legal ul,
+.mura-legal span,
+.mura-legal div,
+.mura-legal strong,
+.mura-legal em,
+.mura-legal dt,
+.mura-legal dd,
+.mura-legal th,
+.mura-legal td {
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+}
+
+.mura-legal a {
+  color: #1E1B1A;
+  text-decoration: none;
+  border-bottom: 1px solid #D9D1C5;
+  transition: border-color 240ms ease, color 240ms ease;
+}
+
+.mura-legal a:hover {
+  border-bottom-color: #1E1B1A;
+}
+
+.mura-legal a:focus-visible {
+  outline: 1px solid #1E1B1A;
+  outline-offset: 3px;
+}
+
+/* ---------- Cabecera ---------- */
+
+.mura-legal-cabecera {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 56px 0 0 0;
+  text-align: center;
+}
+
+.mura-legal-marca {
+  display: inline-block;
+  font-size: 21px;
+  font-weight: 400;
+  letter-spacing: 8px;
+  color: #1E1B1A;
+  border-bottom: 0;
+  padding-left: 8px;
+}
+
+.mura-legal-marca:hover {
+  border-bottom: 0;
+}
+
+.mura-legal-lema {
+  display: block;
+  font-size: 11px;
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: #8A7E71;
+  padding-top: 10px;
+}
+
+/* ---------- Titular ---------- */
+
+.mura-legal-titular {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 96px 0 72px 0;
+  border-bottom: 1px solid #D9D1C5;
+}
+
+.mura-legal-kicker {
+  margin: 0 0 22px 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #8A7E71;
+}
+
+.mura-legal-h1 {
+  margin: 0;
+  font-size: 46px;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+  color: #1E1B1A;
+}
+
+.mura-legal-fecha {
+  margin: 28px 0 0 0;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 300;
+  color: #8A7E71;
+}
+
+/* ---------- Cuerpo: indice + texto ---------- */
+
+.mura-legal-cuerpo {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 72px;
+  padding-top: 72px;
+}
+
+.mura-legal-indice {
+  position: sticky;
+  top: 48px;
+  flex: 0 0 200px;
+  width: 200px;
+}
+
+.mura-legal-indice-tit {
+  margin: 0 0 20px 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #8A7E71;
+}
+
+.mura-legal-indice ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: mura-idx;
+}
+
+.mura-legal-indice li {
+  counter-increment: mura-idx;
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.mura-legal-indice li a {
+  color: #8A7E71;
+  border-bottom: 0;
+}
+
+.mura-legal-indice li a::before {
+  content: counter(mura-idx, decimal-leading-zero);
+  color: #B5ADA2;
+  padding-right: 10px;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.mura-legal-indice li a:hover {
+  color: #1E1B1A;
+  border-bottom: 0;
+}
+
+.mura-legal-texto {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 640px;
+  counter-reset: mura-sec;
+}
+
+/* ---------- Secciones ---------- */
+
+.mura-legal-seccion {
+  counter-increment: mura-sec;
+  padding: 0 0 64px 0;
+  scroll-margin-top: 40px;
+}
+
+.mura-legal-seccion + .mura-legal-seccion {
+  border-top: 1px solid #D9D1C5;
+  padding-top: 64px;
+}
+
+.mura-legal-seccion h2 {
+  margin: 0 0 26px 0;
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.3px;
+  color: #1E1B1A;
+}
+
+.mura-legal-seccion h2::before {
+  content: counter(mura-sec, decimal-leading-zero);
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  color: #8A7E71;
+  padding-bottom: 14px;
+}
+
+.mura-legal-seccion h3 {
+  margin: 38px 0 16px 0;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: #1E1B1A;
+}
+
+.mura-legal-seccion p {
+  margin: 0 0 18px 0;
+}
+
+.mura-legal-seccion p:last-child {
+  margin-bottom: 0;
+}
+
+.mura-legal-seccion ul,
+.mura-legal-seccion ol {
+  margin: 0 0 18px 0;
+  padding-left: 22px;
+}
+
+.mura-legal-seccion li {
+  margin-bottom: 10px;
+  padding-left: 6px;
+}
+
+.mura-legal-seccion li::marker {
+  color: #B5ADA2;
+}
+
+.mura-legal-seccion strong {
+  font-weight: 500;
+}
+
+/* ---------- Bloque destacado ----------
+   Para lo que la clienta debe leer si o si: plazos, derechos,
+   lo que la garantia NO cubre. Mismo gesto que el bloque de
+   informacion automatica de los emails. */
+
+.mura-legal-nota {
+  background-color: #D9D1C5;
+  padding: 28px 32px;
+  margin: 0 0 18px 0;
+}
+
+.mura-legal-nota p {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+}
+
+.mura-legal-nota p:last-child {
+  margin-bottom: 0;
+}
+
+.mura-legal-nota-tit {
+  font-size: 10px !important;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #1E1B1A;
+  margin-bottom: 14px !important;
+}
+
+/* ---------- Tabla ----------
+   Para la relacion de cookies y para los plazos de envio. */
+
+.mura-legal-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 18px 0;
+  font-size: 15px;
+}
+
+.mura-legal-tabla th,
+.mura-legal-tabla td {
+  text-align: left;
+  vertical-align: top;
+  padding: 14px 16px 14px 0;
+  border-bottom: 1px solid #D9D1C5;
+  line-height: 1.6;
+}
+
+.mura-legal-tabla th {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #8A7E71;
+  border-bottom-color: #1E1B1A;
+  white-space: nowrap;
+}
+
+.mura-legal-tabla-marco {
+  overflow-x: auto;
+  margin: 0 0 18px 0;
+}
+
+/* ---------- Cierre y pie ----------
+   Firma a la izquierda, datos de contacto a la derecha.
+   La linea de enlaces cruza entera por debajo. */
+
+.mura-legal-cierre {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 0 0 0;
+  border-top: 1px solid #D9D1C5;
+}
+
+.mura-legal-cierre-fila {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.mura-legal-firma {
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: 7px;
+  color: #1E1B1A;
+}
+
+.mura-legal-firma-lema {
+  font-size: 11px;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 2px;
+  color: #8A7E71;
+  padding-top: 8px;
+}
+
+/* Ninguna de las dos columnas encoge: el interletrado de MÛRA y el
+   correo son intocables, y a 900 px se romperian si se dejasen. */
+.mura-legal-marca-cierre {
+  flex: 0 0 auto;
+}
+
+.mura-legal-datos {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.mura-legal-datos p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 2;
+  color: #8A7E71;
+}
+
+.mura-legal-cierre a {
+  color: #8A7E71;
+  border-bottom: 0;
+}
+
+.mura-legal-cierre a:hover {
+  color: #1E1B1A;
+  border-bottom: 0;
+}
+
+.mura-legal-enlaces {
+  margin: 40px 0 0 0;
+  font-size: 11px;
+  line-height: 2;
+  color: #8A7E71;
+}
+
+.mura-legal-cierre .mura-legal-enlaces a {
+  border-bottom: 1px solid #D9D1C5;
+}
+
+.mura-legal-cierre .mura-legal-enlaces a:hover {
+  border-bottom: 1px solid #1E1B1A;
+}
+
+.mura-legal-sep {
+  color: #B5ADA2;
+  padding: 0 8px;
+}
+
+/* ---------- Movil ---------- */
+
+@media screen and (max-width: 860px) {
+  .mura-legal {
+    padding: 0 24px 72px 24px;
+    font-size: 16px;
+  }
+
+  .mura-legal-titular {
+    padding: 64px 0 48px 0;
+  }
+
+  .mura-legal-h1 {
+    font-size: 34px;
+  }
+
+  .mura-legal-cuerpo {
+    display: block;
+    padding-top: 48px;
+  }
+
+  .mura-legal-indice {
+    position: static;
+    width: auto;
+    padding-bottom: 48px;
+    margin-bottom: 48px;
+    border-bottom: 1px solid #D9D1C5;
+  }
+
+  .mura-legal-texto {
+    max-width: none;
+  }
+
+  .mura-legal-seccion h2 {
+    font-size: 22px;
+  }
+
+  .mura-legal-nota {
+    padding: 24px;
+  }
+
+  /* El cierre se apila: la firma arriba, los datos debajo.
+     Todo alineado a la izquierda; centrarlo aqui volveria a
+     deshacer el gesto. */
+  .mura-legal-cierre-fila {
+    display: block;
+  }
+
+  .mura-legal-datos {
+    text-align: left;
+    padding-top: 36px;
+  }
+
+  .mura-legal-enlaces {
+    margin-top: 36px;
+  }
+}
+
+/* ---------- Impresion ----------
+   Estos documentos se guardan y se imprimen: es la prueba de
+   que estaban publicados el dia de la compra. Que salgan bien. */
+
+@media print {
+  .mura-legal {
+    padding: 0;
+    font-size: 11pt;
+    line-height: 1.6;
+    background-color: #F8F6F2;
+  }
+
+  .mura-legal-indice {
+    display: none;
+  }
+
+  .mura-legal-cuerpo {
+    display: block;
+    padding-top: 24px;
+  }
+
+  .mura-legal-texto {
+    max-width: none;
+  }
+
+  .mura-legal-seccion {
+    page-break-inside: avoid;
+    padding-bottom: 28px;
+  }
+
+  .mura-legal-seccion + .mura-legal-seccion {
+    padding-top: 28px;
+  }
+
+  .mura-legal-h1 {
+    font-size: 24pt;
+  }
+
+  .mura-legal a {
+    border-bottom: 0;
+  }
+}
+
+/* ---------- Accesibilidad ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .mura-legal {
+    scroll-behavior: auto;
+  }
+
+  .mura-legal a {
+    transition: none;
+  }
+}
+
+/* El anexo cierra el documento sin numero: se suprime el contador solo ahi. */
+.mura-legal-seccion.mura-legal-anexo h2::before {
+  content: none;
+}
+</style>
+
+<div class="mura-legal">
+
+  <!-- CABECERA — tipografica, nunca imagen. Identica en los cuatro documentos. -->
+  <header class="mura-legal-cabecera">
+    <a class="mura-legal-marca" href="https://www.stylebymura.com/">MÛRA</a>
+    <span class="mura-legal-lema">Vestir con intención</span>
+  </header>
+
+  <!-- TITULAR -->
+  <div class="mura-legal-titular">
+    <p class="mura-legal-kicker">Información legal</p>
+    <h1 class="mura-legal-h1">Política de Privacidad</h1>
+    <p class="mura-legal-fecha">Última actualización · 9 de agosto de 2026</p>
+  </div>
+
+  <div class="mura-legal-cuerpo">
+
+    <!-- INDICE — un <li> por seccion, en el mismo orden que las secciones. -->
+    <nav class="mura-legal-indice" aria-label="Índice del documento">
+      <p class="mura-legal-indice-tit">Contenido</p>
+      <ol>
+        <li><a href="#responsable">Responsable del tratamiento</a></li>
+        <li><a href="#que-datos">Qué datos se tratan y de dónde proceden</a></li>
+        <li><a href="#finalidades">Finalidades y bases jurídicas</a></li>
+        <li><a href="#conservacion">Plazos de conservación</a></li>
+        <li><a href="#destinatarios">Destinatarios</a></li>
+        <li><a href="#transferencias">Transferencias internacionales</a></li>
+        <li><a href="#derechos">Derechos</a></li>
+        <li><a href="#seguridad">Seguridad</a></li>
+        <li><a href="#menores">Menores de edad</a></li>
+        <li><a href="#cambios">Cambios en la política</a></li>
+      </ol>
+    </nav>
+
+    <!-- TEXTO -->
+    <main class="mura-legal-texto">
+
+      <section class="mura-legal-seccion" id="responsable">
+        <h2>Responsable del tratamiento</h2>
+        <p>
+          <strong>Sara Domínguez Fernández</strong><br />
+          NIF: 49546983S<br />
+          Domicilio fiscal: Calle Huerta Romana 1, 21660 Minas de Riotinto, Huelva<br />
+          Correo electrónico: <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a><br />
+          Teléfono: <a href="tel:+34637681234">637 681 234</a>
+        </p>
+        <p>MÛRA es una marca de moda de ediciones limitadas cuya titular, persona física, decide por sí sola las finalidades y los medios de los tratamientos descritos en este documento. Para cualquier cuestión relativa a la privacidad, incluido el ejercicio de los derechos del apartado 07, basta con escribir a la dirección de correo anterior.</p>
+        <p>Esta Política de Privacidad explica qué datos personales se tratan, con qué finalidad, sobre qué base jurídica, durante cuánto tiempo, quién más accede a ellos y qué derechos asisten a las personas cuyos datos se tratan.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="que-datos">
+        <h2>Qué datos se tratan y de dónde proceden</h2>
+        <p>Todos los datos personales que trata MÛRA proceden de la propia persona interesada: los facilita al comprar, al suscribirse a la newsletter, al escribir al correo de contacto o al navegar por el sitio. No se obtienen datos de terceros ni de fuentes de acceso público. MÛRA se obliga a que cada formulario en el que se recogen —compra, newsletter, contacto y chat— incluya una información básica de protección de datos con enlace a esta política, de modo que quien los facilita sepa quién los trata y con qué fin antes de hacerlo.</p>
+        <p>Según la relación que se mantenga con MÛRA, se tratan estas categorías:</p>
+        <ul>
+          <li><strong>Identificación y contacto</strong> — nombre, apellidos, correo electrónico y teléfono.</li>
+          <li><strong>Entrega</strong> — dirección postal completa y las indicaciones que se añadan para el reparto.</li>
+          <li><strong>Pedido</strong> — prendas, talla, importe, fecha, estado del envío y, en su caso, la devolución o el cambio.</li>
+          <li><strong>Facturación y pago</strong> — datos fiscales e identificación de la operación. MÛRA se obliga a que los datos de la tarjeta se introduzcan en el entorno de Stripe y no en un formulario propio, de modo que de la operación solo reciba la confirmación del cobro y una referencia, sin llegar a ver ni a almacenar el número completo de la tarjeta.</li>
+          <li><strong>Comunicaciones</strong> — el contenido de los mensajes de atención al cliente y el histórico de los correos enviados.</li>
+          <li><strong>Navegación</strong> — dirección IP, tipo de dispositivo y páginas visitadas, en los términos de la <a href="https://www.stylebymura.com/politica-cookies">Política de Cookies</a>.</li>
+        </ul>
+        <p>No se tratan categorías especiales de datos —los del artículo 9 del RGPD— y no procede facilitarlos en ningún momento. Los campos señalados como obligatorios en cada formulario son los imprescindibles para su finalidad: sin ellos no es posible tramitar el pedido ni atender la consulta.</p>
+        <p>No se adoptan decisiones automatizadas que produzcan efectos jurídicos sobre las personas interesadas ni que las afecten significativamente de modo similar. Sí se elabora un perfil, y conviene nombrarlo: el de la quinta fila del apartado 03. Para dirigir los correos comerciales a quien ya ha comprado se atiende a su histórico de pedidos, de modo que la información se refiera a prendas similares a las adquiridas. Ese perfil no se emplea para ninguna otra finalidad, y la oposición descrita en ese mismo apartado lo detiene por completo.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="finalidades">
+        <h2>Finalidades y bases jurídicas</h2>
+        <p>Cada finalidad tiene su propia base jurídica y su propio plazo, y ninguna se apoya en otra: retirar el consentimiento de la newsletter no afecta a la gestión de un pedido, y oponerse a los correos comerciales no impide comprar.</p>
+        <div class="mura-legal-tabla-marco">
+          <table class="mura-legal-tabla">
+            <thead>
+              <tr>
+                <th>Finalidad</th>
+                <th>Base jurídica</th>
+                <th>Conservación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Gestión de pedidos y entrega</td>
+                <td>Ejecución del contrato — artículo 6.1.b del RGPD</td>
+                <td>Mientras se tramita el pedido y, después, durante los plazos de prescripción de las acciones derivadas del contrato</td>
+              </tr>
+              <tr>
+                <td>Facturación y contabilidad</td>
+                <td>Obligación legal — artículo 6.1.c del RGPD</td>
+                <td>Seis años desde el último asiento, conforme al Código de Comercio, sin perjuicio de los plazos tributarios</td>
+              </tr>
+              <tr>
+                <td>Emails transaccionales (confirmación, envío, devolución)</td>
+                <td>Ejecución del contrato — artículo 6.1.b del RGPD</td>
+                <td>El mismo plazo que la gestión del pedido al que corresponden</td>
+              </tr>
+              <tr>
+                <td>Newsletter</td>
+                <td>Consentimiento — artículo 6.1.a del RGPD</td>
+                <td>Hasta que se retire el consentimiento</td>
+              </tr>
+              <tr>
+                <td>Emails comerciales a quien ya ha comprado</td>
+                <td>Interés legítimo — artículo 6.1.f del RGPD, en relación con el artículo 21.2 de la LSSI</td>
+                <td>Hasta que se ejerza la oposición</td>
+              </tr>
+              <tr>
+                <td>Atención al cliente</td>
+                <td>Ejecución del contrato — artículo 6.1.b del RGPD</td>
+                <td>Mientras se tramita la consulta y, después, durante el plazo de prescripción de las acciones que pudieran derivarse</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>El interés legítimo de la quinta fila es el previsto en el artículo 21.2 de la Ley 34/2002 de Servicios de la Sociedad de la Información: quien ya ha comprado puede recibir información sobre prendas similares a las que adquirió. Ese interés se pondera frente a los derechos de la persona destinataria atendiendo a que la comunicación se dirige únicamente a quien ya mantiene una relación contractual con MÛRA, se refiere a prendas similares a las adquiridas, no se cede a terceros y cada envío incluye un enlace de baja que la interrumpe de inmediato. Sobre esos factores MÛRA entiende que tales derechos no prevalecen sobre el interés descrito. La oposición puede ejercerse en cualquier momento, sin coste y sin necesidad de motivarla, desde ese enlace o escribiendo a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a>. MÛRA se obliga a ofrecer esta posibilidad de oposición también en el momento de recoger los datos, y no solo en cada envío posterior.</p>
+        <p>El consentimiento para la newsletter se presta de forma expresa y separada de la compra, y puede retirarse en cualquier momento por las mismas vías, sin que ello afecte a la licitud del tratamiento anterior a la retirada. La suscripción se confirma mediante un doble paso de verificación: tras el alta se envía un correo de confirmación que la persona ha de validar, y solo entonces queda suscrita. MÛRA se obliga a conservar la fecha, la hora y la dirección IP de esa confirmación como prueba del consentimiento, cuya carga le corresponde.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="conservacion">
+        <h2>Plazos de conservación</h2>
+        <p>Los plazos son los de la tabla del apartado 03. En detalle:</p>
+        <ul>
+          <li><strong>Pedido y entrega.</strong> Los datos se tratan mientras el pedido está en curso y, una vez entregado, se conservan durante los plazos de prescripción de las acciones que puedan derivarse del contrato, incluidos los del derecho de desistimiento y los de la garantía legal de conformidad que recogen las <a href="https://www.stylebymura.com/condiciones-contratacion">Condiciones de Contratación</a>.</li>
+          <li><strong>Facturación y contabilidad.</strong> Seis años desde el último asiento, conforme al artículo 30 del Código de Comercio, y los plazos de prescripción previstos en la normativa tributaria. Se aplica el mayor de los que resulten exigibles.</li>
+          <li><strong>Newsletter.</strong> Hasta que se retire el consentimiento. Retirado, los datos de contacto salen del envío; se conserva únicamente la constancia de la propia retirada, para poder acreditar que se respetó.</li>
+          <li><strong>Emails comerciales.</strong> Hasta que se ejerza la oposición, con la misma salvedad del punto anterior.</li>
+          <li><strong>Atención al cliente.</strong> Mientras se tramita la consulta y, después, durante el plazo de prescripción de las acciones que pudieran derivarse de ella.</li>
+          <li><strong>Navegación.</strong> El plazo de cada cookie figura en la <a href="https://www.stylebymura.com/politica-cookies">Política de Cookies</a>.</li>
+        </ul>
+        <p>Cumplido el plazo que corresponda, los datos se bloquean: quedan a disposición exclusiva de jueces y tribunales, del Ministerio Fiscal y de las Administraciones competentes mientras puedan exigirse responsabilidades derivadas del tratamiento. Transcurrido también ese plazo, se suprimen.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="destinatarios">
+        <h2>Destinatarios</h2>
+        <p>MÛRA no vende ni cede datos personales con fines publicitarios, y no los comunica a nadie fuera de lo que se describe a continuación.</p>
+
+        <h3>Encargados del tratamiento</h3>
+        <p>Para operar la tienda, MÛRA se apoya en proveedores que tratan datos personales <strong>por cuenta suya y conforme a sus instrucciones</strong>. Son encargados del tratamiento elegidos por MÛRA, que responde de esa elección y se obliga a que la relación con cada uno de ellos se rija por el contrato de encargo que exige el artículo 28 del RGPD: el que fija la finalidad y el alcance del encargo, prohíbe destinar los datos a fines propios y obliga a devolverlos o suprimirlos al terminar la relación.</p>
+        <ul>
+          <li><strong>GoHighLevel</strong> — plataforma sobre la que están el sitio web, el sistema de gestión de clientes y el envío de los correos. Trata los datos de identificación, contacto, pedido, comunicaciones y navegación. Su política de privacidad está en <a href="https://www.gohighlevel.com/privacy-policy">gohighlevel.com/privacy-policy</a>.</li>
+          <li><strong>Stripe</strong> — pasarela de pago. Trata los datos necesarios para cobrar el pedido y para reembolsarlo cuando procede. Su política de privacidad está en <a href="https://stripe.com/privacy">stripe.com/privacy</a>.</li>
+          <li><strong>Nacex</strong> — entrega y recogida de devoluciones, tanto en España como en los envíos internacionales. Trata el nombre, la dirección y el teléfono: los datos sin los que el paquete no llega.</li>
+          <li><strong>Asesoría fiscal y contable</strong> — accede a los datos de facturación en la medida imprescindible para llevar la contabilidad de MÛRA y presentar sus declaraciones.</li>
+        </ul>
+
+        <h3>Cesiones por obligación legal</h3>
+        <p>La Administración tributaria recibe los datos de facturación que MÛRA está obligada a declarar. Del mismo modo, cuando una norma lo imponga, pueden comunicarse datos a jueces y tribunales, al Ministerio Fiscal, a las Fuerzas y Cuerpos de Seguridad y a otras Administraciones competentes. Estas comunicaciones no son un encargo: sus destinatarios tratan los datos con sus propias finalidades, y la base jurídica es el artículo 6.1.c del RGPD.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="transferencias">
+        <h2>Transferencias internacionales</h2>
+        <p>GoHighLevel y Stripe tratan datos personales en servidores situados en <strong>Estados Unidos</strong>. Navegar por el sitio, realizar un pedido, pagarlo y recibir los correos de MÛRA implica, por tanto, una transferencia internacional de datos fuera del Espacio Económico Europeo. Es una consecuencia directa de la elección de esos proveedores, y se declara aquí porque quien facilita sus datos tiene derecho a saberlo antes de facilitarlos.</p>
+        <p>Esas transferencias se amparan en la decisión de adecuación adoptada por la Comisión Europea el 10 de julio de 2023 respecto del Marco de Privacidad de Datos UE-EE. UU., en la medida en que el proveedor de que se trate esté adherido a dicho marco. Cuando un proveedor no lo esté, o cuando la decisión de adecuación deje de resultar aplicable, la transferencia se ampara en las cláusulas contractuales tipo aprobadas por la Comisión Europea, junto con las medidas adicionales que resulten necesarias tras evaluar cada caso.</p>
+        <p>Cuando el destino de un pedido está fuera del Espacio Económico Europeo, la dirección de entrega se comunica además a Nacex, el transportista del apartado 05, que la trata como encargado del tratamiento y con el solo alcance de entregar el paquete y recoger la devolución. Si ese transportista trata los datos desde un país que no cuente con decisión de adecuación, la transferencia se ampara en las cláusulas contractuales tipo aprobadas por la Comisión Europea, incorporadas al contrato de encargo del artículo 28 del RGPD conforme a su artículo 46, junto con las medidas adicionales que resulten necesarias tras evaluar el caso. Que sin esa comunicación el paquete no pueda entregarse explica por qué la transferencia es imprescindible, pero no la exime de esas garantías: el envío internacional es una pieza ordinaria del modo de vender de MÛRA, no una excepción puntual.</p>
+        <p>Puede solicitarse copia de las garantías aplicadas a cualquiera de estas transferencias, o información sobre dónde consultarlas, escribiendo a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a>. Si el marco aplicable cambia, este apartado cambia con él, y con él la fecha de última actualización.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="derechos">
+        <h2>Derechos</h2>
+        <p>La normativa de protección de datos reconoce a toda persona cuyos datos se traten los siguientes derechos, que puede ejercer frente a MÛRA en cualquier momento:</p>
+        <ul>
+          <li><strong>Acceso</strong> — saber si se están tratando sus datos y, en tal caso, obtener copia de ellos y de la información de esta política referida a su caso concreto.</li>
+          <li><strong>Rectificación</strong> — corregir los datos inexactos y completar los que estén incompletos. Una dirección de entrega mal escrita se rectifica por esta vía.</li>
+          <li><strong>Supresión</strong> — solicitar que se eliminen cuando ya no sean necesarios para la finalidad que los justificó, cuando se retire el consentimiento o cuando el tratamiento sea ilícito. No alcanza a los datos que una obligación legal exige conservar, como los de facturación.</li>
+          <li><strong>Oposición</strong> — oponerse a los tratamientos basados en el interés legítimo. En el caso de los correos comerciales la oposición es incondicional: no hay que motivarla y se atiende sin más.</li>
+          <li><strong>Limitación</strong> — pedir que los datos se conserven pero no se traten mientras se resuelve una impugnación sobre su exactitud o sobre la licitud del tratamiento.</li>
+          <li><strong>Portabilidad</strong> — recibir en un formato estructurado, de uso común y lectura mecánica los datos facilitados que se traten sobre la base del consentimiento o del contrato, y solicitar que se transmitan a otro responsable cuando sea técnicamente posible.</li>
+        </ul>
+        <p>Además, puede retirarse en cualquier momento el consentimiento prestado para la newsletter, sin que la retirada afecte a la licitud del tratamiento realizado antes de ella.</p>
+
+        <div class="mura-legal-nota">
+          <p class="mura-legal-nota-tit">Cómo ejercer estos derechos</p>
+          <p>Basta con escribir a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a> indicando qué derecho se desea ejercer. No hace falta ningún formulario ni ninguna fórmula concreta, y el ejercicio es gratuito.</p>
+          <p>La solicitud se responde en el plazo de un mes desde su recepción. Si la complejidad lo exige, ese plazo puede ampliarse en dos meses más, y la ampliación se comunica dentro del primer mes. Puede pedirse acreditación de la identidad cuando existan dudas razonables sobre quién formula la petición.</p>
+          <p>Si la respuesta no resulta satisfactoria, o si se considera que el tratamiento vulnera la normativa, cabe presentar una reclamación ante la <strong>Agencia Española de Protección de Datos</strong>, autoridad de control competente: <a href="https://www.aepd.es">www.aepd.es</a>. Acudir a la Agencia no exige haber escrito antes a MÛRA, aunque suele ser el camino más corto.</p>
+        </div>
+      </section>
+
+      <section class="mura-legal-seccion" id="seguridad">
+        <h2>Seguridad</h2>
+        <p>MÛRA aplica las medidas técnicas y organizativas apropiadas para garantizar un nivel de seguridad adecuado al riesgo, conforme al artículo 32 del RGPD, atendiendo al estado de la técnica, a la naturaleza de los datos tratados y a los riesgos que el tratamiento comporta.</p>
+        <p>En concreto: el acceso a los datos se limita a quien lo necesita para las finalidades del apartado 03; se exige que el sitio y el proceso de pago se sirvan sobre conexión cifrada; MÛRA se obliga a que los datos de la tarjeta se introduzcan y se traten en el entorno de Stripe y no en un formulario propio; y se obliga a que los proveedores del apartado 05 queden sujetos a las obligaciones de seguridad y confidencialidad del contrato de encargo.</p>
+        <p>Ninguna medida elimina el riesgo por completo, y afirmar lo contrario sería faltar a la verdad. Si llegara a producirse una violación de la seguridad de los datos, se notificará a la Agencia Española de Protección de Datos en los términos del artículo 33 del RGPD y, cuando suponga un alto riesgo para los derechos y libertades de las personas afectadas, se comunicará también a estas conforme al artículo 34.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="menores">
+        <h2>Menores de edad</h2>
+        <p>El sitio y las comunicaciones de MÛRA se dirigen a personas mayores de edad. MÛRA no ofrece productos ni servicios directamente a menores y no recoge de forma consciente datos de personas menores de catorce años, edad a partir de la cual la normativa española admite el consentimiento del propio menor para el tratamiento de sus datos.</p>
+        <p>Si se advierte que se han facilitado datos de una persona menor sin el consentimiento de quien ostente su patria potestad o tutela, se suprimirán sin demora. Quien tenga conocimiento de una situación así puede comunicarlo a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a>.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="cambios">
+        <h2>Cambios en la política</h2>
+        <p>Esta Política de Privacidad puede modificarse para adaptarla a un cambio normativo, a una nueva finalidad de tratamiento o a un cambio en los proveedores del apartado 05. La versión vigente es siempre la publicada en esta dirección, y la fecha que figura bajo el título indica desde cuándo lo está.</p>
+        <p>Cuando el cambio afecte de forma sustancial a las finalidades o a las bases jurídicas del apartado 03, se comunicará por correo electrónico a las personas cuyos datos se traten antes de que resulte aplicable. Si la nueva finalidad requiere consentimiento, se solicitará de forma expresa y separada.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- CIERRE — firma tipografica a la izquierda, contacto a la derecha.
+       Identico en los cuatro documentos. Sin "Cancelar suscripcion":
+       eso es cosa de los emails, aqui no pinta nada. -->
+  <footer class="mura-legal-cierre">
+
+    <div class="mura-legal-cierre-fila">
+      <div class="mura-legal-marca-cierre">
+        <div class="mura-legal-firma">MÛRA</div>
+        <div class="mura-legal-firma-lema">Vestir con intención</div>
+      </div>
+      <div class="mura-legal-datos">
+        <p>
+          <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a><br />
+          <a href="tel:+34637681234">Tel. 637 681 234</a><br />
+          <a href="https://www.stylebymura.com/">www.stylebymura.com</a>
+        </p>
+      </div>
+    </div>
+
+    <p class="mura-legal-enlaces">
+      <a href="https://www.instagram.com/bymurastudio/">Instagram</a>
+      <span class="mura-legal-sep">·</span>
+      <a href="https://www.stylebymura.com/aviso-legal">Aviso Legal</a>
+      <span class="mura-legal-sep">·</span>
+      <a href="https://www.stylebymura.com/politica-cookies">Política de Cookies</a>
+      <span class="mura-legal-sep">·</span>
+      <a href="https://www.stylebymura.com/condiciones-contratacion">Condiciones de Contratación</a>
+    </p>
+
+  </footer>
+
+</div>
+
+<!-- ============================================================ -->
+<!--    HASTA AQUÍ                                              -->
+<!-- ============================================================ -->
+
+</body>
+</html>
