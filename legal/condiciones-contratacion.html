@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="es">
+<!--
+  ============================================================
+  MÛRA · CONDICIONES DE CONTRATACIÓN
+  ============================================================
+  COMO SE USA EN GOHIGHLEVEL
+  1. Abre este archivo en el navegador y leelo entero.
+  2. Copia SOLO lo que hay entre las dos marcas de COPIAR.
+  3. Pegalo en un elemento de codigo personalizado de GHL.
+  El envoltorio <html>/<head>/<body> NO se copia: la pagina de
+  GHL ya tiene el suyo y anidarlos rompe el renderizado.
+
+  DOCUMENTO: Condiciones de Contratación
+  URL PREVISTA: /condiciones-contratacion
+  ============================================================
+-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Condiciones de Contratación · MÛRA</title>
+</head>
+<body style="margin:0; background-color:#F6F2EB;">
+
+<!-- ============================================================ -->
+<!--    COPIAR DESDE AQUÍ PARA GHL                              -->
+<!-- ============================================================ -->
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+/* Todo va prefijado con .mura-legal- para no chocar con el CSS del tema de GHL. */
+
+.mura-legal,
+.mura-legal *,
+.mura-legal *::before,
+.mura-legal *::after {
+  box-sizing: border-box;
+}
+
+.mura-legal {
+  /* Full-bleed sin desplazar el contenido: el fondo se pinta más allá del contenedor */
+  width: 100%;
+  box-shadow: 0 0 0 100vmax #F6F2EB;
+  clip-path: inset(0 -100vmax);
+  background-color: #F6F2EB;
+  color: #1E1B1A;
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.9;
+  margin: 0;
+  padding: 0 32px 96px 32px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Blindaje: GHL inyecta su propia tipografia en los descendientes. */
+.mura-legal h1,
+.mura-legal h2,
+.mura-legal h3,
+.mura-legal p,
+.mura-legal a,
+.mura-legal li,
+.mura-legal ol,
+.mura-legal ul,
+.mura-legal span,
+.mura-legal div,
+.mura-legal strong,
+.mura-legal em,
+.mura-legal dt,
+.mura-legal dd,
+.mura-legal th,
+.mura-legal td {
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+}
+
+.mura-legal a {
+  color: #1E1B1A;
+  text-decoration: none;
+  border-bottom: 1px solid #D9D1C5;
+  transition: border-color 240ms ease, color 240ms ease;
+}
+
+.mura-legal a:hover {
+  border-bottom-color: #1E1B1A;
+}
+
+.mura-legal a:focus-visible {
+  outline: 1px solid #1E1B1A;
+  outline-offset: 3px;
+}
+
+/* ---------- Cabecera ---------- */
+
+.mura-legal-cabecera {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 56px 0 0 0;
+  text-align: center;
+}
+
+.mura-legal-marca {
+  display: inline-block;
+  font-size: 21px;
+  font-weight: 400;
+  letter-spacing: 8px;
+  color: #1E1B1A;
+  border-bottom: 0;
+  padding-left: 8px;
+}
+
+.mura-legal-marca:hover {
+  border-bottom: 0;
+}
+
+.mura-legal-lema {
+  display: block;
+  font-size: 11px;
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: #8A7E71;
+  padding-top: 10px;
+}
+
+/* ---------- Titular ---------- */
+
+.mura-legal-titular {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 96px 0 72px 0;
+  border-bottom: 1px solid #D9D1C5;
+}
+
+.mura-legal-kicker {
+  margin: 0 0 22px 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #8A7E71;
+}
+
+.mura-legal-h1 {
+  margin: 0;
+  font-size: 46px;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+  color: #1E1B1A;
+}
+
+.mura-legal-fecha {
+  margin: 28px 0 0 0;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 300;
+  color: #8A7E71;
+}
+
+/* ---------- Cuerpo: indice + texto ---------- */
+
+.mura-legal-cuerpo {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 72px;
+  padding-top: 72px;
+}
+
+.mura-legal-indice {
+  position: sticky;
+  top: 48px;
+  flex: 0 0 200px;
+  width: 200px;
+}
+
+.mura-legal-indice-tit {
+  margin: 0 0 20px 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #8A7E71;
+}
+
+.mura-legal-indice ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: mura-idx;
+}
+
+.mura-legal-indice li {
+  counter-increment: mura-idx;
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.mura-legal-indice li a {
+  color: #8A7E71;
+  border-bottom: 0;
+}
+
+.mura-legal-indice li a::before {
+  content: counter(mura-idx, decimal-leading-zero);
+  color: #B5ADA2;
+  padding-right: 10px;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.mura-legal-indice li a:hover {
+  color: #1E1B1A;
+  border-bottom: 0;
+}
+
+.mura-legal-texto {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 640px;
+  counter-reset: mura-sec;
+}
+
+/* ---------- Secciones ---------- */
+
+.mura-legal-seccion {
+  counter-increment: mura-sec;
+  padding: 0 0 64px 0;
+  scroll-margin-top: 40px;
+}
+
+.mura-legal-seccion + .mura-legal-seccion {
+  border-top: 1px solid #D9D1C5;
+  padding-top: 64px;
+}
+
+.mura-legal-seccion h2 {
+  margin: 0 0 26px 0;
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.3px;
+  color: #1E1B1A;
+}
+
+.mura-legal-seccion h2::before {
+  content: counter(mura-sec, decimal-leading-zero);
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  color: #8A7E71;
+  padding-bottom: 14px;
+}
+
+.mura-legal-seccion h3 {
+  margin: 38px 0 16px 0;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: #1E1B1A;
+}
+
+.mura-legal-seccion p {
+  margin: 0 0 18px 0;
+}
+
+.mura-legal-seccion p:last-child {
+  margin-bottom: 0;
+}
+
+.mura-legal-seccion ul,
+.mura-legal-seccion ol {
+  margin: 0 0 18px 0;
+  padding-left: 22px;
+}
+
+.mura-legal-seccion li {
+  margin-bottom: 10px;
+  padding-left: 6px;
+}
+
+.mura-legal-seccion li::marker {
+  color: #B5ADA2;
+}
+
+.mura-legal-seccion strong {
+  font-weight: 500;
+}
+
+/* ---------- Bloque destacado ----------
+   Para lo que la clienta debe leer si o si: plazos, derechos,
+   lo que la garantia NO cubre. Mismo gesto que el bloque de
+   informacion automatica de los emails. */
+
+.mura-legal-nota {
+  background-color: #D9D1C5;
+  padding: 28px 32px;
+  margin: 0 0 18px 0;
+}
+
+.mura-legal-nota p {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+}
+
+.mura-legal-nota p:last-child {
+  margin-bottom: 0;
+}
+
+.mura-legal-nota-tit {
+  font-size: 10px !important;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #1E1B1A;
+  margin-bottom: 14px !important;
+}
+
+/* ---------- Tabla ----------
+   Para la relacion de cookies y para los plazos de envio. */
+
+.mura-legal-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 18px 0;
+  font-size: 15px;
+}
+
+.mura-legal-tabla th,
+.mura-legal-tabla td {
+  text-align: left;
+  vertical-align: top;
+  padding: 14px 16px 14px 0;
+  border-bottom: 1px solid #D9D1C5;
+  line-height: 1.6;
+}
+
+.mura-legal-tabla th {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #8A7E71;
+  border-bottom-color: #1E1B1A;
+  white-space: nowrap;
+}
+
+.mura-legal-tabla-marco {
+  overflow-x: auto;
+  margin: 0 0 18px 0;
+}
+
+/* ---------- Cierre y pie ----------
+   Firma a la izquierda, datos de contacto a la derecha.
+   La linea de enlaces cruza entera por debajo. */
+
+.mura-legal-cierre {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 0 0 0;
+  border-top: 1px solid #D9D1C5;
+}
+
+.mura-legal-cierre-fila {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.mura-legal-firma {
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: 7px;
+  color: #1E1B1A;
+}
+
+.mura-legal-firma-lema {
+  font-size: 11px;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 2px;
+  color: #8A7E71;
+  padding-top: 8px;
+}
+
+/* Ninguna de las dos columnas encoge: el interletrado de MÛRA y el
+   correo son intocables, y a 900 px se romperian si se dejasen. */
+.mura-legal-marca-cierre {
+  flex: 0 0 auto;
+}
+
+.mura-legal-datos {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.mura-legal-datos p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 2;
+  color: #8A7E71;
+}
+
+.mura-legal-cierre a {
+  color: #8A7E71;
+  border-bottom: 0;
+}
+
+.mura-legal-cierre a:hover {
+  color: #1E1B1A;
+  border-bottom: 0;
+}
+
+.mura-legal-enlaces {
+  margin: 40px 0 0 0;
+  font-size: 11px;
+  line-height: 2;
+  color: #8A7E71;
+}
+
+.mura-legal-cierre .mura-legal-enlaces a {
+  border-bottom: 1px solid #D9D1C5;
+}
+
+.mura-legal-cierre .mura-legal-enlaces a:hover {
+  border-bottom: 1px solid #1E1B1A;
+}
+
+.mura-legal-sep {
+  color: #B5ADA2;
+  padding: 0 8px;
+}
+
+/* ---------- Movil ---------- */
+
+@media screen and (max-width: 860px) {
+  .mura-legal {
+    padding: 0 24px 72px 24px;
+    font-size: 16px;
+  }
+
+  .mura-legal-titular {
+    padding: 64px 0 48px 0;
+  }
+
+  .mura-legal-h1 {
+    font-size: 34px;
+  }
+
+  .mura-legal-cuerpo {
+    display: block;
+    padding-top: 48px;
+  }
+
+  .mura-legal-indice {
+    position: static;
+    width: auto;
+    padding-bottom: 48px;
+    margin-bottom: 48px;
+    border-bottom: 1px solid #D9D1C5;
+  }
+
+  .mura-legal-texto {
+    max-width: none;
+  }
+
+  .mura-legal-seccion h2 {
+    font-size: 22px;
+  }
+
+  .mura-legal-nota {
+    padding: 24px;
+  }
+
+  /* El cierre se apila: la firma arriba, los datos debajo.
+     Todo alineado a la izquierda; centrarlo aqui volveria a
+     deshacer el gesto. */
+  .mura-legal-cierre-fila {
+    display: block;
+  }
+
+  .mura-legal-datos {
+    text-align: left;
+    padding-top: 36px;
+  }
+
+  .mura-legal-enlaces {
+    margin-top: 36px;
+  }
+}
+
+/* ---------- Impresion ----------
+   Estos documentos se guardan y se imprimen: es la prueba de
+   que estaban publicados el dia de la compra. Que salgan bien. */
+
+@media print {
+  .mura-legal {
+    padding: 0;
+    font-size: 11pt;
+    line-height: 1.6;
+    background-color: #F8F6F2;
+  }
+
+  .mura-legal-indice {
+    display: none;
+  }
+
+  .mura-legal-cuerpo {
+    display: block;
+    padding-top: 24px;
+  }
+
+  .mura-legal-texto {
+    max-width: none;
+  }
+
+  .mura-legal-seccion {
+    page-break-inside: avoid;
+    padding-bottom: 28px;
+  }
+
+  .mura-legal-seccion + .mura-legal-seccion {
+    padding-top: 28px;
+  }
+
+  .mura-legal-h1 {
+    font-size: 24pt;
+  }
+
+  .mura-legal a {
+    border-bottom: 0;
+  }
+}
+
+/* ---------- Accesibilidad ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .mura-legal {
+    scroll-behavior: auto;
+  }
+
+  .mura-legal a {
+    transition: none;
+  }
+}
+
+/* El anexo cierra el documento sin numero: se suprime el contador solo ahi. */
+.mura-legal-seccion.mura-legal-anexo h2::before {
+  content: none;
+}
+</style>
+
+<div class="mura-legal">
+
+  <!-- CABECERA — tipografica, nunca imagen. Identica en los cuatro documentos. -->
+  <header class="mura-legal-cabecera">
+    <a class="mura-legal-marca" href="https://www.stylebymura.com/">MÛRA</a>
+    <span class="mura-legal-lema">Vestir con intención</span>
+  </header>
+
+  <!-- TITULAR -->
+  <div class="mura-legal-titular">
+    <p class="mura-legal-kicker">Información legal</p>
+    <h1 class="mura-legal-h1">Condiciones de Contratación</h1>
+    <p class="mura-legal-fecha">Última actualización · 9 de agosto de 2026</p>
+  </div>
+
+  <div class="mura-legal-cuerpo">
+
+    <!-- INDICE — un <li> por seccion numerada, en el mismo orden que las secciones.
+         17 apartados. El anexo NO figura aqui: va sin numero (clase mura-legal-anexo),
+         cierra el documento y su titulo ("Anexo · ...") lo identifica sin apoyarse
+         en la numeracion. -->
+    <nav class="mura-legal-indice" aria-label="Índice del documento">
+      <p class="mura-legal-indice-tit">Contenido</p>
+      <ol>
+        <li><a href="#vendedor">Identificación del vendedor</a></li>
+        <li><a href="#objeto">Objeto y aceptación</a></li>
+        <li><a href="#ediciones">Ediciones limitadas y disponibilidad</a></li>
+        <li><a href="#proceso">Proceso de compra</a></li>
+        <li><a href="#precios">Precios e impuestos</a></li>
+        <li><a href="#pago">Formas de pago</a></li>
+        <li><a href="#envios">Envíos, aranceles y aduanas</a></li>
+        <li><a href="#desistimiento">Derecho de desistimiento</a></li>
+        <li><a href="#devoluciones">Devoluciones</a></li>
+        <li><a href="#cambios">Cambios de talla</a></li>
+        <li><a href="#reembolsos">Reembolsos</a></li>
+        <li><a href="#garantia">Garantía legal de conformidad</a></li>
+        <li><a href="#cuidado">Cuidado de la prenda</a></li>
+        <li><a href="#valoraciones">Valoraciones y opiniones</a></li>
+        <li><a href="#atencion">Atención al cliente y reclamaciones</a></li>
+        <li><a href="#extrajudicial">Resolución extrajudicial de conflictos</a></li>
+        <li><a href="#legislacion">Ley aplicable y jurisdicción</a></li>
+      </ol>
+    </nav>
+
+    <!-- TEXTO -->
+    <main class="mura-legal-texto">
+
+      <section class="mura-legal-seccion" id="vendedor">
+        <h2>Identificación del vendedor</h2>
+        <p>
+          <strong>Sara Domínguez Fernández</strong><br />
+          NIF: 49546983S<br />
+          Domicilio fiscal: Calle Huerta Romana 1, 21660 Minas de Riotinto, Huelva<br />
+          Correo electrónico: <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a><br />
+          Teléfono: <a href="tel:+34637681234">637 681 234</a>
+        </p>
+        <p>MÛRA es una marca de moda de ediciones limitadas. La venta de sus prendas a través de <a href="https://www.stylebymura.com/">www.stylebymura.com</a> la realiza, en nombre propio, la persona física identificada arriba. Los datos de identificación del sitio figuran también en el <a href="https://www.stylebymura.com/aviso-legal">Aviso Legal</a>.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="objeto">
+        <h2>Objeto y aceptación</h2>
+        <p>Estas Condiciones de Contratación regulan la compraventa a distancia de las prendas de MÛRA a través de <a href="https://www.stylebymura.com/">www.stylebymura.com</a>: qué se compra, a qué precio, cómo llega, cómo se devuelve y de qué responde MÛRA. Se rigen por el texto refundido de la Ley General para la Defensa de los Consumidores y Usuarios, aprobado por el Real Decreto Legislativo 1/2007, y por la Ley 34/2002 de Servicios de la Sociedad de la Información y de Comercio Electrónico.</p>
+        <p>Se dirigen a personas consumidoras: quienes compran actuando con un propósito ajeno a su actividad comercial, empresarial, oficio o profesión, y son mayores de edad. Confirmar un pedido supone aceptar estas Condiciones en la redacción vigente en ese momento. MÛRA se obliga a que estén accesibles antes de que el pedido quede confirmado, y a que puedan leerse, guardarse e imprimirse.</p>
+        <p>MÛRA puede modificar estas Condiciones en cualquier momento, y la fecha que figura bajo el título indica desde cuándo lo está la versión publicada. Un cambio posterior no afecta a un pedido ya confirmado: a cada pedido se le aplica la versión vigente el día en que se confirmó. Por eso conviene conservar copia de estas Condiciones junto con la confirmación de la compra. En caso de discrepancia con lo previsto en el <a href="https://www.stylebymura.com/aviso-legal">Aviso Legal</a>, prevalece este documento en todo lo relativo a la venta.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="ediciones">
+        <h2>Ediciones limitadas y disponibilidad</h2>
+        <p>MÛRA produce cada colección en edición limitada. Esto no es un recurso de venta: es el modo de fabricar de la marca, y tiene dos consecuencias que conviene conocer antes de comprar. La primera, que el número de unidades de cada prenda y de cada talla es finito y puede agotarse sin que vuelva a reponerse. La segunda, que cuando una prenda se agota puede no haber una unidad idéntica con la que sustituirla — lo que importa en un cambio de talla, tratado en el apartado 10, y en la garantía del apartado 12.</p>
+        <p>Las fotografías y las descripciones de cada prenda reproducen sus características con la mayor fidelidad posible. Los colores pueden variar ligeramente según la pantalla desde la que se miren, y una diferencia de esa naturaleza no es un defecto de la prenda; sí es, en cambio, uno de los motivos por los que existe el derecho de desistimiento del apartado 08.</p>
+        <p>Si una prenda no estuviera disponible después de haberse confirmado el pedido, MÛRA se obliga a comunicarlo sin demora y a reembolsar íntegramente el importe abonado por ella, cuanto antes y por el mismo método de pago, sin que la clienta tenga que reclamarlo.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="proceso">
+        <h2>Proceso de compra</h2>
+        <p>El pedido se realiza a través del sitio, seleccionando las prendas y las tallas, facilitando los datos de contacto y de entrega y completando el pago conforme al apartado 06. MÛRA se obliga a que, antes de que el pedido quede confirmado, puedan revisarse las prendas seleccionadas, las tallas, la dirección de entrega y el importe total, y a que puedan corregirse los errores introducidos.</p>
+        <p>Una vez confirmado el pedido, MÛRA envía por correo electrónico su confirmación a la dirección facilitada en la compra. Ese correo recoge el contenido del pedido, y conviene conservarlo. Las devoluciones, los cambios de talla y las incidencias se tramitan escribiendo a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a>; si el correo de confirmación incluye un enlace de gestión del pedido, esa es una vía más, que no sustituye a la anterior ni añade requisito alguno.</p>
+        <p>El idioma en el que se formaliza el contrato es el español. MÛRA archiva la constancia de cada pedido durante los plazos que recoge la <a href="https://www.stylebymura.com/politica-privacidad">Política de Privacidad</a>, que es también donde se explica qué se hace con los datos personales facilitados al comprar. Puede solicitarse copia de un pedido escribiendo a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a>.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="precios">
+        <h2>Precios e impuestos</h2>
+        <p>El precio de cada prenda es el que figura en su ficha en el momento de confirmar el pedido. MÛRA se obliga a que los precios se muestren con los impuestos aplicables incluidos, a que la moneda en la que se expresan el precio y el importe total se indique de forma inequívoca y sea la misma en la que se cursa el cobro, y a que los gastos de envío del apartado 07 se indiquen por separado y se sumen al importe total antes de que el pedido quede confirmado. El importe total es, por tanto, el que se muestra al confirmar: no hay cargos posteriores por parte de MÛRA.</p>
+        <p>MÛRA se obliga a que, en los envíos con destino fuera de la Unión Europea, la venta se trate como exenta del Impuesto sobre el Valor Añadido español y a que el precio se ajuste en consecuencia, de modo que no se repercuta a la clienta un impuesto que no procede. Ello se entiende sin perjuicio de los tributos, los derechos de aduana y los gastos de despacho que exija el país de destino, que corren a cargo de la clienta y se explican en el apartado 07.</p>
+        <p>En todo anuncio de reducción de precio, MÛRA se obliga a indicar el precio anterior más bajo que hubiera aplicado durante los treinta días previos a la reducción —artículo 20 de la Ley 7/1996, de Ordenación del Comercio Minorista—.</p>
+        <p>MÛRA puede modificar sus precios en cualquier momento, sin que ello afecte a un pedido ya confirmado. Si se detectara un error manifiesto en el precio publicado, MÛRA se obliga a comunicarlo antes de dar curso al pedido; la clienta podrá entonces confirmarlo al precio correcto o dejarlo sin efecto, con reembolso íntegro de lo abonado y sin coste alguno. Puede solicitarse la factura del pedido escribiendo a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a>.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="pago">
+        <h2>Formas de pago</h2>
+        <p>El pago de los pedidos se tramita a través de <strong>Stripe</strong>, la pasarela de pago elegida por MÛRA. Los medios de pago admitidos son los que Stripe ofrece para cada pedido en el momento de realizarlo. MÛRA no da curso a un pedido hasta que consta confirmado su cobro. MÛRA no aplica recargo alguno por el uso de un medio de pago determinado.</p>
+        <p>El pago se cursa en el entorno de Stripe: MÛRA se obliga a que los datos de la tarjeta se introduzcan en él y no en un formulario propio, y a que el proceso de pago se sirva sobre conexión cifrada.</p>
+        <p>Stripe no es un tercero ajeno a MÛRA: es un proveedor que MÛRA ha elegido y que trata los datos del pago por cuenta suya y conforme a sus instrucciones, como encargado del tratamiento. Qué datos son, con qué finalidad y con qué garantías se tratan —incluida la transferencia internacional que ello supone— se detalla en la <a href="https://www.stylebymura.com/politica-privacidad">Política de Privacidad</a>. Los reembolsos del apartado 11 se cursan por esa misma vía.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="envios">
+        <h2>Envíos, aranceles y aduanas</h2>
+        <p>MÛRA envía sus pedidos a España y al extranjero, incluidos destinos fuera de la Unión Europea. La entrega se realiza en la dirección facilitada en el pedido, cuya exactitud corresponde a la clienta; si se advirtiera un error en ella, conviene comunicarlo a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a> cuanto antes, porque una vez entregado el paquete al transportista la dirección ya no siempre puede corregirse.</p>
+        <p>El transporte lo realiza <strong>Nacex</strong>, tanto en los envíos con destino en España como en los internacionales. Es el proveedor elegido por MÛRA, que responde ante la clienta de la entrega del pedido.</p>
+        <ul>
+          <li><strong>Gastos de envío</strong> — en los envíos con destino en España, 3 €, o ninguno si la clienta recoge el pedido en un punto Nacex. En los envíos internacionales, el coste depende del país de destino: la clienta puede consultarlo por WhatsApp en el <a href="https://wa.me/34637681234">637 681 234</a>, y se le confirma antes de que realice el pedido.</li>
+          <li><strong>Plazos de entrega</strong> — en los envíos con destino en España, de 24 a 72 horas en días laborables. En los envíos internacionales, el plazo depende del país de destino y se confirma, junto con el coste, por esa misma vía.</li>
+        </ul>
+        <p>Los plazos anteriores se cuentan desde la confirmación del pedido y son estimados: dependen del transportista y del destino. En defecto de plazo indicado, MÛRA se obliga a entregar el pedido sin demora indebida y, en todo caso, <strong>dentro de los treinta días naturales siguientes a la confirmación del pedido</strong> —artículo 66 bis del texto refundido de la Ley General para la Defensa de los Consumidores y Usuarios—. Si MÛRA no entregara el pedido en el plazo comprometido, la clienta puede emplazarla a hacerlo en un plazo adicional adecuado a las circunstancias y, si tampoco entonces se entrega, resolver el contrato y recuperar sin demora indebida todas las sumas abonadas.</p>
+
+        <div class="mura-legal-nota">
+          <p class="mura-legal-nota-tit">Aranceles y aduanas fuera de la Unión Europea</p>
+          <p>Los envíos con destino fuera de la Unión Europea pueden quedar sujetos a derechos de aduana, impuestos de importación y gastos de despacho del país de destino. <strong>Esos importes corren a cargo de la clienta</strong>, se liquidan ante la autoridad aduanera del país de destino y no están incluidos en el precio de la prenda ni en los gastos de envío indicados más arriba.</p>
+          <p>Su cuantía la fija cada país según sus propias normas, y MÛRA no puede calcularla ni anticiparla. Conviene consultarla ante la autoridad aduanera del país de destino <strong>antes de realizar el pedido</strong>.</p>
+        </div>
+      </section>
+
+      <section class="mura-legal-seccion" id="desistimiento">
+        <h2>Derecho de desistimiento</h2>
+        <p>La clienta puede desistir del contrato sin necesidad de justificar su decisión y sin penalización alguna. La ley reconoce para ello un plazo mínimo de catorce días naturales —artículo 102 del texto refundido de la Ley General para la Defensa de los Consumidores y Usuarios—. <strong>MÛRA lo amplía a quince días naturales:</strong> es una mejora sobre el mínimo legal, y se ofrece como tal.</p>
+
+        <div class="mura-legal-nota">
+          <p class="mura-legal-nota-tit">Quince días naturales, y ninguna prenda excluida</p>
+          <p>La clienta dispone de 15 días naturales desde la recepción de su pedido para solicitar una devolución o un cambio. El plazo se cuenta desde el día en que la clienta, o la persona que ella indicara, recibe materialmente la prenda.</p>
+          <p><strong>Ninguna prenda de MÛRA está excluida del derecho de desistimiento.</strong> Ni las de edición agotada, ni las rebajadas, ni ninguna otra.</p>
+        </div>
+
+        <p>Para desistir basta con comunicarlo antes de que venza el plazo. <strong>Un correo a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a> es suficiente</strong>, y sirve igualmente cualquier otra declaración inequívoca en ese sentido: MÛRA se obliga a admitir el desistimiento por esa vía, sin exigir ninguna otra. Si el correo de confirmación de compra incluye un enlace de gestión del pedido, puede emplearse también. El anexo recoge el modelo de formulario de desistimiento, cuyo uso no es obligatorio. Para respetar el plazo es suficiente con que la comunicación se envíe antes de que termine.</p>
+        <p>Comunicado el desistimiento, la prenda se devuelve conforme al apartado 09 y el importe se reembolsa conforme al apartado 11. Los costes directos de la devolución son los que allí se detallan: la entrega en un punto Nacex no tiene coste, y la recogida a domicilio cuesta 3 €. Se informa de ello aquí, antes de la compra, precisamente porque solo así puede repercutirse ese coste.</p>
+        <p>Ejercido en plazo, el desistimiento no queda sujeto a más condición que esa. <strong>MÛRA no rechaza un desistimiento ni condiciona el reembolso al estado en que la prenda llegue, y no reenvía la prenda a la clienta.</strong> Si la prenda vuelve con una disminución de valor de las que contempla el apartado 09, la única consecuencia es la deducción que regula el apartado 11. El cambio de talla y la garantía son otra cosa y siguen su propio camino: el apartado 10 el primero, el apartado 12 la segunda.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="devoluciones">
+        <h2>Devoluciones</h2>
+        <p>La devolución por desistimiento se solicita dentro de los 15 días naturales del apartado 08, por cualquiera de las vías del apartado 08 y, en todo caso, escribiendo a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a>. Comunicado el desistimiento, la prenda debe devolverse sin demora indebida y, a más tardar, dentro de los catorce días naturales siguientes a esa comunicación.</p>
+        <p>Para la devolución hay dos formas de envío: la entrega en un punto Nacex no tiene coste y la recogida en domicilio cuesta 3 €. La recogida a domicilio es opcional, y la entrega en un punto Nacex está disponible siempre. Como recomendación práctica, conviene devolver la prenda en el mismo sobre MÛRA en el que se recibió y conservando sus etiquetas, para que llegue protegida; es una recomendación, no un requisito, y <strong>el derecho al reembolso no depende del estado en que la prenda llegue</strong>.</p>
+
+        <div class="mura-legal-nota">
+          <p class="mura-legal-nota-tit">Probarse la prenda está permitido</p>
+          <p>Probarse una prenda no es utilizarla. La clienta puede sacarla del sobre, examinarla y probársela para comprobar su talla, su caída y su naturaleza, exactamente igual que haría en una tienda física, sin perder por ello el derecho de desistimiento ni el reembolso.</p>
+          <p>La clienta solo responde de la disminución de valor de la prenda que resulte de manipularla <strong>más allá</strong> de lo necesario para establecer su naturaleza, sus características y su funcionamiento —artículo 108 del texto refundido de la Ley General para la Defensa de los Consumidores y Usuarios—. Lo que queda fuera es haberla usado: llevarla puesta más allá de esa comprobación, lavarla, arreglarla o retirarle las etiquetas.</p>
+        </div>
+
+        <p>Cuando MÛRA recibe el paquete, revisa cuidadosamente la prenda. <strong>En un desistimiento esa revisión no decide si se acepta:</strong> el desistimiento ya está ejercido y el reembolso se cursa conforme al apartado 11. Si la revisión aprecia una disminución de valor resultante de haber manipulado la prenda más allá de lo necesario para establecer su naturaleza, sus características y su funcionamiento, esa disminución se deduce del reembolso conforme al apartado 11, y ahí termina lo que la clienta responde. MÛRA no rechaza el desistimiento, no retiene el resto del reembolso ni reenvía la prenda por ese motivo.</p>
+        <p>El cambio de talla es cosa distinta y se rige por el apartado 10. Si la prenda presenta un defecto, lo que se aplica es la garantía del apartado 12, que no está sujeta ni a este plazo ni a estas condiciones. Cualquier duda sobre el alcance de estas condiciones se resuelve en el sentido más favorable a la clienta.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="cambios">
+        <h2>Cambios de talla</h2>
+        <p>El cambio de talla es una cortesía comercial de MÛRA, no un derecho que la ley imponga, y por eso —a diferencia del desistimiento del apartado 08— sí puede sujetarse a condiciones. Se solicita en el mismo plazo de 15 días del apartado 08, por las mismas vías y con las mismas dos formas de envío del apartado 09: entrega en un punto Nacex sin coste o recogida a domicilio por 3 €.</p>
+        <p><strong>Para admitir el cambio, la prenda deberá devolverse sin haber sido utilizada, conservando sus etiquetas originales, en el mismo sobre MÛRA en el que se envió y en las mismas condiciones en las que fue enviada.</strong></p>
+        <p>Utilizar y probar no son lo mismo, ni en castellano ni en la ley, y la condición anterior no dice lo contrario. La clienta puede sacar la prenda del sobre, examinarla y probársela para comprobar su talla y su caída; lo que el cambio no admite es una prenda usada: llevada puesta más allá de esa comprobación, lavada, arreglada o sin sus etiquetas.</p>
+        <p>Aquí la revisión sí decide. Si la prenda ha sido utilizada o no cumple las condiciones anteriores, MÛRA se pondrá en contacto con la clienta para informarle, y la prenda se le reenviará a la dirección indicada en el pedido. <strong>El coste de ese reenvío es de 3 €, o ninguno si la clienta la recoge en un punto Nacex.</strong></p>
+        <p>Rechazado el cambio, la clienta conserva íntegro el derecho de desistimiento del apartado 08 mientras su plazo siga vivo: puede desistir de la compra y recuperar el importe conforme al apartado 11.</p>
+        <p>Tratándose de ediciones limitadas, el cambio depende además de que quede disponible la talla solicitada; cuando no la haya, MÛRA se obliga a comunicarlo sin demora, y la clienta podrá optar por el reembolso conforme al apartado 11. Todo lo anterior se refiere a la devolución por decisión de la clienta; si la prenda presenta un defecto, lo que se aplica es la garantía del apartado 12, que no está sujeta ni a este plazo ni a estas condiciones. Cualquier duda sobre el alcance de estas condiciones se resuelve en el sentido más favorable a la clienta.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="reembolsos">
+        <h2>Reembolsos</h2>
+        <p>Una vez verificada la devolución, MÛRA procesa el reembolso <strong>mediante el mismo método de pago utilizado en la compra</strong>. La clienta recibirá un correo electrónico de confirmación cuando el proceso haya finalizado.</p>
+        <p>El plazo es el que fija el artículo 107 del texto refundido de la Ley General para la Defensa de los Consumidores y Usuarios: sin demora indebida y, en todo caso, dentro de los catorce días naturales siguientes a aquel en que MÛRA sea informada de la decisión de desistir. MÛRA puede retener el reembolso hasta haber recibido la prenda o hasta que la clienta presente prueba de haberla devuelto, lo que ocurra primero. Una vez cursado, el tiempo que la cantidad tarde en constar en la cuenta depende de la entidad de la clienta, no de MÛRA.</p>
+        <p>El reembolso comprende todos los pagos recibidos de la clienta por el pedido, <strong>incluidos los gastos de la entrega inicial</strong>. Si la clienta hubiera elegido expresamente una modalidad de entrega distinta de la menos costosa que MÛRA ofrecía, no se reembolsa el sobrecoste de esa elección. Los costes directos de la devolución son los del apartado 09: ninguno si se entrega en un punto Nacex, 3 € si se elige la recogida a domicilio.</p>
+        <p>La única cantidad que puede minorar el importe a reembolsar es la <strong>disminución de valor</strong> del apartado 09: la que resulte de haber manipulado la prenda más allá de lo necesario para establecer su naturaleza, sus características y su funcionamiento. Probarse la prenda no la produce. La responsabilidad de la clienta se agota en esa deducción: se descuenta del importe a reembolsar y no faculta a MÛRA para rechazar el desistimiento, para retener el reembolso restante ni para devolver la prenda. MÛRA se obliga a comunicar a la clienta, antes de cursar el reembolso, que aprecia una disminución de valor, en qué consiste y qué importe le atribuye. Fuera de esa deducción, el reembolso no lleva coste ni comisión alguna.</p>
+        <p>Los derechos de aduana y los impuestos de importación del apartado 07 los liquida y los recauda la autoridad del país de destino, no MÛRA: su devolución, cuando proceda, se solicita ante esa autoridad.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="garantia">
+        <h2>Garantía legal de conformidad</h2>
+        <p>MÛRA responde ante la clienta de cualquier falta de conformidad de la prenda: que no se corresponda con su descripción, que no tenga la calidad o las características anunciadas o que no sirva para el uso al que se destina una prenda de su clase. Esta garantía es legal, es gratuita y es independiente del derecho de desistimiento del apartado 08.</p>
+
+        <div class="mura-legal-nota">
+          <p class="mura-legal-nota-tit">Tres años, y dos de presunción</p>
+          <p><strong>Tres años desde la entrega.</strong> MÛRA responde de las faltas de conformidad que se manifiesten en los tres años siguientes a la entrega de la prenda —artículo 120 del texto refundido de la Ley General para la Defensa de los Consumidores y Usuarios—. Este plazo no puede reducirse por contrato, y nada de lo que digan estas Condiciones lo reduce.</p>
+          <p><strong>Dos años de presunción.</strong> Durante los dos primeros años se presume que la falta de conformidad ya existía en el momento de la entrega —artículo 121—. La clienta no tiene que probarlo. Si MÛRA sostiene lo contrario, es MÛRA quien debe demostrarlo.</p>
+        </div>
+
+        <p>Ese plazo de tres años no debe confundirse con el que la clienta tiene para reclamar, que es distinto y se cuenta de otro modo. Los tres años miden, desde la entrega, durante cuánto tiempo puede manifestarse una falta de conformidad. El plazo para reclamarla empieza a contar cuando la falta se manifiesta: desde que la clienta tiene conocimiento de la falta de conformidad, dispone de <strong>cinco años</strong> para reclamar —artículo 124 del texto refundido de la Ley General para la Defensa de los Consumidores y Usuarios—. Uno mide cuándo puede aparecer el defecto; el otro, cuánto tiempo hay para reclamarlo una vez ha aparecido.</p>
+
+        <p>Ante una falta de conformidad, la clienta puede exigir la reparación o la sustitución de la prenda, sin coste y en un plazo razonable, y —cuando eso no resuelva el problema, no sea posible o resulte desproporcionado— la reducción del precio o la resolución del contrato con reembolso. Como las prendas son de edición limitada, puede ocurrir que no exista una unidad idéntica con la que sustituir la defectuosa; en ese caso quedan disponibles las demás medidas.</p>
+        <p>La garantía cubre las faltas de conformidad, no cualquier deterioro posterior. No alcanza al desgaste normal derivado del uso de la prenda, a los daños causados por un uso indebido, a los causados por no seguir las instrucciones de cuidado que acompañan a cada prenda, a las alteraciones o los arreglos realizados por terceros ni a los daños accidentales.</p>
+        <p>Esa lista describe hechos, y como tales han de acreditarse: durante los dos primeros años, sostener que un defecto obedece a cualquiera de esas circunstancias le corresponde probarlo a MÛRA, no a la clienta. Que MÛRA pueda invocarlas no depende de una cláusula, sino de un hecho comprobable: las instrucciones de cuidado de cada prenda están publicadas en su ficha antes de comprarla y se entregan además por escrito dentro del envío. El apartado 13 las desarrolla.</p>
+        <p>Para reclamar la garantía basta con escribir a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a> describiendo el defecto. Una prenda con un defecto no está sujeta al plazo de 15 días del apartado 08 ni a la condición de no haber sido utilizada del apartado 10: la garantía es otra cosa y se ejerce durante los tres años.</p>
+        <p>Más allá de esta garantía legal, MÛRA no ofrece ninguna garantía comercial adicional.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="cuidado">
+        <h2>Cuidado de la prenda</h2>
+        <p>Las instrucciones de cuidado de cada prenda de MÛRA están en dos sitios, y los dos importan. <strong>En la ficha de la prenda</strong>, publicadas antes de comprarla: es entonces cuando la información sirve para decidir, y quien quiera saber cómo se lava una prenda antes de pagarla puede hacerlo sin escribir a nadie. Y <strong>por escrito dentro del envío</strong>, junto a la prenda: es allí donde vuelven a hacer falta el día que hay que lavarla.</p>
+        <p>Seguirlas es lo que mantiene la prenda en las condiciones en las que salió del taller. No seguirlas es una de las circunstancias que el apartado 12 deja fuera de la garantía — y, dentro de los dos primeros años, una circunstancia que MÛRA tendría que acreditar.</p>
+        <p>Si las instrucciones de una prenda se hubieran extraviado, MÛRA se obliga a facilitarlas de nuevo, sin coste, a quien las solicite en <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a>. Ante cualquier duda sobre el cuidado de una prenda concreta, preguntar antes de lavarla es siempre la mejor decisión.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="valoraciones">
+        <h2>Valoraciones y opiniones</h2>
+        <p>MÛRA muestra en su web valoraciones y opiniones de clientas sobre sus prendas. La normativa de protección de las personas consumidoras obliga a informar de si esas valoraciones proceden de compradoras reales y de qué se hace para comprobarlo, y eso es lo que este apartado explica.</p>
+        <p>Las valoraciones que MÛRA publica provienen de clientas a las que se invita a opinar después de haber recibido su pedido. Son, por tanto, opiniones de compradoras reales, verificadas a través de su propia compra: MÛRA solicita la valoración a quien ha adquirido y recibido la prenda, no a personas que no la hayan comprado.</p>
+        <p>MÛRA no publica valoraciones no solicitadas ni procedentes de otras fuentes: todas las que se muestran corresponden a clientas cuya compra ha sido verificada. Ese es el único origen de las opiniones publicadas.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="atencion">
+        <h2>Atención al cliente y reclamaciones</h2>
+        <p>Toda consulta, queja o reclamación relativa a un pedido puede dirigirse a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a> o al teléfono <a href="tel:+34637681234">637 681 234</a>. Si se refiere a un pedido concreto, conviene indicar el número de pedido y describir lo ocurrido.</p>
+        <p>MÛRA se obliga a dejar constancia de toda reclamación que reciba, a facilitar a quien la presenta una referencia con la que poder seguirla y a resolverla en el plazo más breve posible. Con independencia de ello, la clienta puede dirigirse en cualquier momento a los organismos de consumo competentes en su lugar de residencia.</p>
+        <p>MÛRA dispone de hojas oficiales de quejas y reclamaciones de la Junta de Andalucía, que facilita a quien las solicite escribiendo a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a>. Al estar el establecimiento en Andalucía, toda empresa que venda allí debe disponer de ellas, también vendiendo únicamente por internet.</p>
+        <!-- PENDIENTE (material de web y facturas, no de este texto): el sistema
+             electronico Hoj@ de la Junta de Andalucia genera un cartel con codigo QR
+             que debe figurar en la web, en las facturas y en los documentos. Ese
+             cartel/QR depende de darse de alta en Hoj@ y Sonia aun no lo tiene. No se
+             marca como pendiente aqui porque no es texto de este documento: va en la
+             web y en las facturas. Colocarlo cuando este disponible. -->
+        <p>Los datos personales facilitados al plantear una consulta o una reclamación se tratan conforme a la <a href="https://www.stylebymura.com/politica-privacidad">Política de Privacidad</a>.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="extrajudicial">
+        <h2>Resolución extrajudicial de conflictos</h2>
+        <p>MÛRA no está adherida al Sistema Arbitral de Consumo ni a ninguna otra entidad de resolución alternativa de litigios. Si la clienta promueve un arbitraje de consumo, MÛRA no está obligada de antemano a aceptarlo. Sí se obliga, en cambio, a responder por escrito a toda propuesta de arbitraje que se le formule y a valorarla caso por caso.</p>
+        <p>Con independencia de esta vía, la clienta puede dirigirse en cualquier momento a los organismos de consumo competentes en su lugar de residencia.</p>
+      </section>
+
+      <section class="mura-legal-seccion" id="legislacion">
+        <h2>Ley aplicable y jurisdicción</h2>
+        <p>Estas Condiciones se rigen por la legislación española, y en particular por el texto refundido de la Ley General para la Defensa de los Consumidores y Usuarios y por la Ley 34/2002 de Servicios de la Sociedad de la Información y de Comercio Electrónico.</p>
+        <p>MÛRA vende también fuera de España, y conviene ser claro sobre lo que eso significa: la elección de la ley española <strong>no priva a la clienta de la protección que le otorguen las disposiciones imperativas de la ley del país en el que tenga su residencia habitual</strong>. Si esa ley le reconoce un derecho que estas Condiciones no recogen, ese derecho sigue siendo suyo.</p>
+        <p>Cualquier controversia derivada de la compra se somete a los juzgados y tribunales que resulten competentes conforme a la normativa de protección de personas consumidoras. Si alguna cláusula de este documento fuera declarada nula o inaplicable, las demás seguirán en vigor, y la nula se sustituirá por la previsión legal que corresponda.</p>
+      </section>
+
+      <section class="mura-legal-seccion mura-legal-anexo" id="formulario">
+        <h2>Anexo · Modelo de formulario de desistimiento</h2>
+        <p>MÛRA está obligada a poner este modelo a disposición de la clienta, y por eso figura aquí. <strong>La clienta no está obligada a utilizarlo.</strong> Para desistir basta con cualquier declaración inequívoca en ese sentido, y un correo a <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a> lo es. Su uso no condiciona el ejercicio del derecho de desistimiento ni el reembolso.</p>
+        <p>Solo debe cumplimentarse y enviarse si se desea desistir del contrato, dentro del plazo del apartado 08.</p>
+
+        <div class="mura-legal-nota">
+          <p class="mura-legal-nota-tit">Modelo de formulario de desistimiento</p>
+          <p>A la atención de Sara Domínguez Fernández, Calle Huerta Romana 1, 21660 Minas de Riotinto, Huelva, <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a>:</p>
+          <p>Por la presente le comunico que desisto de mi contrato de venta del siguiente bien:</p>
+          <p>
+            — Pedido el / recibido el<br />
+            — Nombre del consumidor<br />
+            — Domicilio del consumidor<br />
+            — Firma del consumidor (solo si se presenta en papel)<br />
+            — Fecha
+          </p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- CIERRE — firma tipografica a la izquierda, contacto a la derecha.
+       Identico en los cuatro documentos. Sin "Cancelar suscripcion":
+       eso es cosa de los emails, aqui no pinta nada. -->
+  <footer class="mura-legal-cierre">
+
+    <div class="mura-legal-cierre-fila">
+      <div class="mura-legal-marca-cierre">
+        <div class="mura-legal-firma">MÛRA</div>
+        <div class="mura-legal-firma-lema">Vestir con intención</div>
+      </div>
+      <div class="mura-legal-datos">
+        <p>
+          <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a><br />
+          <a href="tel:+34637681234">Tel. 637 681 234</a><br />
+          <a href="https://www.stylebymura.com/">www.stylebymura.com</a>
+        </p>
+      </div>
+    </div>
+
+    <p class="mura-legal-enlaces">
+      <a href="https://www.instagram.com/bymurastudio/">Instagram</a>
+      <span class="mura-legal-sep">·</span>
+      <a href="https://www.stylebymura.com/aviso-legal">Aviso Legal</a>
+      <span class="mura-legal-sep">·</span>
+      <a href="https://www.stylebymura.com/politica-privacidad">Política de Privacidad</a>
+      <span class="mura-legal-sep">·</span>
+      <a href="https://www.stylebymura.com/politica-cookies">Política de Cookies</a>
+    </p>
+
+  </footer>
+
+</div>
+
+<!-- ============================================================ -->
+<!--    HASTA AQUÍ                                              -->
+<!-- ============================================================ -->
+
+</body>
+</html>
