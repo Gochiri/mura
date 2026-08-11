@@ -340,3 +340,113 @@ caracteres ≤ 20 ✓); (c) los datos de recogida del código (Calle Arrayan 53,
 tel 637251657, equipomura@gmail.com) no coinciden con el domicilio fiscal de los
 documentos legales (Calle Huerta Romana 1, Minas de Riotinto) — confirmar con Sara
 cuál es la dirección real de recogida.
+
+## 14. Reunión 11/8 (noche) — webhook RESUELTO, consolidación 04a y estado real
+
+### 14.1 Resolución del misterio del webhook
+
+El POST de GHL **sí llega a n8n**: quedó demostrado en vivo. La cadena de fallos
+que lo ocultaba, por orden de descubrimiento:
+
+1. **El nodo Webhook de n8n estaba desconectado** (sección 13) → Sonia lo conectó
+   y activó el flujo en producción durante la llamada.
+2. **Un PUT por API dejó el 04a original en `draft` sin avisar** (bug conocido:
+   todo PUT debe re-incluir `status`) → un workflow en draft ejecuta cero pasos.
+   Se detectó y republicó, pero para entonces…
+3. …**el equipo había creado un "Copy - 04a" en la llamada** (al sospechar del
+   builder), le montaron trigger nuevo en UI, URL de producción y el webhook de
+   aviso a Sara por Telegram. Los arreglos hechos sobre el original NO se
+   guardaron ("Error: your version is updated"). **El Copy es el que funcionó.**
+
+### 14.2 Consolidación hecha esta noche (por API, con backups)
+
+- **Canónico nuevo: `6d73077b-c9ea-4c8d-b1d5-f3167ef2cc4f`** (el ex-Copy),
+  renombrado a `04a · Envio - webhook Nacex + watchdog`. Limpieza aplicada:
+  wait 10s (temporal de pruebas) → **3 minutos**, pasos DEBUG eliminados,
+  publicado, trigger de etapa activo. Conserva: URL producción
+  `/webhook/6b762db0-…`, watchdog 48h → `/webhook/watchdog-entrega`, y rama
+  "faltan datos" → notificación + devolver a 03 + **aviso Telegram**
+  `/webhook/db8ae6be-6621-4e34-9400-391e5d8c494c` (key `mensaje`).
+- **El original `c93013cf` quedó como `OLD 04a (borrar)` en draft** →
+  ⚠️ **German: borrarlo desde la UI** (no lo borro yo por seguridad). Mientras
+  esté en draft no dispara, pero mejor eliminarlo para que no confunda.
+- Tags `debug-01-entro-wf` y `debug-02-webhook-ok` borrados del location.
+- Backups: `datos/backups/copy04a_pre_consolidacion_20260811.json`,
+  `orig04a_pre_consolidacion_20260811.json`, `wf05_pre_cambios_20260811.json`.
+
+### 14.3 Cambios en "05 · Entrega - mover + email" (acordado en la reunión)
+
+Añadidos 2 pasos (publicado, v9): **quitar tag `pedido-enviado`** y **sacar al
+contacto del 04a** (`remove_from_workflow` → cancela el watchdog de 48h de un
+pedido ya entregado). El "poner entregado" no hace falta dentro: el tag
+`pedido-entregado` que añade n8n ES el trigger del 05.
+⚠️ `remove_from_workflow` montado por API sin ejemplo previo — **verificar en la
+prueba de mañana** que realmente expulsa al contacto (Enrollment History del 04a).
+
+### 14.4 Newsletter (acordado en la reunión)
+
+- Workflow nuevo **"Newsletter - tag + webhook a n8n"** (`b9a6577e`, en **draft**):
+  añade `newsletter-suscrita` (existente; en el mapa de Sonia figura como "NL") y
+  POST a **`https://n8n.letsbebanana.com/webhook/newsletter-mura`** (propuesta de
+  path — Sonia debe crear ese webhook en n8n o decir el suyo) con:
+  `contactId, nombre, apellidos, email, telefono, fecha_nacimiento, fecha_alta`.
+- **Falta (UI, no se puede por API):** completar el form "Opt-in Newsletter" con
+  los campos acordados — nombre, apellidos, email, teléfono, fecha de nacimiento y
+  **checkbox de consentimiento** con link a `/politica-de-privacidad` — crear el
+  trigger `form_submission` de ese form en este workflow, y publicarlo.
+
+### 14.5 Formularios pendientes (specs para UI — el builder de forms no es accesible por API)
+
+- **Devolución v2** (`HBK7tGDlcIFN0vaXoksg`): traducir labels al español:
+  First Name → **Nombre** · Last Name → **Apellidos** · Email → **Correo
+  electrónico** · Phone → **Teléfono** · (Address → Dirección · City → Población ·
+  Postal Code → Código postal, si aparecen) · botón Submit → **"Solicitar
+  devolución"**. Los 2 campos custom ya están en español.
+- **Experiencia MÛRA (Mail 06)**: spec completa en el doc del Drive
+  "NEW -- 04 · FORMULARIO DE EXPERIENCIA MÛRA (Mail 06)". Son 6 bloques con
+  **lógica condicional** ("¿Has comprado?" No → ocultar bloques 3-5), valoraciones
+  de estrellas y NPS 0-10 → construirlo como **Survey de GHL** (multi-paso con
+  conditional logic), no como Form simple. El email 07 tiene marcado "AÑADIR
+  ENLACE" para cuando exista la URL.
+- **Página Devoluciones**: añadir el form Devolución v2 (botón/página
+  `devoluciones-form`) — funnel builder, manual.
+
+### 14.6 Botón "Ver mi pedido" (emails 02/03) — investigación cerrada
+
+- El objeto Order de la API **no trae ninguna URL de cara al cliente** (ni recibo
+  ni página de pedido), y la vista Payments → Orders → View Order es **solo del
+  admin** (app.gohighlevel.com) — no sirve para el email de la clienta.
+- **Propuesta A (recomendada, cero riesgo):** activar los **recibos nativos**
+  (Settings → Payments → Receipts): GHL manda desglose del pedido automático, y el
+  botón del email 02/03 puede apuntar a la tienda o eliminarse.
+- **Propuesta B (si Sara quiere botón):** apuntar a la página de confirmación del
+  funnel con el order id (`https://stylebymura.com/order-confirmation?order_id=…`).
+  Requiere confirmar en la compra test de mañana (1) qué merge tag resuelve el id
+  en SP01 — candidatos: `{{order.id}}`, `{{payment.order_id}}` — y (2) que esa
+  página existe y acepta el parámetro.
+- Los cambios de Sonia en vivo (nº de pedido = `{{opportunity.name}}` en 02/03)
+  quedan **por verificar** con la compra test.
+
+### 14.7 Checklist para la sesión de mañana (12/8)
+
+1. Sonia llama a **Nacex → cuenta a producción** (bloqueante de la prueba real).
+2. German **borra `OLD 04a (borrar)`** en la UI.
+3. Prueba envío completa: mover pedido test a "04 Enviado" → POST (3 min) → Nacex
+   albarán/etiqueta/URL seguimiento → n8n escribe en GHL → tag `etiqueta-por-imprimir`
+   + `email-04-listo` → email 04. Verificar los DOS nodos de escritura de n8n
+   (contacto `{id, value}` vs oportunidad `{id, field_value}`).
+4. Prueba entrega: tag `pedido-entregado` → 05 mueve + email + quita
+   `pedido-enviado` + **sale del 04a** (verificar 14.3).
+5. Prueba devolución: rellenar Formulario Devolución v2 (Sonia busca por
+   **Opportunity Name**) — y de paso traducirlo (14.5).
+6. Compra test Stripe: verificar plantillas 02/03 (nº pedido) + merge tag del
+   order id (14.6-B) + si con los 2 triggers de SP01 se duplica la oportunidad
+   (sección 8.9a).
+7. **Instagram**: integración en GHL con login de Sara (2 clics, Settings →
+   Integrations).
+8. **Dirección de recogida Nacex**: confirmar con Sara (Lepe vs Minas de Riotinto).
+9. Newsletter: campos + trigger + publicar (14.4); Sonia monta el flujo n8n → Excel.
+10. Pendientes que siguen vivos: re-entrada `allowMultiple` en 02/03/08b/08c/journey
+    (sección 12), un solo trigger en SP01, tag re-add en compras repetidas (8.9b),
+    formulario Experiencia (14.5), Política de Cookies, Payment Mode → Live +
+    Stripe live de Sara, limpieza de datos de test (secciones 10 y 12).
