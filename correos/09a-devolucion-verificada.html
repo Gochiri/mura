@@ -8,7 +8,7 @@
   PREVISUALIZACION: Todo está correcto. Tu reembolso se procesará en breve.
   CLASE: transaccional  →  sin enlace de baja
   DISPARADOR: La devolucion ha sido recibida y revisada correctamente.
-  CTA: Ver mi devolución  →  {{contact.url_devolucion}}
+  CTA: Ver mi devolución  →  {{custom_values.url_devoluciones}}
   ============================================================
 -->
 <head>
@@ -103,7 +103,7 @@
       <td class="aire-lat" align="center" style="padding:44px 48px 0 48px;">
         <!--[if mso]>
         <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"
-                     href="{{contact.url_devolucion}}" style="height:52px; v-text-anchor:middle; width:220px;"
+                     href="{{custom_values.url_devoluciones}}" style="height:52px; v-text-anchor:middle; width:220px;"
                      arcsize="0%" stroke="f" fillcolor="#1E1B1A">
           <w:anchorlock/>
           <center style="color:#F6F2EB; font-family:Georgia, 'Times New Roman', serif; font-size:12px; letter-spacing:2px;">
@@ -112,7 +112,7 @@
         </v:roundrect>
         <![endif]-->
         <!--[if !mso]><!-->
-        <a href="{{contact.url_devolucion}}"
+        <a href="{{custom_values.url_devoluciones}}"
            style="display:inline-block; background-color:#1E1B1A; color:#F6F2EB; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; text-decoration:none; padding:17px 42px; mso-hide:all;">
           Ver mi devolución
         </a>

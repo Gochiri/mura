@@ -742,3 +742,37 @@ Cinco plantillas usan campos **que no existen en la cuenta**, así que salen vac
 `contact.url_devolucion` (6 usos), `contact.url_pieza` (3), `contact.url_feedback` (3),
 `contact.motivo_revision` y `contact.codigo_cumple`. Hay que decidir de dónde sale cada
 uno antes de lanzar.
+
+### 20b. Merge tags rotos de las plantillas — arreglados (13/8)
+
+Los cinco merge tags que apuntaban a campos inexistentes (salían vacíos en correos que
+ya se envían) y los dos placeholders literales `AÑADIR ENLACE`:
+
+| Plantilla | Antes | Ahora |
+|---|---|---|
+| 09a · devolución verificada, 10 · reembolso | `{{contact.url_devolucion}}` | `{{custom_values.url_devoluciones}}` (página de devoluciones, ya tenía valor) |
+| 06 · experiencia | `{{contact.url_feedback}}` | `{{custom_values.url_feedback}}` 🆕 vacío |
+| 07 · reseña | `AÑADIR ENLACE` (literal) | `{{custom_values.url_feedback}}` 🆕 vacío |
+| 18 · reseña Google | `AÑADIR ENLACE GOOGLE` (literal) | `{{custom_values.url_resena_google}}` 🆕 vacío |
+| 15 · reposición | `{{contact.url_pieza}}` | `{{custom_values.url_pieza}}` 🆕 vacío |
+| 09b · incidencia devolución | `{{contact.motivo_revision}}` | `{{opportunity.motivo_devolucion}}` (el campo que rellena Sara) |
+
+`contact.codigo_cumple` **no estaba roto**: solo aparecía dentro de un comentario del
+17 · cumpleaños como sugerencia; el código del cuerpo (`CONTIGOMURA10`) es fijo. Se le
+quitaron las llaves vivas a la nota, por lo mismo que en la sección 18.
+
+**Custom values nuevos, creados vacíos** — se rellenan una sola vez y arreglan todas
+las plantillas que los usan a la vez:
+
+- `url feedback` (`2lydcv75rCemIdPUmcf7`) → URL del formulario de experiencia (06 y 07)
+- `url resena google` (`jgROgNVr5KtNcrMZ4dio`) → enlace "escribir una reseña" de Google Business (18)
+- `url pieza` (`tlnOIT8yni1Ox7qeSZLo`) → URL de la prenda repuesta, se cambia por campaña (15)
+
+⚠️ **Mientras estén vacíos, esos botones no llevan a ningún sitio.** Afecta al **06,
+que está vivo dentro del Journey** — no debería salir hasta que exista el formulario.
+El 07, 15 y 18 no están montados como workflow todavía.
+
+Nota de arquitectura: todas las plantillas usan ya el mismo patrón —
+`{{custom_values.*}}` para lo que es de marca (una URL que se cambia en un sitio y se
+propaga a los 18 correos) y `{{contact.*}}` / `{{opportunity.*}}` solo para lo que es
+del cliente o del pedido.

@@ -1,0 +1,5 @@
+{
+ "url pieza": "{{ custom_values.url_pieza }}",
+ "url feedback": "{{ custom_values.url_feedback }}",
+ "url resena google": "{{ custom_values.url_resena_google }}"
+}
