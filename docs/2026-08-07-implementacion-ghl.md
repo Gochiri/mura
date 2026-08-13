@@ -626,3 +626,58 @@ tienda y quitar el "Ver mi pedido".
 
 También en 02: el nº de pedido pasó de `{{opportunity.id}}` a **`{{opportunity.name}}`**
 (el M1xxxxx del contador), alineado con lo que ya cambió Sonia en GHL.
+
+## 19. Confirmación de compra: por qué no caben número de pedido y productos en el mismo correo (13/8)
+
+**Diagnóstico cerrado con evidencia.** Se instrumentó SP01 con una notificación que
+imprimía ocho candidatos de merge tag y se hizo una compra real de test (pedido
+`6a7e4815…`, 22:41). **Los ocho salieron vacíos**:
+
+`{{order.id}}` · `{{order._id}}` · `{{order.order_id}}` · `{{order.order_url}}` ·
+`{{order.total}}` · `{{payment.order_id}}` · `{{payment.id}}` · `{{contact.order_id}}`
+
+Conclusión: **el contexto de workflow no ve la orden**. Los datos del pedido solo
+existen dentro de las plantillas de notificación de la tienda (Payments → Settings →
+Customer notifications), que es donde `{{order.order_url}}` sí resuelve. El campo
+`contact.order_id` está creado pero **nadie lo rellena** (verificado: contacto con
+tres pedidos reales y el campo vacío).
+
+**El segundo límite:** el bloque de carrito (fotos de prenda, subtotal, envío) también
+es exclusivo de las plantillas de tienda. Un correo enviado desde el workflow no puede
+mostrar lo comprado ni inyectándole la URL.
+
+**La cronología de una compra real deja el conflicto medido al segundo:**
+
+```
+22:41:25  pedido creado
+22:41:30  correo de tienda (plantilla MÛRA)      ← aún no existe la oportunidad
+22:41:32  correo de tienda (recibo nativo)
+22:41:34  oportunidad M100008 creada             ← aquí nace el número de pedido
+22:41:57  SMS del workflow, con M100008 ✓
+```
+
+El correo que sabe **qué** compró sale 4 segundos antes de que exista el número; el
+que sabe **el número** no puede mostrar la compra.
+
+**Restricción dura:** el formulario de devolución pide "Nº de pedido (lo encuentras en
+tu mail de confirmación)" y el 08a busca la oportunidad por ese nombre. Si la
+confirmación no lleva el M1xxxxx, la devolución se queda sin punto de entrada.
+
+### Opciones (pendiente de decisión de Sonia)
+
+1. **Dos correos con roles distintos** — tienda: recibo inmediato con productos y
+   botón funcionando; workflow: correo de marca con el M1xxxxx unos minutos después.
+   Sin dependencias, montable en el momento. Coste: dos correos por compra.
+2. **Uno solo, vía n8n** — webhook al inicio de SP01 → n8n hace
+   `GET /payments/orders?contactId=…&limit=1` (verificado que funciona y devuelve el
+   más reciente primero) → escribe la URL en un campo de contacto → el correo del
+   workflow sale con M y botón. Sin lista de productos; depende de que n8n responda
+   dentro de los ~20 s previos al envío.
+3. **Uno solo desde la tienda, sin número** — obliga a rediseñar el formulario de
+   devolución para no depender del número (buscar por email), ambiguo con varios
+   pedidos.
+
+**Estado mientras tanto:** el paso de email de SP01 quedó **desactivado**
+(`advanceCanvasMeta.isDisabled: true`, hecho en la llamada del 13/8), así que hoy la
+única confirmación sale de la tienda. ⚠️ **No lanzar sin resolver esto**: tal cual
+está, la clienta nunca recibe el M1xxxxx por correo y no podría pedir una devolución.
