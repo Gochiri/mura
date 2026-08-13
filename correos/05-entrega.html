@@ -4,11 +4,16 @@
   ============================================================
   MÛRA · 05 · ENTREGA
   ============================================================
-  ASUNTO: {{contact.first_name | default: "Hola"}}, ya está contigo.
+  ASUNTO: {{contact.first_name}}, ya está contigo.
   PREVISUALIZACION: Esperamos que la disfrutes durante mucho tiempo.
   CLASE: comercial  →  lleva enlace de baja
   DISPARADOR: Entrega confirmada.
   CTA: Descubrir colección  →  {{custom_values.url_coleccion}}
+
+  NOTA (13/8): el asunto llevaba contact.first_name con "| default: Hola". GHL
+  parsea Handlebars, NO Liquid: los filtros con "|" dan "Template Parser error".
+  Se dejo el merge tag pelado. Sin fallback posible; al ser correo post-compra,
+  first_name siempre viene relleno desde el checkout.
   ============================================================
 -->
 <head>

@@ -591,3 +591,38 @@ Backups: `datos/backups/sp01_pre_removeadd_20260811.json` y
 **Verificación pendiente (prueba real):** hacer **dos compras seguidas con el mismo
 contacto** y comprobar que la segunda recorre el ciclo entero — es el único escenario
 que no se ha probado nunca y el que rompía antes.
+
+## 18. Los merge tags de GHL no admiten filtros (13/8)
+
+Al guardar la plantilla 02 saltó `Template Parser error ... Expecting 'CLOSE'`. Causa:
+el asunto llevaba **`{{contact.first_name | default: "Hola"}}`**. **GHL parsea
+Handlebars, no Liquid**: la barra `|` con filtros (`default:`) no existe en su
+sintaxis y revienta el parser con el primer `{{ }}` que la lleve.
+
+Afectaba a **cuatro asuntos** (02, 03, 04, 05), no solo al que dio el error. Asuntos
+corregidos:
+
+- 02 · `{{contact.first_name}}, hemos recibido tu elección.`
+- 03 · `{{contact.first_name}}, estamos preparando tu MÛRA.`
+- 04 · `{{contact.first_name}}, tu MÛRA ya está en camino.`
+- 05 · `{{contact.first_name}}, ya está contigo.`
+
+**No hay fallback posible** en las plantillas de GHL. No es problema aquí: los cuatro
+son correos post-compra y el checkout exige nombre, así que `first_name` siempre
+viene relleno. Para correos de captación (newsletter) sí conviene un saludo que
+funcione sin nombre.
+
+⚠️ El parser lee **también los comentarios HTML**, así que ningún ejemplo de sintaxis
+rota puede quedar escrito con llaves vivas dentro de un `<!-- -->` (las notas de las
+plantillas se reescribieron sin llaves por eso).
+
+**Bug arrastrado en el mismo repaso:** el botón "Ver mi pedido" de 02 y 03 apuntaba a
+`{{contact.url_pedido}}`, un merge tag que **no existe** (ese campo de contacto no
+está creado), y la versión que se editó en GHL lo cambió a `{{order.order_url}}`, que
+tampoco existe — coincide con lo investigado en 14.6: la API de Orders no expone
+ninguna URL de cara a la clienta. Ahora apunta a `{{custom_values.url_home}}` como
+provisional. **Decisión pendiente con Sara:** recibos nativos de GHL, o botón a la
+tienda y quitar el "Ver mi pedido".
+
+También en 02: el nº de pedido pasó de `{{opportunity.id}}` a **`{{opportunity.name}}`**
+(el M1xxxxx del contador), alineado con lo que ya cambió Sonia en GHL.

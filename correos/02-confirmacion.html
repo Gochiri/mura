@@ -4,21 +4,25 @@
   ============================================================
   MÛRA · 02 · CONFIRMACION
   ============================================================
-  ASUNTO: {{contact.first_name | default: "Hola"}}, hemos recibido tu elección.
+  ASUNTO: {{contact.first_name}}, hemos recibido tu elección.
   PREVISUALIZACION: Gracias por confiar en MÛRA.
   CLASE: transaccional  →  sin enlace de baja
   DISPARADOR: Compra realizada.
-  CTA: Ver mi pedido  →  {{contact.url_pedido}}
+  CTA: Ver mi pedido  →  {{custom_values.url_home}}
 
   NOTA: el asunto original decia "Sonia hemos recibido tu eleccion".
   Se anadio la coma tras el nombre. Acordado con la clienta.
 
-  NOTA: el "| default: Hola" es el valor por defecto de GHL. Si la clienta tiene
-  nombre guardado sale "Sonia, hemos recibido tu eleccion."; si no, sale
-  "Hola, hemos recibido tu eleccion." Sin el default, un contacto sin nombre
-  recibiria ", hemos recibido tu eleccion." con la coma huerfana.
-  CONFIRMAR la sintaxis con un envio de prueba antes del primer envio real
-  (ver docs/variables-ghl.md).
+  NOTA (13/8): el filtro "| default: Hola" que llevaba el asunto NO funciona. GHL parsea
+  Handlebars, no Liquid, y rechaza los filtros con "Template Parser error". Se
+  quito de 02, 03, 04 y 05. Sin fallback posible: como estos cuatro correos son
+  post-compra y el checkout exige nombre, first_name siempre viene relleno.
+
+  NOTA (13/8): el boton apuntaba a contact.url_pedido, un merge tag que NO
+  existe (tampoco order.order_url). La API de Orders no expone ninguna URL de
+  cara a la clienta: la vista Payments > Orders es solo de admin. Provisionalmente
+  apunta a la home. Decision pendiente con Sara: activar los recibos nativos de
+  GHL o dejar el boton hacia la tienda (ver seccion 14.6 del doc de implementacion).
   ============================================================
 -->
 <head>
@@ -107,7 +111,7 @@
     <tr>
       <td class="aire-lat" align="center" style="padding:26px 48px 0 48px;">
         <p style="margin:0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:14px; font-weight:400; line-height:1.6; letter-spacing:1px; color:#8A7E71;">
-          Nº de pedido: <span style="color:#1E1B1A;">{{opportunity.id}}</span>
+          Nº de pedido: <span style="color:#1E1B1A;">{{opportunity.name}}</span>
         </p>
         <p style="margin:6px 0 0 0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:12px; font-weight:400; line-height:1.5; color:#8A7E71;">
           Guárdalo por si necesitas gestionar una devolución.
@@ -120,7 +124,7 @@
       <td class="aire-lat" align="center" style="padding:44px 48px 0 48px;">
         <!--[if mso]>
         <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"
-                     href="{{contact.url_pedido}}" style="height:52px; v-text-anchor:middle; width:200px;"
+                     href="{{custom_values.url_home}}" style="height:52px; v-text-anchor:middle; width:200px;"
                      arcsize="0%" stroke="f" fillcolor="#1E1B1A">
           <w:anchorlock/>
           <center style="color:#F6F2EB; font-family:Georgia, 'Times New Roman', serif; font-size:12px; letter-spacing:2px;">
@@ -129,7 +133,7 @@
         </v:roundrect>
         <![endif]-->
         <!--[if !mso]><!-->
-        <a href="{{contact.url_pedido}}"
+        <a href="{{custom_values.url_home}}"
            style="display:inline-block; background-color:#1E1B1A; color:#F6F2EB; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; text-decoration:none; padding:17px 42px; mso-hide:all;">
           Ver mi pedido
         </a>

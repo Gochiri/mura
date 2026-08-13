@@ -4,11 +4,16 @@
   ============================================================
   MÛRA · 04 · ENVIO
   ============================================================
-  ASUNTO: {{contact.first_name | default: "Hola"}}, tu MÛRA ya está en camino.
+  ASUNTO: {{contact.first_name}}, tu MÛRA ya está en camino.
   PREVISUALIZACION: Ya puedes seguir su recorrido.
   CLASE: transaccional  →  sin enlace de baja
   DISPARADOR: Pedido enviado.
   CTA: Seguir mi envío  →  {{contact.url_seguimiento}}
+
+  NOTA (13/8): el asunto llevaba contact.first_name con "| default: Hola". GHL
+  parsea Handlebars, NO Liquid: los filtros con "|" dan "Template Parser error".
+  Se dejo el merge tag pelado. Sin fallback posible; al ser correo post-compra,
+  first_name siempre viene relleno desde el checkout.
   ============================================================
 -->
 <head>
