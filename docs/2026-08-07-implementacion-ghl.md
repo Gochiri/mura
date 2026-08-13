@@ -681,3 +681,64 @@ confirmación no lleva el M1xxxxx, la devolución se queda sin punto de entrada.
 (`advanceCanvasMeta.isDisabled: true`, hecho en la llamada del 13/8), así que hoy la
 única confirmación sale de la tienda. ⚠️ **No lanzar sin resolver esto**: tal cual
 está, la clienta nunca recibe el M1xxxxx por correo y no podría pedir una devolución.
+
+## 20. Migración de campos de pedido a OPORTUNIDAD (13/8)
+
+La carpeta "MURA·Pedidos" tenía como campos **de contacto** datos que son de un
+pedido concreto — herencia del diseño de marzo, anterior a la decisión de "un pedido =
+una oportunidad". En un contacto con varios pedidos esos valores se pisan entre sí.
+
+**Rastreo previo** (los 18 workflows y las 18 plantillas de correo): de todos ellos,
+**solo 4 campos de contacto están vivos** — `url_seguimiento`, `url_etiqueta`,
+`albaran_nacex` y `url_etiqueta_devolucion`: los escribe n8n y los leen las
+plantillas. El resto no lo escribía ni lo leía nadie.
+
+**Migrados a oportunidad y borrados de contacto** (11 creados + 1 omitido):
+
+| Campo | fieldKey nuevo |
+|---|---|
+| Order ID | `opportunity.order_id` |
+| SKU comprado | `opportunity.sku_comprado` |
+| Categoría prenda (15 opciones) | `opportunity.categora_prenda` |
+| Estado pedido (5 opciones) | `opportunity.estado_pedido` |
+| Talla pedida (6 opciones) | `opportunity.talla_pedida` |
+| Color variante (25 opciones) | `opportunity.color_variante` |
+| Importe total | `opportunity.importe_total` |
+| Fecha pedido | `opportunity.fecha_pedido` |
+| Nº tracking | `opportunity.n_tracking` |
+| Transportista (2 opciones) | `opportunity.transportista` |
+| num pedido devolucion | `opportunity.num_pedido_devolucion` |
+
+Las listas de opciones se recrearon íntegras. **"numero pedido" no se recreó**: ya
+existe `opportunity.numero_de_pedido` y duplicarlo solo confundiría.
+
+También se corrigieron los dos campos de reembolso creados horas antes en el modelo
+equivocado → ahora `opportunity.importe_reembolsado` y `opportunity.fecha_reembolso`.
+
+Backups: `datos/backups/campos_contacto_migrados_20260813.json` (definiciones
+completas, con opciones) y `campos_oportunidad_nuevos_20260813.json` (IDs nuevos).
+
+### Qué queda en contacto, y por qué
+
+Correcto que sean de contacto: `talla_habitual`, `calificacin_clienta`,
+`n_total_compras`, `canal_origen`, comentario libre y las direcciones de facturación
+(las escribe el checkout). Y los dos campos que rellena el **formulario de devolución**
+(`n_de_pedido_lo_encuentras…` y `motivo_de_devolucin__cambio`): los formularios de GHL
+**no pueden escribir campos de oportunidad**, así que aterrizan en contacto y hay que
+copiarlos a la oportunidad después.
+
+### Pendiente: los 4 campos vivos
+
+`url_seguimiento`, `url_etiqueta`, `albaran_nacex` y `url_etiqueta_devolucion` siguen
+duplicados (contacto + oportunidad). Mover el uso real es un cambio **coordinado con
+Sonia**: ella escribe hoy en los de contacto, y además hay que meter un
+**Find Opportunity antes de los emails disparados por tag** (04b, 08b) o los merge
+tags de oportunidad saldrán vacíos. `peso` y `bultos` de contacto también quedan como
+sobras del cambio del 7/8.
+
+### ⚠️ Merge tags rotos detectados en el mismo rastreo
+
+Cinco plantillas usan campos **que no existen en la cuenta**, así que salen vacíos:
+`contact.url_devolucion` (6 usos), `contact.url_pieza` (3), `contact.url_feedback` (3),
+`contact.motivo_revision` y `contact.codigo_cumple`. Hay que decidir de dónde sale cada
+uno antes de lanzar.
