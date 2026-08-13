@@ -764,7 +764,14 @@ quitaron las llaves vivas a la nota, por lo mismo que en la sección 18.
 **Custom values nuevos, creados vacíos** — se rellenan una sola vez y arreglan todas
 las plantillas que los usan a la vez:
 
-- `url feedback` (`2lydcv75rCemIdPUmcf7`) → URL del formulario de experiencia (06 y 07)
+- `url feedback` (`2lydcv75rCemIdPUmcf7`) → **YA RELLENO (13/8)** con el formulario
+  *Encuesta Post-Compra* (`fvVToLx0e9pEjSRD6zq7`):
+  `https://api.leadconnectorhq.com/widget/form/fvVToLx0e9pEjSRD6zq7` — usado por 06 y 07.
+  Dos salvedades: (a) Sonia dio ese formulario por viejo en la llamada del 11/8 (es de
+  marzo) frente a la spec del Drive, mucho más rica (6 bloques, lógica condicional,
+  NPS) que pide un **Survey**; (b) **ningún workflow escucha sus envíos**, así que hoy
+  las respuestas no disparan nada ni ponen el tag `encuesta-completada`.
+  Si se acaba embebiendo en la web, basta cambiar el valor.
 - `url resena google` (`jgROgNVr5KtNcrMZ4dio`) → enlace "escribir una reseña" de Google Business (18)
 - `url pieza` (`tlnOIT8yni1Ox7qeSZLo`) → URL de la prenda repuesta, se cambia por campaña (15)
 
