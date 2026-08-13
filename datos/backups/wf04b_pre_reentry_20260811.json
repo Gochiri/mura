@@ -1,0 +1,91 @@
+{
+  "_id": "873e4590-a8ff-4675-a0cd-ec2cc17bcef6",
+  "locationId": "NxPF5fOicowujokEk5Hm",
+  "companyId": "5tNRocqWdcsz7Rii28bH",
+  "companyAge": 11,
+  "name": "04b · Email pedido enviado",
+  "status": "published",
+  "version": 10,
+  "dataVersion": 7,
+  "allowMultiple": false,
+  "timezone": "account",
+  "removeContactFromLastStep": true,
+  "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/873e4590-a8ff-4675-a0cd-ec2cc17bcef6/10",
+  "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F873e4590-a8ff-4675-a0cd-ec2cc17bcef6%2F10?alt=media&token=859876ca-9df9-4d72-8945-3d80101689b9",
+  "stopOnResponse": false,
+  "autoMarkAsRead": false,
+  "permission": 380,
+  "type": "workflow",
+  "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+  "createdAt": "2026-07-29T11:39:31.380Z",
+  "updatedAt": "2026-08-13T14:59:38.533Z",
+  "deleted": false,
+  "allowMultipleOpportunity": false,
+  "creationSource": "builder",
+  "isTriggerBucketMigrated": true,
+  "originType": "user",
+  "__v": 0,
+  "eventStartDate": null,
+  "window": null,
+  "workflowNote": null,
+  "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/873e4590-a8ff-4675-a0cd-ec2cc17bcef6/7",
+  "senderAddress": null,
+  "id": "873e4590-a8ff-4675-a0cd-ec2cc17bcef6",
+  "workflowData": {
+    "templates": [
+      {
+        "id": "889ec32a-66fd-4c8d-b111-4775304a45e0",
+        "order": 0,
+        "attributes": {
+          "fieldDefaults": {},
+          "trackingOptions": {
+            "hasTrackingLinks": false,
+            "hasUtmTracking": false,
+            "hasTags": false,
+            "sourceId": "873e4590-a8ff-4675-a0cd-ec2cc17bcef6:889ec32a-66fd-4c8d-b111-4775304a45e0"
+          },
+          "conditions": [],
+          "from_name": "{{location.name}}",
+          "from_email": "{{location.email}}",
+          "subject": "Tu pedido está en camino",
+          "preHeader": "",
+          "template_id": "6a6aa2ea4eb3e6c4d953427c",
+          "templatesource": "email-builder",
+          "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a6aa2ea4eb3e6c4d953427c%2Findex.html?alt=media&token=ab7d5b30-caf2-477c-b249-ede53b08815c",
+          "createdAt": "2026-02-18T21:29:05.556Z",
+          "updatedAt": "2026-02-18T21:29:07.182Z",
+          "templateCreationMode": "existing",
+          "attachments": []
+        },
+        "name": "Email",
+        "type": "email"
+      },
+      {
+        "id": "e0620543-d573-417e-a905-b416a77105f8",
+        "name": "Quitar tag pedido-en-preparacion",
+        "type": "remove_contact_tag",
+        "attributes": {
+          "tags": [
+            "pedido-en-preparacion"
+          ]
+        },
+        "order": 1
+      },
+      {
+        "id": "7b4fe5f4-0a8b-4693-a1fa-bb36c91c4359",
+        "name": "Tag pedido-enviado",
+        "type": "add_contact_tag",
+        "attributes": {
+          "tags": [
+            "pedido-enviado"
+          ]
+        },
+        "order": 2
+      }
+    ]
+  },
+  "permissionMeta": {
+    "canRead": true,
+    "canWrite": true
+  }
+}

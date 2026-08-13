@@ -531,3 +531,63 @@ Alternativa sin cifras: email 09A remitiendo al justificante que manda Stripe.
   configuración por usuario — la hace ella en su sesión.
 - **Dato de test corregido**: el CP del contacto de test era `B1646` (argentino) y por
   eso Nacex daba dirección inválida; Henry lo dejó en `28710` ✓ verificado.
+
+## 17. Compras repetidas — remove+add y re-entrada (11/8 noche)
+
+Cierra el pendiente 8.9b. Eran **dos bloqueos encadenados**, y arreglar uno solo no
+sirve de nada:
+
+**(a) Los tags se quedaban pegados.** Un trigger "tag added" solo dispara en la
+transición *no lo tiene → lo tiene*. En la segunda compra el contacto ya arrastraba
+`pedido-confirmado`, así que añadirlo era un no-op y el 02 nunca arrancaba.
+
+**(b) Ningún workflow del ciclo permitía re-entrada.** Verificado: todos tenían
+`allowMultiple = false` salvo SP01 — o sea que aunque el tag disparase, la clienta
+recurrente **no podía volver a inscribirse**. Incluido el **04a**: un segundo pedido
+movido a "04 Enviado" no habría pedido etiqueta a Nacex.
+
+### Lo aplicado
+
+**Re-entrada activada** (`allowMultiple` + `allowMultipleOpportunity` = true) en
+02, 03, 04a, 04b, 05, 08a, 08b, 08c. Todos siguen publicados y con su trigger activo.
+
+**Patrón remove+add en los dos tags de estado:**
+- `pedido-confirmado` → **SP01 lo quita como primer paso** y lo añade al final. Entre
+  medias hay 20 s + 10 min de espera, así que la quita y la puesta nunca se solapan
+  y el evento de alta siempre se emite.
+- `pedido-entregado` → lo pone n8n (no podemos quitarlo antes), así que **el 05 lo
+  consume**: espera **1 día** y lo quita. Se deja ese día para que Sara siga viendo
+  el pedido como entregado; pasado ese plazo la fuente de verdad es la etapa del
+  pipeline ("05 Entregado"), que no se borra.
+
+**Tags de señal** (pulsos que manda n8n, sin valor informativo para Sara): los
+consume el workflow que los escucha, para que el siguiente pedido vuelva a
+dispararlos — `email-04-listo` en el 04b, `email-08-listo` en el 08b,
+`devolucion-no-encontrada` en el 08c.
+
+### Decisión consciente: el Journey NO se repite
+
+`06-12 · Journey post-entrega` se queda con `allowMultiple = false` a propósito:
+pide reseña y manda "experiencia" / "hace tiempo", y repetir eso en cada pedido de
+una clienta recurrente es spam. Cada clienta lo recibe una vez. Si Sara lo quiere en
+cada compra, es cambiar ese flag.
+
+### Estado final del ciclo de tags
+
+| Workflow | Re-entrada | Tags |
+|---|---|---|
+| 01 · SP01 | ✅ | `−pedido-confirmado` … `+pedido-confirmado` |
+| 02 · Etiquetado | ✅ | `+compra-1` / `+compra-2` |
+| 03 · Preparación | ✅ | `+pedido-en-preparacion` |
+| 04a · Envío Nacex | ✅ | — |
+| 04b · Email enviado | ✅ | `−pedido-en-preparacion` `+pedido-enviado` `−email-04-listo` |
+| 05 · Entrega | ✅ | `−pedido-enviado` · sale del 04a · (1 día) `−pedido-entregado` |
+| 08a/b/c · Devolución | ✅ | `−email-08-listo` · `−devolucion-no-encontrada` |
+| Journey | ❌ a propósito | — |
+
+Backups: `datos/backups/sp01_pre_removeadd_20260811.json` y
+`wf{02,03,04a,04b,05,08a,08b,08c}_pre_reentry_20260811.json`.
+
+**Verificación pendiente (prueba real):** hacer **dos compras seguidas con el mismo
+contacto** y comprobar que la segunda recorre el ciclo entero — es el único escenario
+que no se ha probado nunca y el que rompía antes.
