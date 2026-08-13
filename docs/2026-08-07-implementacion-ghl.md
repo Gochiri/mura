@@ -385,15 +385,23 @@ prueba de mañana** que realmente expulsa al contacto (Enrollment History del 04
 
 ### 14.4 Newsletter (acordado en la reunión)
 
-- Workflow nuevo **"Newsletter - tag + webhook a n8n"** (`b9a6577e`, en **draft**):
-  añade `newsletter-suscrita` (existente; en el mapa de Sonia figura como "NL") y
-  POST a **`https://n8n.letsbebanana.com/webhook/newsletter-mura`** (propuesta de
-  path — Sonia debe crear ese webhook en n8n o decir el suyo) con:
-  `contactId, nombre, apellidos, email, telefono, fecha_nacimiento, fecha_alta`.
-- **Falta (UI, no se puede por API):** completar el form "Opt-in Newsletter" con
-  los campos acordados — nombre, apellidos, email, teléfono, fecha de nacimiento y
-  **checkbox de consentimiento** con link a `/politica-de-privacidad` — crear el
-  trigger `form_submission` de ese form en este workflow, y publicarlo.
+Ya existía el draft **`LS02 · Opt-in Newsletter Web`** (`f62a24a8`) con doble
+opt-in, email de bienvenida, tag `newsletter-suscrita` (el "NL" del mapa de Sonia),
+oportunidad en el pipeline de Leads y **el trigger del form ya configurado**
+(`Opt-in Newsletter`, `fmuHvvOjkGBAkPU2LTZN`, inactivo). Se le añadió el paso que
+pidió Sonia en vez de crear un workflow nuevo:
+
+- **Webhook al final de la rama confirmada** → POST a
+  `https://n8n.letsbebanana.com/webhook/newsletter-mura` (path propuesto; Sonia
+  crea ese webhook o dice el suyo) con `contactId, nombre, apellidos, email,
+  telefono, fecha_nacimiento, fecha_alta` → de ahí a su Excel.
+- Backup: `datos/backups/ls02_pre_webhook_20260811.json`.
+
+**Falta (UI, no se puede por API):** completar el form "Opt-in Newsletter" con los
+campos acordados — nombre, apellidos, email, teléfono, fecha de nacimiento y
+**checkbox de consentimiento** con link a la política de privacidad — activar el
+trigger y publicar LS02. Decidir también si se mantiene el doble opt-in (está
+montado pero no se habló en la reunión).
 
 ### 14.5 Formularios pendientes (specs para UI — el builder de forms no es accesible por API)
 
@@ -450,3 +458,76 @@ prueba de mañana** que realmente expulsa al contacto (Enrollment History del 04
     (sección 12), un solo trigger en SP01, tag re-add en compras repetidas (8.9b),
     formulario Experiencia (14.5), Política de Cookies, Payment Mode → Live +
     Stripe live de Sara, limpieza de datos de test (secciones 10 y 12).
+
+## 15. Coreografía de tags — cerrada (11/8 noche)
+
+El mapa de Sonia asigna un tag por fase para que **Sara sepa en qué punto está cada
+clienta buscando por tag** (las oportunidades muestran M1xxxxx, no el nombre). Al
+repasar la reunión contra la cuenta apareció un agujero: **nadie añadía
+`pedido-enviado`**, y la fase "preparación" no tenía tag. Es decir, el paso que se
+añadió al 05 estaba quitando un tag que nunca llegaba a ponerse, y Sara no tenía
+forma de ver qué pedidos estaban en tránsito. Corregido:
+
+| Fase | Workflow | Tags |
+|---|---|---|
+| Compra | 01 · SP01 | `+pedido-confirmado` |
+| Etiquetado | 02 | `+compra-1` / `+compra-2` |
+| Preparación | 03 | `+pedido-en-preparacion` 🆕 |
+| Envío | 04b | `−pedido-en-preparacion` 🆕 · `+pedido-enviado` 🆕 |
+| Entrega | 05 | `−pedido-enviado` · sale del 04a (mata el watchdog) |
+
+- Tag nuevo creado: **`pedido-en-preparacion`** (`tADzPMfituIfESK2oPK4`).
+- `pedido-entregado` lo sigue poniendo n8n — es el trigger del 05 y del Journey.
+- Backups: `datos/backups/wf03_pre_tags_20260811.json`, `wf04b_pre_tags_20260811.json`.
+
+⚠️ Interacción con el bug de compras repetidas (8.9b): en la segunda compra el tag ya
+está puesto y el trigger por tag no vuelve a saltar. Con esta coreografía el ciclo se
+autolimpia en parte (preparación y enviado se quitan solos), pero `pedido-confirmado`
+y `pedido-entregado` siguen quedándose pegados. Pendiente de decidir el patrón
+remove+add.
+
+**Pendiente aparte (no tocado a propósito):** las fases `experiencia` y `feedback` del
+mapa de Sonia viven en el Journey, que tiene gente inscrita — tocarlo puede reordenar
+las esperas. Se hace después del lanzamiento.
+
+## 16. Cabos sueltos de la reunión — resueltos
+
+### 16.1 "URL de la última colección" (pregunta de Sonia) — ya existía
+
+No hay que crear nada: el custom value **`url coleccion`** (`FBLfpmf7IrgXfx0qMHPR`)
+→ `https://www.stylebymura.com/coleccion` ya está, junto con `url home`,
+`url contacto`, `url devoluciones` y `url politica privacidad`. Los botones de los
+emails usan `{{custom_values.url_coleccion}}`; cuando Sara suba colección nueva se
+cambia **el valor en un sitio** y se actualizan todos los emails a la vez.
+→ Verificar en la UI que las plantillas usan la variable y no una URL escrita a mano
+(el HTML de las plantillas no es accesible por API).
+
+### 16.2 Mail 09A (reembolso) — datos disponibles y propuesta
+
+Investigado en la API de Payments: las transacciones traen `amount`, `currency`,
+`status`, **`amountRefunded`** y el `chargeSnapshot` completo de Stripe. Pero **no
+hay merge tag nativo de reembolso** para las plantillas de email, y GHL no ofrece un
+trigger "pago reembolsado" (el de pagos es `payment_received`).
+
+Preparado para la vía viable: creados dos campos de contacto —
+**`contact.importe_reembolsado`** (`cgEpYFfk2E5alcTA4vLn`, monetario) y
+**`contact.fecha_reembolso`** (`izCNoYCTgZjfYUhl9pDQ`, fecha).
+
+Flujo propuesto: Sara reembolsa en Stripe → n8n escucha `charge.refunded` (o lo hace
+en el mismo flujo de devolución) → escribe esos dos campos en el contacto y añade el
+tag que dispare el email 09A → la plantilla usa
+`{{contact.importe_reembolsado}}` y `{{contact.fecha_reembolso}}`.
+Alternativa sin cifras: email 09A remitiendo al justificante que manda Stripe.
+
+### 16.3 Otros detalles de la reunión
+
+- **Mail 07 (reseña)**: tiene un `AÑADIR ENLACE` pendiente → se rellena cuando exista
+  la URL del formulario de experiencia (depende de 14.5).
+- **Mail 15 (reposición)**: existe pero **no se usa por ahora** (decisión de Sonia).
+- **Watchdog 5A y devolución en n8n**: Sonia debe buscar por Opportunity **Name**, no
+  por Opportunity ID (lado n8n; el payload de GHL ya manda `numero_pedido`).
+- **Vista de oportunidades para Sara**: en Oportunidades → *Manage Fields* se pueden
+  mostrar hasta 7 columnas; añadir "Contact Name" para no ver solo M1xxxxx. Es
+  configuración por usuario — la hace ella en su sesión.
+- **Dato de test corregido**: el CP del contacto de test era `B1646` (argentino) y por
+  eso Nacex daba dirección inválida; Henry lo dejó en `28710` ✓ verificado.
