@@ -783,3 +783,28 @@ Nota de arquitectura: todas las plantillas usan ya el mismo patrón —
 `{{custom_values.*}}` para lo que es de marca (una URL que se cambia en un sitio y se
 propaga a los 18 correos) y `{{contact.*}}` / `{{opportunity.*}}` solo para lo que es
 del cliente o del pedido.
+
+## 21. Workflow "06b · Encuesta post-compra completada" (13/8)
+
+Hasta ahora la Encuesta Post-Compra (`fvVToLx0e9pEjSRD6zq7`) no la escuchaba nadie: la
+clienta respondía y no pasaba nada — ni tag, ni aviso. Montado el workflow que faltaba:
+
+**`06b · Encuesta post-compra completada`** (`94779fd6-15bb-4387-9af0-244409fcd671`),
+publicado y con re-entrada activada:
+
+1. Tag `encuesta-completada`
+2. Notificación interna: "La clienta {{contact.name}} ha respondido la encuesta
+   post-compra."
+
+⚠️ **FALTA EL TRIGGER — lo tiene que crear German en la UI.** Se reprodujo otra vez el
+fallo conocido de los triggers por API (sección 12): el POST devuelve un id, pero el
+PUT del workflow lo borra, y al recrearlo después el GET sigue devolviendo `[]` y el
+PUT sobre el trigger responde "Workflow not found". Son triggers fantasma.
+
+En la UI: abrir el workflow → **Add New Trigger → Form Submitted → Form is → "Encuesta
+Post-Compra"**. Nada más; los pasos ya están.
+
+**Cuando se migre al Survey del snapshot:** solo cambia el trigger (pasa a
+*Survey Submitted*), los dos pasos se quedan igual. Y si el Survey nuevo sustituye al
+formulario, hay que actualizar el custom value `url feedback` con la URL del Survey —
+los correos 06 y 07 la cogen de ahí y se arreglan solos.
