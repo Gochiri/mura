@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<!--
+  ============================================================
+  MÛRA · PÁGINA DE GRACIAS · FORMULARIO DE DEVOLUCIÓN
+  ============================================================
+  Se muestra cuando la clienta envía el formulario de solicitar
+  devolución (el destino del botón del email 16). Confirma la
+  recepción; justo después le llegará el email 08 ("Hemos
+  recibido tu solicitud de devolución") con los pasos.
+
+  URL PREVISTA: /gracias-devolucion
+
+  CÓMO SE USA EN GOHIGHLEVEL
+  1. Crea la página /gracias-devolucion en el sitio de GHL.
+  2. Copia SOLO lo que hay entre las dos marcas de COPIAR y
+     pégalo en un elemento de código personalizado.
+     El envoltorio <html>/<head>/<body> NO se copia: la página
+     de GHL ya tiene el suyo y anidarlos rompe el renderizado.
+  3. En el formulario de devolución, configura la acción "al
+     enviar" (On Submit) para redirigir a esta página.
+
+  CORREGIDO (14/8), dos bugs de la primera versión:
+
+  1. NO OCUPABA TODO EL ANCHO. El tema de GHL mete el bloque en
+     una columna centrada, así que el fondo arena se cortaba a
+     los lados. Se aplica la misma técnica de las páginas
+     legales: box-shadow de 100vmax + clip-path, que pinta el
+     fondo más allá del contenedor sin desplazar el contenido
+     ni provocar scroll horizontal.
+
+  2. EL BOTÓN SALÍA EN NEGRO SOBRE NEGRO, sin texto visible.
+     La regla `.mura-gracias a` (clase + elemento) tiene más
+     especificidad que `.mura-gracias-boton` (una sola clase),
+     así que el color oscuro del enlace ganaba al claro del
+     botón. Se sube la especificidad a `a.mura-gracias-boton`
+     y se marca !important para que tampoco lo pise el tema.
+
+  Sigue las reglas de las páginas de la web (como legal/):
+  sin imagen, sin JavaScript, sin border-radius, paleta y
+  tipografía de CLAUDE.md. El tono, sereno: sin exclamaciones.
+  ============================================================
+-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Solicitud recibida · MÛRA</title>
+</head>
+<body style="margin:0; background-color:#F6F2EB;">
+
+<!-- ============================================================ -->
+<!--    COPIAR DESDE AQUÍ PARA GHL                              -->
+<!-- ============================================================ -->
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+/* Todo va prefijado con .mura-gracias- para no chocar con el CSS del tema de GHL. */
+
+.mura-gracias,
+.mura-gracias *,
+.mura-gracias *::before,
+.mura-gracias *::after {
+  box-sizing: border-box;
+}
+
+.mura-gracias {
+  /* Full-bleed sin desplazar el contenido: el fondo se pinta más allá del contenedor */
+  width: 100%;
+  box-shadow: 0 0 0 100vmax #F6F2EB;
+  clip-path: inset(0 -100vmax);
+  background-color: #F6F2EB;
+  color: #1E1B1A;
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.9;
+  margin: 0;
+  padding: 0 32px 96px 32px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Blindaje: GHL inyecta su propia tipografía en los descendientes. */
+.mura-gracias h1,
+.mura-gracias p,
+.mura-gracias a,
+.mura-gracias span,
+.mura-gracias div {
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+}
+
+.mura-gracias a {
+  color: #1E1B1A;
+  text-decoration: none;
+  transition: color 240ms ease;
+}
+
+.mura-gracias a:focus-visible {
+  outline: 1px solid #1E1B1A;
+  outline-offset: 3px;
+}
+
+/* ---------- Cabecera — tipográfica, nunca imagen ---------- */
+
+.mura-gracias-cabecera {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 56px 0 0 0;
+  text-align: center;
+}
+
+.mura-gracias-marca {
+  display: inline-block;
+  font-size: 21px;
+  font-weight: 400;
+  letter-spacing: 8px;
+  color: #1E1B1A;
+  padding-left: 8px;
+}
+
+.mura-gracias-lema {
+  display: block;
+  font-size: 11px;
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: #8A7E71;
+  padding-top: 10px;
+}
+
+/* ---------- Mensaje ---------- */
+
+.mura-gracias-mensaje {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 120px 0 96px 0;
+  text-align: center;
+}
+
+.mura-gracias-kicker {
+  margin: 0 0 22px 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #8A7E71;
+}
+
+.mura-gracias-h1 {
+  margin: 0;
+  font-size: 46px;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+  color: #1E1B1A;
+}
+
+.mura-gracias-mensaje p {
+  margin: 28px 0 0 0;
+}
+
+/* ---------- Botón — el gesto del botón de los emails: negro, recto ----------
+   El selector lleva la etiqueta `a` delante a propósito: sin ella pierde
+   contra `.mura-gracias a` y el texto sale negro sobre negro. */
+
+.mura-gracias a.mura-gracias-boton {
+  display: inline-block;
+  margin-top: 56px;
+  background-color: #1E1B1A;
+  color: #F6F2EB !important;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 17px 42px;
+}
+
+.mura-gracias a.mura-gracias-boton:hover {
+  background-color: #3A3533;
+  color: #F6F2EB !important;
+}
+
+/* ---------- Cierre — firma a la izquierda, contacto a la derecha ---------- */
+
+.mura-gracias-cierre {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 0 0 0;
+  border-top: 1px solid #D9D1C5;
+}
+
+.mura-gracias-cierre-fila {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.mura-gracias-firma {
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: 7px;
+  color: #1E1B1A;
+}
+
+.mura-gracias-firma-lema {
+  font-size: 11px;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 2px;
+  color: #8A7E71;
+  padding-top: 8px;
+}
+
+.mura-gracias-marca-cierre {
+  flex: 0 0 auto;
+}
+
+.mura-gracias-datos {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.mura-gracias-datos p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 2;
+  color: #8A7E71;
+}
+
+.mura-gracias-cierre a {
+  color: #8A7E71;
+}
+
+.mura-gracias-cierre a:hover {
+  color: #1E1B1A;
+}
+
+.mura-gracias-enlaces {
+  margin: 40px 0 0 0;
+  font-size: 11px;
+  line-height: 2;
+  color: #8A7E71;
+}
+
+.mura-gracias-cierre .mura-gracias-enlaces a {
+  border-bottom: 1px solid #D9D1C5;
+}
+
+.mura-gracias-cierre .mura-gracias-enlaces a:hover {
+  border-bottom: 1px solid #1E1B1A;
+}
+
+.mura-gracias-sep {
+  color: #B5ADA2;
+  padding: 0 8px;
+}
+
+/* ---------- Móvil ---------- */
+
+@media screen and (max-width: 860px) {
+  .mura-gracias {
+    padding: 0 24px 72px 24px;
+    font-size: 16px;
+  }
+
+  .mura-gracias-mensaje {
+    padding: 80px 0 72px 0;
+  }
+
+  .mura-gracias-h1 {
+    font-size: 34px;
+  }
+
+  /* El cierre se apila: la firma arriba, los datos debajo, todo a la izquierda. */
+  .mura-gracias-cierre-fila {
+    display: block;
+  }
+
+  .mura-gracias-datos {
+    text-align: left;
+    padding-top: 36px;
+  }
+
+  .mura-gracias-enlaces {
+    margin-top: 36px;
+  }
+}
+
+/* ---------- Accesibilidad ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .mura-gracias a {
+    transition: none;
+  }
+}
+</style>
+
+<div class="mura-gracias">
+
+  <!-- CABECERA -->
+  <header class="mura-gracias-cabecera">
+    <a class="mura-gracias-marca" href="https://www.stylebymura.com/">MÛRA</a>
+    <span class="mura-gracias-lema">Vestir con intención</span>
+  </header>
+
+  <!-- MENSAJE -->
+  <main class="mura-gracias-mensaje">
+    <p class="mura-gracias-kicker">Devoluciones</p>
+    <h1 class="mura-gracias-h1">Hemos recibido tu solicitud.</h1>
+    <p>Gracias por confiar en MÛRA también en este momento. Tu solicitud de devolución ya está en nuestras manos.</p>
+    <p>En breve recibirás un correo con la confirmación y los siguientes pasos. No necesitas hacer nada más por ahora.</p>
+    <a class="mura-gracias-boton" href="https://www.stylebymura.com">Volver a la web</a>
+  </main>
+
+  <!-- CIERRE -->
+  <footer class="mura-gracias-cierre">
+
+    <div class="mura-gracias-cierre-fila">
+      <div class="mura-gracias-marca-cierre">
+        <div class="mura-gracias-firma">MÛRA</div>
+        <div class="mura-gracias-firma-lema">Vestir con intención</div>
+      </div>
+      <div class="mura-gracias-datos">
+        <p>
+          <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a><br />
+          <a href="tel:+34637681234">Tel. 637 681 234</a><br />
+          <a href="https://www.stylebymura.com/">www.stylebymura.com</a>
+        </p>
+      </div>
+    </div>
+
+    <p class="mura-gracias-enlaces">
+      <a href="https://www.instagram.com/bymurastudio/">Instagram</a>
+      <span class="mura-gracias-sep">·</span>
+      <a href="https://www.stylebymura.com/politica-privacidad">Política de Privacidad</a>
+    </p>
+
+  </footer>
+
+</div>
+
+<!-- ============================================================ -->
+<!--    HASTA AQUÍ                                              -->
+<!-- ============================================================ -->
+
+</body>
+</html>
