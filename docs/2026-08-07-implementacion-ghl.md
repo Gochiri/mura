@@ -874,3 +874,36 @@ n8n = sin cargo por ejecución).
 El 06b tiene un tercer paso (que no creé yo) con un webhook a n8n apuntando a
 **`/webhook-test/db8ae6be-…`**. Esa es la URL de pruebas de n8n, que solo escucha con el
 editor abierto: **en producción no llegará nunca**. Hay que cambiarla a `/webhook/`.
+
+## 23. Webhooks de aviso a Sara: tres bugs corregidos (14/8)
+
+Al cambiar el webhook del 06b apareció un patrón de errores de copiar/pegar en los
+avisos que se configuraron desde la UI durante la llamada del 13/8:
+
+1. **06b · Encuesta post-compra** — apuntaba a `/webhook-test/db8ae6be-…`, la URL de
+   pruebas de n8n, que solo escucha con el editor abierto. **En producción no habría
+   llegado nunca.** → cambiada a `/webhook/`.
+2. **06b, el mismo paso** — el `customData` llevaba el texto `"value: "` pegado delante:
+   a Sara le habría llegado *"value: La clienta … ha respondido la encuesta"*. → limpiado.
+3. **SP01 · Compra confirmada** — el mismo prefijo `"value: "` en su mensaje, y algo peor:
+   **el campo URL no contenía una URL**, sino el texto del aviso del 04a
+   (*"Falta el número de bultos y el peso total…"*). Ese webhook **nunca funcionó**:
+   hacía POST contra una dirección inválida, así que el aviso de "pedido nuevo listo
+   para preparar" no le ha llegado a Sara ni una vez. → URL corregida al webhook de
+   avisos (`/webhook/db8ae6be-…`, el mismo que usa el 04a) y mensaje limpio.
+
+Los tres webhooks de aviso quedan ahora consistentes, todos contra
+`https://n8n.letsbebanana.com/webhook/db8ae6be-6621-4e34-9400-391e5d8c494c` con una
+única clave `mensaje`:
+
+| Workflow | Mensaje |
+|---|---|
+| 01 · SP01 | Sara tienes un pedido nuevo de … listo para preparar y enviar |
+| 04a · Envío | Falta el número de bultos y el peso total del pedido … |
+| 06b · Encuesta | La clienta … ha respondido la encuesta post-compra |
+
+⚠️ **A confirmar con Sonia**: que ese path de n8n siga siendo el de avisos y que esté
+**activo en producción** (no basta con que exista el nodo; el flujo tiene que estar
+activado, igual que pasó con el 04a en la sección 13).
+
+Backup previo: `datos/backups/sp01_pre_fix_value_20260814.json`.
