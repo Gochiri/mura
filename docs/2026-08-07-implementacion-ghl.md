@@ -1034,3 +1034,94 @@ Para cualquier email que necesite un campo custom de oportunidad (URL de seguimi
 albarán, etiqueta de devolución, importe reembolsado…), **el workflow que lo envía
 debe dispararse por cambio de etapa**, no por tag ni por orden. Afecta al diseño de
 04b, 05, 08b y a los correos de reembolso que queden por montar.
+
+## 25. Sesión del 14/8 con Sonia — flujo completo probado
+
+Sesión larga (3h20) en la que se probó el ciclo entero con compras reales de test.
+Resultado: **el flujo de compra, preparación, envío y devolución funciona de punta a
+punta**. Lo que sigue es el estado real y lo que queda.
+
+### 25.1 Cómo quedó el order id (cerrado)
+
+El **Custom Webhook sí ejecuta** — mi conclusión anterior de que las premium actions
+no corrían era incorrecta: fallaban solo en las ejecuciones que yo lanzaba por API,
+no en las reales. Aun así la vía elegida fue la de n8n, sin cargo por ejecución:
+
+```
+SP01 → webhook a n8n (opportunityId, contactId, numero_pedido)
+     → n8n hace GET /payments/orders?contactId=…&limit=1
+     → n8n escribe opportunity.order_id con un PUT
+```
+
+Verificado en varias compras (M100012 en adelante). El Array formatter, el Custom
+Webhook y el campo `opportunity.order_array` que se usaron para investigar quedaron
+retirados de SP01.
+
+### 25.2 El reparto final de los correos
+
+| Correo | Lo manda | Lleva |
+|---|---|---|
+| Confirmación inmediata | **Notificación de la tienda** | productos, importes y su botón nativo · **sin** número de pedido |
+| Recibo / factura | Notificación de la tienda | PDF |
+| **03 · Preparación** | Workflow 03 (trigger de etapa) | **M1xxxxx + botón "Ver mi pedido" funcionando** |
+| 04 · Envío | 04b (trigger por tag) | link de seguimiento ✓ probado |
+| 08 · Etiqueta devolución | 08b (trigger por tag) | enlace de descarga de la etiqueta |
+
+El email 02 dentro de SP01 queda **pausado**: su función la cubren la notificación de
+la tienda (lo inmediato) y el correo 03 (el número de pedido).
+
+**Decisión de fondo, y es sensata:** la clienta recibe el número de pedido cuando el
+pedido pasa a preparación, no en el instante de comprar. Es el patrón habitual en
+comercio — primero el comprobante de la compra, después el número de pedido con el
+que gestionar devoluciones.
+
+### 25.3 Devolución, probada entera
+
+Formulario v2 → 08a → n8n → Nacex → email 08 con la etiqueta → tags. Funcionó. Dos
+correcciones hechas sobre la marcha:
+
+- El botón "Descargar etiqueta" apuntaba a `contact.url_etiqueta_devolucion`; pasa a
+  la versión de **oportunidad**.
+- **Los formularios de GHL solo escriben en campos de contacto.** El motivo de
+  devolución aterriza en contacto, así que se añadió **Find Opportunity + Update
+  Opportunity** en el flujo de devolución para copiarlo a `opportunity.motivo_devolucion`.
+
+### 25.4 ⚠️ Riesgo a vigilar cuando Sonia migre sus campos
+
+Sonia va a cambiar su escenario de n8n para escribir en los campos de **oportunidad**
+(albarán, url seguimiento, url etiqueta) en vez de los de contacto. Ojo con esto:
+
+**Los correos 04b y 08b se disparan por TAG.** Si sus plantillas pasan a usar
+`{{opportunity.url_seguimiento}}` y `{{opportunity.url_etiqueta_devolucion}}`, hay que
+**probar que resuelven con trigger de tag** antes de dar el cambio por bueno. Lo único
+verificado hasta ahora es que resuelven con trigger de **cambio de etapa** (correo 03)
+y que **no** resuelven con trigger de orden (correo 02). Con tag no hay evidencia.
+
+Si no resolvieran, la salida es cambiar el trigger de esos workflows a cambio de etapa,
+o dejar esos dos campos en contacto (se pisan entre pedidos, pero el correo sale al
+momento).
+
+### 25.5 Pendientes (llamada + mapa de Canva)
+
+**Nuestro (GHL):**
+- Aviso a Sara por Telegram con el enlace de la etiqueta lista para imprimir → va en
+  04a, entre el webhook a Nacex y la espera de 48h.
+- Coreografía de tags completa según el Canva: `experiencia`, `feedback`, `inactivo`,
+  `devolucion-activa`, `dev-ok`, `dev-x` — varios aún no existen.
+- Formulario **Newsletter**: nombre, apellidos, email, teléfono, **fecha de nacimiento**
+  (date picker, para el correo de cumpleaños) y checkbox de consentimiento → tag NL.
+- **Encuesta de experiencia** como Survey (spec del Drive) + webhook a Sonia para
+  volcarla a Google Sheets. GHL tiene integración nativa con Sheets; valorar cuál sale
+  más simple.
+- **Baja de newsletter**: formulario donde la clienta pone su email y se le quita el
+  tag NL.
+- Páginas de la tienda por maquetar: **cart, checkout y thank you**.
+  La de `/gracias-devolucion` ya está hecha (`legal/gracias-devolucion.html`).
+- Iterar el **Journey 06-12** para clientas recurrentes (hoy no distingue si ha habido
+  una segunda compra).
+
+**De Sara:** conectar Google My Business (reseñas) y las redes; rellenar peso y bultos
+en la oportunidad de cada pedido; actualizar el stock de la tienda.
+
+**De Sonia:** migrar sus campos a oportunidad (ver 25.4) y la parte de **reembolsos de
+Stripe** (correos 09a y 10), que sigue sin empezar.
