@@ -917,3 +917,56 @@ Los tres webhooks de aviso quedan ahora consistentes, todos contra
 activado, igual que pasó con el 04a en la sección 13).
 
 Backup previo: `datos/backups/sp01_pre_fix_value_20260814.json`.
+
+## 24. Order id: resuelto, y decisión final por n8n (14/8)
+
+**El order id SÍ es alcanzable desde el workflow.** La conclusión de la sección 19 era
+incompleta: probé merge tags, pero el dato se puede traer con una llamada. Recorrido:
+
+1. `Array formatter` (en la UI; internamente sigue siendo `array_functions`) tiene el
+   desplegable **vacío** con los triggers de orden → el trigger no aporta arrays.
+2. Un paso **Custom Webhook** llamando a la API de GHL sí trae el pedido. El botón
+   **Test devolvió el JSON completo** con `data[0]._id` → premium actions funcionan
+   (lo que no ejecuta son las inscripciones lanzadas por API, de ahí mi diagnóstico
+   equivocado de que "el paso premium se salta").
+3. Con el webhook delante, el desplegable del Array formatter **ya lista `data`** —
+   confirmando que solo lee arrays de respuestas de webhook, no de triggers.
+
+**Descartado por coste:** Custom Webhook es *premium action con cargo por ejecución*,
+y correría en **cada compra, para siempre**, por un dato que la plataforma ya tiene.
+Custom Code es premium también y tampoco escribe en campos (solo produce un valor que
+debe mapear un Update Opportunity). → **se hace desde n8n**, sin cargo.
+
+### Contrato para Sonia (verificado contra la cuenta)
+
+GHL enviará por webhook: `{opportunityId, contactId, numero_pedido}` — falta que Sonia
+dé el path y lo active en producción.
+
+**1) Recuperar el pedido:**
+```
+GET https://services.leadconnectorhq.com/payments/orders
+    ?altId=NxPF5fOicowujokEk5Hm&altType=location&contactId=<contactId>&limit=1
+Headers: Authorization: Bearer <PIT>  ·  Version: 2021-07-28
+```
+El id está en `data[0]._id`. Cuidado: sin `altId` responde **422**; con `contactId`
+vacío responde **200 con `{"data":[],"totalCount":0}`** (falso positivo) → cortar si
+`totalCount` es 0.
+
+**2) Guardarlo en la oportunidad:**
+```
+PUT https://services.leadconnectorhq.com/opportunities/<opportunityId>
+Body: {"customFields":[{"id":"Z5LD1nrSjYnZUGPXs3Pt","field_value":"<data[0]._id>"}]}
+```
+`Z5LD1nrSjYnZUGPXs3Pt` = campo **Order ID** de oportunidad. **Verificado**: PUT 200
+sobre M100012 y el campo quedó con `6a7f3d23ae0e1278af759cfd`. Usar `field_value`,
+no `value`.
+
+### Pendiente en SP01
+
+Quedan dentro, de las pruebas, un **Custom webhook** (premium, cobra en cada compra) y
+un **Array formatter**, más un Update Opportunity apuntando a `{{array_functions.1._id}}`
+que ya no llevará a ningún sitio. **Hay que quitarlos** al montar el webhook a n8n.
+Backup previo: `datos/backups/sp01_pre_webhook_n8n_20260814.json`.
+
+Sigue faltando **el patrón de la URL del pedido** para construir el botón "Ver mi
+pedido": tener el id no basta si no sabemos cómo se arma el enlace de cara a la clienta.
