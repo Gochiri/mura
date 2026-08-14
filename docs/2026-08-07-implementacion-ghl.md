@@ -961,12 +961,27 @@ Body: {"customFields":[{"id":"Z5LD1nrSjYnZUGPXs3Pt","field_value":"<data[0]._id>
 sobre M100012 y el campo quedó con `6a7f3d23ae0e1278af759cfd`. Usar `field_value`,
 no `value`.
 
-### Pendiente en SP01
+### Montado en SP01 (14/8)
 
-Quedan dentro, de las pruebas, un **Custom webhook** (premium, cobra en cada compra) y
-un **Array formatter**, más un Update Opportunity apuntando a `{{array_functions.1._id}}`
-que ya no llevará a ningún sitio. **Hay que quitarlos** al montar el webhook a n8n.
-Backup previo: `datos/backups/sp01_pre_webhook_n8n_20260814.json`.
+**Paso nuevo `Webhook n8n · guardar order id`**, dentro de la rama "Opportunity Found",
+justo detrás del Update que rellena `numero_de_pedido` (ahí la oportunidad ya existe y
+ya tiene nombre). POST a
+`https://n8n.letsbebanana.com/webhook/b03f0adf-70f8-41b7-923a-a2a0669355e3` con:
+
+```
+opportunityId  = {{opportunity.id}}
+contactId      = {{contact.id}}
+numero_pedido  = {{opportunity.name}}
+```
+
+**Retirados de SP01** los pasos de las pruebas: el **Custom webhook** (premium, habría
+cobrado en cada compra), el **Array formatter** y el Update Opportunity que apuntaba a
+`{{array_functions.1._id}}`, que quedaba huérfano. Verificado: **cero acciones premium**
+en el workflow. Backups: `sp01_pre_webhook_n8n_20260814.json` y
+`sp01_pre_webhook_n8n_v2.json`.
+
+⚠️ El campo `opportunity.order_array` (creado durante las pruebas) queda sin uso; borrar
+cuando esté confirmado el flujo.
 
 Sigue faltando **el patrón de la URL del pedido** para construir el botón "Ver mi
 pedido": tener el id no basta si no sabemos cómo se arma el enlace de cara a la clienta.
