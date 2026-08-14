@@ -78,10 +78,18 @@ llegaba todo vacío a n8n. Ahora lee los campos reales del formulario:
   (se envía como `opportunityId` **y** como `numero_pedido`)
 - motivo → `contact.motivo_de_devolucin__cambio`
 
-### 04 Email pedido enviado (`873e4590`)
+### 04 Email pedido enviado (`873e4590`) — ⛔ RETIRADO el 14/8
 Trigger: tag `email-04-listo`. Tenía la plantilla por defecto de barbería
-("Fresh Cuts… 💈"); ahora envía la plantilla **"04 · envío"** con asunto
-*"Tu pedido está en camino"*.
+("Fresh Cuts… 💈"); pasó a enviar la plantilla **"04 · envío"**.
+
+**Ya no se usa: sus tres pasos viven dentro del 04a** y este quedó como
+`OLD 04b (fusionado en 04a) - borrar`, despublicado.
+**Por qué se retiró:** disparaba **por tag**, y los campos custom de oportunidad
+solo resuelven con trigger de **cambio de etapa** (sección 24). Cuando n8n migró a
+escribir en la oportunidad, el enlace de seguimiento del correo se quedó leyendo el
+campo de contacto —que conservaba el valor de un pedido anterior— y mandaba a la
+clienta **al seguimiento equivocado**. Detalle completo en la sección 26.
+**No reactivarlo**: duplicaría el correo de envío.
 
 ### 05 · Email pedido entregado (`8e6ccd5a`)
 Antes: trigger por cambio de etapa (nunca dispararía, porque n8n deja de mover etapas).
@@ -580,7 +588,7 @@ cada compra, es cambiar ese flag.
 | 02 · Etiquetado | ✅ | `+compra-1` / `+compra-2` |
 | 03 · Preparación | ✅ | `+pedido-en-preparacion` |
 | 04a · Envío Nacex | ✅ | — |
-| 04b · Email enviado | ✅ | `−pedido-en-preparacion` `+pedido-enviado` `−email-04-listo` |
+| ~~04b · Email enviado~~ | — | retirado el 14/8; sus tags pasaron al 04a (secciones 4 y 26) |
 | 05 · Entrega | ✅ | `−pedido-enviado` · sale del 04a · (1 día) `−pedido-entregado` |
 | 08a/b/c · Devolución | ✅ | `−email-08-listo` · `−devolucion-no-encontrada` |
 | Journey | ❌ a propósito | — |
@@ -1064,7 +1072,7 @@ retirados de SP01.
 | Confirmación inmediata | **Notificación de la tienda** | productos, importes y su botón nativo · **sin** número de pedido |
 | Recibo / factura | Notificación de la tienda | PDF |
 | **03 · Preparación** | Workflow 03 (trigger de etapa) | **M1xxxxx + botón "Ver mi pedido" funcionando** |
-| 04 · Envío | 04b (trigger por tag) | link de seguimiento ✓ probado |
+| 04 · Envío | **04a**, rama "Nacex respondió" (era 04b, retirado el 14/8 — ver 26) | link de seguimiento |
 | 08 · Etiqueta devolución | 08b (trigger por tag) | enlace de descarga de la etiqueta |
 
 El email 02 dentro de SP01 queda **pausado**: su función la cubren la notificación de
