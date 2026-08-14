@@ -858,9 +858,19 @@ bancos resultaron inválidos:
 - Dentro del 06b no se pudo distinguir la ejecución, porque sus pasos ya habían dejado
   huella en pruebas anteriores.
 
-**Pendiente:** usar el botón **Test/Run** del propio paso en la UI, que ejecuta y muestra
-la respuesta con el mapeo de campos — es la vía para saber si las premium actions están
-habilitadas y cómo se llama la variable del order id.
+**Prueba concluyente (14/8, segundo intento):** se repitió el experimento **dentro del
+06b**, que sí tiene trigger creado en UI, y con un **tag testigo nuevo** delante del paso
+premium para poder distinguir la ejecución. Resultado inequívoco: **el tag testigo se
+puso al instante y el custom webhook no hizo nada** en 100 segundos. O sea, el workflow
+recorrió sus pasos y **el paso premium se saltó en silencio**.
+
+Quedan dos explicaciones posibles, y ninguna se puede distinguir desde la API: que las
+premium actions no estén habilitadas/facturables en la subcuenta, o que el runtime pida
+algo que la UI añade y no está en el JSON que se lee.
+
+**Único camino que queda:** el botón **Test/Run** del paso en la UI, que ejecuta y
+devuelve la respuesta o el error concreto (incluido un aviso de premium no habilitada,
+si es el caso).
 
 ### ⚠️ Es una *premium action* con cargo por ejecución
 
