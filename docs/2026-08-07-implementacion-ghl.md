@@ -808,3 +808,69 @@ Post-Compra"**. Nada más; los pasos ya están.
 *Survey Submitted*), los dos pasos se quedan igual. Y si el Survey nuevo sustituye al
 formulario, hay que actualizar el custom value `url feedback` con la URL del Survey —
 los correos 06 y 07 la cogen de ahí y se arreglan solos.
+
+## 22. Custom Webhook: esquema resuelto, ejecución sin confirmar (14/8)
+
+Intento de sacar el order id **sin n8n**, haciendo que GHL se llame a sí misma:
+un paso Custom Webhook en SP01 → `GET /payments/orders?contactId={{contact.id}}&limit=1`
+→ el `_id` de la orden queda disponible para construir el botón "Ver mi pedido".
+
+### Por qué Array formatter no servía
+
+Se probó primero la vía de Array Functions/Array formatter (en esta versión la UI la
+llama **Array formatter**; el tipo interno sigue siendo `array_functions`). Dentro de
+SP01, con sus triggers de orden, el desplegable de campo de array sale
+**"No options available"** → el trigger no aporta arrays, así que no hay `line_items`
+que recorrer. Coherente con la sonda de merge tags de la sección 19.
+
+### Esquema canónico de `custom_webhook` (leído de un paso creado en la UI)
+
+```json
+{
+  "type": "custom_webhook",
+  "attributes": {
+    "event": "GET", "method": "GET", "url": "...",
+    "body": {"contentType": "application/json", "rawData": "...", "keyValueData": []},
+    "headers": [{"key": "...", "value": "..."}],
+    "parameters": [],
+    "authorization": {"type": "NONE", "data": null},
+    "saveResponse": false,
+    "webhookResponse": {"selectedContact": ""}
+  }
+}
+```
+
+Claves que no se pueden adivinar: **`authorization` es obligatorio** — si falta, la UI
+casca con *"Cannot read properties of undefined (reading 'type')"* al abrir el paso;
+`body` es un **objeto**, no un string; los query params van en **`parameters`**, no
+pegados a la URL; y **`saveResponse: true`** es lo que expone la respuesta a los pasos
+siguientes. El validador del PUT **no comprueba este tipo de paso**, así que acepta
+cualquier basura sin error: no sirve como oráculo.
+
+### Lo que quedó sin demostrar
+
+Con el esquema correcto, el paso **no ejecutó** en dos bancos de prueba. Pero ambos
+bancos resultaron inválidos:
+
+- Un workflow creado por API **sin ningún trigger no se ejecuta nunca**, ni con
+  inscripción manual — ahí no corrió ni un `add_contact_tag`. Hallazgo útil por sí solo:
+  para probar pasos hace falta un workflow con trigger creado en la UI.
+- Dentro del 06b no se pudo distinguir la ejecución, porque sus pasos ya habían dejado
+  huella en pruebas anteriores.
+
+**Pendiente:** usar el botón **Test/Run** del propio paso en la UI, que ejecuta y muestra
+la respuesta con el mapeo de campos — es la vía para saber si las premium actions están
+habilitadas y cómo se llama la variable del order id.
+
+### ⚠️ Es una *premium action* con cargo por ejecución
+
+Correría **en cada compra, indefinidamente**, solo para recuperar un dato que la
+plataforma ya tiene. Antes de montarlo en SP01 hay que mirar cuánto cobra GHL por
+ejecución y comparar con las alternativas de la sección 19 (dos correos = coste cero;
+n8n = sin cargo por ejecución).
+
+### Hallazgo colateral: webhook mal apuntado en el 06b
+
+El 06b tiene un tercer paso (que no creé yo) con un webhook a n8n apuntando a
+**`/webhook-test/db8ae6be-…`**. Esa es la URL de pruebas de n8n, que solo escucha con el
+editor abierto: **en producción no llegará nunca**. Hay que cambiarla a `/webhook/`.
