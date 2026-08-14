@@ -1125,3 +1125,43 @@ en la oportunidad de cada pedido; actualizar el stock de la tienda.
 
 **De Sonia:** migrar sus campos a oportunidad (ver 25.4) y la parte de **reembolsos de
 Stripe** (correos 09a y 10), que sigue sin empezar.
+
+## 26. Fusión del 04b dentro del 04a (14/8)
+
+El correo de envío se enviaba desde **04b**, disparado por el tag `email-04-listo`.
+Dos problemas encadenados obligaban a moverlo:
+
+1. **n8n ya escribe en los campos de oportunidad** (verificado: M100015 tiene
+   `opp.albaran`, `opp.url_etiqueta` y `opp.url_seguimiento`), pero la plantilla leía
+   `{{contact.url_seguimiento}}`, y el contacto conservaba el valor de una prueba
+   anterior. El correo no salía vacío: **salía con el seguimiento de otro pedido**,
+   que es peor porque aparenta funcionar.
+2. Cambiar la plantilla a `{{opportunity.url_seguimiento}}` no bastaba: 04b disparaba
+   **por tag**, y ahí no está verificado que resuelvan los campos custom de oportunidad
+   (sección 24).
+
+**Solución:** los tres pasos del 04b pasan al 04a, que dispara por cambio de etapa.
+Estructura de la rama "datos completos":
+
+```
+webhook Nacex → wait 1 min → Telegram etiqueta → quitar tag preparación
+  → ¿opportunity.url_seguimiento contiene "http"?
+       SÍ → Email 04 → +pedido-enviado → −email-04-listo → wait 48h → watchdog
+       NO → Telegram: "Nacex no ha devuelto el seguimiento del pedido X.
+                       El correo de envío NO se ha mandado."
+```
+
+El **guard** sustituye a la garantía que daba el tag: antes, `email-04-listo` avisaba
+de que Nacex ya había respondido; ahora se comprueba el dato directamente, así que un
+retraso de Nacex no manda un correo con el enlace vacío — avisa a Sara.
+
+- **04b** queda renombrado `OLD 04b (fusionado en 04a) - borrar` y **despublicado**.
+  Borrarlo en la UI cuando esté verificado.
+- La plantilla `correos/04-envio.html` pasa a `{{opportunity.url_seguimiento}}`
+  (hay que pegarla también en GHL).
+- Backups: `wf04a_pre_fusion.json`, `wf04b_pre_fusion.json`.
+
+⚠️ **Pendiente de verificar con una prueba real**: el operador `contains` del guard.
+Si no fuera válido en este modelo, la rama SÍ no se cumpliría nunca y el correo dejaría
+de enviarse en silencio — con aviso de Telegram, eso sí. **Primera prueba de envío:
+comprobar que llega el correo 04**, no solo el aviso de la etiqueta.

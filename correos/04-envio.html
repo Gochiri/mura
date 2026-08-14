@@ -8,12 +8,19 @@
   PREVISUALIZACION: Ya puedes seguir su recorrido.
   CLASE: transaccional  →  sin enlace de baja
   DISPARADOR: Pedido enviado.
-  CTA: Seguir mi envío  →  {{contact.url_seguimiento}}
+  CTA: Seguir mi envío  →  {{opportunity.url_seguimiento}}
 
   NOTA (13/8): el asunto llevaba contact.first_name con "| default: Hola". GHL
   parsea Handlebars, NO Liquid: los filtros con "|" dan "Template Parser error".
   Se dejo el merge tag pelado. Sin fallback posible; al ser correo post-compra,
   first_name siempre viene relleno desde el checkout.
+
+  NOTA (14/8): el correo pasa a enviarse desde el 04a (rama "Nacex respondio"),
+  no desde el 04b, que queda fusionado. Motivo: 04a dispara por cambio de etapa
+  y ahi SI resuelven los campos custom de oportunidad; el 04b disparaba por tag,
+  donde no esta verificado que resuelvan. Por eso el enlace usa ahora
+  opportunity.url_seguimiento en vez del de contacto, que ademas conservaba el
+  valor de un pedido anterior y llevaba al seguimiento equivocado.
   ============================================================
 -->
 <head>
@@ -103,7 +110,7 @@
       <td class="aire-lat" align="center" style="padding:44px 48px 0 48px;">
         <!--[if mso]>
         <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"
-                     href="{{contact.url_seguimiento}}" style="height:52px; v-text-anchor:middle; width:210px;"
+                     href="{{opportunity.url_seguimiento}}" style="height:52px; v-text-anchor:middle; width:210px;"
                      arcsize="0%" stroke="f" fillcolor="#1E1B1A">
           <w:anchorlock/>
           <center style="color:#F6F2EB; font-family:Georgia, 'Times New Roman', serif; font-size:12px; letter-spacing:2px;">
@@ -112,7 +119,7 @@
         </v:roundrect>
         <![endif]-->
         <!--[if !mso]><!-->
-        <a href="{{contact.url_seguimiento}}"
+        <a href="{{opportunity.url_seguimiento}}"
            style="display:inline-block; background-color:#1E1B1A; color:#F6F2EB; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; text-decoration:none; padding:17px 42px; mso-hide:all;">
           Seguir mi envío
         </a>
