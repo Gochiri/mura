@@ -985,3 +985,52 @@ cuando esté confirmado el flujo.
 
 Sigue faltando **el patrón de la URL del pedido** para construir el botón "Ver mi
 pedido": tener el id no basta si no sabemos cómo se arma el enlace de cara a la clienta.
+
+## 24. RESUELTO: dónde resuelven los campos custom de oportunidad (14/8)
+
+Cierra el bloqueo de las secciones 19 y 22. La arquitectura final del correo de compra:
+
+```
+Compra  →  notificación nativa de la tienda  (inmediata, con productos,
+                                               fotos y su botón nativo)
+        →  SP01: contador, oportunidad M1xxxxx, webhook a n8n, SMS,
+                 notificación a Sara, mover a "03 En Preparación"
+        →  03 · Email preparación  (trigger: cambio de etapa)
+                 ↑ AQUÍ sí resuelven los campos custom de la oportunidad
+```
+
+### El hallazgo
+
+**Los campos custom de oportunidad solo resuelven en un email cuando el workflow
+se dispara por cambio de etapa.** Con el trigger de orden/pago, aunque el workflow
+haga Find Opportunity, el contexto que llega al renderizador es parcial: probado en
+un envío real, `{{opportunity.name}}` resolvía (salía M100014) pero
+`{{opportunity.order_id}}` no. La diferencia es que `name` es propiedad nativa y
+`order_id` es campo custom.
+
+**Y cuando un merge tag no resuelve dentro de un `href`, GHL borra el enlace entero**,
+no lo deja truncado. Por eso el botón salía con `href=""` y el navegador daba
+NXDOMAIN con la barra vacía — lo que despistó hacia el rastreo de clics y hacia la
+carrera con n8n, que no eran la causa.
+
+### Estado de los pasos
+
+- **SP01**: el paso de email queda **desactivado** a propósito — la confirmación la
+  manda la tienda. El resto de SP01 sigue igual, incluido el webhook a n8n que
+  rellena `opportunity.order_id`.
+- **03 · Email preparación**: envía la plantilla "03 · preparación" y añade el tag
+  `pedido-en-preparacion`. Trigger `pipeline_stage_updated` activo.
+
+### Consecuencia para la devolución
+
+El número de pedido **sí llega a la clienta**: en el correo 03, unos diez minutos
+después de la compra (SP01 mueve a "03 En Preparación" tras su espera). Eso levanta
+el bloqueo de lanzamiento anotado en la sección 19 — el formulario de devolución
+pide ese número y la clienta ya lo tiene por correo.
+
+### Regla general a recordar
+
+Para cualquier email que necesite un campo custom de oportunidad (URL de seguimiento,
+albarán, etiqueta de devolución, importe reembolsado…), **el workflow que lo envía
+debe dispararse por cambio de etapa**, no por tag ni por orden. Afecta al diseño de
+04b, 05, 08b y a los correos de reembolso que queden por montar.
