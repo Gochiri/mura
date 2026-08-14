@@ -24,9 +24,17 @@
   contact.url_pedido ni order.order_url existen como merge tag; ese id es la
   unica via. Ver seccion 22 del doc de implementacion.
 
-  NOTA (14/8): el rastreo de clics de ese paso de email quedo DESACTIVADO. Con
-  el activado, GHL reescribe los enlaces por su dominio de tracking y el href
-  salia vacio cuando la URL lleva un merge tag.
+  NOTA (14/8): el rastreo de clics de ese paso de email quedo DESACTIVADO, pero
+  NO era la causa del enlace vacio.
+
+  NOTA (14/8) — CAUSA REAL: en el correo enviado, {{opportunity.name}} resuelve
+  (sale M100014) pero {{opportunity.order_id}} NO, y cuando GHL no puede resolver
+  un tag dentro de un href borra el enlace ENTERO (por eso salia "" y no la URL
+  truncada). La diferencia: name es propiedad nativa, order_id es campo custom.
+  Comprobar en el editor que sintaxis genera el selector para un custom field de
+  oportunidad. Plan B: que n8n escriba la URL completa en contact.url_pedido
+  (Bn7HvsQdC1jEXVIamxO0) y usar {{contact.url_pedido}} en el boton, que es lo que
+  ya funciona en el correo 04 con contact.url_seguimiento.
   ============================================================
 -->
 <head>
