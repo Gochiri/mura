@@ -1185,8 +1185,30 @@ captura — el widget acompaña el envío con `x-turnstile-non-interactive-wait-
 actual manda esas cabeceras con valores medidos de verdad, y si aun así el
 challenge invisible es rechazado, reintenta UNA vez con la clave visible
 (`0x4AAAAAACDfuwSBQ2sYO1VD`) mostrando el recuadro de verificación sobre el botón.
-Pendiente: envío real de confirmación, y conectar el trigger "form submitted" →
-LS02 y publicarlo.
+El cuarto intento (cabeceras + fallback visible) tampoco entró — el contenedor del
+challenge visible además quedó mal colocado y no se veía. **Decisión final: el envío
+va por n8n.** Todo apunta a que el backend valida el dominio donde se generó el
+token de Turnstile y solo acepta los suyos; sin documentación, ese muro no se salta
+limpio, y la casa ya vive en n8n (Nacex, order_id).
+
+Arquitectura definitiva (sección `tienda/newsletter-home.html` +
+`tienda/n8n-newsletter-workflow.json` para importar):
+
+```
+home → POST urlencoded a n8n /webhook/newsletter-mura (llave estática k)
+  → n8n: IF llave+email → POST /contacts/upsert (nombre, apellidos, email,
+    teléfono, dateOfBirth ESTÁNDAR de contacto) → POST /contacts/{id}/tags ['nl']
+```
+
+Consecuencias: el **LS02 pasa a disparar por tag añadido `nl`** (no "form
+submitted"); no hay rastro en Forms → Submissions — el rastro es el contacto y su
+tag; el formulario Opt-in de GHL queda sin uso (sus dos checkboxes SMS en inglés
+pueden borrarse sin más). La fecha va al campo estándar `dateOfBirth` del contacto,
+mejor aún para el correo de cumpleaños que el custom del formulario.
+
+Pendiente: importar el workflow en n8n (pegar el PIT en los dos nodos HTTP,
+activar), pegar la sección nueva en Home, cambiar el trigger del LS02 a tag `nl` y
+publicarlo, y un envío de prueba — el contacto y el tag se verifican por API.
 
 ## 26. Fusión del 04b dentro del 04a (14/8)
 

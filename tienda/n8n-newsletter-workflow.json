@@ -1,0 +1,121 @@
+{
+  "name": "Newsletter MURA - alta desde la home",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "newsletter-mura",
+        "responseMode": "lastNode",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "id": "aa000001-0000-4000-8000-000000000001",
+      "name": "Webhook newsletter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.body.k }}",
+              "rightValue": "mura-nl-2026",
+              "operator": { "type": "string", "operation": "equals" }
+            },
+            {
+              "id": "c2",
+              "leftValue": "={{ $json.body.email }}",
+              "rightValue": "@",
+              "operator": { "type": "string", "operation": "contains" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [220, 0],
+      "id": "aa000001-0000-4000-8000-000000000002",
+      "name": "Llave y email validos"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/contacts/upsert",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer PEGAR_AQUI_EL_PIT" },
+            { "name": "Version", "value": "2021-07-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ locationId: 'NxPF5fOicowujokEk5Hm', email: $json.body.email, firstName: $json.body.first_name || '', lastName: $json.body.last_name || '', phone: $json.body.phone || '', dateOfBirth: $json.body.fecha || undefined, source: 'newsletter-home' }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, -80],
+      "id": "aa000001-0000-4000-8000-000000000003",
+      "name": "Upsert contacto GHL"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://services.leadconnectorhq.com/contacts/{{ $json.contact.id }}/tags",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer PEGAR_AQUI_EL_PIT" },
+            { "name": "Version", "value": "2021-07-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ tags: ['nl'] }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, -80],
+      "id": "aa000001-0000-4000-8000-000000000004",
+      "name": "Tag nl"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "ok1", "name": "ok", "value": true, "type": "boolean" }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [880, -80],
+      "id": "aa000001-0000-4000-8000-000000000005",
+      "name": "Respuesta ok"
+    }
+  ],
+  "connections": {
+    "Webhook newsletter": { "main": [[{ "node": "Llave y email validos", "type": "main", "index": 0 }]] },
+    "Llave y email validos": { "main": [[{ "node": "Upsert contacto GHL", "type": "main", "index": 0 }], []] },
+    "Upsert contacto GHL": { "main": [[{ "node": "Tag nl", "type": "main", "index": 0 }]] },
+    "Tag nl": { "main": [[{ "node": "Respuesta ok", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}
