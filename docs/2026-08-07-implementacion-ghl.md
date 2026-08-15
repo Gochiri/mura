@@ -1155,11 +1155,24 @@ la encuesta (0 submissions, a ciegas) aplicada al revés.
 - Verificado en render: validaciones (email, teléfono, RGPD), payload correcto,
   estado de éxito con el formulario bloqueado, estado de error con reintento.
 
-⚠️ **El primer envío real es la verificación del endpoint.** Cloudflare bloquea
-`/forms/submit` desde la IP del entorno de desarrollo (es un endpoint público de
-envíos; desde el navegador de una visitante pasa). German lo prueba en la web y se
-comprueba por API que aparece en Submissions. Pendiente además: German conecta el
-trigger "form submitted" del LS02 en la UI y lo publica.
+**El primer envío real falló, y la captura de Network del widget oficial dio el
+contrato de verdad** (envío del widget: 201 Created, verificado en Submissions por
+API). Dos diferencias con lo que yo suponía:
+
+1. **La fecha de cumpleaños no es `date_of_birth`**: el builder creó un campo
+   custom y el widget envía su id, `FGlE7RDztTinTetJGgWI`.
+2. **La estructura es otra**: un único part `formData` con TODO el JSON dentro
+   (campos + `sessionId` + `eventData` + `Timezone` + `timeSpent`), más los parts
+   `locationId`, `formId` y `turnstileNonInteractiveToken`, contra
+   `/forms/submit?formId=…&locationId=…`. Y `access-control-allow-origin: *`,
+   así que CORS nunca fue el problema.
+
+El script quedó reescrito calcando ese contrato, con Turnstile invisible integrado
+(la site key `0x4AAAAAACCpVlau-4k7cJ33` sale de la config pública del propio sitio;
+si no carga, envía sin token). Si un envío falla, el detalle queda en la consola con
+el prefijo "MURA newsletter". Verificado en render: payload idéntico al capturado.
+Pendiente: segundo envío real de German, y conectar el trigger "form submitted" →
+LS02 y publicarlo.
 
 ## 26. Fusión del 04b dentro del 04a (14/8)
 
