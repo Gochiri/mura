@@ -1407,6 +1407,54 @@ página por página, y basta olvidar una para que diverjan. Convendría moverlo 
 Tracking Code global —donde ya vive `tienda/codigo-global-tienda.js`— y dejar en
 cada página solo su HTML.
 
+### 27.7 El CSS se mueve al Tracking Code global (15/8)
+
+El bloque `.mura-*` estaba **copiado dentro del código de cada página**. Dos
+consecuencias: en el carrito viajaban reglas de `.mura-grid`, `.mura-card`,
+`.mura-filtros` y `.mura-acc` que allí no pintan nada, y cualquier retoque de marca
+había que repetirlo página por página — basta olvidar una para que diverjan sin que
+nadie se entere. De hecho ya había divergido: existían **dos cabeceras distintas**,
+la `.mura-nav` de las páginas propias y una `.mura-nav-inject` con su propio CSS
+para las de tienda, con el menú en otro orden y sin contador de carrito.
+
+`tienda/codigo-global-tienda.js` queda ahora en cinco partes:
+
+| | Qué | Dónde corre |
+|---|---|---|
+| 1 | sistema de diseño `.mura-*` | **todas** las páginas |
+| 2 | `/cart` → `/carrito` | solo `/cart` |
+| 3 | CSS que pisa la tienda de GHL | solo páginas de tienda |
+| 4 | cabecera inyectada | solo páginas de tienda |
+| 5 | contador del carrito | **todas** las páginas |
+
+Las partes 1 y 5 van **fuera** del guardia de rutas. Aplicar el sistema en todo el
+sitio es seguro porque va todo prefijado: solo toca elementos que llevan esas
+clases, y esas las ponemos nosotros.
+
+`.mura-nav-inject` desaparece: la cabecera de las páginas de tienda usa ahora las
+mismas clases que la del resto, así que hay **una sola** cabecera que mantener, y de
+paso las páginas de tienda ganan el contador de carrito que no tenían.
+
+**La migración se puede hacer poco a poco.** Mientras una página conserve su copia
+del CSS las reglas están duplicadas pero son idénticas, así que no rompe nada. Se
+pega primero el global y luego se van vaciando páginas una a una, borrando solo su
+bloque `<style>…</style>` y dejando el HTML. Llevan copia propia:
+`/carrito` (ya hecha) · `/prendas` · `/producto` · `/colecciones` · `/novedades` ·
+`/home` · `/mura` · `/contacto` · `/devoluciones` · `/gracias`.
+
+⚠️ **No borrar el `<style>` de una página sin haber pegado antes el global**, o esa
+página se queda en crudo.
+
+**Bug encontrado al renderizar el resultado.** En el checkout los enlaces de la
+cabecera salían subrayados y en `/carrito` no: `.mura a { text-decoration: none }`
+cuelga de `.mura`, y en las páginas propias la cabecera va dentro de
+`<div class="mura">` mientras que en las de tienda la insertamos suelta en el
+`<body>`. Se añaden reglas `.mura-nav a` que no dependen del contenedor.
+
+Verificado en Chromium con `/carrito` sirviendo **solo** el CSS del global: fondo,
+tipografías, cabecera sticky, stepper, botón, total y contador idénticos a antes, y
+en `/checkout` se inyectan las dos hojas (`sistema` + `tienda`) sin errores.
+
 ### 27.4 Y la página de gracias va en `/thank-you`, no en `/gracias`
 
 Existen las dos y se prestan a confusión. El ajuste `saleAction` del checkout es

@@ -4,8 +4,16 @@
   ============================================================
   Sustituye el contenido del elemento de código personalizado
   `custom-code-DN8OVgnA5P` de la página "carrito"
-  (qsUEwHJLz2xiSulCN5jD). Se pega ENTERO, tal cual, desde
-  <style> hasta el último </div>.
+  (qsUEwHJLz2xiSulCN5jD). Se pega entero, tal cual.
+
+  ⚠️ YA NO LLEVA CSS, Y ESO ES A PROPÓSITO.
+  El sistema de diseño `.mura-*` se movió el 15/8 al Tracking Code
+  global (`tienda/codigo-global-tienda.js`), porque estaba copiado
+  en cada página y cualquier retoque de marca había que repetirlo
+  una por una. Aquí queda solo el HTML y la lógica del carrito.
+
+  Antes de pegar esto hay que tener pegado el código global, o la
+  página se queda en crudo.
 
   QUÉ ES ESTA PÁGINA
   No es el elemento Cart de GoHighLevel. Es un carrito escrito a
@@ -19,103 +27,30 @@
   la talla. El checkout lee ese mismo almacén, y por eso lo que se
   toca aquí llega al pago.
 
-  CAMBIOS DEL 15/8 (lo demás queda byte a byte igual)
+  CAMBIOS DEL 15/8
 
   1. CANTIDAD. Antes la clienta solo podía quitar la pieza: para
      pasar de 2 a 1 tenía que borrarla y volver al producto a
-     añadirla otra vez. Era la única ventaja que tenía el carrito
-     de GHL sobre este. Ahora hay un control − n + .
-     Bajar de 1 quita la pieza, que es lo que la clienta espera.
+     añadirla otra vez. Ahora hay un control − n + .
+     Bajar de 1 quita la pieza, que es lo que se espera.
 
-  2. FORMATO DE IMPORTES. El total se calculaba multiplicando y se
-     imprimía tal cual. Con precios no enteros eso enseña la coma
+  2. FORMATO DE IMPORTES. El precio de línea se calculaba
+     multiplicando y se imprimía en crudo, así que asomaba la coma
      flotante de JavaScript: 79,95 × 3 salía como
      "239.85000000000002 €". Ahora pasa por `fmt()`, que redondea a
      céntimos y escribe en español — coma decimal y el € detrás—,
      sin decimales cuando el importe es redondo, como estaba.
 
   3. PRECIO POR UNIDAD. Con dos unidades solo se veía "318 €" y no
-     de dónde salía. Cuando hay más de una, se añade "159 € / ud.".
+     de dónde salía. Cuando hay más de una, añade "159 € / ud.".
 
   ⚠️ EL STOCK NO SE VALIDA AQUÍ. El botón + sube la cantidad sin
   preguntar cuántas quedan: el almacén del carrito no guarda el
-  stock. Si el elemento de GHL lo comprobaba, esa red se pierde al
-  usar esta página. Quien lo corta de verdad es el checkout al
-  cobrar. Si empiezan a colarse pedidos por encima de stock, hay
-  que traerse el dato del producto a esta página.
+  stock. Quien lo corta de verdad es el checkout al cobrar. Si
+  empiezan a colarse pedidos por encima de stock, hay que traerse
+  el dato del producto a esta página.
   ============================================================
 -->
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Jost:wght@200;300;400&display=swap');
-.mura, .mura *, .mura *::before, .mura *::after { box-sizing: border-box; }
-.mura { background: #F0EEE8; color: #1D1B18; font-family: 'Jost', sans-serif; font-weight: 300; margin: 0; -webkit-font-smoothing: antialiased; }
-.mura h1, .mura h2, .mura h3, .mura .mura-serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; margin: 0; }
-.mura p { margin: 0; }
-.mura a { color: #1D1B18; text-decoration: none; transition: color .2s ease; }
-.mura a:hover { color: #6E6A61; }
-.mura-nav { position: sticky; top: 0; z-index: 50; background: rgba(240,238,232,.92); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(29,27,24,.08); }
-.mura-nav-in { max-width: 1440px; margin: 0 auto; padding: 0 clamp(20px,4vw,56px); height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.mura-logo { font-family: 'Cormorant Garamond', serif !important; font-size: 26px; font-weight: 500; letter-spacing: .32em; color: #1D1B18 !important; }
-.mura-links { display: flex; align-items: center; gap: clamp(16px,2.6vw,38px); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; }
-.mura-links a { color: #55524B; }
-.mura-links a.on { color: #1D1B18; }
-.mura-cart { font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: #1D1B18 !important; white-space: nowrap; }
-@media (max-width: 719px) { .mura-links a.hm { display: none; } }
-/* A 390 px el "CARRITO (n)" se salía y lo cortaba el overflow-x:clip de .mura:
-   quedaba "CARRITO (5" sin cerrar el paréntesis. Se aprieta la cabecera. */
-@media (max-width: 440px) {
-  .mura-nav-in { padding: 0 16px; gap: 12px; }
-  .mura-logo { font-size: 21px; letter-spacing: .24em; }
-  .mura-links { gap: 14px; font-size: 10.5px; }
-  .mura-cart { font-size: 10.5px; letter-spacing: .12em; }
-}
-.mura-label { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: #8A857B; }
-.mura-btn { display: flex; align-items: center; justify-content: center; height: 56px; border: none; background: #1D1B18; color: #F0EEE8 !important; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .24em; text-transform: uppercase; font-weight: 300; transition: background .2s ease; width: 100%; }
-.mura-btn:hover { background: #38352F; }
-.mura-link-u { font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase; border-bottom: 1px solid #1D1B18; padding-bottom: 6px; }
-.mura-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px,100%),1fr)); gap: clamp(28px,3vw,44px) clamp(14px,1.6vw,22px); }
-.mura-card { display: flex; flex-direction: column; gap: 16px; color: #1D1B18 !important; }
-.mura-card-img { position: relative; aspect-ratio: 3/4; background: #E3DFD6; overflow: hidden; }
-.mura-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.mura-badge { position: absolute; top: 14px; left: 14px; background: rgba(240,238,232,.92); padding: 6px 12px; font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; }
-.mura-card-name { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 500; text-align: center; }
-.mura-card-price { font-size: 12px; letter-spacing: .14em; color: #55524B; text-align: center; }
-.mura-foot { border-top: 1px solid rgba(29,27,24,.12); }
-.mura-foot-in { max-width: 1440px; margin: 0 auto; padding: clamp(70px,8vw,110px) clamp(20px,4vw,56px) 30px; }
-.mura-foot-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: clamp(36px,5vw,72px); }
-.mura-foot-h { font-size: 11px; letter-spacing: .28em; text-transform: uppercase; font-weight: 400; margin-bottom: 18px; }
-.mura-foot-c { display: flex; flex-direction: column; gap: 12px; font-size: 13px; }
-.mura-foot-c a { color: #55524B; }
-.mura-foot-c a:hover { color: #1D1B18; }
-.mura-filtros { display: flex; justify-content: center; gap: clamp(18px,3vw,36px); flex-wrap: wrap; padding: 0 20px clamp(36px,4vw,56px); }
-.mura-filtros button { border: none; background: transparent; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase; font-weight: 300; color: #8A857B; padding: 10px 2px 8px; border-bottom: 1px solid transparent; }
-.mura-filtros button.on { color: #1D1B18; border-bottom-color: #1D1B18; }
-.mura-talla { min-width: 52px; height: 48px; padding: 0 14px; border: 1px solid rgba(29,27,24,.25); background: transparent; color: #1D1B18; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .14em; font-weight: 300; }
-.mura-talla.on { border-color: #1D1B18; background: #1D1B18; color: #F0EEE8; }
-.mura-talla:disabled { color: #B9B4A9; text-decoration: line-through; cursor: default; }
-.mura-acc { border-bottom: 1px solid rgba(29,27,24,.14); }
-.mura-acc > button { width: 100%; display: flex; justify-content: space-between; align-items: center; border: none; background: transparent; cursor: pointer; padding: 20px 2px; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; font-weight: 300; color: #1D1B18; }
-.mura-acc > div { display: none; padding: 0 2px 24px; font-size: 13.5px; line-height: 2; color: #55524B; white-space: pre-line; }
-.mura-acc.open > div { display: block; }
-
-/* full-bleed dentro del contenedor de GHL */
-.mura { width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); overflow-x: clip; }
-
-/* ---- Control de cantidad del carrito (15/8) ----
-   Hereda el gesto de .mura-talla: cuadrado, recto, borde fino. */
-.mura-qty { display: flex; align-items: center; border: 1px solid rgba(29,27,24,.25); height: 40px; }
-.mura-qty button { width: 38px; height: 100%; border: none; background: transparent; cursor: pointer; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 300; line-height: 1; transition: background .2s ease; }
-.mura-qty button:hover { background: rgba(29,27,24,.06); }
-.mura-qty span { min-width: 34px; text-align: center; font-size: 13px; letter-spacing: .08em; }
-.mura-quitar { border: none; background: transparent; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; font-weight: 300; color: #8A857B; padding: 0; }
-.mura-quitar:hover { color: #1D1B18; }
-.mura-linea { display: flex; gap: 16px; align-items: center; }
-.mura-linea-acc { display: flex; align-items: center; gap: clamp(14px,2vw,26px); }
-@media (max-width: 560px) {
-  .mura-linea { flex-wrap: wrap; }
-  .mura-linea-acc { width: 100%; justify-content: space-between; padding-left: 88px; }
-}
-</style>
 <div class="mura">
 <nav class="mura-nav"><div class="mura-nav-in">
 <a href="/" class="mura-logo">MÛRA</a>
