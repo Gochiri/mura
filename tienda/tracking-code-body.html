@@ -166,14 +166,25 @@
 
   var CARRITO_KEY = 'cart_details_rlc7iAyGF4U1nfwAJOJQ';
 
+  /* ⚠️ Solo escribe si el valor CAMBIÓ. No es una optimización: esta función
+     se llama desde un MutationObserver, y asignar textContent cuenta como
+     mutación aunque el texto sea el mismo — sin el guard, el observer se
+     dispara a sí mismo en bucle infinito y congela la página. Reproducido
+     el 15/8 en Chromium: una sola mutación ajena bastaba para colgarla. */
   function pintarContador() {
     var n = 0;
     try {
       var d = JSON.parse(localStorage.getItem(CARRITO_KEY) || '{"products":[]}');
       n = (d.products || []).reduce(function (a, x) { return a + (x.quantity || 0); }, 0);
     } catch (e) { n = 0; }
-    document.querySelectorAll('.mura-cart-n').forEach(function (e) { e.textContent = n; });
-    document.querySelectorAll('.mura-cart-w').forEach(function (e) { e.style.display = n > 0 ? 'inline' : 'none'; });
+    var txt = String(n);
+    document.querySelectorAll('.mura-cart-n').forEach(function (e) {
+      if (e.textContent !== txt) e.textContent = txt;
+    });
+    var disp = n > 0 ? 'inline' : 'none';
+    document.querySelectorAll('.mura-cart-w').forEach(function (e) {
+      if (e.style.display !== disp) e.style.display = disp;
+    });
   }
 
   /* ============================================================
