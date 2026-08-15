@@ -1195,6 +1195,28 @@ Backup previo: `datos/backups/wf04a_pre_orden_email_20260815.json`.
 *dónde* quedan enganchados. El builder los dibuja anidados y el fallo no se ve: el
 workflow se ejecuta sin error, simplemente el correo llega dos días tarde o no llega.
 
-⚠️ **Pendiente de verificar con la prueba real**: que llegue **el correo 04**, no solo
-el aviso de Telegram de la etiqueta, y que el botón lleve al seguimiento **de ese**
-pedido (comprobarlo leyendo el mensaje enviado, no el borrador de la plantilla).
+### 26.2 Prueba de envío del 15/8 — ✅ correcta de punta a punta
+
+Pedido **M100014** (`2gAUMOyW6C9xX68KP4zb`), movido a "04 Enviado" por API a las
+15:32:04 UTC. Se le pusieron antes `peso = 0.8` y `bultos = 1`, que estaban vacíos —
+sin ellos el flujo se va por la rama de error y la prueba no vale — y se dejó
+`url_seguimiento` **vacío a propósito**, para que el guard tuviera que pasar porque
+n8n lo escribiera de verdad y no por un resto de otro pedido.
+
+| Hora UTC | Qué pasó |
+|---|---|
+| 15:32:04 | cambio de etapa → dispara el trigger |
+| 15:35:13 | n8n escribe en la oportunidad: albarán `10530257`, PDF de etiqueta y URL de seguimiento |
+| 15:36:19 | **sale el correo 04** |
+| 15:36:21 | `+pedido-enviado`, `−pedido-en-preparacion` |
+
+Leído el **mensaje enviado** (no la plantilla): el botón lleva a
+`https://www.nacex.es/seguimientoDetalle.do?agencia_origen=2111&numero_albaran=10530257`
+— el albarán **de este** pedido. Cero `href` vacíos y cero merge tags sin resolver, que
+eran los dos síntomas de los fallos anteriores (secciones 20b y 24).
+
+Queda confirmada la regla de la sección 24 en su versión útil: **con trigger de cambio
+de etapa, los campos custom de oportunidad sí resuelven dentro del correo.**
+
+⚠️ M100014 se queda en "04 Enviado" con el `wait 48h` corriendo. Si no se mueve a "05
+Entregado" antes del 17/8, saltará el watchdog con un aviso de un pedido de prueba.
