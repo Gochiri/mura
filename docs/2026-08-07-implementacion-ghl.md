@@ -1122,8 +1122,8 @@ momento).
   más simple.
 - **Baja de newsletter**: formulario donde la clienta pone su email y se le quita el
   tag NL.
-- Páginas de la tienda por maquetar: **cart, checkout y thank you**.
-  La de `/gracias-devolucion` ya está hecha (`legal/gracias-devolucion.html`).
+- Páginas de la tienda por maquetar: ~~thank you~~ (hecha el 15/8,
+  `tienda/gracias-compra.html`), **cart y checkout** — ver 27.
 - Iterar el **Journey 06-12** para clientas recurrentes (hoy no distingue si ha habido
   una segunda compra).
 
@@ -1220,3 +1220,53 @@ de etapa, los campos custom de oportunidad sí resuelven dentro del correo.**
 
 ⚠️ M100014 se queda en "04 Enviado" con el `wait 48h` corriendo. Si no se mueve a "05
 Entregado" antes del 17/8, saltará el watchdog con un aviso de un pedido de prueba.
+
+## 27. Páginas de la tienda (15/8)
+
+### 27.1 Gracias post-compra — hecha
+
+`tienda/gracias-compra.html`. Es la página a la que llega la clienta **después de
+pagar** (la "Thank you!" de la tienda, `6DEiCsQRzJ6NsbhkP43n`). No confundir con
+`legal/gracias-devolucion.html`, que es la del formulario de devolución.
+
+Mismo lenguaje que las páginas legales: full-bleed con `box-shadow: 0 0 0 100vmax`
++ `clip-path`, Cormorant Garamond, paleta de marca, sin imagen, sin JavaScript, sin
+`border-radius`. El botón usa el selector `a.mura-gc-boton` —con la etiqueta delante—
+por el mismo motivo que en la de devolución: sin ella pierde en especificidad contra
+`.mura-gc a` y sale negro sobre negro.
+
+Aporta sobre la página por defecto una secuencia **"qué pasa ahora"** en tres pasos
+(ahora / en preparación / en camino), que es lo que evita el correo de "¿dónde está mi
+pedido?" a los dos días.
+
+**No lleva el número de pedido, y es a propósito.** El M1xxxxx no lo genera la tienda:
+lo pone el contador del SP01 al crear la oportunidad, y eso pasa *después* de que la
+clienta ya esté viendo la página. Un merge tag aquí dejaría un hueco vacío. El número
+viaja en el correo 03 (sección 25.2).
+
+Verificada renderizada con Chromium a 1440 px y 390 px: sin scroll horizontal, el
+cierre se apila bien en móvil y el botón contrasta.
+
+### 27.2 Cart y checkout — bloqueadas, y por qué
+
+**No son páginas que podamos escribir**: son elementos que renderiza la tienda de GHL
+en tiempo de ejecución. Lo único que se puede hacer es CSS que pise sus clases, y para
+eso hay que conocer el DOM real.
+
+Desde esta sesión no hay forma de conocerlo:
+
+- `stylebymura.com` no se alcanza (la red del entorno solo llega a dominios de la
+  allowlist; la petición muere en `http=000`).
+- El API público de funnels lista las páginas (`Cart` `2FoBJpJqCmc0z0Y4xZEo`,
+  `Checkout` `qSiwg2brakjiGqpIaCmN`) pero **no devuelve su contenido**.
+- El API interno de funnels rechaza el token de esta sesión (401/403 en todas las
+  variantes de `/funnels/page/...`).
+
+Escribir el CSS a ciegas daría una hoja con selectores que no casan con nada: no
+rompería la página, simplemente **no pintaría**, y parecería que está hecho. Es
+exactamente el modo de fallo que costó los enlaces vacíos del correo 02.
+
+**Lo que hace falta para desbloquearlo** (30 segundos de German): abrir
+`stylebymura.com/carrito` con un artículo dentro, botón derecho → *Inspeccionar* →
+sobre `<body>` → *Copy* → *Copy outerHTML*, y pegarlo. Lo mismo con el checkout. Con
+eso salen los nombres de clase reales y el CSS se escribe sobre seguro.

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<!--
+  ============================================================
+  MÛRA · PÁGINA DE GRACIAS · COMPRA
+  ============================================================
+  Es la página a la que llega la clienta justo después de pagar
+  (la "Thank you!" de la tienda). No es la de devoluciones: esa
+  es legal/gracias-devolucion.html.
+
+  URL PREVISTA: /gracias
+
+  CÓMO SE USA EN GOHIGHLEVEL
+  1. Abre la página "Thank you!" de la tienda en el editor.
+  2. Copia SOLO lo que hay entre las dos marcas de COPIAR y
+     pégalo en un elemento de código personalizado.
+     El envoltorio <html>/<head>/<body> NO se copia: la página
+     de GHL ya tiene el suyo y anidarlos rompe el renderizado.
+  3. Quita de la página los elementos por defecto de GHL que
+     queden encima o debajo, o se verá el mensaje dos veces.
+
+  POR QUÉ NO LLEVA EL NÚMERO DE PEDIDO
+  Sería lo natural, pero el número M1xxxxx no lo genera la
+  tienda: lo pone el contador del workflow SP01 cuando crea la
+  oportunidad, y eso ocurre después de que la clienta ya está
+  viendo esta página (sección 24 del doc de implementación).
+  Poner un merge tag aquí daría un hueco vacío. El número viaja
+  en el correo 03, que es donde la clienta lo tiene a mano.
+  Por eso el texto dice "en unos minutos" y no promete el
+  número en pantalla.
+
+  Sigue las reglas de las páginas de la web (como legal/):
+  sin imagen, sin JavaScript, sin border-radius, paleta y
+  tipografía de la marca. El tono, sereno: sin exclamaciones.
+  ============================================================
+-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gracias por tu compra · MÛRA</title>
+</head>
+<body style="margin:0; background-color:#F6F2EB;">
+
+<!-- ============================================================ -->
+<!--    COPIAR DESDE AQUÍ PARA GHL                              -->
+<!-- ============================================================ -->
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+/* Todo va prefijado con .mura-gc- para no chocar con el CSS del tema de GHL. */
+
+.mura-gc,
+.mura-gc *,
+.mura-gc *::before,
+.mura-gc *::after {
+  box-sizing: border-box;
+}
+
+.mura-gc {
+  /* Full-bleed sin desplazar el contenido: el fondo se pinta más allá del contenedor */
+  width: 100%;
+  box-shadow: 0 0 0 100vmax #F6F2EB;
+  clip-path: inset(0 -100vmax);
+  background-color: #F6F2EB;
+  color: #1E1B1A;
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.9;
+  margin: 0;
+  padding: 0 32px 96px 32px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Blindaje: GHL inyecta su propia tipografía en los descendientes. */
+.mura-gc h1,
+.mura-gc h2,
+.mura-gc p,
+.mura-gc a,
+.mura-gc li,
+.mura-gc ol,
+.mura-gc span,
+.mura-gc div {
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+}
+
+.mura-gc a {
+  color: #1E1B1A;
+  text-decoration: none;
+  transition: color 240ms ease;
+}
+
+.mura-gc a:focus-visible {
+  outline: 1px solid #1E1B1A;
+  outline-offset: 3px;
+}
+
+/* ---------- Cabecera — tipográfica, nunca imagen ---------- */
+
+.mura-gc-cabecera {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 56px 0 0 0;
+  text-align: center;
+}
+
+.mura-gc-marca {
+  display: inline-block;
+  font-size: 21px;
+  font-weight: 400;
+  letter-spacing: 8px;
+  color: #1E1B1A;
+  padding-left: 8px;
+}
+
+.mura-gc-lema {
+  display: block;
+  font-size: 11px;
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: #8A7E71;
+  padding-top: 10px;
+}
+
+/* ---------- Mensaje ---------- */
+
+.mura-gc-mensaje {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 120px 0 0 0;
+  text-align: center;
+}
+
+.mura-gc-kicker {
+  margin: 0 0 22px 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #8A7E71;
+}
+
+.mura-gc-h1 {
+  margin: 0;
+  font-size: 46px;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+  color: #1E1B1A;
+}
+
+.mura-gc-mensaje p {
+  margin: 28px 0 0 0;
+}
+
+/* ---------- Qué pasa ahora — tres pasos, sin iconos ----------
+   Es una lista ordenada de verdad para que un lector de
+   pantalla anuncie el orden; el número se dibuja a mano porque
+   el marcador nativo no admite esta tipografía ni el color. */
+
+.mura-gc-pasos {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 88px 0 0 0;
+  list-style: none;
+  counter-reset: paso;
+}
+
+.mura-gc-pasos li {
+  counter-increment: paso;
+  position: relative;
+  padding: 0 0 0 52px;
+  margin: 0 0 40px 0;
+  text-align: left;
+}
+
+.mura-gc-pasos li:last-child {
+  margin-bottom: 0;
+}
+
+.mura-gc-pasos li::before {
+  content: counter(paso);
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #8A7E71;
+  border: 1px solid #D9D1C5;
+}
+
+.mura-gc-paso-titulo {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #8A7E71;
+  padding-bottom: 6px;
+}
+
+.mura-gc-pasos li p {
+  margin: 0;
+}
+
+/* ---------- Botón — el gesto del botón de los emails: negro, recto ----------
+   El selector lleva la etiqueta `a` delante a propósito: sin ella pierde
+   contra `.mura-gc a` y el texto sale negro sobre negro. */
+
+.mura-gc-acciones {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 80px 0 96px 0;
+  text-align: center;
+}
+
+.mura-gc a.mura-gc-boton {
+  display: inline-block;
+  background-color: #1E1B1A;
+  color: #F6F2EB !important;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 17px 42px;
+}
+
+.mura-gc a.mura-gc-boton:hover {
+  background-color: #3A3533;
+  color: #F6F2EB !important;
+}
+
+/* ---------- Cierre — firma a la izquierda, contacto a la derecha ---------- */
+
+.mura-gc-cierre {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 0 0 0;
+  border-top: 1px solid #D9D1C5;
+}
+
+.mura-gc-cierre-fila {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.mura-gc-firma {
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: 7px;
+  color: #1E1B1A;
+}
+
+.mura-gc-firma-lema {
+  font-size: 11px;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 2px;
+  color: #8A7E71;
+  padding-top: 8px;
+}
+
+.mura-gc-marca-cierre {
+  flex: 0 0 auto;
+}
+
+.mura-gc-datos {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.mura-gc-datos p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 2;
+  color: #8A7E71;
+}
+
+.mura-gc-cierre a {
+  color: #8A7E71;
+}
+
+.mura-gc-cierre a:hover {
+  color: #1E1B1A;
+}
+
+.mura-gc-enlaces {
+  margin: 40px 0 0 0;
+  font-size: 11px;
+  line-height: 2;
+  color: #8A7E71;
+}
+
+.mura-gc-cierre .mura-gc-enlaces a {
+  border-bottom: 1px solid #D9D1C5;
+}
+
+.mura-gc-cierre .mura-gc-enlaces a:hover {
+  border-bottom: 1px solid #1E1B1A;
+}
+
+.mura-gc-sep {
+  color: #B5ADA2;
+  padding: 0 8px;
+}
+
+/* ---------- Móvil ---------- */
+
+@media screen and (max-width: 860px) {
+  .mura-gc {
+    padding: 0 24px 72px 24px;
+    font-size: 16px;
+  }
+
+  .mura-gc-mensaje {
+    padding: 80px 0 0 0;
+  }
+
+  .mura-gc-h1 {
+    font-size: 34px;
+  }
+
+  .mura-gc-pasos {
+    padding-top: 64px;
+  }
+
+  .mura-gc-acciones {
+    padding: 64px 0 72px 0;
+  }
+
+  /* El cierre se apila: la firma arriba, los datos debajo, todo a la izquierda. */
+  .mura-gc-cierre-fila {
+    display: block;
+  }
+
+  .mura-gc-datos {
+    text-align: left;
+    padding-top: 36px;
+  }
+
+  .mura-gc-enlaces {
+    margin-top: 36px;
+  }
+}
+
+/* ---------- Accesibilidad ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .mura-gc a {
+    transition: none;
+  }
+}
+</style>
+
+<div class="mura-gc">
+
+  <!-- CABECERA -->
+  <header class="mura-gc-cabecera">
+    <a class="mura-gc-marca" href="https://www.stylebymura.com/">MÛRA</a>
+    <span class="mura-gc-lema">Vestir con intención</span>
+  </header>
+
+  <!-- MENSAJE -->
+  <main>
+
+    <div class="mura-gc-mensaje">
+      <p class="mura-gc-kicker">Pedido confirmado</p>
+      <h1 class="mura-gc-h1">Gracias por tu compra.</h1>
+      <p>Tu pedido ya está con nosotras. Cada prenda se revisa y se prepara a mano antes de salir, así que dale unos días: preferimos que llegue bien a que llegue rápido.</p>
+    </div>
+
+    <!-- QUÉ PASA AHORA -->
+    <ol class="mura-gc-pasos">
+      <li>
+        <span class="mura-gc-paso-titulo">Ahora</span>
+        <p>En unos minutos recibirás un correo con el resumen de tu compra y el número de tu pedido.</p>
+      </li>
+      <li>
+        <span class="mura-gc-paso-titulo">En preparación</span>
+        <p>Preparamos tu pedido en nuestro taller y lo dejamos listo para el transportista.</p>
+      </li>
+      <li>
+        <span class="mura-gc-paso-titulo">En camino</span>
+        <p>Cuando salga te escribimos con el enlace de seguimiento, para que sepas dónde está en cada momento.</p>
+      </li>
+    </ol>
+
+    <div class="mura-gc-acciones">
+      <a class="mura-gc-boton" href="https://www.stylebymura.com/prendas">Seguir viendo prendas</a>
+    </div>
+
+  </main>
+
+  <!-- CIERRE -->
+  <footer class="mura-gc-cierre">
+
+    <div class="mura-gc-cierre-fila">
+      <div class="mura-gc-marca-cierre">
+        <div class="mura-gc-firma">MÛRA</div>
+        <div class="mura-gc-firma-lema">Vestir con intención</div>
+      </div>
+      <div class="mura-gc-datos">
+        <p>
+          <a href="mailto:hello@stylebymura.com">hello@stylebymura.com</a><br />
+          <a href="tel:+34637681234">Tel. 637 681 234</a><br />
+          <a href="https://www.stylebymura.com/">www.stylebymura.com</a>
+        </p>
+      </div>
+    </div>
+
+    <p class="mura-gc-enlaces">
+      <a href="https://www.instagram.com/bymurastudio/">Instagram</a>
+      <span class="mura-gc-sep">·</span>
+      <a href="https://www.stylebymura.com/devoluciones">Devoluciones</a>
+      <span class="mura-gc-sep">·</span>
+      <a href="https://www.stylebymura.com/politica-privacidad">Política de Privacidad</a>
+    </p>
+
+  </footer>
+
+</div>
+
+<!-- ============================================================ -->
+<!--    HASTA AQUÍ                                              -->
+<!-- ============================================================ -->
+
+</body>
+</html>
