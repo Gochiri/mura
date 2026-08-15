@@ -1152,8 +1152,9 @@ Estructura de la rama "datos completos":
 
 ```
 webhook Nacex → wait 1 min → Telegram etiqueta → quitar tag preparación
-  → ¿opportunity.url_seguimiento contiene "http"?
-       SÍ → Email 04 → +pedido-enviado → −email-04-listo → wait 48h → watchdog
+  → ¿opportunity.url_seguimiento tiene valor?   (operador has_value)
+       SÍ → Email 04 → +pedido-enviado → −email-04-listo
+              → wait 48h → ¿sigue en etapa "04 Enviado"? → webhook watchdog
        NO → Telegram: "Nacex no ha devuelto el seguimiento del pedido X.
                        El correo de envío NO se ha mandado."
 ```
@@ -1169,7 +1170,31 @@ retraso de Nacex no manda un correo con el enlace vacío — avisa a Sara.
   (hay que pegarla también en GHL).
 - Backups: `wf04a_pre_fusion.json`, `wf04b_pre_fusion.json`.
 
-⚠️ **Pendiente de verificar con una prueba real**: el operador `contains` del guard.
-Si no fuera válido en este modelo, la rama SÍ no se cumpliría nunca y el correo dejaría
-de enviarse en silencio — con aviso de Telegram, eso sí. **Primera prueba de envío:
-comprobar que llega el correo 04**, no solo el aviso de la etiqueta.
+### 26.1 Corrección del 15/8: el correo iba detrás del `Wait 48 Hours`
+
+Al preparar la primera prueba de envío se leyó el árbol real por API y **no coincidía
+con lo descrito arriba**. La fusión del 14/8 había insertado el guard, el correo y los
+dos tags **dentro de la cola del watchdog**, es decir *después* del `Wait 48 Hours` que
+ya traía el 04a original (visible comparando con `wf04a_pre_fusion.json`, donde ese
+`wait` va justo detrás del Remove Tag). Consecuencias, ninguna detectable a simple vista:
+
+1. El correo "tu pedido va en camino" habría salido **48 horas después del envío**.
+2. Peor: el guard del watchdog exige seguir en etapa "04 Enviado", así que en un pedido
+   **entregado dentro de esas 48 h la clienta no habría recibido nada**.
+
+Arreglado y publicado (v18) con el orden del diagrama de arriba. Dos detalles más:
+
+- El operador real del guard es **`has_value`**, no `contains "http"` — más seguro, y
+  desaparece la duda sobre si `contains` era válido en este modelo.
+- La rama del NO **estaba vacía**: si Nacex no respondía, el flujo moría en silencio,
+  sin correo y sin aviso. Ahora lleva el webhook de Telegram descrito arriba.
+
+Backup previo: `datos/backups/wf04a_pre_orden_email_20260815.json`.
+
+**Lección:** al fusionar pasos en un workflow con cola de espera larga, comprobar
+*dónde* quedan enganchados. El builder los dibuja anidados y el fallo no se ve: el
+workflow se ejecuta sin error, simplemente el correo llega dos días tarde o no llega.
+
+⚠️ **Pendiente de verificar con la prueba real**: que llegue **el correo 04**, no solo
+el aviso de Telegram de la etiqueta, y que el botón lleve al seguimiento **de ese**
+pedido (comprobarlo leyendo el mensaje enviado, no el borrador de la plantilla).
