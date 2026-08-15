@@ -1,0 +1,102 @@
+{
+  "_id": "873e4590-a8ff-4675-a0cd-ec2cc17bcef6",
+  "locationId": "NxPF5fOicowujokEk5Hm",
+  "companyId": "5tNRocqWdcsz7Rii28bH",
+  "companyAge": 11,
+  "name": "OLD 04b (fusionado en 04a) - borrar",
+  "status": "draft",
+  "version": 19,
+  "dataVersion": 7,
+  "allowMultiple": false,
+  "timezone": "account",
+  "removeContactFromLastStep": true,
+  "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/873e4590-a8ff-4675-a0cd-ec2cc17bcef6/19",
+  "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F873e4590-a8ff-4675-a0cd-ec2cc17bcef6%2F19?alt=media&token=7abc93a1-f26a-4df9-8cb0-db469296dd90",
+  "stopOnResponse": false,
+  "autoMarkAsRead": false,
+  "permission": 380,
+  "type": "workflow",
+  "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+  "createdAt": "2026-07-29T11:39:31.380Z",
+  "updatedAt": "2026-08-14T22:34:36.302Z",
+  "deleted": false,
+  "allowMultipleOpportunity": false,
+  "creationSource": "builder",
+  "isTriggerBucketMigrated": true,
+  "originType": "user",
+  "__v": 0,
+  "eventStartDate": null,
+  "window": null,
+  "workflowNote": null,
+  "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/873e4590-a8ff-4675-a0cd-ec2cc17bcef6/19",
+  "meta": null,
+  "senderAddress": null,
+  "id": "873e4590-a8ff-4675-a0cd-ec2cc17bcef6",
+  "workflowData": {
+    "templates": [
+      {
+        "id": "889ec32a-66fd-4c8d-b111-4775304a45e0",
+        "order": 0,
+        "attributes": {
+          "fieldDefaults": {
+            "subject": {
+              "contact.first_name:0": "Hola"
+            }
+          },
+          "trackingOptions": {
+            "hasTrackingLinks": false,
+            "hasUtmTracking": false,
+            "hasTags": false,
+            "sourceId": "873e4590-a8ff-4675-a0cd-ec2cc17bcef6:889ec32a-66fd-4c8d-b111-4775304a45e0"
+          },
+          "conditions": [],
+          "from_name": "{{business.name}}",
+          "from_email": "{{business.email}}",
+          "subject": "{{contact.first_name}}, tu MÛRA ya está en camino.",
+          "preHeader": "Ya puedes seguir su recorrido.",
+          "template_id": "6a6aa2ea4eb3e6c4d953427c",
+          "templatesource": "email-builder",
+          "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a6aa2ea4eb3e6c4d953427c%2Findex.html?alt=media&token=532458c7-b8be-467e-8b72-e5a3d7eeed07?cb=1786699643339",
+          "createdAt": "2026-07-30T01:03:39.271Z",
+          "templateCreationMode": "existing",
+          "attachments": [],
+          "syncEnabled": true,
+          "updatedAt": "2026-08-14T09:26:26.852Z"
+        },
+        "name": "Email 04 pedido enviado",
+        "type": "email",
+        "next": "cbe462b4-e4ab-41a1-a3d1-ab0af1d2fbc2"
+      },
+      {
+        "id": "cbe462b4-e4ab-41a1-a3d1-ab0af1d2fbc2",
+        "order": 1,
+        "attributes": {
+          "tags": [
+            "pedido-enviado"
+          ]
+        },
+        "name": "Add Tag pedido enviado",
+        "type": "add_contact_tag",
+        "parentKey": "889ec32a-66fd-4c8d-b111-4775304a45e0",
+        "next": "ed860d04-6c2c-4a28-8e48-290d53e1e267"
+      },
+      {
+        "id": "ed860d04-6c2c-4a28-8e48-290d53e1e267",
+        "order": 2,
+        "attributes": {
+          "tags": [
+            "email-04-listo"
+          ],
+          "type": "remove_contact_tag"
+        },
+        "name": "Remove Tag email-04-listo",
+        "type": "remove_contact_tag",
+        "parentKey": "cbe462b4-e4ab-41a1-a3d1-ab0af1d2fbc2"
+      }
+    ]
+  },
+  "permissionMeta": {
+    "canRead": true,
+    "canWrite": true
+  }
+}

@@ -1,0 +1,571 @@
+{
+  "_id": "c93013cf-0925-4a03-b00f-9c89a6b034c0",
+  "locationId": "NxPF5fOicowujokEk5Hm",
+  "companyId": "5tNRocqWdcsz7Rii28bH",
+  "companyAge": 11,
+  "name": "OLD 04a (borrar)",
+  "version": 27,
+  "dataVersion": 7,
+  "allowMultiple": false,
+  "timezone": "account",
+  "removeContactFromLastStep": true,
+  "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/c93013cf-0925-4a03-b00f-9c89a6b034c0/27",
+  "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2Fc93013cf-0925-4a03-b00f-9c89a6b034c0%2F27?alt=media&token=bef29455-e546-4fe6-8d4a-b39be9fca985",
+  "stopOnResponse": false,
+  "autoMarkAsRead": false,
+  "permission": 380,
+  "type": "workflow",
+  "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+  "createdAt": "2026-07-28T16:27:24.616Z",
+  "updatedAt": "2026-08-11T20:18:53.186Z",
+  "deleted": false,
+  "allowMultipleOpportunity": false,
+  "creationSource": "builder",
+  "isTriggerBucketMigrated": true,
+  "originType": "user",
+  "__v": 0,
+  "eventStartDate": null,
+  "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/c93013cf-0925-4a03-b00f-9c89a6b034c0/27",
+  "window": null,
+  "workflowNote": null,
+  "status": "draft",
+  "senderAddress": null,
+  "meta": null,
+  "id": "c93013cf-0925-4a03-b00f-9c89a6b034c0",
+  "workflowData": {
+    "templates": [
+      {
+        "id": "6d26880b-1d50-4331-9d76-c7d5e978d993",
+        "name": "DEBUG 01 entro al workflow",
+        "type": "add_contact_tag",
+        "attributes": {
+          "tags": [
+            "debug-01-entro-wf"
+          ]
+        },
+        "next": "e5f46ffb-788a-4ba7-ac64-b457a2616588",
+        "order": 0
+      },
+      {
+        "id": "e5f46ffb-788a-4ba7-ac64-b457a2616588",
+        "name": "Wait 10s (TEMPORAL para test, devolver a 3 min)",
+        "type": "wait",
+        "attributes": {
+          "type": "time",
+          "startAfter": {
+            "type": "seconds",
+            "value": 10,
+            "when": "after"
+          },
+          "name": "Wait 10s (TEMPORAL para test, devolver a 3 min)",
+          "cat": "",
+          "timePeriodInputMode": "standard",
+          "unitInputMode": "standard",
+          "isHybridAction": true,
+          "hybridActionType": "wait",
+          "convertToMultipath": false,
+          "transitions": []
+        },
+        "order": 1,
+        "next": "3317042e-2f0f-44cf-a239-0282e6f01d68",
+        "parentKey": "6d26880b-1d50-4331-9d76-c7d5e978d993"
+      },
+      {
+        "id": "3317042e-2f0f-44cf-a239-0282e6f01d68",
+        "name": "yes",
+        "type": "if_else",
+        "order": 2,
+        "next": [
+          "fdf0970a-de35-426a-a28d-442c4f4392cb",
+          "09760b38-4eca-4d18-88ef-30cbdc968664"
+        ],
+        "attributes": {
+          "currentRecipeType": "CUSTOM",
+          "branches": [
+            {
+              "id": "fdf0970a-de35-426a-a28d-442c4f4392cb",
+              "name": "Datos completos y sigue en Enviado",
+              "segments": [
+                {
+                  "__segmentId": "863450c2-bbdd-49fc-938c-2d337d5086a9",
+                  "operator": "and",
+                  "conditions": [
+                    {
+                      "conditionType": "opportunities",
+                      "conditionSubType": "pipelineId",
+                      "conditionOperator": "==",
+                      "conditionValue": "X7wvJysuBVmdXXl1b8zx",
+                      "__conditionId": "0b8950b2-fa82-43f5-8b57-82d33214efc0",
+                      "ifElseNodeId": "",
+                      "__customFieldType__": "standard",
+                      "isWait": false,
+                      "nestedDropdownTypes": [
+                        "inboundWebhookRequest",
+                        "sheet",
+                        "datetime_formatter",
+                        "custom_webhook",
+                        "array_functions",
+                        "ivr_gather",
+                        "ivr_connect_call",
+                        "custom_code",
+                        "ai_agent",
+                        "task-notification",
+                        "event"
+                      ],
+                      "allowIsOperatorTypes": [
+                        "contact_reply",
+                        "inboundWebhookRequest",
+                        "custom_webhook",
+                        "custom_code",
+                        "ai_agent",
+                        "contact_detail",
+                        "array_functions",
+                        "appointment",
+                        "service_booking",
+                        "rental_booking"
+                      ]
+                    },
+                    {
+                      "conditionType": "opportunities",
+                      "conditionSubType": "pipelineStageId",
+                      "conditionOperator": "==",
+                      "conditionValue": "a1a2f1fa-b9a2-4741-8f89-11ada366f227",
+                      "__conditionId": "2fa0ced4-1884-427b-b1f4-9eae168f9c79",
+                      "ifElseNodeId": "",
+                      "__customFieldType__": "standard",
+                      "isWait": false,
+                      "nestedDropdownTypes": [
+                        "inboundWebhookRequest",
+                        "sheet",
+                        "datetime_formatter",
+                        "custom_webhook",
+                        "array_functions",
+                        "ivr_gather",
+                        "ivr_connect_call",
+                        "custom_code",
+                        "ai_agent",
+                        "task-notification",
+                        "event"
+                      ],
+                      "allowIsOperatorTypes": [
+                        "contact_reply",
+                        "inboundWebhookRequest",
+                        "custom_webhook",
+                        "custom_code",
+                        "ai_agent",
+                        "contact_detail",
+                        "array_functions",
+                        "appointment",
+                        "service_booking",
+                        "rental_booking"
+                      ]
+                    },
+                    {
+                      "conditionType": "opportunities",
+                      "conditionSubType": "MUSwk4X0oadHyO77RM5p",
+                      "conditionOperator": ">",
+                      "conditionValue": "0",
+                      "__conditionId": "ad9e8234-88f4-4ef4-b36c-4ca15a9f0f14",
+                      "ifElseNodeId": "",
+                      "__customFieldType__": "standard",
+                      "isWait": false,
+                      "nestedDropdownTypes": [
+                        "inboundWebhookRequest",
+                        "sheet",
+                        "datetime_formatter",
+                        "custom_webhook",
+                        "array_functions",
+                        "ivr_gather",
+                        "ivr_connect_call",
+                        "custom_code",
+                        "ai_agent",
+                        "task-notification",
+                        "event"
+                      ],
+                      "allowIsOperatorTypes": [
+                        "contact_reply",
+                        "inboundWebhookRequest",
+                        "custom_webhook",
+                        "custom_code",
+                        "ai_agent",
+                        "contact_detail",
+                        "array_functions",
+                        "appointment",
+                        "service_booking",
+                        "rental_booking"
+                      ]
+                    },
+                    {
+                      "conditionType": "opportunities",
+                      "conditionSubType": "UjRE5P3lTXhkw8vGIVkz",
+                      "conditionOperator": ">",
+                      "conditionValue": "0",
+                      "__conditionId": "2a3c14d8-de95-4e3a-a89b-98a299a33b16",
+                      "ifElseNodeId": "",
+                      "__customFieldType__": "standard",
+                      "isWait": false,
+                      "nestedDropdownTypes": [
+                        "inboundWebhookRequest",
+                        "sheet",
+                        "datetime_formatter",
+                        "custom_webhook",
+                        "array_functions",
+                        "ivr_gather",
+                        "ivr_connect_call",
+                        "custom_code",
+                        "ai_agent",
+                        "task-notification",
+                        "event"
+                      ],
+                      "allowIsOperatorTypes": [
+                        "contact_reply",
+                        "inboundWebhookRequest",
+                        "custom_webhook",
+                        "custom_code",
+                        "ai_agent",
+                        "contact_detail",
+                        "array_functions",
+                        "appointment",
+                        "service_booking",
+                        "rental_booking"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "operator": "and",
+              "showErrors": false,
+              "branchNameError": "Branch name cannot be empty!"
+            }
+          ],
+          "operator": "and",
+          "if": true,
+          "conditionName": "Peso y bultos rellenos?",
+          "version": 2,
+          "noneBranchName": "None"
+        },
+        "parentKey": "e5f46ffb-788a-4ba7-ac64-b457a2616588"
+      },
+      {
+        "id": "fdf0970a-de35-426a-a28d-442c4f4392cb",
+        "name": "Datos completos y sigue en Enviado",
+        "type": "if_else",
+        "order": 3,
+        "parentKey": "3317042e-2f0f-44cf-a239-0282e6f01d68",
+        "attributes": {
+          "if": false,
+          "conditionName": "Peso y bultos rellenos?",
+          "operator": "and",
+          "branches": []
+        },
+        "next": "399ad88f-16a1-48eb-ab63-e455dab30f7f"
+      },
+      {
+        "id": "09760b38-4eca-4d18-88ef-30cbdc968664",
+        "name": "None",
+        "type": "if_else",
+        "order": 3,
+        "parentKey": "3317042e-2f0f-44cf-a239-0282e6f01d68",
+        "attributes": {
+          "else": true
+        },
+        "next": "e60457da-748d-4c6b-8195-ca06f392cd94"
+      },
+      {
+        "id": "e60457da-748d-4c6b-8195-ca06f392cd94",
+        "name": "Pedido en Enviado sin peso/bultos",
+        "type": "internal_notification",
+        "attributes": {
+          "sms": {
+            "body": ""
+          },
+          "type": "notification",
+          "userType": "all",
+          "notification": {
+            "userType": "all",
+            "redirectPage": "contact",
+            "title": "Pedido en Enviado sin peso/bultos",
+            "body": "Un pedido se movió a 04 Enviado sin rellenar peso o bultos. Se devuelve a 03 En Preparación.<br>Rellena los campos y vuelve a moverlo a Enviado."
+          },
+          "email": {
+            "subject": "",
+            "html": ""
+          }
+        },
+        "order": 0,
+        "next": "da29e3dd-1051-4288-8ff4-2a8a8f903265",
+        "parentKey": "09760b38-4eca-4d18-88ef-30cbdc968664"
+      },
+      {
+        "id": "da29e3dd-1051-4288-8ff4-2a8a8f903265",
+        "name": "Devolver a 03 En Preparacion",
+        "type": "internal_update_opportunity",
+        "workflowsActionType": "INTERNAL",
+        "attributes": {
+          "allowBackward": true,
+          "type": "internal_update_opportunity",
+          "__customInputFields__": [
+            {
+              "__customInputs__": {},
+              "filterField": "pipelineId",
+              "value": "X7wvJysuBVmdXXl1b8zx",
+              "valueFieldType": "select"
+            },
+            {
+              "__customInputs__": {},
+              "filterField": "pipelineStageId",
+              "value": "f492640e-ddfc-4963-aaee-2b587a9065dc",
+              "valueFieldType": "select"
+            }
+          ],
+          "__customInputs__": {}
+        },
+        "order": 1,
+        "parentKey": "e60457da-748d-4c6b-8195-ca06f392cd94"
+      },
+      {
+        "id": "399ad88f-16a1-48eb-ab63-e455dab30f7f",
+        "order": 0,
+        "attributes": {
+          "method": "POST",
+          "url": "https://n8n.letsbebanana.com/webhook-test/6b762db0-1c38-4dc1-b1b1-409b400cd686",
+          "customData": [
+            {
+              "key": "opportunityId",
+              "value": "{{opportunity.id}}"
+            },
+            {
+              "key": "contactId",
+              "value": "{{contact.id}}"
+            },
+            {
+              "key": "nombre",
+              "value": "{{contact.std_billing_address_full_name}}"
+            },
+            {
+              "key": "direccion",
+              "value": "{{contact.std_billing_address_address1}}"
+            },
+            {
+              "key": "cp",
+              "value": "{{contact.std_billing_address_postal_code}}"
+            },
+            {
+              "key": "poblacion",
+              "value": "{{contact.std_billing_address_city}}"
+            },
+            {
+              "key": "pais",
+              "value": "ES"
+            },
+            {
+              "key": "telefono",
+              "value": "{{contact.std_billing_address_phone}}"
+            },
+            {
+              "key": "email",
+              "value": "{{contact.email}}"
+            },
+            {
+              "key": "peso",
+              "value": "{{opportunity.peso}}"
+            },
+            {
+              "key": "bultos",
+              "value": "{{opportunity.bultos}}"
+            },
+            {
+              "key": "numero_pedido",
+              "value": "{{opportunity.name}}"
+            }
+          ],
+          "headers": []
+        },
+        "name": "Webhook",
+        "type": "webhook",
+        "next": "eada469a-ac1a-4bf9-8c14-9825dfd91b97",
+        "parentKey": "fdf0970a-de35-426a-a28d-442c4f4392cb"
+      },
+      {
+        "id": "62beb9f4-1674-40d9-bd3b-1c4c8556b2c9",
+        "parentKey": "eada469a-ac1a-4bf9-8c14-9825dfd91b97",
+        "type": "wait",
+        "name": "Wait 48 Hours",
+        "attributes": {
+          "type": "time",
+          "startAfter": {
+            "type": "days",
+            "value": 2,
+            "when": "after"
+          },
+          "name": "Wait 48 Hours",
+          "cat": "",
+          "timePeriodInputMode": "standard",
+          "unitInputMode": "standard",
+          "isHybridAction": true,
+          "hybridActionType": "wait",
+          "convertToMultipath": false,
+          "transitions": []
+        },
+        "order": 2,
+        "cat": "",
+        "next": "90a472c2-ae5c-4847-aa3e-196914470a2e"
+      },
+      {
+        "id": "90a472c2-ae5c-4847-aa3e-196914470a2e",
+        "order": 3,
+        "attributes": {
+          "currentRecipeType": "CUSTOM",
+          "branches": [
+            {
+              "id": "4685a38d-a78a-499a-aa47-a61fd8c3d340",
+              "name": "Branch",
+              "segments": [
+                {
+                  "__segmentId": "b92cc484-fc25-426b-81e8-9d95a49e6e8d",
+                  "operator": "and",
+                  "conditions": [
+                    {
+                      "conditionType": "opportunities",
+                      "conditionSubType": "pipelineStageId",
+                      "conditionOperator": "==",
+                      "conditionValue": "a1a2f1fa-b9a2-4741-8f89-11ada366f227",
+                      "__conditionId": "a26772db-ea4a-4430-a506-4a75b16c759f",
+                      "ifElseNodeId": "",
+                      "__customFieldType__": "standard",
+                      "isWait": false,
+                      "nestedDropdownTypes": [
+                        "inboundWebhookRequest",
+                        "sheet",
+                        "datetime_formatter",
+                        "custom_webhook",
+                        "array_functions",
+                        "ivr_gather",
+                        "ivr_connect_call",
+                        "custom_code",
+                        "ai_agent",
+                        "task-notification"
+                      ],
+                      "allowIsOperatorTypes": [
+                        "contact_reply",
+                        "inboundWebhookRequest",
+                        "custom_webhook",
+                        "custom_code",
+                        "ai_agent",
+                        "contact_detail",
+                        "array_functions",
+                        "appointment",
+                        "service_booking",
+                        "rental_booking"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "operator": "and",
+              "showErrors": false,
+              "branchNameError": "Branch name cannot be empty!"
+            }
+          ],
+          "operator": "and",
+          "if": true,
+          "conditionName": "Condition",
+          "version": 2,
+          "noneBranchName": "None"
+        },
+        "name": "yes",
+        "type": "if_else",
+        "cat": "conditions",
+        "next": [
+          "4685a38d-a78a-499a-aa47-a61fd8c3d340",
+          "50aad1ed-846f-4f6d-8a83-3d012ba0e290"
+        ],
+        "comments": [],
+        "nodeType": "condition-node",
+        "parentKey": "62beb9f4-1674-40d9-bd3b-1c4c8556b2c9"
+      },
+      {
+        "id": "4685a38d-a78a-499a-aa47-a61fd8c3d340",
+        "parent": "90a472c2-ae5c-4847-aa3e-196914470a2e",
+        "order": 4,
+        "attributes": {
+          "if": false,
+          "conditionName": "Condition",
+          "operator": "and",
+          "branches": []
+        },
+        "name": "Branch",
+        "type": "if_else",
+        "cat": "conditions",
+        "next": "6c982fd0-700d-4a72-8381-a519ae967dec",
+        "sibling": [
+          "50aad1ed-846f-4f6d-8a83-3d012ba0e290"
+        ],
+        "comments": [],
+        "nodeType": "branch-yes",
+        "parentKey": "90a472c2-ae5c-4847-aa3e-196914470a2e"
+      },
+      {
+        "id": "6c982fd0-700d-4a72-8381-a519ae967dec",
+        "parent": "4685a38d-a78a-499a-aa47-a61fd8c3d340",
+        "order": 0,
+        "attributes": {
+          "method": "POST",
+          "url": "https://n8n.letsbebanana.com/webhook/watchdog-entrega",
+          "customData": [
+            {
+              "key": "opportunityId",
+              "value": "{{opportunity.id}}"
+            },
+            {
+              "key": "albaran",
+              "value": "{{opportunity.albaran_nacex}}"
+            },
+            {
+              "key": "numero_pedido",
+              "value": "{{opportunity.name}}"
+            }
+          ],
+          "headers": []
+        },
+        "name": "Webhook",
+        "type": "webhook",
+        "parentKey": "4685a38d-a78a-499a-aa47-a61fd8c3d340"
+      },
+      {
+        "id": "50aad1ed-846f-4f6d-8a83-3d012ba0e290",
+        "parent": "90a472c2-ae5c-4847-aa3e-196914470a2e",
+        "order": 4,
+        "attributes": {
+          "else": true
+        },
+        "name": "None",
+        "type": "if_else",
+        "cat": "conditions",
+        "sibling": [
+          "4685a38d-a78a-499a-aa47-a61fd8c3d340"
+        ],
+        "comments": [],
+        "nodeType": "branch-no",
+        "parentKey": "90a472c2-ae5c-4847-aa3e-196914470a2e"
+      },
+      {
+        "id": "eada469a-ac1a-4bf9-8c14-9825dfd91b97",
+        "name": "DEBUG 02 webhook ejecutado",
+        "type": "add_contact_tag",
+        "attributes": {
+          "tags": [
+            "debug-02-webhook-ok"
+          ]
+        },
+        "parentKey": "399ad88f-16a1-48eb-ab63-e455dab30f7f",
+        "next": "62beb9f4-1674-40d9-bd3b-1c4c8556b2c9",
+        "order": 1
+      }
+    ]
+  },
+  "permissionMeta": {
+    "canRead": true,
+    "canWrite": true
+  }
+}

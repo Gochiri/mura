@@ -82,8 +82,8 @@ llegaba todo vacío a n8n. Ahora lee los campos reales del formulario:
 Trigger: tag `email-04-listo`. Tenía la plantilla por defecto de barbería
 ("Fresh Cuts… 💈"); pasó a enviar la plantilla **"04 · envío"**.
 
-**Ya no se usa: sus tres pasos viven dentro del 04a** y este quedó como
-`OLD 04b (fusionado en 04a) - borrar`, despublicado.
+**Ya no se usa: sus tres pasos viven dentro del 04a.** Se despublicó el 14/8 y se
+**borró de la cuenta el 15/8** (copia en `datos/backups/wf_old04b_pre_delete_20260815.json`).
 **Por qué se retiró:** disparaba **por tag**, y los campos custom de oportunidad
 solo resuelven con trigger de **cambio de etapa** (sección 24). Cuando n8n migró a
 escribir en la oportunidad, el enlace de seguimiento del correo se quedó leyendo el
@@ -375,9 +375,8 @@ que lo ocultaba, por orden de descubrimiento:
   `/webhook/6b762db0-…`, watchdog 48h → `/webhook/watchdog-entrega`, y rama
   "faltan datos" → notificación + devolver a 03 + **aviso Telegram**
   `/webhook/db8ae6be-6621-4e34-9400-391e5d8c494c` (key `mensaje`).
-- **El original `c93013cf` quedó como `OLD 04a (borrar)` en draft** →
-  ⚠️ **German: borrarlo desde la UI** (no lo borro yo por seguridad). Mientras
-  esté en draft no dispara, pero mejor eliminarlo para que no confunda.
+- **El original `c93013cf` quedó como `OLD 04a (borrar)` en draft** y se **borró
+  el 15/8** (copia en `datos/backups/wf_old04a_pre_delete_20260815.json`).
 - Tags `debug-01-entro-wf` y `debug-02-webhook-ok` borrados del location.
 - Backups: `datos/backups/copy04a_pre_consolidacion_20260811.json`,
   `orig04a_pre_consolidacion_20260811.json`, `wf05_pre_cambios_20260811.json`.
@@ -446,7 +445,7 @@ montado pero no se habló en la reunión).
 ### 14.7 Checklist para la sesión de mañana (12/8)
 
 1. Sonia llama a **Nacex → cuenta a producción** (bloqueante de la prueba real).
-2. German **borra `OLD 04a (borrar)`** en la UI.
+2. ~~German **borra `OLD 04a (borrar)`** en la UI.~~ Hecho el 15/8.
 3. Prueba envío completa: mover pedido test a "04 Enviado" → POST (3 min) → Nacex
    albarán/etiqueta/URL seguimiento → n8n escribe en GHL → tag `etiqueta-por-imprimir`
    + `email-04-listo` → email 04. Verificar los DOS nodos de escritura de n8n
@@ -988,8 +987,8 @@ cobrado en cada compra), el **Array formatter** y el Update Opportunity que apun
 en el workflow. Backups: `sp01_pre_webhook_n8n_20260814.json` y
 `sp01_pre_webhook_n8n_v2.json`.
 
-⚠️ El campo `opportunity.order_array` (creado durante las pruebas) queda sin uso; borrar
-cuando esté confirmado el flujo.
+El campo `opportunity.order_array` (creado durante las pruebas) quedó sin uso y se
+**borró el 15/8**.
 
 Sigue faltando **el patrón de la URL del pedido** para construir el botón "Ver mi
 pedido": tener el id no basta si no sabemos cómo se arma el enlace de cara a la clienta.
@@ -1163,8 +1162,9 @@ El **guard** sustituye a la garantía que daba el tag: antes, `email-04-listo` a
 de que Nacex ya había respondido; ahora se comprueba el dato directamente, así que un
 retraso de Nacex no manda un correo con el enlace vacío — avisa a Sara.
 
-- **04b** queda renombrado `OLD 04b (fusionado en 04a) - borrar` y **despublicado**.
-  Borrarlo en la UI cuando esté verificado.
+- **04b** quedó renombrado `OLD 04b (fusionado en 04a) - borrar` y despublicado;
+  **borrado de la cuenta el 15/8** junto con `OLD 04a` y `ZZ TEST custom webhook`.
+  Backups en `datos/backups/wf_old04a|old04b|zztest_pre_delete_20260815.json`.
 - La plantilla `correos/04-envio.html` pasa a `{{opportunity.url_seguimiento}}`
   (hay que pegarla también en GHL).
 - Backups: `wf04a_pre_fusion.json`, `wf04b_pre_fusion.json`.

@@ -1,0 +1,92 @@
+{
+  "_id": "f32ee04f-84cf-4cad-9ff6-698c670b6f5c",
+  "locationId": "NxPF5fOicowujokEk5Hm",
+  "companyId": "5tNRocqWdcsz7Rii28bH",
+  "companyAge": 12,
+  "name": "ZZ TEST custom webhook (crear el paso a mano)",
+  "version": 14,
+  "dataVersion": 7,
+  "allowMultiple": true,
+  "timezone": "account",
+  "removeContactFromLastStep": true,
+  "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/f32ee04f-84cf-4cad-9ff6-698c670b6f5c/13",
+  "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2Ff32ee04f-84cf-4cad-9ff6-698c670b6f5c%2F13?alt=media&token=e9ee41d9-1ac4-4176-80c9-b887be760506",
+  "stopOnResponse": false,
+  "autoMarkAsRead": false,
+  "permission": 380,
+  "type": "workflow",
+  "createdAt": "2026-08-14T14:43:48.180Z",
+  "updatedAt": "2026-08-14T18:54:37.876Z",
+  "deleted": false,
+  "creationSource": "builder",
+  "isTriggerBucketMigrated": true,
+  "originType": "user",
+  "__v": 0,
+  "allowMultipleOpportunity": false,
+  "eventStartDate": null,
+  "status": "draft",
+  "triggersFilePath": null,
+  "window": null,
+  "workflowNote": null,
+  "updatedBy": "k69NDKrTIXCwWc5k6pZf",
+  "meta": null,
+  "id": "f32ee04f-84cf-4cad-9ff6-698c670b6f5c",
+  "workflowData": {
+    "templates": [
+      {
+        "id": "c4455c72-a976-47e2-9ddd-c76bd139e2d2",
+        "name": "Marca que el flujo corrio",
+        "type": "add_contact_tag",
+        "attributes": {
+          "tags": [
+            "cw-ejecuto"
+          ]
+        },
+        "order": 0,
+        "next": "1f7c5a4e-f0d7-415f-a5c7-f82fe66fdd96"
+      },
+      {
+        "id": "1f7c5a4e-f0d7-415f-a5c7-f82fe66fdd96",
+        "stepIndex": 1,
+        "order": 1,
+        "name": "PRUEBA crear contacto",
+        "type": "custom_webhook",
+        "attributes": {
+          "event": "POST",
+          "method": "POST",
+          "url": "https://services.leadconnectorhq.com/contacts/",
+          "body": {
+            "contentType": "application/json",
+            "keyValueData": [],
+            "rawData": "{\n \"locationId\": \"NxPF5fOicowujokEk5Hm\",\n \"email\": \"cw-ok@example.com\",\n \"firstName\": \"CW\",\n \"lastName\": \"OK\"\n}"
+          },
+          "headers": [
+            {
+              "key": "Authorization",
+              "value": "Bearer pit-c16bafa6-438e-424d-8d49-7ea9f44590c1"
+            },
+            {
+              "key": "Version",
+              "value": "2021-07-28"
+            }
+          ],
+          "parameters": [],
+          "authorization": {
+            "type": "NONE",
+            "data": null
+          },
+          "saveResponse": false,
+          "webhookResponse": {
+            "isSampleRequested": false,
+            "selectedContact": ""
+          }
+        },
+        "parentKey": "c4455c72-a976-47e2-9ddd-c76bd139e2d2"
+      }
+    ]
+  },
+  "permissionMeta": {
+    "canRead": true,
+    "canWrite": true
+  }
+}
