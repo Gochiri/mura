@@ -1,37 +1,47 @@
 <!--
   ============================================================
-  MÛRA · NEWSLETTER (sección para el final de /home) · vía n8n
+  MÛRA · NEWSLETTER (sección para el final de /home) · EMBED
   ============================================================
+  Decisión del 15/8 (experiencia de German): el formulario va
+  INCRUSTADO con el embed oficial de GHL. Es el único camino que
+  el backend acepta siempre, porque el iframe corre en el dominio
+  de GHL y su Turnstile se valida en casa. Los intentos de enviar
+  desde la página al endpoint /forms/submit acabaron todos en 429
+  (el token se genera en nuestro dominio y no lo aceptan); esa
+  historia queda en la sección 28 del doc de implementación.
+
+  Ventajas de este camino: envíos en Forms → Submissions, campos
+  mapeados por el propio formulario, y el LS02 dispara por "form
+  submitted" tal como estaba previsto. Sin captcha que pelear.
+
   CÓMO SE PEGA
-  Va dentro del elemento de código de la página Home, DENTRO del
-  <div class="mura">, justo ANTES del <footer class="mura-foot">.
-  Requiere el Tracking Code global ya pegado (las reglas
-  .mura-nl-* viven ahí; esta sección no trae CSS).
+  1. En el builder del formulario Opt-in Newsletter → Integrate →
+     Embed, copiar el código del iframe.
+  2. Pegarlo aquí donde marca EL HUECO (sustituyendo el
+     comentario), sin tocar nada más.
+  3. Esta sección va en el elemento de código de Home, dentro del
+     <div class="mura">, antes del <footer class="mura-foot">.
 
-  POR QUÉ VA POR N8N Y NO CONTRA EL FORMULARIO DE GHL
-  Se intentó calcar el endpoint público del widget
-  (/forms/submit): contrato capturado de un envío real, payload
-  idéntico, token de Turnstile fresco con la site key correcta y
-  hasta las cabeceras x-turnstile-*. El backend siguió rechazando
-  con 429 "Invalid or expired invisible challenge" — todo apunta
-  a que valida el dominio donde se generó el token, y solo acepta
-  los suyos. Sin documentación, ese muro no se salta limpio.
+  CHECKLIST DEL FORMULARIO EN EL BUILDER (antes de publicar):
+  - Borrar los DOS checkboxes de consentimiento SMS en inglés
+    (los de [BUSINESS NAME]): opcionales, en inglés, no pintan
+    nada aquí.
+  - Añadir un checkbox de consentimiento RGPD OBLIGATORIO:
+    "He leído y acepto la política de privacidad. MÛRA usará
+    estos datos solo para enviarme sus novedades; puedo darme de
+    baja en cualquier momento." (con el enlace a
+    /politica-privacidad en el texto).
+  - Texto del botón: QUIERO ENTERARME (hoy pone "Button").
+  - Styles del formulario: fondo #F0EEE8 (o transparente),
+    campos con borde fino, botón #1D1B18 con texto #F0EEE8.
+    Para clavar la tipografía (Cormorant/Jost) hace falta el
+    Custom CSS DEL BUILDER (el CSS de la página no entra en un
+    iframe): pasar a Claude el outerHTML del body del widget y
+    lo escribe sobre las clases reales.
 
-  El envío va ahora a un webhook de n8n
-  (POST https://n8n.letsbebanana.com/webhook/newsletter-mura)
-  que hace upsert del contacto por la API de GHL con permisos
-  (nombre, apellidos, email, teléfono, fecha de nacimiento en el
-  campo estándar dateOfBirth) y le pone el tag `nl`.
-  El workflow para importar en n8n está en
-  tienda/n8n-newsletter-workflow.json.
-
-  CONSECUENCIAS DEL CAMBIO
-  - El LS02 pasa a disparar por TAG AÑADIDO `nl`, no por "form
-    submitted".
-  - No queda rastro en Forms → Submissions (el formulario Opt-in
-    de GHL deja de usarse); el rastro es el contacto + su tag.
-  - El campo `k` del envío es una llave estática que n8n
-    comprueba, para que el webhook abierto no trague spam a pelo.
+  El plan B por n8n queda montado y documentado
+  (tienda/n8n-newsletter-workflow.json) por si algún día hace
+  falta un alta sin formulario.
   ============================================================
 -->
 <section class="mura-nl" id="mura-nl">
@@ -39,65 +49,10 @@
   <h2 class="mura-serif" style="font-size:clamp(28px,3.4vw,40px);font-weight:400">Las cápsulas, antes que nadie.</h2>
   <p style="margin-top:18px;font-size:14.5px;line-height:1.9;color:#55524B">Cada colección existe una sola vez. Déjanos tu correo y te avisamos cuando una nueva cápsula esté a punto de salir.</p>
 
-  <form id="mnl-form" novalidate>
-    <div class="mura-nl-fila">
-      <div class="mura-nl-campo"><label for="mnl-nombre">Nombre</label><input id="mnl-nombre" name="first_name" type="text" autocomplete="given-name"></div>
-      <div class="mura-nl-campo"><label for="mnl-apellido">Apellidos</label><input id="mnl-apellido" name="last_name" type="text" autocomplete="family-name"></div>
-    </div>
-    <div class="mura-nl-campo"><label for="mnl-email">Correo electrónico *</label><input id="mnl-email" name="email" type="email" autocomplete="email" required></div>
-    <div class="mura-nl-fila">
-      <div class="mura-nl-campo"><label for="mnl-tel">Teléfono *</label><input id="mnl-tel" name="phone" type="tel" autocomplete="tel" required></div>
-      <div class="mura-nl-campo"><label for="mnl-fecha">Fecha de nacimiento</label><input id="mnl-fecha" name="date_of_birth" type="date"></div>
-    </div>
-    <label class="mura-nl-consent"><input id="mnl-rgpd" type="checkbox">
-      <span>He leído y acepto la <a href="/politica-privacidad">política de privacidad</a>. MÛRA usará estos datos solo para enviarme sus novedades; puedo darme de baja en cualquier momento.</span>
-    </label>
-    <button type="submit" class="mura-btn" id="mnl-btn">Quiero enterarme</button>
-    <div class="mura-nl-estado" id="mnl-estado" role="status" aria-live="polite"></div>
-  </form>
+  <div style="margin-top:clamp(32px,4vw,44px)">
+    <!-- ================= EL HUECO =================
+         PEGAR AQUÍ el código de Integrate → Embed del
+         formulario Opt-in Newsletter (iframe + script).
+         ============================================ -->
+  </div>
 </section>
-<script>(function(){
-var WEBHOOK='https://n8n.letsbebanana.com/webhook/newsletter-mura';
-var LLAVE='mura-nl-2026';
-var form=document.getElementById('mnl-form');
-var estado=document.getElementById('mnl-estado');
-var btn=document.getElementById('mnl-btn');
-function msg(t,err){estado.textContent=t;estado.className='mura-nl-estado'+(err?' err':'');}
-form.addEventListener('submit',function(ev){
- ev.preventDefault();
- var email=document.getElementById('mnl-email').value.trim();
- var tel=document.getElementById('mnl-tel').value.trim();
- if(!email||email.indexOf('@')<1){msg('Escribe tu correo electrónico para poder avisarte.',true);return;}
- if(!tel){msg('Escribe tu teléfono, por favor.',true);return;}
- if(!document.getElementById('mnl-rgpd').checked){msg('Para suscribirte necesitamos que aceptes la política de privacidad.',true);return;}
- btn.disabled=true;btn.style.opacity='.55';msg('Un momento…');
- /* URLSearchParams = application/x-www-form-urlencoded: peticion "simple",
-    sin preflight de CORS. Leer la respuesta requiere que el webhook de n8n
-    devuelva Access-Control-Allow-Origin (viene puesto en el workflow). */
- var datos=new URLSearchParams({
-  k:LLAVE,
-  email:email,
-  first_name:document.getElementById('mnl-nombre').value.trim(),
-  last_name:document.getElementById('mnl-apellido').value.trim(),
-  phone:tel,
-  fecha:document.getElementById('mnl-fecha').value||''
- });
- fetch(WEBHOOK,{method:'POST',body:datos})
-  .then(function(r){
-   return r.text().then(function(txt){
-    if(!r.ok){console.error('MURA newsletter: HTTP '+r.status,txt.slice(0,300));throw new Error('HTTP '+r.status);}
-    return txt;
-   });
-  })
-  .then(function(){
-   form.querySelectorAll('input,button').forEach(function(e){e.disabled=true;});
-   form.style.opacity='.5';
-   msg('Ya estás dentro. Te escribiremos cuando la próxima cápsula esté a punto de salir.');
-  })
-  .catch(function(e){
-   console.error('MURA newsletter:',e);
-   btn.disabled=false;btn.style.opacity='';
-   msg('No hemos podido registrar tu suscripción. Inténtalo de nuevo en unos minutos o escríbenos a hello@stylebymura.com.',true);
-  });
-});
-})();</script>
