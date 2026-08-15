@@ -1350,6 +1350,63 @@ coincidía con el de las demás páginas.
    configuración de la tienda hay `isCurrencyFormattingEnabled: false`; activarlo
    debería dar el formato español de forma nativa en todo el flujo.
 
+### 27.6 Qué es `/carrito` en realidad, y qué se le arregló
+
+Suponía que era un elemento Cart de GHL con el selector de cantidad oculto por
+CSS. **No lo es.** Es un carrito escrito a mano dentro de un elemento de código
+personalizado (`custom-code-DN8OVgnA5P`) que lee y escribe el almacén de la propia
+tienda:
+
+```
+localStorage['cart_details_rlc7iAyGF4U1nfwAJOJQ']
+  → { products: [ { name, quantity, selectedProductImage,
+                    selectedPrice: { amount, name } } ] }
+```
+
+`amount` va en euros, no en céntimos, y `selectedPrice.name` es la talla. El
+checkout lee ese mismo almacén: por eso lo que se toca en `/carrito` llega al pago.
+
+La versión corregida está en `tienda/carrito.html`. **El CSS compartido queda byte
+a byte igual** —es el mismo bloque que se copia en todas las páginas—; solo se
+añaden reglas nuevas al final.
+
+**1. Cantidad.** Es lo que motivó todo: la clienta solo podía quitar la pieza, así
+que para pasar de 2 a 1 tenía que borrarla y volver al producto a añadirla. Ahora
+hay un control `− n +` con el gesto de `.mura-talla`. Bajar de 1 quita la pieza.
+
+**2. Bug real de importes.** El precio de línea se calculaba multiplicando y se
+imprimía en crudo, así que salía la coma flotante de JavaScript. Reproducido:
+`79,95 × 3` imprimía **`239.85000000000002 €`**. Ahora pasa por `fmt()`, que
+redondea a céntimos y escribe en español —coma decimal, € detrás— sin decimales
+cuando el importe es redondo, como estaba. El total general se salvaba por poco en
+este caso concreto, pero es el mismo cálculo y el mismo riesgo.
+
+**3. Precio por unidad.** Con 2 unidades solo se veía "318 €" y no de dónde salía.
+Ahora, cuando hay más de una, añade "159 € / ud.".
+
+**4. La cabecera se cortaba en móvil.** A 390 px el contador salía como
+`CARRITO (5` —sin cerrar— porque se pasaba de ancho y lo recortaba el
+`overflow-x: clip` de `.mura`. Media query a 440 px que aprieta logo, menú y
+contador. Verificado a 390 y a 360.
+
+Probado en Chromium con el carrito sembrado en localStorage: `+` y `−` actualizan
+línea, total y contador de la cabecera; bajar de 1 elimina la línea; vaciar del
+todo enseña el aviso y esconde el resumen; `localStorage` queda en
+`{"products":[]}`. Sin errores de JavaScript.
+
+⚠️ **El stock no se valida aquí.** El botón `+` sube la cantidad sin mirar cuántas
+quedan, porque el almacén del carrito no guarda el stock. Si el elemento de GHL lo
+comprobaba, esa red se pierde al usar esta página; quien lo corta de verdad es el
+checkout al cobrar. Si empiezan a colarse pedidos por encima de stock, hay que
+traerse el dato del producto a la página.
+
+⚠️ **El bloque de CSS está duplicado en cada página** (`.mura-grid`, `.mura-card`,
+`.mura-filtros`, `.mura-talla`, `.mura-acc` no pintan nada en el carrito: están ahí
+porque el bloque se copia entero). Cualquier retoque de marca hay que repetirlo
+página por página, y basta olvidar una para que diverjan. Convendría moverlo al
+Tracking Code global —donde ya vive `tienda/codigo-global-tienda.js`— y dejar en
+cada página solo su HTML.
+
 ### 27.4 Y la página de gracias va en `/thank-you`, no en `/gracias`
 
 Existen las dos y se prestan a confusión. El ajuste `saleAction` del checkout es

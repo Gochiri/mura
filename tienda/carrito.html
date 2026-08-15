@@ -1,0 +1,226 @@
+<!--
+  ============================================================
+  MÛRA · CARRITO (/carrito)
+  ============================================================
+  Sustituye el contenido del elemento de código personalizado
+  `custom-code-DN8OVgnA5P` de la página "carrito"
+  (qsUEwHJLz2xiSulCN5jD). Se pega ENTERO, tal cual, desde
+  <style> hasta el último </div>.
+
+  QUÉ ES ESTA PÁGINA
+  No es el elemento Cart de GoHighLevel. Es un carrito escrito a
+  mano que lee y escribe el almacén de la tienda:
+
+    localStorage['cart_details_rlc7iAyGF4U1nfwAJOJQ']
+      → { products: [ { name, quantity, selectedProductImage,
+                        selectedPrice: { amount, name } } ] }
+
+  `amount` va en euros, no en céntimos, y `selectedPrice.name` es
+  la talla. El checkout lee ese mismo almacén, y por eso lo que se
+  toca aquí llega al pago.
+
+  CAMBIOS DEL 15/8 (lo demás queda byte a byte igual)
+
+  1. CANTIDAD. Antes la clienta solo podía quitar la pieza: para
+     pasar de 2 a 1 tenía que borrarla y volver al producto a
+     añadirla otra vez. Era la única ventaja que tenía el carrito
+     de GHL sobre este. Ahora hay un control − n + .
+     Bajar de 1 quita la pieza, que es lo que la clienta espera.
+
+  2. FORMATO DE IMPORTES. El total se calculaba multiplicando y se
+     imprimía tal cual. Con precios no enteros eso enseña la coma
+     flotante de JavaScript: 79,95 × 3 salía como
+     "239.85000000000002 €". Ahora pasa por `fmt()`, que redondea a
+     céntimos y escribe en español — coma decimal y el € detrás—,
+     sin decimales cuando el importe es redondo, como estaba.
+
+  3. PRECIO POR UNIDAD. Con dos unidades solo se veía "318 €" y no
+     de dónde salía. Cuando hay más de una, se añade "159 € / ud.".
+
+  ⚠️ EL STOCK NO SE VALIDA AQUÍ. El botón + sube la cantidad sin
+  preguntar cuántas quedan: el almacén del carrito no guarda el
+  stock. Si el elemento de GHL lo comprobaba, esa red se pierde al
+  usar esta página. Quien lo corta de verdad es el checkout al
+  cobrar. Si empiezan a colarse pedidos por encima de stock, hay
+  que traerse el dato del producto a esta página.
+  ============================================================
+-->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Jost:wght@200;300;400&display=swap');
+.mura, .mura *, .mura *::before, .mura *::after { box-sizing: border-box; }
+.mura { background: #F0EEE8; color: #1D1B18; font-family: 'Jost', sans-serif; font-weight: 300; margin: 0; -webkit-font-smoothing: antialiased; }
+.mura h1, .mura h2, .mura h3, .mura .mura-serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; margin: 0; }
+.mura p { margin: 0; }
+.mura a { color: #1D1B18; text-decoration: none; transition: color .2s ease; }
+.mura a:hover { color: #6E6A61; }
+.mura-nav { position: sticky; top: 0; z-index: 50; background: rgba(240,238,232,.92); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(29,27,24,.08); }
+.mura-nav-in { max-width: 1440px; margin: 0 auto; padding: 0 clamp(20px,4vw,56px); height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.mura-logo { font-family: 'Cormorant Garamond', serif !important; font-size: 26px; font-weight: 500; letter-spacing: .32em; color: #1D1B18 !important; }
+.mura-links { display: flex; align-items: center; gap: clamp(16px,2.6vw,38px); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; }
+.mura-links a { color: #55524B; }
+.mura-links a.on { color: #1D1B18; }
+.mura-cart { font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: #1D1B18 !important; white-space: nowrap; }
+@media (max-width: 719px) { .mura-links a.hm { display: none; } }
+/* A 390 px el "CARRITO (n)" se salía y lo cortaba el overflow-x:clip de .mura:
+   quedaba "CARRITO (5" sin cerrar el paréntesis. Se aprieta la cabecera. */
+@media (max-width: 440px) {
+  .mura-nav-in { padding: 0 16px; gap: 12px; }
+  .mura-logo { font-size: 21px; letter-spacing: .24em; }
+  .mura-links { gap: 14px; font-size: 10.5px; }
+  .mura-cart { font-size: 10.5px; letter-spacing: .12em; }
+}
+.mura-label { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: #8A857B; }
+.mura-btn { display: flex; align-items: center; justify-content: center; height: 56px; border: none; background: #1D1B18; color: #F0EEE8 !important; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .24em; text-transform: uppercase; font-weight: 300; transition: background .2s ease; width: 100%; }
+.mura-btn:hover { background: #38352F; }
+.mura-link-u { font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase; border-bottom: 1px solid #1D1B18; padding-bottom: 6px; }
+.mura-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px,100%),1fr)); gap: clamp(28px,3vw,44px) clamp(14px,1.6vw,22px); }
+.mura-card { display: flex; flex-direction: column; gap: 16px; color: #1D1B18 !important; }
+.mura-card-img { position: relative; aspect-ratio: 3/4; background: #E3DFD6; overflow: hidden; }
+.mura-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mura-badge { position: absolute; top: 14px; left: 14px; background: rgba(240,238,232,.92); padding: 6px 12px; font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; }
+.mura-card-name { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 500; text-align: center; }
+.mura-card-price { font-size: 12px; letter-spacing: .14em; color: #55524B; text-align: center; }
+.mura-foot { border-top: 1px solid rgba(29,27,24,.12); }
+.mura-foot-in { max-width: 1440px; margin: 0 auto; padding: clamp(70px,8vw,110px) clamp(20px,4vw,56px) 30px; }
+.mura-foot-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: clamp(36px,5vw,72px); }
+.mura-foot-h { font-size: 11px; letter-spacing: .28em; text-transform: uppercase; font-weight: 400; margin-bottom: 18px; }
+.mura-foot-c { display: flex; flex-direction: column; gap: 12px; font-size: 13px; }
+.mura-foot-c a { color: #55524B; }
+.mura-foot-c a:hover { color: #1D1B18; }
+.mura-filtros { display: flex; justify-content: center; gap: clamp(18px,3vw,36px); flex-wrap: wrap; padding: 0 20px clamp(36px,4vw,56px); }
+.mura-filtros button { border: none; background: transparent; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase; font-weight: 300; color: #8A857B; padding: 10px 2px 8px; border-bottom: 1px solid transparent; }
+.mura-filtros button.on { color: #1D1B18; border-bottom-color: #1D1B18; }
+.mura-talla { min-width: 52px; height: 48px; padding: 0 14px; border: 1px solid rgba(29,27,24,.25); background: transparent; color: #1D1B18; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .14em; font-weight: 300; }
+.mura-talla.on { border-color: #1D1B18; background: #1D1B18; color: #F0EEE8; }
+.mura-talla:disabled { color: #B9B4A9; text-decoration: line-through; cursor: default; }
+.mura-acc { border-bottom: 1px solid rgba(29,27,24,.14); }
+.mura-acc > button { width: 100%; display: flex; justify-content: space-between; align-items: center; border: none; background: transparent; cursor: pointer; padding: 20px 2px; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; font-weight: 300; color: #1D1B18; }
+.mura-acc > div { display: none; padding: 0 2px 24px; font-size: 13.5px; line-height: 2; color: #55524B; white-space: pre-line; }
+.mura-acc.open > div { display: block; }
+
+/* full-bleed dentro del contenedor de GHL */
+.mura { width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); overflow-x: clip; }
+
+/* ---- Control de cantidad del carrito (15/8) ----
+   Hereda el gesto de .mura-talla: cuadrado, recto, borde fino. */
+.mura-qty { display: flex; align-items: center; border: 1px solid rgba(29,27,24,.25); height: 40px; }
+.mura-qty button { width: 38px; height: 100%; border: none; background: transparent; cursor: pointer; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 300; line-height: 1; transition: background .2s ease; }
+.mura-qty button:hover { background: rgba(29,27,24,.06); }
+.mura-qty span { min-width: 34px; text-align: center; font-size: 13px; letter-spacing: .08em; }
+.mura-quitar { border: none; background: transparent; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; font-weight: 300; color: #8A857B; padding: 0; }
+.mura-quitar:hover { color: #1D1B18; }
+.mura-linea { display: flex; gap: 16px; align-items: center; }
+.mura-linea-acc { display: flex; align-items: center; gap: clamp(14px,2vw,26px); }
+@media (max-width: 560px) {
+  .mura-linea { flex-wrap: wrap; }
+  .mura-linea-acc { width: 100%; justify-content: space-between; padding-left: 88px; }
+}
+</style>
+<div class="mura">
+<nav class="mura-nav"><div class="mura-nav-in">
+<a href="/" class="mura-logo">MÛRA</a>
+<div class="mura-links"><a href="/" class="">Inicio</a><a href="/colecciones" class=" hm">Colecciones</a><a href="/prendas" class="">Prendas</a><a href="/novedades" class=" hm">Novedades</a><a href="/mura" class=" hm">MÛRA</a><a href="/contacto" class=" hm">Contacto</a></div>
+<a href="/carrito" class="on mura-cart">Carrito<span class="mura-cart-w" style="display:none"> (<span class="mura-cart-n">0</span>)</span></a>
+</div></nav>
+<script>(function(){try{var d=JSON.parse(localStorage.getItem('cart_details_rlc7iAyGF4U1nfwAJOJQ')||'{"products":[]}');var n=(d.products||[]).reduce(function(a,x){return a+(x.quantity||0)},0);document.querySelectorAll('.mura-cart-n').forEach(function(e){e.textContent=n});document.querySelectorAll('.mura-cart-w').forEach(function(e){e.style.display=n>0?'inline':'none'});}catch(e){}})();</script>
+<section style="max-width:900px;margin:0 auto;padding:clamp(50px,7vw,90px) clamp(20px,4vw,56px) clamp(80px,10vw,130px)">
+<div class="mura-label" style="margin-bottom:14px;text-align:center">Tu selección</div>
+<h1 style="font-size:clamp(32px,4vw,52px);margin-bottom:clamp(36px,5vw,56px);text-align:center">Piezas elegidas.</h1>
+<div id="mcar-vacio" style="display:none;text-align:center;padding:40px 0 20px">
+<p class="mura-serif" style="font-size:22px;font-style:italic;color:#55524B;margin-bottom:26px">Aún no has seleccionado ninguna pieza.</p>
+<a href="/prendas" class="mura-link-u">Descubrir colección</a>
+</div>
+<div id="mcar-list" style="display:flex;flex-direction:column;gap:22px"></div>
+<div id="mcar-resumen" style="display:none;border-top:1px solid rgba(29,27,24,.14);margin-top:32px;padding-top:24px">
+<div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:24px"><span>Total</span><span id="mcar-total"></span></div>
+<a href="/checkout" class="mura-btn" id="mcar-cta">Completar pedido</a>
+<p style="font-size:11px;color:#8A857B;line-height:1.8;margin-top:16px;text-align:center">Los datos de envío y el pago se completan de forma segura en el siguiente paso.<br>15 días para devoluciones desde la recepción.</p>
+</div>
+</section>
+<footer class="mura-foot"><div class="mura-foot-in">
+<div class="mura-foot-cols">
+<div><div class="mura-foot-h">Explorar</div><div class="mura-foot-c"><a href="/">Inicio</a><a href="/colecciones">Colecciones</a><a href="/prendas">Prendas</a><a href="/novedades">Novedades</a></div></div>
+<div><div class="mura-foot-h">MÛRA</div><div class="mura-foot-c"><a href="/mura">Nuestra esencia</a><a href="/contacto">Contacto</a></div></div>
+<div><div class="mura-foot-h">Información</div><div class="mura-foot-c"><a href="/devoluciones">Envíos y devoluciones</a><a href="/politica-privacidad">Política de privacidad</a><a href="/politica-cookies">Política de cookies</a><a href="/condiciones-contratacion">Condiciones de contratación</a><a href="/aviso-legal">Aviso legal</a></div></div>
+<div><div class="mura-foot-h">Redes</div><div class="mura-foot-c"><a href="https://www.instagram.com/bymurastudio/" target="_blank" rel="noopener">Instagram</a></div></div>
+</div>
+<div style="height:1px;background:rgba(29,27,24,.1);margin:clamp(60px,7vw,90px) 0 0"></div>
+<div style="text-align:center;padding:clamp(60px,7vw,90px) 0 28px;display:flex;flex-direction:column;gap:20px;align-items:center">
+<p class="mura-serif" style="font-size:clamp(22px,2.2vw,28px);font-style:italic">Vestir con intención.</p>
+<div class="mura-serif" style="font-size:20px;font-weight:500;letter-spacing:.32em">MÛRA</div>
+</div>
+<p style="text-align:center;font-size:10.5px;letter-spacing:.14em;color:#9B968C">© MÛRA 2026 · Todos los derechos reservados.</p>
+</div></footer>
+<script>(function(){
+var KEY='cart_details_rlc7iAyGF4U1nfwAJOJQ';
+
+// Importes en español: coma decimal, euro detrás, y sin decimales si es
+// redondo. El redondeo a céntimos es lo que evita el "239.85000000000002 €"
+// que salía al multiplicar precios no enteros.
+function fmt(n){
+ n=Math.round((Number(n)||0)*100)/100;
+ return (n%1===0 ? String(n) : n.toFixed(2).replace('.',',')) + ' €';
+}
+
+function getCart(){try{return JSON.parse(localStorage.getItem(KEY)||'{"products":[]}')}catch(e){return {products:[]}}}
+function setCart(c){localStorage.setItem(KEY,JSON.stringify(c));render();
+ var n=(c.products||[]).reduce(function(a,x){return a+(x.quantity||0)},0);
+ document.querySelectorAll('.mura-cart-n').forEach(function(e){e.textContent=n});document.querySelectorAll('.mura-cart-w').forEach(function(e){e.style.display=n>0?'inline':'none'});}
+
+// Bajar de 1 unidad quita la pieza: es lo que espera quien pulsa "−" en un
+// carrito, y evita dejar líneas a cero.
+function setQty(i,d){
+ var c=getCart(),it=(c.products||[])[i];
+ if(!it) return;
+ var q=(it.quantity||1)+d;
+ if(q<1){c.products.splice(i,1);} else {it.quantity=q;}
+ setCart(c);
+}
+
+function render(){
+ var cart=getCart(),items=cart.products||[],l=document.getElementById('mcar-list');
+ document.getElementById('mcar-vacio').style.display=items.length?'none':'block';
+ document.getElementById('mcar-resumen').style.display=items.length?'block':'none';
+ l.innerHTML='';
+ items.forEach(function(it,i){
+  var precio=(it.selectedPrice&&it.selectedPrice.amount)||0;
+  var talla=(it.selectedPrice&&it.selectedPrice.name)||'Única';
+  var cant=it.quantity||1;
+  var img=it.selectedProductImage?'<img src="'+it.selectedProductImage+'" alt="'+it.name+'" style="width:72px;height:96px;object-fit:cover;display:block;background:#E3DFD6">':'<div style="width:72px;height:96px;background:#E3DFD6"></div>';
+  var row=document.createElement('div');
+  row.className='mura-linea';
+  // El precio por unidad solo cuando aporta algo: con 1 ud. sería repetirse.
+  var unidad = cant>1 ? '<span style="color:#8A857B"> · '+fmt(precio)+' / ud.</span>' : '';
+  row.innerHTML=img+'<div style="flex:1"><div class="mura-serif" style="font-size:17px;font-weight:500">'+it.name+'</div><div style="font-size:11.5px;color:#8A857B;letter-spacing:.1em;margin:5px 0">Talla '+talla+'</div><div style="font-size:12px;letter-spacing:.1em">'+fmt(precio*cant)+unidad+'</div></div>';
+
+  var acc=document.createElement('div');
+  acc.className='mura-linea-acc';
+
+  var qty=document.createElement('div');
+  qty.className='mura-qty';
+  var menos=document.createElement('button');
+  menos.type='button'; menos.textContent='−';
+  menos.setAttribute('aria-label','Quitar una unidad de '+it.name);
+  menos.onclick=function(){setQty(i,-1)};
+  var num=document.createElement('span');
+  num.textContent=cant;
+  var mas=document.createElement('button');
+  mas.type='button'; mas.textContent='+';
+  mas.setAttribute('aria-label','Añadir una unidad de '+it.name);
+  mas.onclick=function(){setQty(i,1)};
+  qty.appendChild(menos); qty.appendChild(num); qty.appendChild(mas);
+
+  var q=document.createElement('button');
+  q.type='button'; q.className='mura-quitar'; q.textContent='Quitar';
+  q.setAttribute('aria-label','Quitar '+it.name+' del carrito');
+  q.onclick=function(){var c=getCart();c.products.splice(i,1);setCart(c)};
+
+  acc.appendChild(qty); acc.appendChild(q);
+  row.appendChild(acc); l.appendChild(row);
+ });
+ var total=items.reduce(function(a,c){return a+((c.selectedPrice&&c.selectedPrice.amount)||0)*(c.quantity||1)},0);
+ document.getElementById('mcar-total').textContent=fmt(total);
+}
+render();
+})();</script>
+</div>
