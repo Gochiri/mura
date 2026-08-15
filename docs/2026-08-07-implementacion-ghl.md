@@ -1171,8 +1171,14 @@ El script quedó reescrito calcando ese contrato, con Turnstile invisible integr
 (la site key `0x4AAAAAACCpVlau-4k7cJ33` sale de la config pública del propio sitio;
 si no carga, envía sin token). Si un envío falla, el detalle queda en la consola con
 el prefijo "MURA newsletter". Verificado en render: payload idéntico al capturado.
-Pendiente: segundo envío real de German, y conectar el trigger "form submitted" →
-LS02 y publicarlo.
+El segundo envío real devolvió **HTTP 429**: sin token de Turnstile válido el
+endpoint aplica límite de bot. El token se generaba al cargar la página y Turnstile
+los caduca a los ~5 min — si la clienta tarda en rellenar, llega muerto. Corregido:
+el widget se prepara con `execution:'execute'` y el token se pide **fresco en el
+momento del envío** (espera máx. 6 s; sin token envía igual y que decida el
+servidor). La consola dice `token ok/AUSENTE` en cada envío, y el 429 tiene su
+propio mensaje. Pendiente: tercer envío real, y conectar el trigger
+"form submitted" → LS02 y publicarlo.
 
 ## 26. Fusión del 04b dentro del 04a (14/8)
 

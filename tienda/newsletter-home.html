@@ -66,21 +66,33 @@ var LOC_ID='NxPF5fOicowujokEk5Hm';
    NO es date_of_birth: el builder creo un campo propio y el widget
    envia su id — leido de una captura real del 15/8. */
 var CAMPO_FECHA='FGlE7RDztTinTetJGgWI';
-/* Turnstile invisible de Cloudflare. El endpoint lo espera (el widget
-   oficial siempre lo manda) y la clave es la del propio entorno de GHL,
-   leida de la config publica de la pagina. Si el script no carga o la
-   clave rechaza el dominio, se envia sin token y que decida el servidor. */
+/* Turnstile invisible de Cloudflare. Sin token valido el endpoint
+   aplica un limite de bot y devuelve 429 (visto el 15/8), asi que el
+   token se genera FRESCO en el momento del envio — los tokens caducan
+   a los ~5 min y uno generado al cargar la pagina llega muerto si la
+   clienta tarda en rellenar. Con execution:'execute' el widget se
+   prepara al cargar pero solo corre cuando se le pide. */
 var TS_KEY='0x4AAAAAACCpVlau-4k7cJ33';
-var tsToken='';
+var tsWidget=null, tsResolve=null;
 window.__mnlTS=function(){try{
-  turnstile.render('#mnl-ts',{sitekey:TS_KEY,
-    callback:function(t){tsToken=t;},
-    'expired-callback':function(){tsToken='';try{turnstile.reset()}catch(e){}},
-    'error-callback':function(){tsToken='';}});
+  tsWidget=turnstile.render('#mnl-ts',{sitekey:TS_KEY, execution:'execute',
+    callback:function(t){if(tsResolve){var r=tsResolve;tsResolve=null;r(t);}},
+    'error-callback':function(){if(tsResolve){var r=tsResolve;tsResolve=null;r('');}},
+    'expired-callback':function(){try{turnstile.reset(tsWidget)}catch(e){}}});
 }catch(e){}};
 var tss=document.createElement('script');
 tss.src='https://challenges.cloudflare.com/turnstile/v0/api.js?onload=__mnlTS&render=explicit';
 tss.async=true; document.head.appendChild(tss);
+
+function obtenerToken(){
+ return new Promise(function(res){
+  if(!window.turnstile||tsWidget===null){res('');return;}
+  var hecho=false;
+  tsResolve=function(t){if(!hecho){hecho=true;res(t);}};
+  try{turnstile.execute(tsWidget);}catch(e){if(!hecho){hecho=true;tsResolve=null;res('');}}
+  setTimeout(function(){if(!hecho){hecho=true;tsResolve=null;res('');}},6000);
+ });
+}
 
 function uuid(){try{return crypto.randomUUID()}catch(e){return 'xxxx-xxxx-4xxx-yxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return (c==='x'?r:(r&3|8)).toString(16)})}}
 function tzTexto(){
@@ -103,55 +115,61 @@ form.addEventListener('submit',function(ev){
  if(!tel){msg('Escribe tu teléfono, por favor.',true);return;}
  if(!document.getElementById('mnl-rgpd').checked){msg('Para suscribirte necesitamos que aceptes la política de privacidad.',true);return;}
 
- var sid=uuid();
- var datos={
-  first_name:document.getElementById('mnl-nombre').value.trim(),
-  last_name:document.getElementById('mnl-apellido').value.trim(),
-  phone:tel,
-  email:email,
-  formId:FORM_ID,
-  location_id:LOC_ID,
-  sessionId:sid,
-  eventData:{
-   source:'direct', referrer:document.referrer||'', adSource:'', url_params:{},
-   page:{url:location.href,title:document.title||''},
-   timestamp:Date.now(), campaign:'',
-   contactSessionIds:{ids:[sid]},
-   fbp:'', fbc:'', type:'page-visit', parentId:FORM_ID, pageVisitType:'form',
-   domain:location.hostname, version:'v3', parentName:'Opt-in Newsletter',
-   fingerprint:null, documentURL:location.href, gaClientId:null,
-   fbEventId:uuid(), medium:'form', mediumId:FORM_ID
-  },
-  Timezone:tzTexto(),
-  paymentContactId:{},
-  timeSpent:Math.round((Date.now()-t0)/1000*1000)/1000
- };
- var f=document.getElementById('mnl-fecha').value;
- if(f)datos[CAMPO_FECHA]=f;
-
- var fd=new FormData();
- fd.append('formData',JSON.stringify(datos));
- fd.append('locationId',LOC_ID);
- fd.append('formId',FORM_ID);
- if(tsToken)fd.append('turnstileNonInteractiveToken',tsToken);
-
  btn.disabled=true;btn.style.opacity='.55';msg('Un momento…');
- fetch('https://backend.leadconnectorhq.com/forms/submit?formId='+FORM_ID+'&locationId='+LOC_ID,{method:'POST',body:fd})
-  .then(function(r){
-   return r.text().then(function(txt){
-    if(!r.ok){console.error('MURA newsletter: HTTP '+r.status,txt.slice(0,500));throw new Error('HTTP '+r.status);}
-    return txt;
+ obtenerToken().then(function(tok){
+  console.log('MURA newsletter: token '+(tok?'ok':'AUSENTE'));
+
+  var sid=uuid();
+  var datos={
+   first_name:document.getElementById('mnl-nombre').value.trim(),
+   last_name:document.getElementById('mnl-apellido').value.trim(),
+   phone:tel,
+   email:email,
+   formId:FORM_ID,
+   location_id:LOC_ID,
+   sessionId:sid,
+   eventData:{
+    source:'direct', referrer:document.referrer||'', adSource:'', url_params:{},
+    page:{url:location.href,title:document.title||''},
+    timestamp:Date.now(), campaign:'',
+    contactSessionIds:{ids:[sid]},
+    fbp:'', fbc:'', type:'page-visit', parentId:FORM_ID, pageVisitType:'form',
+    domain:location.hostname, version:'v3', parentName:'Opt-in Newsletter',
+    fingerprint:null, documentURL:location.href, gaClientId:null,
+    fbEventId:uuid(), medium:'form', mediumId:FORM_ID
+   },
+   Timezone:tzTexto(),
+   paymentContactId:{},
+   timeSpent:Math.round((Date.now()-t0)/1000*1000)/1000
+  };
+  var f=document.getElementById('mnl-fecha').value;
+  if(f)datos[CAMPO_FECHA]=f;
+
+  var fd=new FormData();
+  fd.append('formData',JSON.stringify(datos));
+  fd.append('locationId',LOC_ID);
+  fd.append('formId',FORM_ID);
+  if(tok)fd.append('turnstileNonInteractiveToken',tok);
+
+  return fetch('https://backend.leadconnectorhq.com/forms/submit?formId='+FORM_ID+'&locationId='+LOC_ID,{method:'POST',body:fd})
+   .then(function(r){
+    return r.text().then(function(txt){
+     if(!r.ok){console.error('MURA newsletter: HTTP '+r.status,txt.slice(0,500));var e=new Error('HTTP '+r.status);e.http=r.status;throw e;}
+     return txt;
+    });
    });
-  })
-  .then(function(){
-   form.querySelectorAll('input,button').forEach(function(e){e.disabled=true;});
-   form.style.opacity='.5';
-   msg('Ya estás dentro. Te escribiremos cuando la próxima cápsula esté a punto de salir.');
-  })
-  .catch(function(e){
-   console.error('MURA newsletter:',e);
-   btn.disabled=false;btn.style.opacity='';
-   msg('No hemos podido registrar tu suscripción. Inténtalo de nuevo en unos minutos o escríbenos a hello@stylebymura.com.',true);
-  });
+ })
+ .then(function(){
+  form.querySelectorAll('input,button').forEach(function(e){e.disabled=true;});
+  form.style.opacity='.5';
+  msg('Ya estás dentro. Te escribiremos cuando la próxima cápsula esté a punto de salir.');
+ })
+ .catch(function(e){
+  console.error('MURA newsletter:',e);
+  btn.disabled=false;btn.style.opacity='';
+  try{turnstile.reset(tsWidget)}catch(x){}
+  if(e&&e.http===429){msg('Demasiados intentos seguidos. Espera un minuto y vuelve a probar.',true);}
+  else{msg('No hemos podido registrar tu suscripción. Inténtalo de nuevo en unos minutos o escríbenos a hello@stylebymura.com.',true);}
+ });
 });
 })();</script>
