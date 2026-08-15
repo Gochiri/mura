@@ -1176,9 +1176,17 @@ endpoint aplica límite de bot. El token se generaba al cargar la página y Turn
 los caduca a los ~5 min — si la clienta tarda en rellenar, llega muerto. Corregido:
 el widget se prepara con `execution:'execute'` y el token se pide **fresco en el
 momento del envío** (espera máx. 6 s; sin token envía igual y que decida el
-servidor). La consola dice `token ok/AUSENTE` en cada envío, y el 429 tiene su
-propio mensaje. Pendiente: tercer envío real, y conectar el trigger
-"form submitted" → LS02 y publicarlo.
+servidor). El tercer intento dio `token ok` pero **429 "Invalid or expired invisible
+challenge" / `invalid-input-secret`**: la clave era la buena (el scan del widget
+devolvió las mismas dos del funnel) y la pista estaba en las CABECERAS de la
+captura — el widget acompaña el envío con `x-turnstile-non-interactive-wait-ms`,
+`x-turnstile-script-load-ms`, `x-turnstile-submit-delay-ms`, `timezone` y
+`fullurl`, y sin ellas el backend valida contra el secreto equivocado. La versión
+actual manda esas cabeceras con valores medidos de verdad, y si aun así el
+challenge invisible es rechazado, reintenta UNA vez con la clave visible
+(`0x4AAAAAACDfuwSBQ2sYO1VD`) mostrando el recuadro de verificación sobre el botón.
+Pendiente: envío real de confirmación, y conectar el trigger "form submitted" →
+LS02 y publicarlo.
 
 ## 26. Fusión del 04b dentro del 04a (14/8)
 
