@@ -1247,26 +1247,73 @@ viaja en el correo 03 (sección 25.2).
 Verificada renderizada con Chromium a 1440 px y 390 px: sin scroll horizontal, el
 cierre se apila bien en móvil y el botón contrasta.
 
-### 27.2 Cart y checkout — bloqueadas, y por qué
+### 27.2 Cart y checkout — resueltas con el DOM real (15/8)
 
-**No son páginas que podamos escribir**: son elementos que renderiza la tienda de GHL
-en tiempo de ejecución. Lo único que se puede hacer es CSS que pise sus clases, y para
-eso hay que conocer el DOM real.
+German pasó el `outerHTML` de las dos páginas. Con eso el CSS deja de ser
+adivinanza. Queda en `tienda/codigo-global-tienda.js`, que **sustituye** al bloque
+de Sitio "Mura" → Settings → Tracking Code → BODY.
 
-Desde esta sesión no hay forma de conocerlo:
+Es código **global**: corre en todas las páginas, y por eso empieza con un guardia
+de rutas. El guardia anterior solo dejaba pasar `/cart` y `/products-list` — de ahí
+que **el checkout no tuviera ni una sola regla aplicada**. Ahora entran también
+`/checkout`, `/product-details` y `/thank-you`.
 
-- `stylebymura.com` no se alcanza (la red del entorno solo llega a dominios de la
-  allowlist; la petición muere en `http=000`).
-- El API público de funnels lista las páginas (`Cart` `2FoBJpJqCmc0z0Y4xZEo`,
-  `Checkout` `qSiwg2brakjiGqpIaCmN`) pero **no devuelve su contenido**.
-- El API interno de funnels rechaza el token de esta sesión (401/403 en todas las
-  variantes de `/funnels/page/...`).
+Clases reales del carrito: `.hl-cart-container`, `.hl-cart-heading`,
+`.empty-cart-container`, `.hl-continue-btn`, `.hl-amount-subtotal`, `.cart-subtotal`,
+`.cart-total.ecom-gray-divider`, `.total-amount`, `.hl-checkout-btn`.
+Del checkout: `.hl-store-checkout-container`, `.checkout-breadcrumb-wrap`,
+`.checkout-heading`, `.hl-checkout-input`, `.input-label`, `.form-btn.payment-btn`,
+`.hl-cart-summary-container`, `.hl-cart-item`, `.hl-cart-product-image`,
+`.cart-item-variant`, `.coupon-input`, `.apply-coupon-btn`, `.hl-divider`.
 
-Escribir el CSS a ciegas daría una hoja con selectores que no casan con nada: no
-rompería la página, simplemente **no pintaría**, y parecería que está hecho. Es
-exactamente el modo de fallo que costó los enlaces vacíos del correo 02.
+⚠️ **Nunca usar `.cstore-cart-J14MT1D5-f` ni `.cstore-checkout-sTf_Fd0JV5`**: llevan
+el id del elemento dentro. Si alguien recrea el elemento en el editor ese sufijo
+cambia y el CSS deja de aplicar en silencio.
 
-**Lo que hace falta para desbloquearlo** (30 segundos de German): abrir
-`stylebymura.com/carrito` con un artículo dentro, botón derecho → *Inspeccionar* →
-sobre `<body>` → *Copy* → *Copy outerHTML*, y pegarlo. Lo mismo con el checkout. Con
-eso salen los nombres de clase reales y el CSS se escribe sobre seguro.
+**Bug encontrado al renderizar, antes de subirlo.** El selector genérico
+`button[class*='checkout']` también casa con las migas del checkout, que son
+`<button class="checkout-breadcrumb-item">`: salían como dos botones negros del
+ancho de media pantalla. Y gana aunque las dos reglas lleven `!important`, porque
+`button[class*=…]` tiene especificidad (0,1,1) contra (0,1,0) de la clase sola. Se
+arregla con `:not(.checkout-breadcrumb-item)` en el genérico y subiendo la
+especificidad de la miga a `.checkout-breadcrumb-wrap .checkout-breadcrumb-item`.
+
+También se ocultan los SVG de catálogo de GHL (carrito vacío, flecha, icono de
+editar, icono de carrito del botón): son de su librería, no de la marca.
+
+### 27.3 Tres cosas que no son de maquetación y hay que decidir
+
+**1. El botón "Ver carrito" del producto lleva a `/checkout`.** Se salta la
+revisión del carrito y planta a la clienta en el formulario de pago. Debe ir a
+**`/cart`**. Trampa: `/carrito` (`qsUEwHJLz2xiSulCN5jD`) es una página normal que
+creamos aparte — **no** es el carrito de la tienda. El de verdad es `/cart`
+(`2FoBJpJqCmc0z0Y4xZEo`). El enlace está en el código de la página de producto:
+buscar ahí el texto "Ver carrito".
+
+**2. Los textos van en el elemento, no en JavaScript.** Cart y Checkout guardan sus
+textos como ajustes propios y hoy **están todos en inglés**. En el carrito los
+reescribe un `MutationObserver`, que corre después de pintar: se ve "My cart" un
+instante. En el checkout no los reescribe nadie, así que **la clienta paga en un
+formulario íntegramente en inglés** ("Full Name", "Zip Code", "Continue to
+payment"). La traducción completa, campo por campo, está al final de
+`tienda/codigo-global-tienda.js`. Puestos ahí salen bien al primer pintado y el
+mapa del JavaScript se queda sin nada que hacer.
+
+**3. Dos ajustes del checkout con consecuencias.**
+
+- `termsAndConditions` está **desactivado** en los dos pasos, y su texto por
+  defecto apunta a `https://www.example.com`. Nadie acepta condiciones al comprar,
+  teniendo nosotros `/condiciones-contratacion` y `/politica-privacidad`
+  publicadas. Esto es de Sonia o de asesoría legal, no mío.
+- `shipToCountries: "all"` con `countryList: []`: **la tienda acepta pedidos de
+  cualquier país del mundo**, y Nacex cubre península, Baleares, Portugal y poco
+  más. Un pedido desde fuera entra, cobra y luego no hay quien lo envíe.
+- `defaultLocation: "none"`: el desplegable de país no viene con España
+  preseleccionada, así que hay que buscarla entre 200.
+
+### 27.4 Y la página de gracias va en `/thank-you`, no en `/gracias`
+
+Existen las dos y se prestan a confusión. El ajuste `saleAction` del checkout es
+`go-to-next-funnel-step`, y el paso siguiente es `/thank-you`
+(`6DEiCsQRzJ6NsbhkP43n`). Pegada en `/gracias` (`Y1YEzfjU3JNDkTBCZiSo`) no la vería
+ninguna clienta.
