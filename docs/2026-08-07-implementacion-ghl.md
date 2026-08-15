@@ -1455,6 +1455,24 @@ Verificado en Chromium con `/carrito` sirviendo **solo** el CSS del global: fond
 tipografías, cabecera sticky, stepper, botón, total y contador idénticos a antes, y
 en `/checkout` se inyectan las dos hojas (`sistema` + `tienda`) sin errores.
 
+### 27.8 Recorrido completo verificado (15/8, tarde)
+
+German pegó el Tracking Code global, el carrito nuevo y la página de gracias, tradujo
+los textos del elemento Checkout desde sus ajustes, e hizo el recorrido entero de
+compra: carrito → checkout → pago de test → `/thank-you`. **Todo se ve bien.**
+
+Queda cerrado por tanto: `/cart` → `/carrito`, el stepper de cantidad, el checkout
+maquetado y en español, y la página de gracias en la ruta correcta.
+
+Siguen abiertos, de la lista de 27.3:
+- El enlace **"Ver carrito"** de la página de producto → debe ir a `/carrito`
+  (hoy va a `/checkout`). Está en el código de esa página.
+- **Condiciones de contratación** desactivadas en el checkout (decisión de
+  Sonia/legal, no de maquetación).
+- **Ship to countries** en "all": acotar a los países que cubre Nacex, desde los
+  ajustes del elemento Checkout.
+- Vaciar el `<style>` duplicado del resto de páginas propias, una a una (ver 27.7).
+
 ### 27.4 Y la página de gracias va en `/thank-you`, no en `/gracias`
 
 Existen las dos y se prestan a confusión. El ajuste `saleAction` del checkout es
