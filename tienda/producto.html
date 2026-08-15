@@ -1,0 +1,151 @@
+<!--
+  ============================================================
+  MÛRA · FICHA DE PRODUCTO (/producto)
+  ============================================================
+  Sustituye el contenido del elemento de código personalizado
+  `custom-code-oM1HT_mKKm` de la página "producto"
+  (cmPhl3N0IF3smLo8Oy8x). Se pega entero, tal cual.
+
+  ⚠️ YA NO LLEVA CSS, Y ESO ES A PROPÓSITO.
+  El sistema de diseño `.mura-*` vive en el Tracking Code global
+  (`tienda/codigo-global-tienda.js`) desde el 15/8. Aquí queda
+  solo el HTML y la lógica de la ficha. El global tiene que estar
+  pegado antes que esto.
+
+  CAMBIO DEL 15/8 — el único funcional:
+  El enlace "Ver carrito" del aviso "Esta pieza ya forma parte de
+  tu selección" iba a /checkout: saltaba directo al formulario de
+  pago sin pasar por la revisión del carrito. Ahora va a /carrito.
+  Todo lo demás queda byte a byte como estaba.
+
+  CÓMO FUNCIONA (para quien llegue después):
+  - Los productos vienen de un worker de Cloudflare:
+    https://mura-productos.germanborrello-d78.workers.dev/products
+    y la pieza se elige con ?id=… en la URL.
+  - "Añadir a mi selección" escribe en el almacén del carrito de
+    la tienda de GHL (localStorage cart_details_…), el mismo que
+    leen /carrito y el checkout.
+  ============================================================
+-->
+<div class="mura">
+<nav class="mura-nav"><div class="mura-nav-in">
+<a href="/" class="mura-logo">MÛRA</a>
+<div class="mura-links"><a href="/" class="">Inicio</a><a href="/colecciones" class=" hm">Colecciones</a><a href="/prendas" class="on">Prendas</a><a href="/novedades" class=" hm">Novedades</a><a href="/mura" class=" hm">MÛRA</a><a href="/contacto" class=" hm">Contacto</a></div>
+<a href="/carrito" class="mura-cart">Carrito<span class="mura-cart-w" style="display:none"> (<span class="mura-cart-n">0</span>)</span></a>
+</div></nav>
+<script>(function(){try{var d=JSON.parse(localStorage.getItem('cart_details_rlc7iAyGF4U1nfwAJOJQ')||'{"products":[]}');var n=(d.products||[]).reduce(function(a,x){return a+(x.quantity||0)},0);document.querySelectorAll('.mura-cart-n').forEach(function(e){e.textContent=n});document.querySelectorAll('.mura-cart-w').forEach(function(e){e.style.display=n>0?'inline':'none'});}catch(e){}})();</script>
+<div style="max-width:1440px;margin:0 auto;padding:clamp(20px,3vw,40px) clamp(20px,4vw,56px) 0;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8A857B;display:flex;gap:10px">
+<a href="/prendas" style="color:#8A857B">Prendas</a><span>/</span><span style="color:#55524B" id="md-migas"></span>
+</div>
+<section style="max-width:1440px;margin:0 auto;padding:clamp(24px,3vw,48px) clamp(20px,4vw,56px) clamp(80px,10vw,130px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:clamp(36px,5vw,80px);align-items:start">
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="position:relative;aspect-ratio:3/4;background:#E3DFD6;overflow:hidden"><img id="md-img" src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none"></div>
+<div id="md-thumbs" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px"></div>
+</div>
+<div style="display:flex;flex-direction:column;max-width:520px">
+<div class="mura-label" style="letter-spacing:.28em;margin-bottom:18px">Cápsula 01 · Colección limitada</div>
+<h1 style="font-size:clamp(32px,3.6vw,46px);margin-bottom:14px" id="md-nombre"></h1>
+<div style="font-size:17px;letter-spacing:.08em;margin-bottom:36px" id="md-precio"></div>
+<div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#55524B;margin-bottom:14px">Elegir talla</div>
+<div id="md-tallas" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px"></div>
+<div id="md-ultimas" style="display:none;font-size:11.5px;color:#8A857B;margin-bottom:8px">Últimas piezas disponibles.</div>
+<button class="mura-btn" id="md-add" style="margin-top:24px">Añadir a mi selección</button>
+<div id="md-added" style="display:none;margin-top:14px" class="mura-serif"><span style="font-size:18px;font-style:italic;color:#55524B">Esta pieza ya forma parte de tu selección.</span> <a href="/carrito" style="font-size:14px;border-bottom:1px solid rgba(29,27,24,.4)">Ver carrito</a></div>
+<div id="md-agotado" style="display:none;margin-top:24px;padding:22px 24px;border:1px solid rgba(29,27,24,.18);text-align:center">
+<div style="font-size:12px;letter-spacing:.24em;text-transform:uppercase;margin-bottom:10px">Colección finalizada</div>
+<div style="font-size:12.5px;color:#8A857B;line-height:1.8">Esta pieza pertenecía a una colección limitada y ya no volverá a producirse.</div>
+</div>
+<div style="margin-top:44px;border-top:1px solid rgba(29,27,24,.14)" id="md-accs"></div>
+<div style="margin-top:44px;text-align:center;padding:32px 24px;background:rgba(29,27,24,.035)">
+<div style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;margin-bottom:14px">Colección limitada</div>
+<p class="mura-serif" style="font-size:18px;font-style:italic;line-height:1.7;color:#38352F">Esta pieza forma parte de una cápsula de producción limitada. Una vez agotada, no volverá a producirse.<br>En MÛRA cada colección existe una sola vez.</p>
+</div>
+</div>
+</section>
+<footer class="mura-foot"><div class="mura-foot-in">
+<div class="mura-foot-cols">
+<div><div class="mura-foot-h">Explorar</div><div class="mura-foot-c"><a href="/">Inicio</a><a href="/colecciones">Colecciones</a><a href="/prendas">Prendas</a><a href="/novedades">Novedades</a></div></div>
+<div><div class="mura-foot-h">MÛRA</div><div class="mura-foot-c"><a href="/mura">Nuestra esencia</a><a href="/contacto">Contacto</a></div></div>
+<div><div class="mura-foot-h">Información</div><div class="mura-foot-c"><a href="/devoluciones">Envíos y devoluciones</a><a href="/politica-privacidad">Política de privacidad</a><a href="/politica-cookies">Política de cookies</a><a href="/condiciones-contratacion">Condiciones de contratación</a><a href="/aviso-legal">Aviso legal</a></div></div>
+<div><div class="mura-foot-h">Redes</div><div class="mura-foot-c"><a href="https://www.instagram.com/bymurastudio/" target="_blank" rel="noopener">Instagram</a></div></div>
+</div>
+<div style="height:1px;background:rgba(29,27,24,.1);margin:clamp(60px,7vw,90px) 0 0"></div>
+<div style="text-align:center;padding:clamp(60px,7vw,90px) 0 28px;display:flex;flex-direction:column;gap:20px;align-items:center">
+<p class="mura-serif" style="font-size:clamp(22px,2.2vw,28px);font-style:italic">Vestir con intención.</p>
+<div class="mura-serif" style="font-size:20px;font-weight:500;letter-spacing:.32em">MÛRA</div>
+</div>
+<p style="text-align:center;font-size:10.5px;letter-spacing:.14em;color:#9B968C">© MÛRA 2026 · Todos los derechos reservados.</p>
+</div></footer>
+<script>(function(){
+var API='https://mura-productos.germanborrello-d78.workers.dev';
+var id=new URLSearchParams(location.search).get('id');
+var pieza=null,talla=null,img=0;
+function dec(s){var t=document.createElement('textarea');t.innerHTML=s||'';return t.value;}
+function toText(html){var d=document.createElement('div');d.innerHTML=html;
+ d.querySelectorAll('li').forEach(function(li){li.textContent='· '+li.textContent+'\n'});
+ d.querySelectorAll('p,h3').forEach(function(p){p.textContent=p.textContent+'\n\n'});
+ return d.textContent.replace(/\n{3,}/g,'\n\n').trim();}
+function acc(title,body){return '<div class="mura-acc"><button>'+title+'<span class="mura-serif" style="font-size:20px">+</span></button><div>'+body+'</div></div>';}
+function render(){
+ var p=pieza,imgs=(p.imagenes||[]).filter(Boolean),sold=p.estado==='agotado';
+ document.getElementById('md-migas').textContent=p.nombre;
+ document.getElementById('md-nombre').textContent=p.nombre;
+ var sel=null;p.tallas.forEach(function(t){if(t.talla===talla)sel=t});
+ var min=Math.min.apply(null,p.tallas.map(function(t){return t.precio}));
+ document.getElementById('md-precio').textContent=(sel?sel.precio:min)+' €';
+ var im=document.getElementById('md-img');
+ if(imgs.length){im.src=imgs[img];im.alt=p.nombre;im.style.display='block';}
+ var th=document.getElementById('md-thumbs');th.innerHTML='';
+ if(imgs.length>1)imgs.forEach(function(src,i){
+  var b=document.createElement('button');
+  b.style.cssText='border:none;padding:0;cursor:pointer;background:#E3DFD6;aspect-ratio:3/4;overflow:hidden;opacity:'+(i===img?'1':'.55')+';outline:'+(i===img?'1px solid #1D1B18':'none')+';outline-offset:-1px';
+  b.innerHTML='<img src="'+src+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block">';
+  b.onclick=function(){img=i;render()};th.appendChild(b);
+ });
+ var ts=document.getElementById('md-tallas');ts.innerHTML='';
+ p.tallas.forEach(function(t){
+  var off=sold||t.stock===0;
+  var b=document.createElement('button');b.className='mura-talla'+(talla===t.talla?' on':'');b.disabled=off;b.textContent=t.talla;
+  b.onclick=function(){talla=t.talla;document.getElementById('md-added').style.display='none';render()};ts.appendChild(b);
+ });
+ document.getElementById('md-ultimas').style.display=(p.estado==='ultimas'&&!sold)?'block':'none';
+ document.getElementById('md-add').style.display=sold?'none':'flex';
+ document.getElementById('md-agotado').style.display=sold?'block':'none';
+}
+var GHL_CART_KEY='cart_details_rlc7iAyGF4U1nfwAJOJQ';
+function ghlCart(){try{return JSON.parse(localStorage.getItem(GHL_CART_KEY)||'{"products":[]}')}catch(e){return {products:[]}}}
+function ghlCount(){var n=(ghlCart().products||[]).reduce(function(a,x){return a+(x.quantity||0)},0);document.querySelectorAll('.mura-cart-n').forEach(function(e){e.textContent=n});document.querySelectorAll('.mura-cart-w').forEach(function(e){e.style.display=n>0?'inline':'none'});}
+document.getElementById('md-add').onclick=function(){
+ if(!pieza||!talla)return;
+ var t=null;pieza.tallas.forEach(function(x){if(x.talla===talla)t=x});if(!t)return;
+ var cart=ghlCart();cart.products=cart.products||[];
+ var ex=null;cart.products.forEach(function(c){if(c.selectedPrice&&c.selectedPrice._id===t.priceId)ex=c});
+ if(ex){ex.quantity+=1;ex.buyNowQuantity=ex.quantity;}
+ else cart.products.push({
+  _id:pieza.id,
+  name:pieza.nombre,
+  selectedProductImage:(pieza.imagenes&&pieza.imagenes[0])||'',
+  selectedPrice:{_id:t.priceId,variantOptionIds:t.variantOptionIds||[],trackInventory:!!t.trackInventory,name:t.talla,type:t.type||'one_time',currency:t.moneda||'EUR',amount:t.precio,availableQuantity:t.availableQuantity,allowOutOfStockPurchases:!!t.allowOutOfStockPurchases},
+  quantity:1,buyNowQuantity:1,showName:true
+ });
+ localStorage.setItem(GHL_CART_KEY,JSON.stringify(cart));
+ ghlCount();
+ document.getElementById('md-added').style.display='block';
+};
+fetch(API+'/products').then(function(r){return r.json()}).then(function(d){
+ var ps=d.piezas||[];pieza=null;
+ ps.forEach(function(p){if(p.id===id)pieza=p});
+ if(!pieza)pieza=ps[0];
+ if(!pieza)return;
+ var html=dec(pieza.descripcion),ix=html.search(/<h3[^>]*>\s*(Composición|Cuidados)/i);
+ var desc=ix>-1?toText(html.slice(0,ix)):toText(html),comp=ix>-1?toText(html.slice(ix)):'';
+ var a=document.getElementById('md-accs');
+ a.innerHTML=acc('Descripción',desc||'')+(comp?acc('Composición y cuidados',comp):'')+acc('Entrega y devoluciones','Cada pedido se prepara cuidadosamente desde nuestro estudio en 1-2 días laborables. Dispones de 15 días desde la recepción para solicitar una devolución. Los artículos adquiridos con descuento no admiten reembolso.');
+ a.querySelectorAll('.mura-acc > button').forEach(function(b){b.onclick=function(){
+  var open=b.parentElement.classList.toggle('open');
+  b.querySelector('span').textContent=open?'−':'+';
+ }});
+ render();
+});
+})();</script>
+</div>

@@ -1465,8 +1465,10 @@ Queda cerrado por tanto: `/cart` → `/carrito`, el stepper de cantidad, el chec
 maquetado y en español, y la página de gracias en la ruta correcta.
 
 Siguen abiertos, de la lista de 27.3:
-- El enlace **"Ver carrito"** de la página de producto → debe ir a `/carrito`
-  (hoy va a `/checkout`). Está en el código de esa página.
+- ~~El enlace **"Ver carrito"** de la página de producto~~ → corregido el 15/8 en
+  `tienda/producto.html` (iba a `/checkout`; ahora a `/carrito`). De paso la página
+  quedó migrada al CSS global. Verificado en render: añadir pieza → aviso →
+  enlace a `/carrito`, carrito escrito y contador al día.
 - **Condiciones de contratación** desactivadas en el checkout (decisión de
   Sonia/legal, no de maquetación).
 - **Ship to countries** en "all": acotar a los países que cubre Nacex, desde los
