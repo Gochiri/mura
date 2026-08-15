@@ -37,6 +37,20 @@
 
 (function () {
   var path = location.pathname.replace(/\/+$/, '');
+
+  /* ---------- /cart se retira: el carrito bueno es /carrito ----------
+     No se puede borrar la página: la tienda de GHL necesita su paso de
+     carrito, y hay enlaces suyos que apuntan ahí por dentro (el "Editar"
+     del resumen del checkout, sin ir más lejos). Así que se redirige.
+
+     Va lo primero de todo y con `replace` en vez de `href`: así no deja
+     entrada en el historial y el botón "atrás" no devuelve a la clienta
+     al carrito viejo. No hay bucle posible, /carrito no entra aquí. */
+  if (path === '/cart') {
+    location.replace('/carrito' + location.search);
+    return;
+  }
+
   var RUTAS = ['/cart', '/products-list', '/product-details', '/checkout', '/thank-you'];
   if (RUTAS.indexOf(path) === -1) return;
 
@@ -60,7 +74,12 @@
     "input, select, textarea { border: 1px solid rgba(29,27,24,.25) !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }",
     "input:focus, select:focus, textarea:focus { outline: none !important; border-color: #1D1B18 !important; }",
 
-    /* ---------- Carrito ---------- */
+    /* ---------- Carrito /cart — RED DE SEGURIDAD ----------
+       Desde el 15/8 el carrito bueno es /carrito y esta página redirige
+       (arriba del todo), así que estas reglas no deberían llegar a pintar
+       nunca. Se conservan para que, si alguien quita la redirección, la
+       página no se quede en crudo. Si /cart se elimina de verdad algún día,
+       este bloque se va con ella. */
 
     '.hl-cart-container { max-width: 1040px; margin: 0 auto; padding: clamp(32px,5vw,72px) clamp(20px,4vw,56px); }',
 
@@ -188,10 +207,12 @@
 
     var nav = document.createElement('div');
     nav.className = 'mura-nav-inject';
+    // Mismo orden de menú que /carrito, que antes no coincidía: allí va
+    // Colecciones antes que Novedades y aquí era al revés.
     nav.innerHTML = '<div class="in"><a class="logo" href="/">MÛRA</a><div class="links">' +
-      '<a href="/">Inicio</a><a class="hm" href="/novedades">Novedades</a><a class="hm" href="/colecciones">Colecciones</a>' +
-      '<a href="/prendas">Prendas</a><a class="hm" href="/mura">MÛRA</a><a class="hm" href="/contacto">Contacto</a></div>' +
-      '<a href="/cart" style="font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:#1D1B18;text-decoration:none">Mi selección</a></div>';
+      '<a href="/">Inicio</a><a class="hm" href="/colecciones">Colecciones</a><a href="/prendas">Prendas</a>' +
+      '<a class="hm" href="/novedades">Novedades</a><a class="hm" href="/mura">MÛRA</a><a class="hm" href="/contacto">Contacto</a></div>' +
+      '<a href="/carrito" style="font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:#1D1B18;text-decoration:none">Mi selección</a></div>';
     document.body.insertBefore(nav, document.body.firstChild);
 
     // Ocultar la cabecera del tema (la que trae Logo / Business Name)

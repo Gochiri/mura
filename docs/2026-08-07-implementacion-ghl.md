@@ -1311,6 +1311,45 @@ mapa del JavaScript se queda sin nada que hacer.
 - `defaultLocation: "none"`: el desplegable de país no viene con España
   preseleccionada, así que hay que buscarla entre 200.
 
+### 27.5 Decisión del 15/8: el carrito bueno es `/carrito`
+
+Había **dos carritos vivos y funcionando**, los dos leyendo el carrito real:
+
+| | `/carrito` (`qsUEwHJLz2xiSulCN5jD`) | `/cart` (`2FoBJpJqCmc0z0Y4xZEo`) |
+|---|---|---|
+| Diseño | "Piezas elegidas.", Cormorant, aire | funcional, dos columnas |
+| Cantidad | solo QUITAR | stepper − n + |
+| Precio | `318 €` | `€318.00` |
+| Refuerzo | pago seguro + 15 días | — |
+
+German elige **`/carrito`**. `/cart` se retira.
+
+**No se borra la página**: la tienda de GHL necesita su paso de carrito y tiene
+enlaces internos que apuntan ahí —el "Editar" del resumen del checkout, por
+ejemplo—. Se redirige desde el código global, lo primero de todo y con
+`location.replace`, para que no quede entrada en el historial y el botón "atrás"
+no devuelva a la clienta al carrito viejo. Verificado en Chromium: `/cart` acaba
+en `/carrito` y el "atrás" no vuelve.
+
+El CSS de `/cart` se conserva **marcado como red de seguridad**: si alguien quita
+la redirección, la página no se queda en crudo.
+
+La cabecera inyectada pasa a apuntar a `/carrito` y adopta **el orden de menú de
+`/carrito`** (Inicio · Colecciones · Prendas · Novedades · MÛRA · Contacto), que no
+coincidía con el de las demás páginas.
+
+#### Lo que queda abierto de esta decisión
+
+1. **La clienta no puede cambiar la cantidad en `/carrito`**, solo quitar la pieza
+   y volver a añadirla. Es la única ventaja real que tenía `/cart`. Para resolverlo
+   hace falta ver el DOM de `/carrito`: si su carrito es un elemento Cart de GHL con
+   el stepper oculto por CSS, es cuestión de volver a mostrarlo y darle estilo.
+2. **El enlace "Ver carrito" de la página de producto sigue yendo a `/checkout`**
+   (ver 27.3). Ahora debe ir a `/carrito`. Está en el código de esa página.
+3. **Formato de moneda**: `/carrito` muestra `318 €` y el checkout `€318.00`. En la
+   configuración de la tienda hay `isCurrencyFormattingEnabled: false`; activarlo
+   debería dar el formato español de forma nativa en todo el flujo.
+
 ### 27.4 Y la página de gracias va en `/thank-you`, no en `/gracias`
 
 Existen las dos y se prestan a confusión. El ajuste `saleAction` del checkout es
