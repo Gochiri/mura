@@ -1133,6 +1133,34 @@ en la oportunidad de cada pedido; actualizar el stock de la tienda.
 **De Sonia:** migrar sus campos a oportunidad (ver 25.4) y la parte de **reembolsos de
 Stripe** (correos 09a y 10), que sigue sin empezar.
 
+## 28. Newsletter en /home: campos propios contra el formulario real (15/8)
+
+Decisión de German: nada de iframe — **campos hechos en la página** (diseño `.mura`)
+que envían por detrás **al formulario real** "Opt-in Newsletter"
+(`fmuHvvOjkGBAkPU2LTZN`) vía su endpoint público de envíos
+(`POST backend.leadconnectorhq.com/forms/submit`, multipart, el mismo que usa el
+widget oficial). Así el envío queda en Forms → Submissions, el contacto se crea con
+sus campos mapeados y el trigger "form submitted" del LS02 dispara — la lección de
+la encuesta (0 submissions, a ciegas) aplicada al revés.
+
+- `tienda/newsletter-home.html` → se pega en el elemento de código de Home, dentro
+  del `<div class="mura">`, justo antes del `<footer>`.
+- Las reglas `.mura-nl-*` viven en el CSS global (re-pegar el Tracking Code tras
+  regenerarlo con `build.sh`).
+- Campos: nombre, apellidos, email*, teléfono*, fecha de nacimiento (date picker,
+  `date_of_birth`, para el correo de cumpleaños) y checkbox RGPD obligatorio con
+  enlace a la política de privacidad. Los dos consentimientos SMS en inglés del
+  formulario no se muestran ni se envían (eran opcionales y solo vivían en el
+  widget).
+- Verificado en render: validaciones (email, teléfono, RGPD), payload correcto,
+  estado de éxito con el formulario bloqueado, estado de error con reintento.
+
+⚠️ **El primer envío real es la verificación del endpoint.** Cloudflare bloquea
+`/forms/submit` desde la IP del entorno de desarrollo (es un endpoint público de
+envíos; desde el navegador de una visitante pasa). German lo prueba en la web y se
+comprueba por API que aparece en Submissions. Pendiente además: German conecta el
+trigger "form submitted" del LS02 en la UI y lo publica.
+
 ## 26. Fusión del 04b dentro del 04a (14/8)
 
 El correo de envío se enviaba desde **04b**, disparado por el tag `email-04-listo`.

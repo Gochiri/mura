@@ -1,0 +1,91 @@
+<!--
+  ============================================================
+  MÛRA · NEWSLETTER (sección para el final de /home)
+  ============================================================
+  CÓMO SE PEGA
+  Va dentro del elemento de código de la página Home, DENTRO del
+  <div class="mura">, justo ANTES del <footer class="mura-foot">.
+  Se pega desde <section hasta </section> con su <script>.
+
+  Requiere el Tracking Code global ya pegado (las reglas
+  .mura-nl-* viven ahí; esta sección no trae CSS).
+
+  QUÉ HACE
+  Campos propios con el diseño de la web que envían AL FORMULARIO
+  REAL de GHL ("Opt-in Newsletter", fmuHvvOjkGBAkPU2LTZN) por su
+  endpoint público de envíos — el mismo que usa el widget oficial.
+  Así el envío queda en Forms → Submissions, el contacto se crea
+  con sus campos mapeados (incluida la fecha de cumpleaños) y el
+  trigger "form submitted" del LS02 dispara. Sin iframe: el CSS
+  de la página no puede entrar en un iframe, y así no hace falta.
+
+  El checkbox RGPD es obligatorio para enviar (se valida aquí).
+  Los dos consentimientos SMS en inglés del formulario de GHL no
+  se envían ni se muestran: son opcionales y solo existían dentro
+  del widget.
+
+  ⚠️ VERIFICACIÓN PENDIENTE DEL PRIMER ENVÍO REAL.
+  El endpoint no se pudo probar desde el entorno de desarrollo
+  (Cloudflare bloquea su IP; desde el navegador de una visitante
+  pasa, es como envía el widget). El primer envío en la web es la
+  prueba: hacerlo y comprobar que aparece en Forms → Submissions.
+  Si no aparece, avisar a Claude para revisar el contrato.
+  ============================================================
+-->
+<section class="mura-nl" id="mura-nl">
+  <div class="mura-label" style="margin-bottom:14px">Newsletter</div>
+  <h2 class="mura-serif" style="font-size:clamp(28px,3.4vw,40px);font-weight:400">Las cápsulas, antes que nadie.</h2>
+  <p style="margin-top:18px;font-size:14.5px;line-height:1.9;color:#55524B">Cada colección existe una sola vez. Déjanos tu correo y te avisamos cuando una nueva cápsula esté a punto de salir.</p>
+
+  <form id="mnl-form" novalidate>
+    <div class="mura-nl-fila">
+      <div class="mura-nl-campo"><label for="mnl-nombre">Nombre</label><input id="mnl-nombre" name="first_name" type="text" autocomplete="given-name"></div>
+      <div class="mura-nl-campo"><label for="mnl-apellido">Apellidos</label><input id="mnl-apellido" name="last_name" type="text" autocomplete="family-name"></div>
+    </div>
+    <div class="mura-nl-campo"><label for="mnl-email">Correo electrónico *</label><input id="mnl-email" name="email" type="email" autocomplete="email" required></div>
+    <div class="mura-nl-fila">
+      <div class="mura-nl-campo"><label for="mnl-tel">Teléfono *</label><input id="mnl-tel" name="phone" type="tel" autocomplete="tel" required></div>
+      <div class="mura-nl-campo"><label for="mnl-fecha">Fecha de nacimiento</label><input id="mnl-fecha" name="date_of_birth" type="date"></div>
+    </div>
+    <label class="mura-nl-consent"><input id="mnl-rgpd" type="checkbox">
+      <span>He leído y acepto la <a href="/politica-privacidad">política de privacidad</a>. MÛRA usará estos datos solo para enviarme sus novedades; puedo darme de baja en cualquier momento.</span>
+    </label>
+    <button type="submit" class="mura-btn" id="mnl-btn">Quiero enterarme</button>
+    <div class="mura-nl-estado" id="mnl-estado" role="status" aria-live="polite"></div>
+  </form>
+</section>
+<script>(function(){
+var form=document.getElementById('mnl-form');
+var estado=document.getElementById('mnl-estado');
+var btn=document.getElementById('mnl-btn');
+function msg(t,err){estado.textContent=t;estado.className='mura-nl-estado'+(err?' err':'');}
+form.addEventListener('submit',function(ev){
+ ev.preventDefault();
+ var email=document.getElementById('mnl-email').value.trim();
+ var tel=document.getElementById('mnl-tel').value.trim();
+ if(!email||email.indexOf('@')<1){msg('Escribe tu correo electrónico para poder avisarte.',true);return;}
+ if(!tel){msg('Escribe tu teléfono, por favor.',true);return;}
+ if(!document.getElementById('mnl-rgpd').checked){msg('Para suscribirte necesitamos que aceptes la política de privacidad.',true);return;}
+ var fd=new FormData();
+ fd.append('formId','fmuHvvOjkGBAkPU2LTZN');
+ fd.append('location_id','NxPF5fOicowujokEk5Hm');
+ fd.append('first_name',document.getElementById('mnl-nombre').value.trim());
+ fd.append('last_name',document.getElementById('mnl-apellido').value.trim());
+ fd.append('email',email);
+ fd.append('phone',tel);
+ var f=document.getElementById('mnl-fecha').value;
+ if(f)fd.append('date_of_birth',f);
+ btn.disabled=true;btn.style.opacity='.55';msg('Un momento…');
+ fetch('https://backend.leadconnectorhq.com/forms/submit',{method:'POST',body:fd})
+  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json().catch(function(){return {};});})
+  .then(function(){
+   form.querySelectorAll('input,button').forEach(function(e){e.disabled=true;});
+   form.style.opacity='.5';
+   msg('Ya estás dentro. Te escribiremos cuando la próxima cápsula esté a punto de salir.');
+  })
+  .catch(function(e){
+   btn.disabled=false;btn.style.opacity='';
+   msg('No hemos podido registrar tu suscripción. Inténtalo de nuevo en unos minutos o escríbenos a hello@stylebymura.com.',true);
+  });
+});
+})();</script>

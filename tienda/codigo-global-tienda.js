@@ -135,6 +135,24 @@
     '.mura-linea-acc { display: flex; align-items: center; gap: clamp(14px,2vw,26px); }',
     '@media (max-width: 560px) { .mura-linea { flex-wrap: wrap; } .mura-linea-acc { width: 100%; justify-content: space-between; padding-left: 88px; } }',
 
+    /* ---- Newsletter (sección de /home) ---- */
+    '.mura-nl { max-width: 680px; margin: 0 auto; padding: clamp(70px,9vw,120px) clamp(20px,4vw,56px); text-align: center; }',
+    '.mura-nl form { text-align: left; margin-top: clamp(32px,4vw,44px); }',
+    '.mura-nl-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }',
+    '@media (max-width: 560px) { .mura-nl-fila { grid-template-columns: 1fr; } }',
+    '.mura-nl-campo { margin-bottom: 18px; }',
+    '.mura-nl-campo label { display: block; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: #55524B; padding-bottom: 8px; }',
+    ".mura-nl-campo input { width: 100%; height: 50px; padding: 0 14px; border: 1px solid rgba(29,27,24,.25); background: transparent; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 300; border-radius: 0; -webkit-appearance: none; appearance: none; }",
+    '.mura-nl-campo input:focus { outline: none; border-color: #1D1B18; }',
+    '.mura-nl-campo input::placeholder { color: rgba(29,27,24,.4); }',
+    /* el icono nativo del date picker, en tinta y no en azul del sistema */
+    '.mura-nl-campo input[type=date] { color-scheme: light; }',
+    '.mura-nl-consent { display: flex; gap: 12px; align-items: flex-start; margin: 6px 0 26px 0; font-size: 12.5px; line-height: 1.7; color: #55524B; }',
+    '.mura-nl-consent input { accent-color: #1D1B18; width: 15px; height: 15px; margin-top: 3px; flex: 0 0 auto; }',
+    '.mura-nl-consent a { color: #55524B; border-bottom: 1px solid rgba(29,27,24,.3); }',
+    '.mura-nl-estado { margin-top: 18px; font-size: 13.5px; line-height: 1.7; }',
+    '.mura-nl-estado.err { color: #7A2E2E; }',
+
     /* ---- Pie ---- */
     '.mura-foot { border-top: 1px solid rgba(29,27,24,.12); }',
     '.mura-foot-in { max-width: 1440px; margin: 0 auto; padding: clamp(70px,8vw,110px) clamp(20px,4vw,56px) 30px; }',
