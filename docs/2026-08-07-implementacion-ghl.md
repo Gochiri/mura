@@ -1270,6 +1270,26 @@ no tenía Phone mapeado. German lo mapeó (Phone ←
 
 El newsletter queda CERRADO: alta desde la home con diseño propio, doble opt-in
 RGPD, bienvenida, tags, oportunidad de comunidad y página de confirmación.
+## 29. Coreografía de tags: auditoría y cierre de los dos huecos (17/8)
+
+Auditados los 18 workflows (quién pone, quita y usa cada tag). La lista del Canva
+estaba desactualizada: `experiencia` y `feedback` ya estaban cerrados (los pone y
+quita el 06-12) y `encuesta-completada` es marca permanente por diseño. Quedaban
+dos huecos reales, cerrados hoy:
+
+1. **`inactivo` no se quitaba nunca** → el 02 · Etiquetado (v9) ahora arranca con
+   `remove inactivo` antes del if_else de compras: cualquier compra reactiva.
+   Backup: `datos/backups/wf02_pre_remove_inactivo_20260817.json`.
+2. **`devolucion-activa` no se quitaba nunca** → nuevo workflow
+   **08d · Devolucion cerrada - limpiar tag** (`2197b479`), un único paso
+   `remove devolucion-activa`, publicado. ⚠️ **Falta su trigger (UI, German)**:
+   cambio de etapa → pipeline Ventas/Pedidos → **09 Reembolso** (`e786e623`) — el
+   final natural de una devolución. Los triggers por API no disparan (sección 13).
+
+`dev-ok` / `dev-x`: pendiente de decisión German+Sonia (segmentar el resultado de
+la devolución o descartarlos). `reviewera`, `compradora-activa`, `recurrente` y
+`vip` van con PS01/PS02/AP02 cuando salgan de draft — no son deuda actual.
+
 ## 26. Fusión del 04b dentro del 04a (14/8)
 
 El correo de envío se enviaba desde **04b**, disparado por el tag `email-04-listo`.
