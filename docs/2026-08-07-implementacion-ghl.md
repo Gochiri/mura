@@ -1937,3 +1937,31 @@ persona hiciera las dos cosas.
 ⚠️ **Pero hay que borrar el `form_submission` cuando la página nueva esté en el aire.** Si
 se queda, es un camino zombi: el 06b arranca, avisa a Sara y dispara los dos webhooks,
 pero **no pone el tag** (ese paso se le quitó, porque ahora lo pone n8n).
+
+### 30.11 El flujo `experiencia-mura` de Sonia es otra cosa — y la trampa que deja
+
+German pasó `https://n8n.letsbebanana.com/webhook/experiencia-mura` como URL para la
+página. **No sirve, y confirmarlo destapó un problema.**
+
+Ese flujo es de Sonia y ya escribe en una hoja, pero se alimenta **desde GHL**: es el
+destino del paso de webhook del 06b. O sea, recibe lo que GHL manda cuando alguien
+responde el formulario viejo. Si la página nueva le enchufara sus 30 respuestas
+(`nav_web`, `guia_tallas`, `nps`…), entrarían por la misma puerta dos payloads sin nada
+que ver, y el mapeo a la hoja —hecho para el primero— las dejaría caer en columnas vacías
+sin que salte ningún error.
+
+Decisión: **la página va por su propio webhook** (`mura-experiencia`, el path que ya trae
+`tienda/n8n-experiencia-workflow.json`) y el flujo de Sonia no se toca.
+
+⚠️ **La trampa.** El 06b ahora tiene dos triggers, y con el nuevo (por tag) su paso de
+webhook **sigue llamando al flujo de Sonia** — pero esa ejecución no viene de ningún
+formulario, así que llega sin respuestas. Resultado: **filas vacías en su hoja** cada vez
+que alguien complete la encuesta nueva.
+
+De momento no se quita, porque mientras el trigger `form_submission` siga vivo ese webhook
+es justo lo que alimenta su hoja por el camino legítimo. **Los dos se retiran juntos**:
+el día que se borre el trigger `form_submission` del 06b, hay que borrar también su paso
+de webhook a `experiencia-mura`. Son la misma pieza heredada.
+
+Y hay que avisar a Sonia de que, a partir de ese momento, su hoja deja de llenarse: las
+respuestas pasan a la hoja nueva, que escribe el flujo de la página.
