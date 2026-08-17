@@ -1219,6 +1219,34 @@ generada en el marcador `PEGAR_URL_DEL_WEBHOOK` de la sección, un envío de pru
 para que GHL capture el payload de ejemplo, mapear, publicar; LS02 a trigger por
 tag `nl` y publicar. El contacto y el tag se verifican por API tras la prueba.
 
+### 28.b Newsletter EN VIVO, con doble opt-in — y el bug del enlace de confirmación (17/8)
+
+German montó el LS02a más fino de lo planeado: **doble opt-in RGPD**. Alta por el
+Inbound Webhook → Create/Update Contact + tag `nl` + correo "confirma tu
+suscripción" → espera 48h al clic del trigger link `TL-LS02-CONFIRMAR-OPTIN` → si
+confirma: email de bienvenida + tag `newsletter-suscrita`; si no: fin.
+
+Verificado por API tras el primer envío real desde la web: contacto creado, **Date
+of Birth `1975-07-27` mapeada** ✓, tag `nl` ✓. Dos fallos encontrados:
+
+1. **El enlace de confirmación estaba roto** — leído el correo enviado (método de la
+   sección 24): `href="[object Object]"`. La causa: se usó un merge tag inventado,
+   `{{unique_confirmation_link}}`, en DOS sitios — el botón del correo y el
+   `redirectTo` del propio trigger link. Nadie habría podido confirmar jamás; todo
+   el mundo caería por la rama de las 48h.
+   - `redirectTo` del trigger link → **corregido por API** a
+     `https://www.stylebymura.com/gracias` (la página /gracias estaba huérfana
+     desde que la de compra se movió a /thank-you; buen destino "suscripción
+     confirmada", conviene retocar su texto).
+   - El botón del correo → lo corrige German en el builder: URL del Embed Link =
+     `{{trigger_link.K2PitLvfhgpKPvX6GeF4}}` (o elegir TL-LS02-CONFIRMAR-OPTIN en
+     el picker de trigger links).
+
+2. **El teléfono no llegó** (`011 15-3027-0115` → contacto sin teléfono).
+   Probablemente el parser lo rechazó: la subcuenta es de España y ese formato
+   argentino local no es E.164. Revisar de paso que Create/Update Contact tenga
+   Phone mapeado. Con números españoles o con prefijo (+549…, +34…) debería entrar.
+
 ## 26. Fusión del 04b dentro del 04a (14/8)
 
 El correo de envío se enviaba desde **04b**, disparado por el tag `email-04-listo`.
