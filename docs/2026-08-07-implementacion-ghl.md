@@ -1645,3 +1645,169 @@ contrario: `/gracias` es la página de gracias de compra** (es suya, con su dise
 el checkout debe redirigir ahí — se cambia en los ajustes del elemento Checkout
 (acción tras el pago → URL `/gracias`). `/thank-you` queda sin uso.
 `/suscripcion-confirmada` (nueva) es el destino de la confirmación del newsletter.
+
+## 30. Documento de pendientes de Sonia — lo hecho el 17/8 (tarde)
+
+Sonia pasó una lista larga (formularios, automatizaciones, tags, Stripe, maquetación).
+Parte ya estaba hecha —por ella o por nosotros esa misma mañana— y parte partía de
+premisas falsas. Aquí queda separado lo construido de lo que solo hay que contarle.
+
+### 30.1 El newsletter pasa por n8n (decisión de German)
+
+Pregunta de German: *"¿qué pasa si el form del newsletter envía la info a n8n, que es
+gratis? luego necesitaría un trigger desde n8n para que ingrese a LS02, ¿cuál sería?"*
+
+Dos precisiones que conviene no perder:
+
+- **El trigger que buscaba ya existía y era el mismo.** LS02 dispara por Inbound
+  Webhook. Con n8n en medio no hace falta ningún trigger nuevo: n8n hace POST a esa
+  misma URL. n8n queda de intermediario y GHL no se entera.
+- **El Inbound Webhook también es gratis.** Lo que se cobra por ejecución es el
+  **Custom Webhook de salida** (premium, secciones 22 y 24). Un *trigger* de Inbound
+  Webhook es estándar. O sea: meter n8n no ahorra nada, el circuito ya costaba cero.
+
+Aun así German eligió la **opción B** —n8n dueño del alta, GHL disparando por tag—
+porque permite responderle distinto a quien ya estaba suscrita y deja un log fuera de
+GHL. Arquitectura nueva:
+
+```
+home (sección .mura-nl, dos columnas: ventajas + formulario)
+  → POST JSON al webhook de n8n
+     → busca el contacto por email
+        · ya existe y ya tiene `nl` → responde ya-suscrita (y la página
+          dice "ya estabas dentro", sin reenviar nada)
+        · si no → upsert + REMOVE `nl` + ADD `nl`
+  → el tag `nl` dispara LS02 (doble opt-in, bienvenida, oportunidad)
+```
+
+**El remove antes del add no es adorno.** Un tag que ya está puesto no vuelve a
+disparar: sin él, quien se diera de baja y volviera no reentraría jamás. Misma trampa
+de la sección 17.
+
+**Dos pasos de LS02 se vuelven peligrosos al invertir quién crea el contacto, y hay que
+quitarlos:**
+
+1. **`Create/Update Contact`** — sus campos apuntan a `{{inboundWebhookRequest.*}}`,
+   que a partir de ahora llegan vacíos: borraría nombre, teléfono y fecha de nacimiento
+   del contacto que acaba de crear n8n.
+2. **`Add Tag nl`** — si el trigger pasa a ser "tag `nl` añadido" y el workflow se pone
+   `nl` a sí mismo, se re-dispara en bucle.
+
+Y en la UI: borrar el trigger *Inbound Webhook* y crear **Contact Tag → `nl`** (los
+triggers por API son fantasma, sección 13). Comprobar `allowMultiple`.
+
+Archivos: `tienda/newsletter-home.html` (destino n8n + mensaje `ya-suscrita`),
+`tienda/n8n-newsletter-workflow.json` (reescrito entero).
+
+⚠️ **El fallo más probable de todo el montaje es el CORS.** El `Content-Type:
+application/json` dispara un preflight `OPTIONS`; el nodo Webhook de n8n necesita
+**Options → Allowed Origins**. Se prueba lo primero. Y la URL tiene que ser la de
+producción `/webhook/…`: la de test solo escucha con el editor abierto — el bug del 06b.
+
+### 30.2 La sección del newsletter, versionada
+
+Sonia rehízo la home: ahora es un bloque de dos columnas, ventajas a la izquierda y
+formulario a la derecha, con el botón "Formar parte". Queda versionada en
+`tienda/newsletter-home.html` y sus reglas (`.mura-nl-2col`, `.mura-nl-ventajas`) en el
+global. Verificado renderizando en Chromium a 1280, 820 y 390 px: idéntica a la que está
+en vivo, y a 860 px se apila.
+
+### 30.3 Formulario de Experiencia — `tienda/experiencia.html`
+
+Las 26 preguntas de la spec de Sonia, en 7 pasos (6 bloques + el NPS), un bloque cada
+vez, con la lógica condicional real: **si responde que todavía no ha comprado, el
+recorrido pasa de 7 pasos a 4** y los bloques del pedido, el packaging y la prenda no
+existen para ella.
+
+**Se hizo como página propia, no como Survey de GHL.** La spec pide diseño
+"completamente editorial" y que no se perciba como encuesta al uso; el Survey no da ese
+control. Contrapartida dicha en claro: las respuestas viven en el Sheet, no en la ficha.
+
+**Decisión que va MÁS ALLÁ de la spec y hay que contarle a Sonia:** el documento no pide
+el correo en ninguna pregunta, y sin él no hay forma de poner el tag ni de guardar el
+NPS — el circuito de GHL entero sería imposible. Solución: si llega desde el correo 06,
+el contacto viaja en la URL (`?cid=`) y no se pregunta nada; si alguien entra suelto, al
+final se le pide el correo como **opcional**, y si no lo deja, su respuesta se guarda en
+el Sheet sin tocar GHL. Para eso, en las plantillas 06 y 07 el botón debe apuntar a
+`{{custom_values.url_feedback}}?cid={{contact.id}}`.
+
+Solo dos preguntas son obligatorias: la primera (decide el recorrido) y el NPS (es el
+índice que la spec pide medir). El resto libre, a propósito.
+
+Verificado en Chromium, los dos caminos: 60 inputs de estrella y 11 de NPS pintados,
+avisos de validación, salto de bloques 3-4-5, el detalle de incidencia que aparece y
+desaparece, las estrellas rellenando 1→N en el orden visual correcto, y cero errores JS.
+
+### 30.4 Por qué NO se crean 30 campos custom en GHL
+
+Pregunta de German. **No.** GHL no cruza ni promedia respuestas: solo las enseña contacto
+a contacto. La spec pide *analizar* la experiencia y decidir con datos reales, y eso es
+una hoja de cálculo. En GHL se queda únicamente lo que sirve para automatizar:
+
+- **el NPS**, que segmenta (promotoras 9-10 → PS01 reseña; detractoras 0-6 → aviso);
+- **el tag `encuesta-completada`**, que ya existe.
+
+Ojo: en la cuenta ya hay dos campos que huelen a la encuesta vieja —
+`contact.calificacin_clienta` (numérico) y `contact.algun_comentario_que_nos_quieras_compartir`
+(texto largo). **Pendiente de German decidir** si `Calificación clienta` es el NPS y se
+reutiliza, o se crea un campo nuevo. El workflow de n8n lleva hoy el que existe.
+
+`tienda/n8n-experiencia-workflow.json`: webhook → normalizar (rellena con vacío lo que no
+venga, o la fila saldría descuadrada cuando faltan los bloques 3-5) → **fila al Sheet** →
+y en paralelo, solo si viene identificada, escribir NPS + tag. Se responde a la clienta
+en cuanto la fila está guardada: si GHL fallara, su respuesta ya no se pierde.
+
+**06b** pasa a dispararse por **Contact Tag → `encuesta-completada`** en vez de por Form
+Submitted, y se le quita su paso de poner ese tag (ahora lo pone n8n). El aviso interno a
+Sara se queda.
+
+### 30.5 La política de cookies existía — y hay un enlace roto en producción
+
+No había que escribirla: Sonia la tiene redactada en el Drive
+(`politica-cookies.html`, `1lgFCoTzySca0fwypk19GhsgCOLVZn0sg`), con el mismo patrón y la
+misma calidad que las otras tres legales. **Lo que pasa es que nunca se publicó**, y el
+pie de todas las páginas de la tienda ya enlaza a `/politica-cookies`: hoy es un enlace
+roto en vivo, el único de los cinco legales que no abre nada.
+
+Antes de publicarla hay dos cosas, y una no es opcional:
+
+1. **Auditar las cookies reales.** El propio documento avisa de que su tabla está
+   redactada a partir del comportamiento *habitual* de GoHighLevel, no de una inspección
+   de la web: tres de las cuatro duraciones figuran como "pendiente de comprobar". Hay
+   que abrir el inspector en stylebymura.com y corregirla. *No se puede hacer desde el
+   entorno:* la política de red deniega la salida a `www.stylebymura.com` (403 en el
+   CONNECT del proxy).
+2. **Si aparece cualquier cookie no técnica, hace falta banner de consentimiento** que la
+   bloquee hasta que la clienta acepte. Informar no es pedir permiso. Pasa a obligatorio
+   sin matices el día que se instale el píxel de Meta.
+
+Queda escrito en `legal/README.md`, junto al estado de revisión jurídica de las cuatro.
+
+### 30.6 Lo que hay que contarle a Sonia (no es trabajo, es información)
+
+Su documento da por rotas cosas que funcionan. Sin esto se gasta tiempo en balde:
+
+- **El correo de confirmación del newsletter sí sale.** Lo roto era el enlace
+  (`{{unique_confirmation_link}}`, merge tag inventado → `href="[object Object]"`).
+  Corregido y verificado de punta a punta el mismo 17/8 (sección 28.c).
+- **No se duplican contactos.** `Create/Update Contact` es un upsert por email; su
+  objeción estaba cubierta desde el principio. Con la opción B lo hace n8n, igual.
+- **Cart, checkout y thank-you ya están maquetados y en español** (sección 27), `/cart`
+  retirado y el checkout redirigiendo a `/gracias`.
+- **`experiencia` y `feedback` ya estaban cerrados**; los dos huecos reales de la
+  coreografía se cerraron esa mañana (sección 29). La lista del Canva está
+  desactualizada.
+
+### 30.7 Lo que queda bloqueado, y por quién
+
+- **Cirugía de workflows** (quitar los dos pasos de LS02, el `if_else` de `compra-2`
+  antes de `inactivo` en el 06-12, y el ajuste del 06b): necesita un
+  `GHL_FIREBASE_REFRESH_TOKEN` nuevo de la extensión de Chrome — el de la sesión anterior
+  ya no está en el entorno.
+- **Las URLs de producción de los dos webhooks de n8n**, para pegarlas en las páginas.
+- **El campo del NPS**: reutilizar `Calificación clienta` o crear uno nuevo.
+- **Auditoría de cookies** (hay que hacerla con el navegador, no se llega desde aquí).
+- **WhatsApp real de contacto** y **tallas de prenda**: dependen de Sara.
+- **Stripe**: el documento dice "dejar hecha toda la parte" sin detallar. Lo que se
+  entiende que falta —Payment Mode a Live, claves live de Sara, recibos nativos y una
+  compra real de prueba— depende de Sara y hay que confirmarlo con Sonia antes de tocar.

@@ -1,52 +1,123 @@
 {
-  "name": "Newsletter MURA - alta desde la home",
+  "name": "MURA · Alta newsletter web",
+  "meta": {
+    "descripcion": "Alta del newsletter desde /newsletter. n8n es el dueño del alta: busca el contacto, lo crea o lo actualiza, y pone el tag `nl`. Ese tag es lo que dispara LS02 · Opt-in Newsletter Web dentro de GHL (doble opt-in, bienvenida, oportunidad de comunidad).",
+    "antes-de-importar": [
+      "1. Sustituir PEGAR_AQUI_EL_PIT en las cuatro llamadas HTTP (o moverlo a una credencial Header Auth y quitar la cabecera Authorization de los nodos).",
+      "2. Activar el workflow y copiar la URL de PRODUCCION del webhook (/webhook/...), NO la de test (/webhook-test/...), que solo escucha con el editor abierto.",
+      "3. Pegar esa URL en tienda/newsletter.html, en la constante WEBHOOK.",
+      "4. En el nodo Webhook, Options -> Allowed Origins (CORS) ya viene con el dominio de la tienda. Sin eso el navegador manda un preflight OPTIONS (lo dispara el Content-Type: application/json) y n8n lo rechaza: es el fallo mas probable de todo el montaje, asi que se prueba lo primero."
+    ],
+    "en-ghl": "LS02 (f62a24a8-0a2c-4a60-9910-d57a44e34136) tiene que quedar SIN el paso Create/Update Contact y SIN el Add Tag `nl` (los hace n8n ahora), y con el trigger cambiado en la UI a Contact Tag -> tag anadido -> `nl`."
+  },
   "nodes": [
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "newsletter-mura",
-        "responseMode": "lastNode",
+        "path": "mura-newsletter",
+        "responseMode": "responseNode",
         "options": {
-          "responseHeaders": {
-            "entries": [
-              { "name": "Access-Control-Allow-Origin", "value": "*" }
-            ]
-          }
+          "allowedOrigins": "https://stylebymura.com"
         }
       },
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [0, 0],
+      "position": [-220, 0],
       "id": "aa000001-0000-4000-8000-000000000001",
       "name": "Webhook newsletter"
     },
     {
       "parameters": {
         "conditions": {
-          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "options": { "caseSensitive": false, "leftValue": "", "typeValidation": "loose", "version": 2 },
           "conditions": [
             {
               "id": "c1",
-              "leftValue": "={{ $json.body.k }}",
-              "rightValue": "mura-nl-2026",
-              "operator": { "type": "string", "operation": "equals" }
-            },
-            {
-              "id": "c2",
               "leftValue": "={{ $json.body.email }}",
               "rightValue": "@",
               "operator": { "type": "string", "operation": "contains" }
+            },
+            {
+              "id": "c2",
+              "leftValue": "={{ $json.body.consentimiento }}",
+              "rightValue": "rgpd-aceptado",
+              "operator": { "type": "string", "operation": "equals" }
             }
           ],
           "combinator": "and"
         },
+        "looseTypeValidation": true,
         "options": {}
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [220, 0],
+      "position": [0, 0],
       "id": "aa000001-0000-4000-8000-000000000002",
-      "name": "Llave y email validos"
+      "name": "Email y consentimiento"
+    },
+    {
+      "parameters": {
+        "url": "https://services.leadconnectorhq.com/contacts/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "locationId", "value": "NxPF5fOicowujokEk5Hm" },
+            { "name": "query", "value": "={{ $json.body.email }}" }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer PEGAR_AQUI_EL_PIT" },
+            { "name": "Version", "value": "2021-07-28" }
+          ]
+        },
+        "options": {
+          "response": { "response": { "neverError": true } }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, -100],
+      "id": "aa000001-0000-4000-8000-000000000003",
+      "name": "Buscar contacto por email",
+      "notes": "Esto es literalmente lo que pedia Sonia: buscar antes de crear. Se usa /contacts/?query= y no /contacts/search/duplicate porque este devuelve una lista vacia cuando no hay nada, en vez de un 404 que habria que capturar."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "leftValue": "", "typeValidation": "loose", "version": 2 },
+          "conditions": [
+            {
+              "id": "d1",
+              "leftValue": "={{ ($json.contacts || []).filter(c => (c.email || '').toLowerCase() === $('Webhook newsletter').item.json.body.email.toLowerCase() && (c.tags || []).includes('nl')).length }}",
+              "rightValue": 0,
+              "operator": { "type": "number", "operation": "gt" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [440, -100],
+      "id": "aa000001-0000-4000-8000-000000000004",
+      "name": "Ya tiene el tag nl"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ status: 'ya-suscrita' }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [660, -220],
+      "id": "aa000001-0000-4000-8000-000000000005",
+      "name": "Responder ya-suscrita",
+      "notes": "La pagina muestra 'ya estabas dentro' y no se le reenvia el correo de confirmacion."
     },
     {
       "parameters": {
@@ -62,19 +133,46 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ locationId: 'NxPF5fOicowujokEk5Hm', email: $json.body.email, firstName: $json.body.first_name || '', lastName: $json.body.last_name || '', phone: $json.body.phone || '', dateOfBirth: $json.body.fecha || undefined, source: 'newsletter-home' }) }}",
+        "jsonBody": "={{ JSON.stringify(Object.fromEntries(Object.entries({ locationId: 'NxPF5fOicowujokEk5Hm', email: $('Webhook newsletter').item.json.body.email, firstName: $('Webhook newsletter').item.json.body.first_name, lastName: $('Webhook newsletter').item.json.body.last_name, phone: $('Webhook newsletter').item.json.body.phone, dateOfBirth: $('Webhook newsletter').item.json.body.fecha_nacimiento, source: $('Webhook newsletter').item.json.body.origen || 'newsletter-web' }).filter(([,v]) => v !== '' && v != null))) }}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [440, -80],
-      "id": "aa000001-0000-4000-8000-000000000003",
-      "name": "Upsert contacto GHL"
+      "position": [660, 0],
+      "id": "aa000001-0000-4000-8000-000000000006",
+      "name": "Upsert contacto",
+      "notes": "Upsert por email: si existe lo actualiza, si no lo crea. Los campos vacios se quitan del payload para no borrar datos que ya estuvieran en la ficha. El telefono tiene que ir en E.164 (+34..., +549...) o el parser lo descarta en silencio."
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "=https://services.leadconnectorhq.com/contacts/{{ $json.contact.id }}/tags",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer PEGAR_AQUI_EL_PIT" },
+            { "name": "Version", "value": "2021-07-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ tags: ['nl'] }) }}",
+        "options": {
+          "response": { "response": { "neverError": true } }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 0],
+      "id": "aa000001-0000-4000-8000-000000000007",
+      "name": "Quitar tag nl",
+      "notes": "Un tag que YA esta puesto no vuelve a disparar el workflow. Sin este remove, una clienta que se diera de baja y volviera no reentraria nunca en LS02. En un contacto nuevo el remove no hace nada: por eso neverError."
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://services.leadconnectorhq.com/contacts/{{ $json.contact.id }}/tags",
+        "url": "=https://services.leadconnectorhq.com/contacts/{{ $('Upsert contacto').item.json.contact.id }}/tags",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -90,31 +188,54 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [660, -80],
-      "id": "aa000001-0000-4000-8000-000000000004",
-      "name": "Tag nl"
+      "position": [1100, 0],
+      "id": "aa000001-0000-4000-8000-000000000008",
+      "name": "Poner tag nl",
+      "notes": "Este es el disparo: LS02 escucha Contact Tag -> `nl`."
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            { "id": "ok1", "name": "ok", "value": true, "type": "boolean" }
-          ]
-        },
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ status: 'ok' }) }}",
         "options": {}
       },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [880, -80],
-      "id": "aa000001-0000-4000-8000-000000000005",
-      "name": "Respuesta ok"
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1320, 0],
+      "id": "aa000001-0000-4000-8000-000000000009",
+      "name": "Responder ok"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ status: 'error', motivo: 'email o consentimiento no validos' }) }}",
+        "options": { "responseCode": 400 }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [220, 160],
+      "id": "aa000001-0000-4000-8000-000000000010",
+      "name": "Responder datos invalidos"
     }
   ],
   "connections": {
-    "Webhook newsletter": { "main": [[{ "node": "Llave y email validos", "type": "main", "index": 0 }]] },
-    "Llave y email validos": { "main": [[{ "node": "Upsert contacto GHL", "type": "main", "index": 0 }], []] },
-    "Upsert contacto GHL": { "main": [[{ "node": "Tag nl", "type": "main", "index": 0 }]] },
-    "Tag nl": { "main": [[{ "node": "Respuesta ok", "type": "main", "index": 0 }]] }
+    "Webhook newsletter": { "main": [[{ "node": "Email y consentimiento", "type": "main", "index": 0 }]] },
+    "Email y consentimiento": {
+      "main": [
+        [{ "node": "Buscar contacto por email", "type": "main", "index": 0 }],
+        [{ "node": "Responder datos invalidos", "type": "main", "index": 0 }]
+      ]
+    },
+    "Buscar contacto por email": { "main": [[{ "node": "Ya tiene el tag nl", "type": "main", "index": 0 }]] },
+    "Ya tiene el tag nl": {
+      "main": [
+        [{ "node": "Responder ya-suscrita", "type": "main", "index": 0 }],
+        [{ "node": "Upsert contacto", "type": "main", "index": 0 }]
+      ]
+    },
+    "Upsert contacto": { "main": [[{ "node": "Quitar tag nl", "type": "main", "index": 0 }]] },
+    "Quitar tag nl": { "main": [[{ "node": "Poner tag nl", "type": "main", "index": 0 }]] },
+    "Poner tag nl": { "main": [[{ "node": "Responder ok", "type": "main", "index": 0 }]] }
   },
   "settings": { "executionOrder": "v1" },
   "pinData": {}

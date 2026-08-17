@@ -136,8 +136,19 @@
     '@media (max-width: 560px) { .mura-linea { flex-wrap: wrap; } .mura-linea-acc { width: 100%; justify-content: space-between; padding-left: 88px; } }',
 
     /* ---- Newsletter (sección de /home) ---- */
-    '.mura-nl { max-width: 680px; margin: 0 auto; padding: clamp(70px,9vw,120px) clamp(20px,4vw,56px); text-align: center; }',
+    '.mura-nl { max-width: 1120px; margin: 0 auto; padding: clamp(70px,9vw,120px) clamp(20px,4vw,56px); text-align: center; }',
     '.mura-nl form { text-align: left; margin-top: clamp(32px,4vw,44px); }',
+
+    /* Dos columnas: ventajas a la izquierda, formulario a la derecha.
+       Por debajo de 860 px se apilan — a esa anchura los campos en pareja
+       (nombre/apellidos, teléfono/fecha) ya salen estrechísimos. */
+    '.mura-nl-2col { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px,5vw,88px); align-items: start; text-align: left; margin-top: clamp(48px,6vw,80px); }',
+    '.mura-nl-2col form { margin-top: 0; }',
+    '@media (max-width: 860px) { .mura-nl-2col { grid-template-columns: 1fr; gap: clamp(36px,6vw,52px); } }',
+    '.mura-nl-rule { width: 36px; height: 1px; background: #1D1B18; margin: 20px 0 30px; }',
+    '.mura-nl-ventajas ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }',
+    '.mura-nl-ventajas li { position: relative; padding-left: 28px; font-size: 13.5px; line-height: 1.7; color: #55524B; }',
+    ".mura-nl-ventajas li::before { content: '\\2713'; position: absolute; left: 0; top: 0; color: #8A857B; font-size: 12px; }",
     '.mura-nl-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }',
     '@media (max-width: 560px) { .mura-nl-fila { grid-template-columns: 1fr; } }',
     '.mura-nl-campo { margin-bottom: 18px; }',
@@ -212,6 +223,90 @@
   if (path === '/cart') {
     location.replace('/carrito' + location.search);
     return;
+  }
+
+  /* ============================================================
+     2.b · CSS de la encuesta — SOLO /experiencia
+     ============================================================
+     Son ~40 reglas que no pintan nada en el resto del sitio, así
+     que van detrás de su propio guardia en vez de engordar el
+     bloque `sistema`, que sí se carga en todas las páginas.
+     No lleva `return`: /experiencia no es página de tienda, así
+     que sigue hasta el guardia de RUTAS_TIENDA, pinta el contador
+     del carrito y sale por ahí. */
+
+  if (path === '/experiencia') {
+    var encuesta = [
+      '.mura-enc { max-width: 720px; margin: 0 auto; padding: clamp(56px,7vw,90px) clamp(20px,4vw,56px) clamp(80px,10vw,130px); }',
+      '.mura-enc-cab { text-align: center; padding-bottom: clamp(44px,5vw,64px); }',
+      '.mura-enc-cab p { font-size: 14.5px; line-height: 1.95; color: #55524B; margin-top: 18px !important; }',
+      '.mura-enc-min { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #8A857B; margin-top: 26px !important; }',
+
+      /* ---- Progreso ---- */
+      '.mura-enc-prog { display: flex; align-items: center; gap: 16px; padding-bottom: clamp(40px,5vw,56px); }',
+      '.mura-enc-prog-pista { flex: 1 1 auto; height: 1px; background: rgba(29,27,24,.14); position: relative; }',
+      '.mura-enc-prog-fill { position: absolute; left: 0; top: 0; height: 1px; background: #1D1B18; transition: width .35s ease; }',
+      '.mura-enc-prog-n { font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: #8A857B; white-space: nowrap; }',
+
+      /* ---- Bloques: uno visible cada vez ---- */
+      '.mura-enc-bloque { display: none; }',
+      '.mura-enc-bloque.on { display: block; }',
+      '.mura-enc-bloque > .mura-label { display: block; padding-bottom: clamp(34px,4vw,48px); }',
+      '.mura-enc-preg { padding-bottom: clamp(38px,4.5vw,52px); }',
+      '.mura-enc-preg:last-child { padding-bottom: 0; }',
+      ".mura-enc-q { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(19px,2.2vw,23px); font-weight: 400; line-height: 1.45; padding-bottom: 20px; }",
+      '.mura-enc-q i { font-style: normal; color: #8A857B; }',
+
+      /* ---- Opciones ---- */
+      '.mura-enc-ops { display: flex; flex-direction: column; gap: 2px; }',
+      '.mura-enc-op { display: flex; align-items: flex-start; gap: 14px; padding: 11px 0; cursor: pointer; font-size: 14px; line-height: 1.7; color: #55524B; }',
+      '.mura-enc-op:hover { color: #1D1B18; }',
+      '.mura-enc-op input { accent-color: #1D1B18; width: 15px; height: 15px; margin: 4px 0 0; flex: 0 0 auto; }',
+
+      /* ---- Estrellas ----
+         Los <input> van de 5 a 1 y el contenedor en row-reverse, así el 1
+         queda a la izquierda. Con ese orden, `input:checked ~ label` alcanza
+         justo las estrellas de valor menor, que son las que hay que rellenar. */
+      '.mura-enc-estrellas { display: inline-flex; flex-direction: row-reverse; justify-content: flex-end; gap: 8px; }',
+      '.mura-enc-estrellas input { position: absolute; opacity: 0; width: 1px; height: 1px; }',
+      '.mura-enc-estrellas label { cursor: pointer; font-size: 27px; line-height: 1; color: rgba(29,27,24,.20); transition: color .15s ease; }',
+      '.mura-enc-estrellas input:checked ~ label, .mura-enc-estrellas input:checked + label { color: #1D1B18; }',
+      '.mura-enc-estrellas label:hover, .mura-enc-estrellas label:hover ~ label { color: #6E6A61; }',
+      '.mura-enc-estrellas input:focus-visible + label { outline: 1px solid #1D1B18; outline-offset: 3px; }',
+
+      /* ---- NPS 0-10 ---- */
+      '.mura-enc-nps { display: flex; flex-wrap: wrap; gap: 8px; }',
+      '.mura-enc-nps input { position: absolute; opacity: 0; width: 1px; height: 1px; }',
+      '.mura-enc-nps label { cursor: pointer; min-width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(29,27,24,.25); font-size: 13px; letter-spacing: .06em; color: #55524B; transition: all .15s ease; }',
+      '.mura-enc-nps label:hover { border-color: #1D1B18; color: #1D1B18; }',
+      '.mura-enc-nps input:checked + label { background: #1D1B18; border-color: #1D1B18; color: #F0EEE8; }',
+      '.mura-enc-nps-pies { display: flex; justify-content: space-between; padding-top: 12px; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #8A857B; }',
+
+      /* ---- Texto libre ---- */
+      ".mura-enc-txt { width: 100%; min-height: 108px; padding: 14px; border: 1px solid rgba(29,27,24,.25); background: transparent; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 300; line-height: 1.8; border-radius: 0; resize: vertical; -webkit-appearance: none; appearance: none; }",
+      '.mura-enc-txt:focus { outline: none; border-color: #1D1B18; }',
+      ".mura-enc-linea { width: 100%; height: 50px; padding: 0 14px; border: 1px solid rgba(29,27,24,.25); background: transparent; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 300; border-radius: 0; -webkit-appearance: none; appearance: none; }",
+      '.mura-enc-linea:focus { outline: none; border-color: #1D1B18; }',
+
+      /* ---- Navegación ---- */
+      '.mura-enc-navs { display: flex; align-items: center; gap: 18px; padding-top: clamp(44px,5vw,60px); border-top: 1px solid rgba(29,27,24,.14); margin-top: clamp(44px,5vw,60px); }',
+      '.mura-enc-navs .mura-btn { width: auto; padding: 0 clamp(32px,4vw,52px); }',
+      ".mura-enc-atras { border: none; background: transparent; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; font-weight: 300; color: #8A857B; padding: 0; }",
+      '.mura-enc-atras:hover { color: #1D1B18; }',
+      '.mura-enc-aviso { font-size: 13px; line-height: 1.7; color: #7A2E2E; padding-top: 16px; }',
+
+      /* ---- Pantalla final ---- */
+      '.mura-enc-fin { display: none; text-align: center; padding: clamp(60px,9vh,110px) 0; }',
+      '.mura-enc-fin.on { display: block; }',
+      '.mura-enc-fin p { font-size: 14.5px; line-height: 1.95; color: #55524B; margin-top: 20px !important; }',
+
+      '@media (max-width: 480px) { .mura-enc-estrellas label { font-size: 23px; } .mura-enc-nps label { min-width: 40px; height: 40px; } .mura-enc-navs { gap: 14px; } .mura-enc-navs .mura-btn { padding: 0 26px; flex: 1 1 auto; } }'
+    ].join('\n');
+
+    var stEnc = document.createElement('style');
+    stEnc.setAttribute('data-mura', 'encuesta');
+    stEnc.textContent = encuesta;
+    document.head.appendChild(stEnc);
   }
 
   /* ============================================================

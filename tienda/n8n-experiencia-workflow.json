@@ -1,0 +1,192 @@
+{
+  "name": "MURA · Formulario de experiencia",
+  "meta": {
+    "descripcion": "Recibe las respuestas de /experiencia. Escribe UNA FILA por respuesta en un Google Sheet (que es donde se analizan) y, solo si la respuesta viene identificada, toca GHL: escribe el NPS y pone el tag `encuesta-completada`.",
+    "por-que-no-30-campos-en-ghl": "GHL no cruza ni promedia respuestas: solo las ense~na contacto a contacto. La spec de Sonia pide analizar la experiencia y decidir con datos reales, y eso es una hoja de calculo. En GHL se queda unicamente lo que sirve para automatizar: el NPS (segmenta promotoras y detractoras) y el tag.",
+    "antes-de-importar": [
+      "1. Crear el Google Sheet con la fila de cabeceras del nodo `Fila al Sheet` y pegar su ID en ese nodo.",
+      "2. Sustituir PEGAR_AQUI_EL_PIT en los tres nodos HTTP de GHL.",
+      "3. Decidir el campo del NPS: reutilizar `contact.calificacin_clienta` (ya existe, numerico) o crear uno nuevo. El nodo `Escribir NPS` lleva hoy el que existe; cambiarlo si se crea otro.",
+      "4. Activar y copiar la URL de PRODUCCION del webhook (/webhook/...), NO la de test.",
+      "5. Pegar esa URL en tienda/experiencia.html y publicar la pagina.",
+      "6. Poner la URL de la pagina en el custom value `url feedback` de GHL: los correos 06 y 07 la leen de ahi.",
+      "7. En las plantillas 06 y 07, el boton debe apuntar a {{custom_values.url_feedback}}?cid={{contact.id}} para que la respuesta llegue identificada."
+    ],
+    "en-ghl": "06b (94779fd6-15bb-4387-9af0-244409fcd671) pasa a dispararse por Contact Tag -> `encuesta-completada`, y se le quita su paso de poner ese tag (ahora lo pone n8n). Su aviso interno a Sara se queda igual."
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "mura-experiencia",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "https://stylebymura.com"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-220, 0],
+      "id": "bb000001-0000-4000-8000-000000000001",
+      "name": "Webhook experiencia"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ JSON.stringify({ fecha: $now.toISO(), origen: $json.body.origen || 'experiencia-web', cid: $json.body.cid || '', email: $json.body.email || '', compra: $json.body.compra || '', conociste: $json.body.conociste || '', atencion: $json.body.atencion || '', nav_web: $json.body.nav_web || '', facil_encontrar: $json.body.facil_encontrar || '', info_prendas: $json.body.info_prendas || '', fotografias: $json.body.fotografias || '', guia_tallas: $json.body.guia_tallas || '', proceso_compra: $json.body.proceso_compra || '', echaste_falta: $json.body.echaste_falta || '', comunicacion: $json.body.comunicacion || '', info_envio: $json.body.info_envio || '', plazo: $json.body.plazo || '', entrega: $json.body.entrega || '', incidencia: $json.body.incidencia || '', incidencia_detalle: $json.body.incidencia_detalle || '', packaging: $json.body.packaging || '', al_abrir: $json.body.al_abrir || '', presentacion: $json.body.presentacion || '', mejora_packaging: $json.body.mejora_packaging || '', expectativas: $json.body.expectativas || '', calidad: $json.body.calidad || '', tallaje: $json.body.tallaje || '', descripcion: $json.body.descripcion || '', volverias: $json.body.volverias || '', tres_palabras: $json.body.tres_palabras || '', mas_gustado: $json.body.mas_gustado || '', mejorar: $json.body.mejorar || '', futuras_prendas: $json.body.futuras_prendas || '', algo_mas: $json.body.algo_mas || '', nps: $json.body.nps || '' }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [0, 0],
+      "id": "bb000001-0000-4000-8000-000000000002",
+      "name": "Normalizar respuestas",
+      "notes": "Aplana el payload y rellena con cadena vacia lo que no venga. Los bloques 3, 4 y 5 no llegan si la persona dijo que todavia no ha comprado: sin esto, la fila del Sheet saldria descuadrada."
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": { "__rl": true, "value": "PEGAR_ID_DEL_GOOGLE_SHEET", "mode": "id" },
+        "sheetName": { "__rl": true, "value": "Respuestas", "mode": "name" },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [220, 0],
+      "id": "bb000001-0000-4000-8000-000000000003",
+      "name": "Fila al Sheet",
+      "notes": "Cabeceras del Sheet, EN ESTE ORDEN: fecha, origen, cid, email, compra, conociste, atencion, nav_web, facil_encontrar, info_prendas, fotografias, guia_tallas, proceso_compra, echaste_falta, comunicacion, info_envio, plazo, entrega, incidencia, incidencia_detalle, packaging, al_abrir, presentacion, mejora_packaging, expectativas, calidad, tallaje, descripcion, volverias, tres_palabras, mas_gustado, mejorar, futuras_prendas, algo_mas, nps"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ status: 'ok' }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [440, 140],
+      "id": "bb000001-0000-4000-8000-000000000004",
+      "name": "Responder ok",
+      "notes": "Se responde en cuanto la fila esta guardada. Lo de GHL sigue por su rama: si fallara, la respuesta de la clienta ya no se pierde."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "leftValue": "", "typeValidation": "loose", "version": 2 },
+          "conditions": [
+            {
+              "id": "id1",
+              "leftValue": "={{ ($('Normalizar respuestas').item.json.cid || '') + ($('Normalizar respuestas').item.json.email || '') }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "notEmpty" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [440, -140],
+      "id": "bb000001-0000-4000-8000-000000000005",
+      "name": "Viene identificada",
+      "notes": "Si entro por el enlace del correo 06 trae cid; si entro suelta y dejo el correo opcional, trae email. Sin ninguno de los dos, la respuesta se queda solo en el Sheet."
+    },
+    {
+      "parameters": {
+        "url": "https://services.leadconnectorhq.com/contacts/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "locationId", "value": "NxPF5fOicowujokEk5Hm" },
+            { "name": "query", "value": "={{ $('Normalizar respuestas').item.json.email }}" }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer PEGAR_AQUI_EL_PIT" },
+            { "name": "Version", "value": "2021-07-28" }
+          ]
+        },
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, -140],
+      "id": "bb000001-0000-4000-8000-000000000006",
+      "name": "Buscar contacto",
+      "notes": "Solo hace falta cuando no hay cid. Con cid, el nodo siguiente lo usa directamente y esta busqueda devuelve vacio sin romper nada."
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "=https://services.leadconnectorhq.com/contacts/{{ $('Normalizar respuestas').item.json.cid || ($json.contacts && $json.contacts[0] ? $json.contacts[0].id : '') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer PEGAR_AQUI_EL_PIT" },
+            { "name": "Version", "value": "2021-07-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ customFields: [{ key: 'calificacin_clienta', field_value: $('Normalizar respuestas').item.json.nps }] }) }}",
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, -140],
+      "id": "bb000001-0000-4000-8000-000000000007",
+      "name": "Escribir NPS",
+      "notes": "El unico dato de la encuesta que entra en la ficha, porque es el unico que sirve para automatizar (promotoras 9-10 -> PS01 rese~na; detractoras 0-6 -> aviso a Sara). Si se crea un campo `NPS` propio, cambiar aqui la key."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://services.leadconnectorhq.com/contacts/{{ $('Normalizar respuestas').item.json.cid || ($('Buscar contacto').item.json.contacts && $('Buscar contacto').item.json.contacts[0] ? $('Buscar contacto').item.json.contacts[0].id : '') }}/tags",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer PEGAR_AQUI_EL_PIT" },
+            { "name": "Version", "value": "2021-07-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ tags: ['encuesta-completada'] }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, -140],
+      "id": "bb000001-0000-4000-8000-000000000008",
+      "name": "Tag encuesta-completada",
+      "notes": "Este tag es el disparo del 06b. Es marca permanente por dise~no (seccion 29 del doc): no se quita, y la encuesta se contesta una vez."
+    }
+  ],
+  "connections": {
+    "Webhook experiencia": { "main": [[{ "node": "Normalizar respuestas", "type": "main", "index": 0 }]] },
+    "Normalizar respuestas": { "main": [[{ "node": "Fila al Sheet", "type": "main", "index": 0 }]] },
+    "Fila al Sheet": {
+      "main": [[
+        { "node": "Responder ok", "type": "main", "index": 0 },
+        { "node": "Viene identificada", "type": "main", "index": 0 }
+      ]]
+    },
+    "Viene identificada": { "main": [[{ "node": "Buscar contacto", "type": "main", "index": 0 }], []] },
+    "Buscar contacto": { "main": [[{ "node": "Escribir NPS", "type": "main", "index": 0 }]] },
+    "Escribir NPS": { "main": [[{ "node": "Tag encuesta-completada", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}

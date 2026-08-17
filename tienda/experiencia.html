@@ -1,0 +1,469 @@
+<!--
+  ============================================================
+  MÛRA · FORMULARIO DE EXPERIENCIA (/experiencia)
+  ============================================================
+  Es el formulario del correo 06. Spec de Sonia en el Drive:
+  "04 · FORMULARIO DE EXPERIENCIA MÛRA"
+  (1kEsHjbyJ8wKEDJLDGxH6AZJY8FSvns45gzBolZquY24).
+
+  POR QUÉ PÁGINA PROPIA Y NO UN SURVEY DE GHL
+  La spec pide diseño "completamente editorial" y que no se
+  perciba como una encuesta al uso. El Survey de GHL no da ese
+  control de maquetación. Aquí lo tenemos entero, la lógica
+  condicional es JS de tres líneas, y las respuestas caen en una
+  hoja donde se pueden cruzar de verdad — que es el objetivo
+  declarado del documento ("decisiones basadas en datos reales").
+
+  Contrapartida, dicha claramente: las respuestas viven en el
+  Sheet, no en la ficha del contacto. En GHL solo se escriben el
+  NPS y el tag.
+
+  CÓMO FUNCIONA
+
+    /experiencia
+      → POST JSON al webhook de n8n
+         → n8n escribe UNA FILA en el Google Sheet (todas las
+           respuestas + fecha)
+         → si viene identificada (ver abajo): busca el contacto,
+           escribe el campo `nps` y pone el tag
+           `encuesta-completada`
+      → ese tag dispara 06b · Encuesta post-compra completada
+        (aviso interno a Sara)
+
+  CÓMO SE IDENTIFICA A LA CLIENTA — decisión que va MÁS ALLÁ DE
+  LA SPEC, y hay que contársela a Sonia
+  El documento no pide el correo en ninguna pregunta. Sin él no
+  hay forma de poner el tag ni de guardar el NPS en la ficha, así
+  que el circuito de GHL entero sería imposible. Solución:
+
+    · Si llega desde el correo 06, el enlace trae el contacto en
+      la URL (?cid=… o ?email=…) y aquí no se pregunta nada.
+      Para eso, en las plantillas 06 y 07 el botón tiene que
+      apuntar a  {{custom_values.url_feedback}}?cid={{contact.id}}
+    · Si alguien entra directamente (por Instagram, por ejemplo),
+      al final se le pide el correo como OPCIONAL. Si no lo deja,
+      la respuesta se guarda igual en el Sheet y no toca GHL.
+
+  QUÉ ES OBLIGATORIO
+  Solo dos cosas: la primera pregunta (decide qué bloques se
+  muestran) y el NPS (es el índice que pide medir la spec). Todo
+  lo demás es libre, a propósito: la spec pide una conversación,
+  no un interrogatorio.
+
+  CÓMO SE PEGA
+  1. Sites → sitio Mura → página nueva con URL /experiencia.
+  2. Elemento de código personalizado → pegar esto entero.
+  3. Sustituir PEGAR_URL_DEL_WEBHOOK_N8N por la URL real
+     (la de PRODUCCIÓN, `/webhook/…`, nunca `/webhook-test/…`).
+  4. Publicar, y poner esa URL en el custom value `url feedback`
+     — los correos 06 y 07 la leen de ahí y se arreglan solos.
+
+  ⚠️ SIN CSS PROPIO, A PROPÓSITO: las reglas .mura-enc-* viven en
+  el Tracking Code global, detrás de un guardia que solo las
+  carga en esta ruta.
+  ============================================================
+-->
+<div class="mura">
+<nav class="mura-nav"><div class="mura-nav-in">
+<a href="/" class="mura-logo">MÛRA</a>
+<div class="mura-links"><a href="/" class="">Inicio</a><a href="/colecciones" class=" hm">Colecciones</a><a href="/prendas" class="">Prendas</a><a href="/novedades" class=" hm">Novedades</a><a href="/mura" class=" hm">MÛRA</a><a href="/contacto" class=" hm">Contacto</a></div>
+<a href="/carrito" class="mura-cart">Carrito<span class="mura-cart-w" style="display:none"> (<span class="mura-cart-n">0</span>)</span></a>
+</div></nav>
+
+<section class="mura-enc">
+
+  <div class="mura-enc-cab" id="enc-cab">
+    <div class="mura-label" style="margin-bottom:16px">Experiencia MÛRA</div>
+    <h1 style="font-size:clamp(30px,3.8vw,46px);line-height:1.25">Tu experiencia también forma parte de MÛRA.</h1>
+    <p>Cada opinión nos ayuda a seguir cuidando aquello que muchas veces no se ve.</p>
+    <p>Desde la navegación por nuestra web hasta el momento en el que recibes tu pedido, queremos seguir construyendo una experiencia que esté a la altura de cada detalle.</p>
+    <p>Gracias por dedicar unos minutos a compartir la tuya.</p>
+    <p class="mura-enc-min">2 · 3 minutos</p>
+  </div>
+
+  <div class="mura-enc-prog" id="enc-prog" style="display:none">
+    <div class="mura-enc-prog-pista"><div class="mura-enc-prog-fill" id="enc-fill" style="width:0"></div></div>
+    <div class="mura-enc-prog-n" id="enc-num"></div>
+  </div>
+
+  <form id="enc-form" novalidate>
+
+    <!-- ================= BLOQUE 1 ================= -->
+    <div class="mura-enc-bloque on" data-b="b1">
+      <div class="mura-label">Bloque 1 · Conociéndote</div>
+
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Has realizado alguna compra en MÛRA?</div>
+        <div class="mura-enc-ops">
+          <label class="mura-enc-op"><input type="radio" name="compra" value="si"><span>Sí.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="compra" value="no"><span>No, todavía no.</span></label>
+        </div>
+      </div>
+
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Cómo conociste MÛRA?</div>
+        <div class="mura-enc-ops">
+          <label class="mura-enc-op"><input type="radio" name="conociste" value="Instagram"><span>Instagram.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="conociste" value="Google"><span>Google.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="conociste" value="Recomendacion"><span>Recomendación.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="conociste" value="Evento o showroom"><span>Evento o showroom.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="conociste" value="Publicidad"><span>Publicidad.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="conociste" value="Otro"><span>Otro.</span></label>
+        </div>
+      </div>
+
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Qué fue lo que más llamó tu atención de MÛRA? <i>— opcional</i></div>
+        <textarea class="mura-enc-txt" name="atencion"></textarea>
+      </div>
+    </div>
+
+    <!-- ================= BLOQUE 2 ================= -->
+    <div class="mura-enc-bloque" data-b="b2">
+      <div class="mura-label">Bloque 2 · Experiencia en la web</div>
+
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Cómo valorarías la navegación por nuestra web?</div>
+        <div class="mura-enc-estrellas" data-n="nav_web"></div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Te resultó fácil encontrar lo que buscabas?</div>
+        <div class="mura-enc-estrellas" data-n="facil_encontrar"></div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿La información de las prendas te pareció clara y suficiente?</div>
+        <div class="mura-enc-estrellas" data-n="info_prendas"></div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Las fotografías te ayudaron a imaginar cómo era realmente la prenda?</div>
+        <div class="mura-enc-estrellas" data-n="fotografias"></div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿La guía de tallas resolvió tus dudas?</div>
+        <div class="mura-enc-ops">
+          <label class="mura-enc-op"><input type="radio" name="guia_tallas" value="Si"><span>Sí.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="guia_tallas" value="Parcialmente"><span>Parcialmente.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="guia_tallas" value="No"><span>No.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="guia_tallas" value="No la consulte"><span>No la consulté.</span></label>
+        </div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Cómo valorarías el proceso de compra?</div>
+        <div class="mura-enc-estrellas" data-n="proceso_compra"></div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Hubo algo que echaste en falta durante tu visita?</div>
+        <textarea class="mura-enc-txt" name="echaste_falta"></textarea>
+      </div>
+    </div>
+
+    <!-- ================= BLOQUE 3 · solo clientes ================= -->
+    <div class="mura-enc-bloque" data-b="b3">
+      <div class="mura-label">Bloque 3 · El pedido</div>
+
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Cómo valorarías la comunicación desde que realizaste el pedido hasta que lo recibiste?</div>
+        <div class="mura-enc-estrellas" data-n="comunicacion"></div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Recibiste suficiente información durante el envío?</div>
+        <div class="mura-enc-ops">
+          <label class="mura-enc-op"><input type="radio" name="info_envio" value="Si"><span>Sí.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="info_envio" value="Mas informacion"><span>Me habría gustado recibir más información.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="info_envio" value="Demasiadas"><span>Recibí demasiadas comunicaciones.</span></label>
+        </div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿El pedido llegó dentro del plazo esperado?</div>
+        <div class="mura-enc-ops">
+          <label class="mura-enc-op"><input type="radio" name="plazo" value="Si"><span>Sí.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="plazo" value="No"><span>No.</span></label>
+        </div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Cómo valorarías la entrega?</div>
+        <div class="mura-enc-estrellas" data-n="entrega"></div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Tuviste alguna incidencia con el transporte?</div>
+        <div class="mura-enc-ops">
+          <label class="mura-enc-op"><input type="radio" name="incidencia" value="No"><span>No.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="incidencia" value="Si"><span>Sí.</span></label>
+        </div>
+        <div id="enc-inc" style="display:none;padding-top:18px">
+          <textarea class="mura-enc-txt" name="incidencia_detalle" placeholder="Cuéntanos qué pasó."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= BLOQUE 4 · solo clientes ================= -->
+    <div class="mura-enc-bloque" data-b="b4">
+      <div class="mura-label">Bloque 4 · El momento de recibir MÛRA</div>
+
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Cómo valorarías el packaging?</div>
+        <div class="mura-enc-estrellas" data-n="packaging"></div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Qué sentiste al abrir tu pedido?</div>
+        <div class="mura-enc-ops">
+          <label class="mura-enc-op"><input type="radio" name="al_abrir" value="Supero expectativas"><span>Superó mis expectativas.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="al_abrir" value="Como esperaba"><span>Fue exactamente como esperaba.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="al_abrir" value="Esperaba algo diferente"><span>Esperaba algo diferente.</span></label>
+        </div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿La presentación representa la imagen que esperabas de MÛRA?</div>
+        <div class="mura-enc-estrellas" data-n="presentacion"></div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Hay algún detalle del packaging que mejorarías?</div>
+        <textarea class="mura-enc-txt" name="mejora_packaging"></textarea>
+      </div>
+    </div>
+
+    <!-- ================= BLOQUE 5 · solo clientes ================= -->
+    <div class="mura-enc-bloque" data-b="b5">
+      <div class="mura-label">Bloque 5 · La prenda</div>
+
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿La prenda cumplió tus expectativas?</div>
+        <div class="mura-enc-estrellas" data-n="expectativas"></div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Cómo valorarías la calidad percibida?</div>
+        <div class="mura-enc-estrellas" data-n="calidad"></div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Cómo te resultó el tallaje?</div>
+        <div class="mura-enc-ops">
+          <label class="mura-enc-op"><input type="radio" name="tallaje" value="Mas pequeno"><span>Más pequeño de lo esperado.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="tallaje" value="Correcto"><span>Correcto.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="tallaje" value="Mas grande"><span>Más grande de lo esperado.</span></label>
+        </div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿La descripción del producto reflejaba correctamente la realidad?</div>
+        <div class="mura-enc-estrellas" data-n="descripcion"></div>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Volverías a comprar en MÛRA?</div>
+        <div class="mura-enc-ops">
+          <label class="mura-enc-op"><input type="radio" name="volverias" value="Si"><span>Sí.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="volverias" value="Probablemente"><span>Probablemente.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="volverias" value="No lo se"><span>No lo sé.</span></label>
+          <label class="mura-enc-op"><input type="radio" name="volverias" value="No"><span>No.</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= BLOQUE 6 ================= -->
+    <div class="mura-enc-bloque" data-b="b6">
+      <div class="mura-label">Bloque 6 · Tu opinión</div>
+
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">Si tuvieras que describir MÛRA con tres palabras, ¿cuáles serían?</div>
+        <input class="mura-enc-linea" type="text" name="tres_palabras">
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Qué es lo que más te ha gustado de tu experiencia?</div>
+        <textarea class="mura-enc-txt" name="mas_gustado"></textarea>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Qué podríamos mejorar?</div>
+        <textarea class="mura-enc-txt" name="mejorar"></textarea>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Qué tipo de prendas te gustaría encontrar en futuras colecciones?</div>
+        <textarea class="mura-enc-txt" name="futuras_prendas"></textarea>
+      </div>
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Hay algo más que quieras compartir con nosotros?</div>
+        <textarea class="mura-enc-txt" name="algo_mas" style="min-height:170px"></textarea>
+      </div>
+    </div>
+
+    <!-- ================= ÚLTIMA PREGUNTA ================= -->
+    <div class="mura-enc-bloque" data-b="b7">
+      <div class="mura-label">Última pregunta</div>
+
+      <div class="mura-enc-preg">
+        <div class="mura-enc-q">¿Recomendarías MÛRA a otra persona?</div>
+        <div class="mura-enc-nps" id="enc-nps"></div>
+        <div class="mura-enc-nps-pies"><span>Nada probable</span><span>Muy probable</span></div>
+      </div>
+
+      <!-- Solo aparece si la clienta NO llega identificada desde el correo 06. -->
+      <div class="mura-enc-preg" id="enc-mail" style="display:none">
+        <div class="mura-enc-q">¿Nos dejas tu correo? <i>— opcional, solo para poder relacionar tu respuesta con tu pedido</i></div>
+        <input class="mura-enc-linea" type="email" name="email" autocomplete="email">
+      </div>
+    </div>
+
+    <div class="mura-enc-navs">
+      <button type="button" class="mura-btn" id="enc-sig">Continuar</button>
+      <button type="button" class="mura-enc-atras" id="enc-atras" style="display:none">Atrás</button>
+    </div>
+    <div class="mura-enc-aviso" id="enc-aviso"></div>
+  </form>
+
+  <div class="mura-enc-fin" id="enc-fin">
+    <h1 style="font-size:clamp(28px,3.6vw,42px);line-height:1.3">Gracias por ayudarnos a seguir construyendo MÛRA.</h1>
+    <p>Cada respuesta será leída por nuestro equipo.</p>
+    <p>Muchas de las mejoras que incorporaremos en el futuro nacerán precisamente de escuchar a quienes forman parte de esta marca.</p>
+    <p>Gracias por dedicar tu tiempo y ayudarnos a seguir creciendo.</p>
+    <a href="/prendas" class="mura-link-u" style="display:inline-block;margin-top:40px">Descubrir la colección</a>
+  </div>
+
+</section>
+
+<footer class="mura-foot"><div class="mura-foot-in">
+<div class="mura-foot-cols">
+<div><div class="mura-foot-h">Explorar</div><div class="mura-foot-c"><a href="/">Inicio</a><a href="/colecciones">Colecciones</a><a href="/prendas">Prendas</a><a href="/novedades">Novedades</a></div></div>
+<div><div class="mura-foot-h">MÛRA</div><div class="mura-foot-c"><a href="/mura">Nuestra esencia</a><a href="/contacto">Contacto</a></div></div>
+<div><div class="mura-foot-h">Información</div><div class="mura-foot-c"><a href="/devoluciones">Envíos y devoluciones</a><a href="/politica-privacidad">Política de privacidad</a><a href="/politica-cookies">Política de cookies</a><a href="/condiciones-contratacion">Condiciones de contratación</a><a href="/aviso-legal">Aviso legal</a></div></div>
+<div><div class="mura-foot-h">Redes</div><div class="mura-foot-c"><a href="https://www.instagram.com/bymurastudio/" target="_blank" rel="noopener">Instagram</a></div></div>
+</div>
+<div style="height:1px;background:rgba(29,27,24,.1);margin:clamp(60px,7vw,90px) 0 0"></div>
+<div style="text-align:center;padding:clamp(60px,7vw,90px) 0 28px;display:flex;flex-direction:column;gap:20px;align-items:center">
+<p class="mura-serif" style="font-size:clamp(22px,2.2vw,28px);font-style:italic">Vestir con intención.</p>
+<div class="mura-serif" style="font-size:20px;font-weight:500;letter-spacing:.32em">MÛRA</div>
+</div>
+<p style="text-align:center;font-size:10.5px;letter-spacing:.14em;color:#9B968C">© MÛRA 2026 · Todos los derechos reservados.</p>
+</div></footer>
+</div>
+<script>(function(){
+/* URL de PRODUCCIÓN del webhook de n8n (`/webhook/…`, nunca `/webhook-test/…`). */
+var WEBHOOK='PEGAR_URL_DEL_WEBHOOK_N8N';
+
+var form=document.getElementById('enc-form');
+var cab=document.getElementById('enc-cab');
+var prog=document.getElementById('enc-prog');
+var fill=document.getElementById('enc-fill');
+var num=document.getElementById('enc-num');
+var btnSig=document.getElementById('enc-sig');
+var btnAtras=document.getElementById('enc-atras');
+var aviso=document.getElementById('enc-aviso');
+var fin=document.getElementById('enc-fin');
+
+/* ---- Estrellas ----
+   Se pintan desde JS para que el HTML de arriba se pueda leer y editar sin
+   pelearse con cinco <input> por pregunta. Van de 5 a 1 porque el CSS las
+   voltea con row-reverse: así `input:checked ~ label` alcanza justo las de
+   valor menor, que son las que hay que rellenar. */
+document.querySelectorAll('.mura-enc-estrellas').forEach(function(el){
+ var n=el.getAttribute('data-n'),h='';
+ for(var v=5;v>=1;v--){
+  h+='<input type="radio" id="'+n+'-'+v+'" name="'+n+'" value="'+v+'">'+
+     '<label for="'+n+'-'+v+'" title="'+v+' de 5">★</label>';
+ }
+ el.innerHTML=h;
+});
+
+/* ---- NPS 0-10 ---- */
+(function(){
+ var h='';
+ for(var v=0;v<=10;v++){
+  h+='<input type="radio" id="nps-'+v+'" name="nps" value="'+v+'">'+
+     '<label for="nps-'+v+'">'+v+'</label>';
+ }
+ document.getElementById('enc-nps').innerHTML=h;
+})();
+
+/* ---- Identidad: llega en la URL desde el correo 06 ---- */
+var qs=new URLSearchParams(location.search);
+var cid=qs.get('cid')||'';
+var mailUrl=qs.get('email')||'';
+if(!cid&&!mailUrl) document.getElementById('enc-mail').style.display='';
+
+/* ---- Detalle de incidencia: solo si respondió que sí ---- */
+form.addEventListener('change',function(ev){
+ if(ev.target.name==='incidencia'){
+  document.getElementById('enc-inc').style.display = ev.target.value==='Si' ? '' : 'none';
+ }
+});
+
+/* ---- Navegación por bloques ----
+   `pasos` se recalcula en cada avance: la respuesta de la primera pregunta
+   decide si los bloques 3, 4 y 5 existen o no para esta persona. */
+var bloques={};
+document.querySelectorAll('.mura-enc-bloque').forEach(function(el){bloques[el.getAttribute('data-b')]=el;});
+var i=0;
+
+function compro(){
+ var r=form.querySelector('input[name=compra]:checked');
+ return r && r.value==='si';
+}
+function pasos(){
+ return compro() ? ['b1','b2','b3','b4','b5','b6','b7'] : ['b1','b2','b6','b7'];
+}
+function pintar(){
+ var p=pasos();
+ if(i>=p.length) i=p.length-1;
+ Object.keys(bloques).forEach(function(k){bloques[k].classList.remove('on');});
+ bloques[p[i]].classList.add('on');
+ cab.style.display = i===0 ? '' : 'none';
+ prog.style.display = i===0 ? 'none' : 'flex';
+ fill.style.width = Math.round((i+1)/p.length*100)+'%';
+ num.textContent = (i+1)+' de '+p.length;
+ btnAtras.style.display = i===0 ? 'none' : '';
+ btnSig.textContent = i===p.length-1 ? 'Enviar mi experiencia' : 'Continuar';
+ aviso.textContent='';
+ if(i>0) window.scrollTo({top:0,behavior:'smooth'});
+}
+
+btnAtras.addEventListener('click',function(){ if(i>0){i--;pintar();} });
+
+btnSig.addEventListener('click',function(){
+ var p=pasos();
+ /* Solo dos preguntas son obligatorias: la primera, porque decide el recorrido,
+    y el NPS, porque es el índice que la spec pide medir. */
+ if(p[i]==='b1' && !form.querySelector('input[name=compra]:checked')){
+  aviso.textContent='Dinos primero si ya has comprado en MÛRA: según lo que respondas, te preguntamos unas cosas u otras.';
+  return;
+ }
+ if(p[i]==='b7'){
+  if(!form.querySelector('input[name=nps]:checked')){
+   aviso.textContent='Marca del 0 al 10 cuánto nos recomendarías, y ya está.';
+   return;
+  }
+  enviar();
+  return;
+ }
+ i++;pintar();
+});
+
+function enviar(){
+ var datos={origen:'experiencia-web',cid:cid,email:mailUrl};
+ form.querySelectorAll('input[type=radio]:checked').forEach(function(e){datos[e.name]=e.value;});
+ form.querySelectorAll('textarea, input[type=text], input[type=email]').forEach(function(e){
+  if(e.name) datos[e.name]=(e.value||'').trim();
+ });
+ /* Si vino en la URL manda esa; si no, la que haya escrito al final. */
+ if(mailUrl) datos.email=mailUrl;
+
+ if(WEBHOOK.indexOf('http')!==0){
+  aviso.textContent='El formulario aún no está conectado. Escríbenos a hello@stylebymura.com.';
+  console.error('MURA experiencia: falta pegar la URL del webhook de n8n');
+  return;
+ }
+
+ btnSig.disabled=true;btnSig.style.opacity='.55';btnSig.textContent='Enviando…';aviso.textContent='';
+ fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)})
+  .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); })
+  .then(function(){
+   form.style.display='none';
+   prog.style.display='none';
+   cab.style.display='none';
+   fin.classList.add('on');
+   window.scrollTo({top:0,behavior:'smooth'});
+  })
+  .catch(function(e){
+   console.error('MURA experiencia:',e);
+   btnSig.disabled=false;btnSig.style.opacity='';btnSig.textContent='Enviar mi experiencia';
+   aviso.textContent='No hemos podido enviar tus respuestas. Inténtalo de nuevo en unos minutos o escríbenos a hello@stylebymura.com.';
+  });
+}
+
+pintar();
+})();</script>
