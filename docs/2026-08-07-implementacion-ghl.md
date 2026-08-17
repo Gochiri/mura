@@ -1263,11 +1263,10 @@ Estado final del contacto, leído por API:
   01 Lead Nuevo → 02 Interesada → 03 Suscrita Newsletter → 04 Primera Compradora →
   05 Recurrente → 06 VIP.
 
-**Único flequito abierto: el teléfono sigue sin llegar** aunque esta vez fue en
-E.164 (`+5491130270115`) — descartado el formato, la causa es que el
-**Create/Update Contact del LS02a no tiene el campo Phone mapeado** (o lo tiene
-apuntando a otra clave). Arreglo: en esa acción, Phone ←
-`{{inboundWebhookRequest.phone}}`.
+El teléfono faltó en las dos primeras pruebas porque el Create/Update Contact aún
+no tenía Phone mapeado. German lo mapeó (Phone ←
+`{{inboundWebhookRequest.phone}}`) y el reenvío de verificación lo confirmó:
+`+5491130270115` en el contacto. **Sin flecos.**
 
 El newsletter queda CERRADO: alta desde la home con diseño propio, doble opt-in
 RGPD, bienvenida, tags, oportunidad de comunidad y página de confirmación.
