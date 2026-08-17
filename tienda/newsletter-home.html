@@ -20,7 +20,7 @@
   2. Trigger: **Inbound Webhook** (crearlo EN LA UI — los
      triggers creados por API no disparan). GHL genera una URL
      https://services.leadconnectorhq.com/hooks/…/webhook-trigger/…
-  3. Pegar esa URL abajo donde dice PEGAR_URL_DEL_WEBHOOK.
+  3. Pegar esa URL abajo donde dice https://services.leadconnectorhq.com/hooks/NxPF5fOicowujokEk5Hm/webhook-trigger/a4d33308-eff4-4242-a58d-e784b07a9c8d.
   4. Pegar esta sección en Home (dentro del <div class="mura">,
      antes del <footer>) y hacer UN envío de prueba: ese envío le
      da a GHL el payload de ejemplo para poder mapear.
@@ -67,7 +67,7 @@
 <script>(function(){
 /* URL del Inbound Webhook del workflow "LS02a · Alta newsletter web".
    Se genera al crear el trigger en la UI de GHL (paso 2 de la cabecera). */
-var WEBHOOK='PEGAR_URL_DEL_WEBHOOK';
+var WEBHOOK='https://services.leadconnectorhq.com/hooks/NxPF5fOicowujokEk5Hm/webhook-trigger/a4d33308-eff4-4242-a58d-e784b07a9c8d';
 
 var form=document.getElementById('mnl-form');
 var estado=document.getElementById('mnl-estado');
