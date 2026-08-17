@@ -1203,6 +1203,13 @@ sin n8n: todo dentro de GHL. (El JSON de n8n queda en el repo como reliquia;
 `/forms/submit` queda documentado como inviable desde fuera: valida el Turnstile
 contra sus propios dominios.)
 
+> ⚠️ **El Inbound Webhook es un trigger PREMIUM**, con cargo por ejecución (lleva
+> corona en el buscador de triggers). Se supo el 17/8 por la tarde — ver la corrección
+> de la sección 30.1. El patrón sigue siendo válido técnicamente y es el que hizo
+> funcionar el formulario, pero **para un alta recurrente sale caro**: por eso el
+> newsletter acabó yendo por n8n, que hace lo mismo sin cargo. Antes de reutilizar este
+> patrón en otro sitio, contar cuántas ejecuciones al mes supone.
+
 Arquitectura definitiva del newsletter:
 
 ```
@@ -1657,18 +1664,36 @@ premisas falsas. Aquí queda separado lo construido de lo que solo hay que conta
 Pregunta de German: *"¿qué pasa si el form del newsletter envía la info a n8n, que es
 gratis? luego necesitaría un trigger desde n8n para que ingrese a LS02, ¿cuál sería?"*
 
-Dos precisiones que conviene no perder:
+Respuesta corta: **el trigger que buscaba ya existía y era el mismo.** LS02 disparaba por
+Inbound Webhook, así que con n8n en medio no hacía falta ningún trigger nuevo — n8n podía
+hacer POST a esa misma URL y GHL no se enteraba.
 
-- **El trigger que buscaba ya existía y era el mismo.** LS02 dispara por Inbound
-  Webhook. Con n8n en medio no hace falta ningún trigger nuevo: n8n hace POST a esa
-  misma URL. n8n queda de intermediario y GHL no se entera.
-- **El Inbound Webhook también es gratis.** Lo que se cobra por ejecución es el
-  **Custom Webhook de salida** (premium, secciones 22 y 24). Un *trigger* de Inbound
-  Webhook es estándar. O sea: meter n8n no ahorra nada, el circuito ya costaba cero.
+> ⚠️ **CORRECCIÓN (17/8, más tarde). Aquí llegué a escribir que "el Inbound Webhook
+> también es gratis" y que "meter n8n no ahorra nada". Es falso, y lo afirmé dos veces.**
+>
+> **El Inbound Webhook es premium**: en el buscador de triggers de GHL sale con la corona,
+> igual que el Custom Webhook de salida. Se cobra por ejecución. Mi argumento —"LS02
+> funcionaba con él, luego es gratis"— no demostraba nada: solo que las acciones premium
+> están habilitadas en esta subcuenta, que es justo lo que ya decía la sección 24.
+>
+> O sea que **la decisión de Sonia era correcta y por el motivo que ella daba**: cada alta
+> de newsletter habría ido sumando coste, indefinidamente. Lo que sigue —responder
+> distinto a quien ya está suscrita, el log fuera de GHL— son ventajas añadidas, no el
+> motivo.
+>
+> **La regla que sale de esto: lo premium se comprueba mirando la corona en la UI, nunca
+> por cómo se comporta el paso.** Que se ejecute no dice si se cobra. Y el cargo puede ir
+> al wallet de la **agencia** si la subcuenta no tiene el suyo cargado, así que tampoco se
+> ve mirando la facturación de la subcuenta: es un gasto invisible para quien lo genera.
+>
+> Comprobado con esa regla: los **dos webhooks del 06b** son de tipo `webhook` y **no
+> llevan corona** ("Fire a webhook containing the contact's details") — son las acciones
+> clásicas, no cuestan. Y tras cambiar el trigger de LS02 a `contact_tag`, su Inbound
+> Webhook desapareció: **no queda ninguna acción premium corriendo** en los flujos
+> tocados hoy.
 
-Aun así German eligió la **opción B** —n8n dueño del alta, GHL disparando por tag—
-porque permite responderle distinto a quien ya estaba suscrita y deja un log fuera de
-GHL. Arquitectura nueva:
+German eligió la **opción B** —n8n dueño del alta, GHL disparando por tag—. Arquitectura
+nueva:
 
 ```
 home (sección .mura-nl, dos columnas: ventajas + formulario)
