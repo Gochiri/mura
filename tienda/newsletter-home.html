@@ -3,38 +3,25 @@
   MÛRA · NEWSLETTER (sección para el final de /home)
   · patrón Inbound Webhook, calcado de ghlteamlatam.com/apply ·
   ============================================================
-  CÓMO FUNCIONA (el patrón de German, que funciona siempre)
-  Campos HTML propios con el diseño de la web → POST JSON a un
-  INBOUND WEBHOOK de un workflow de GHL. Ese endpoint acepta
-  envíos desde cualquier dominio, sin captcha. Dentro del
-  workflow, un Create/Update Contact mapea el payload a los
-  campos del contacto y un Add Tag pone `nl`.
+  CÓMO FUNCIONA (montado y verificado el 17/8)
+  Campos HTML propios → POST JSON al Inbound Webhook del workflow
+  "LS02a · Alta newsletter web". Ese endpoint acepta envíos desde
+  cualquier dominio, sin captcha. El workflow hace:
+
+    Create/Update Contact (nombre, apellidos, email, teléfono,
+      Date of Birth ← fecha_nacimiento) + tag `nl`
+    → correo de DOBLE OPT-IN con el trigger link
+      TL-LS02-CONFIRMAR-OPTIN ({{trigger_link.K2PitLvfhgpKPvX6GeF4}})
+    → clic: bienvenida + tag `newsletter-suscrita`,
+      y la clienta aterriza en /suscripcion-confirmada
+    → sin clic en 48h: fin.
+
+  Por eso el mensaje de éxito de abajo pide REVISAR EL CORREO:
+  con doble opt-in, enviar el formulario no es estar dentro.
 
   (El endpoint del formulario /forms/submit NO sirve desde fuera:
   valida el Turnstile contra sus propios dominios — cuatro
-  intentos, cuatro 429. Historia completa en la sección 28 del
-  doc. El formulario Opt-in de GHL queda sin uso.)
-
-  MONTAJE (una sola vez, en la UI de GHL):
-  1. Workflows → crear "LS02a · Alta newsletter web".
-  2. Trigger: **Inbound Webhook** (crearlo EN LA UI — los
-     triggers creados por API no disparan). GHL genera una URL
-     https://services.leadconnectorhq.com/hooks/…/webhook-trigger/…
-  3. Pegar esa URL abajo donde dice https://services.leadconnectorhq.com/hooks/NxPF5fOicowujokEk5Hm/webhook-trigger/a4d33308-eff4-4242-a58d-e784b07a9c8d.
-  4. Pegar esta sección en Home (dentro del <div class="mura">,
-     antes del <footer>) y hacer UN envío de prueba: ese envío le
-     da a GHL el payload de ejemplo para poder mapear.
-  5. En el workflow, añadir acciones:
-     - Create/Update Contact:
-         First Name  ← {{inboundWebhookRequest.first_name}}
-         Last Name   ← {{inboundWebhookRequest.last_name}}
-         Email       ← {{inboundWebhookRequest.email}}
-         Phone       ← {{inboundWebhookRequest.phone}}
-         Date of Birth ← {{inboundWebhookRequest.fecha_nacimiento}}
-     - Add Contact Tag: `nl`
-     Publicar.
-  6. LS02 (bienvenida): trigger = Contact Tag Added `nl`,
-     publicar.
+  intentos, cuatro 429. Historia en la sección 28 del doc.)
 
   El checkbox RGPD es obligatorio (se valida aquí) y viaja como
   `consentimiento` en el payload, para que quede registro.
@@ -98,7 +85,7 @@ form.addEventListener('submit',function(ev){
    if(!r.ok){console.error('MURA newsletter: HTTP '+r.status);throw new Error('HTTP '+r.status);}
    form.querySelectorAll('input,button').forEach(function(e){e.disabled=true;});
    form.style.opacity='.5';
-   msg('Ya estás dentro. Te escribiremos cuando la próxima cápsula esté a punto de salir.');
+   msg('Muchas gracias. Te hemos enviado un correo con un enlace para confirmar tu suscripción — revísalo (y mira en promociones o spam si no aparece).');
   })
   .catch(function(e){
    console.error('MURA newsletter:',e);

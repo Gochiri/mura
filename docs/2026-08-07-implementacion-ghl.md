@@ -1234,10 +1234,12 @@ of Birth `1975-07-27` mapeada** ✓, tag `nl` ✓. Dos fallos encontrados:
    `{{unique_confirmation_link}}`, en DOS sitios — el botón del correo y el
    `redirectTo` del propio trigger link. Nadie habría podido confirmar jamás; todo
    el mundo caería por la rama de las 48h.
-   - `redirectTo` del trigger link → **corregido por API** a
-     `https://www.stylebymura.com/gracias` (la página /gracias estaba huérfana
-     desde que la de compra se movió a /thank-you; buen destino "suscripción
-     confirmada", conviene retocar su texto).
+   - `redirectTo` del trigger link → corregido por API, primero a `/gracias` y
+     tras la corrección de German a **`/suscripcion-confirmada`** (página nueva,
+     `tienda/suscripcion-confirmada.html`). Decisión del 17/8: **/gracias es la de
+     compra** y el checkout debe redirigir ahí — se cambia en los ajustes del
+     elemento Checkout (acción tras el pago → URL `/gracias`), con lo que
+     `/thank-you` deja de usarse.
    - El botón del correo → lo corrige German en el builder: URL del Embed Link =
      `{{trigger_link.K2PitLvfhgpKPvX6GeF4}}` (o elegir TL-LS02-CONFIRMAR-OPTIN en
      el picker de trigger links).
@@ -1589,9 +1591,11 @@ Siguen abiertos, de la lista de 27.3:
   ajustes del elemento Checkout.
 - Vaciar el `<style>` duplicado del resto de páginas propias, una a una (ver 27.7).
 
-### 27.4 Y la página de gracias va en `/thank-you`, no en `/gracias`
+### 27.4 La página de gracias de compra: decisión final → `/gracias` (17/8)
 
-Existen las dos y se prestan a confusión. El ajuste `saleAction` del checkout es
-`go-to-next-funnel-step`, y el paso siguiente es `/thank-you`
-(`6DEiCsQRzJ6NsbhkP43n`). Pegada en `/gracias` (`Y1YEzfjU3JNDkTBCZiSo`) no la vería
-ninguna clienta.
+Historia en dos actos. Primero se descubrió que el checkout iba a `/thank-you`
+(`saleAction: go-to-next-funnel-step`), no a `/gracias`. **El 17/8 German decide lo
+contrario: `/gracias` es la página de gracias de compra** (es suya, con su diseño) y
+el checkout debe redirigir ahí — se cambia en los ajustes del elemento Checkout
+(acción tras el pago → URL `/gracias`). `/thank-you` queda sin uso.
+`/suscripcion-confirmada` (nueva) es el destino de la confirmación del newsletter.
