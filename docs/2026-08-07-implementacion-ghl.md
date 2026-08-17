@@ -1835,3 +1835,87 @@ colgado.
 La rejilla puede pintarse después del script, así que hay un `MutationObserver` de
 respaldo **con tope de 8 s**, para no dejar un observer vivo indefinidamente en una
 página que no trae rejilla.
+
+### 30.9 Cirugía de los tres workflows — hecha y verificada (17/8)
+
+Con el refresh token nuevo de German. Antes, un tropiezo que conviene dejar escrito
+porque cuesta media hora cada vez: **la ruta del API interno lleva el `locationId`
+delante** — `GET /workflow/{locationId}/{workflowId}`. Sin él responde `401
+"Unauthorized"`, que despista, porque parece un problema de credenciales y es de ruta.
+(`/workflow/{locationId}/list` sí funciona sin más, que es lo que confundió el
+diagnóstico.)
+
+**Campo `NPS` creado** — `contact.nps`, id `BpEcTG8IYDXRUQNrM3h0`, numérico.
+`Calificación clienta` **no** se reutiliza: es de la encuesta vieja (decisión de German).
+
+**LS02 (v11 → v13).** Backup: `datos/backups/ls02_pre_n8n_20260817.json`.
+
+- Fuera `Create contacto` (`create_update_contact`). Sus 5 mapeos eran las **únicas**
+  referencias a `{{inboundWebhookRequest.*}}` de todo el workflow — comprobado antes de
+  borrar. Ahora quedan cero.
+- Fuera `Add Tag NL`. Con el trigger por tag, ponerse el tag a sí mismo se re-dispara.
+- `allowMultiple` **False → True**: sin eso, quien se diera de baja y volviera a
+  suscribirse no reentraría. Otra vez la trampa de la sección 17.
+- El correo de doble opt-in pasa a ser el primer paso. **Los dos `transition` del wait
+  se quedaron en `order 4` cuando el wait bajó a 1**, y hubo que corregirlos a
+  `mainOrder + 1` en un segundo PUT: el orden es relativo a la rama y una rama huérfana
+  se pinta torcida en la UI.
+
+Queda: 7 pasos, `published`, doble opt-in → espera → bienvenida + `newsletter-suscrita`
++ oportunidad de comunidad, y la rama de timeout.
+
+**06-12 (v13 → v14).** Backup: `datos/backups/wf0612_pre_inactivo_20260817.json`.
+
+`if_else` nuevo detrás de la espera de ~3 meses:
+
+```
+día 90 → ¿tiene `compra-2`?
+   SÍ  → quitar `feedback`. Y nada más.
+   NO  → `inactivo` → quitar `feedback` → Email 12 · hace tiempo
+```
+
+**El esquema del `if_else` no se inventó**: en esta versión de GHL una condición son
+*varios* nodos —un contenedor con `attributes.branches`, un nodo por rama y un nodo
+`else`—, con `parentKey` y `next` que hay que mantener a mano. Se copió la estructura
+del **02 · Etiquetado**, que ya tenía exactamente la misma condición
+(`contact_detail / tags / index-of-true / ["compra-2"]`), incluidos sus arrays
+`nestedDropdownTypes` y `allowIsOperatorTypes`, que no hay forma de deducir.
+
+⚠️ **Va más allá de lo que pidió Sonia, y hay que decírselo.** Ella pidió solo que no se
+pusiera `inactivo`. Se ha sacado también el **Email 12** de esa rama: mandarle "hace
+tiempo que no sabemos de ti" a alguien que compró por segunda vez es un error que la
+clienta ve. Si prefiere que el correo salga igual, es mover un paso.
+
+El `remove feedback` está **duplicado en las dos ramas** a propósito: en GHL las ramas no
+se vuelven a juntar, y esa limpieza tiene que ocurrir pase lo que pase.
+
+`allowMultiple` se deja en **False**: el journey no se repite, decisión consciente de la
+sección 17.
+
+**06b (v11 → v12).** Backup: `datos/backups/wf06b_pre_tag_n8n_20260817.json`.
+
+Fuera su `Tag encuesta-completada`: ahora lo pone n8n, y como el 06b tiene
+`allowMultiple: True`, dejarlo con el trigger por tag habría sido un bucle. Quedan el
+aviso interno y los dos webhooks. **Los dos apuntan ya a producción** (`/webhook/…`), o
+sea que el arreglo del 14/8 aguantó.
+
+Hallazgo colateral: uno de esos webhooks es
+`https://n8n.letsbebanana.com/webhook/experiencia-mura`. **Sonia ya tiene un flujo de
+encuesta en n8n**, aunque en el sentido contrario al nuestro (GHL → n8n, avisando de que
+alguien respondió; el nuestro es navegador → n8n, con las respuestas). Antes de importar
+`n8n-experiencia-workflow.json` conviene mirar ese flujo, no sea que haya solape.
+
+### 30.10 Los tres cambios que solo se pueden hacer en la UI
+
+Los triggers creados por API son fantasma (sección 13), así que estos van a mano:
+
+1. **LS02** — borrar el trigger *Inbound Webhook* y crear **Contact Tag → añadido →
+   `nl`**.
+2. **06b** — cambiar el trigger de *Form Submitted* a **Contact Tag → añadido →
+   `encuesta-completada`**.
+3. **Checkout** — acción tras el pago → URL `/gracias` (venía de la sección 27.4).
+
+⚠️ **El 1 y el 2 hay que hacerlos ya.** Los pasos ya están quitados: hasta que el
+trigger cambie, LS02 no se dispara con nada (su Inbound Webhook sigue vivo pero la web ya
+no le habla) y el 06b tampoco. Es una ventana de "no pasa nada", no de "pasa algo malo",
+pero no conviene dejarla abierta.
