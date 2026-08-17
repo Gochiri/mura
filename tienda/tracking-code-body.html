@@ -1,27 +1,68 @@
 <!-- ============================================================
      GENERADO — NO EDITAR ESTE ARCHIVO A MANO.
-     La fuente es tienda/codigo-global-tienda.js; este es solo
-     ese archivo envuelto en <script> para poder pegarlo en el
-     campo de GHL, que espera HTML y no JavaScript suelto.
-     Se regenera con:  ./build.sh
+     Va en: Settings → Tracking Code → BODY
+     Lleva: lo que necesita el DOM: contador, buscador, cabecera e idioma
+
+     La fuente es tienda/codigo-global-tienda.js, envuelto en una
+     etiqueta de script y con MURA_PARTE fijada. Se regenera con:
+       cd tienda && ./build.sh
      ============================================================ -->
 <script>
+window.MURA_PARTE = 'body';
 /* ============================================================
    MÛRA · CÓDIGO GLOBAL DE LA TIENDA
    ============================================================
-   Va en: Sitio "Mura" → Settings → Tracking Code → BODY
-   (en el DOM aparece como <div id="gb-track-hl-custom-code">)
+   ESTE ARCHIVO SE PEGA EN DOS SITIOS. Genera los dos pegables:
 
-   Tiene cinco partes, en este orden y por este motivo:
+       cd tienda && ./build.sh
 
-     1. El sistema de diseño `.mura-*`  → TODAS las páginas
-     2. /cart redirige a /carrito       → solo /cart
-     3. CSS que pisa la tienda de GHL   → solo páginas de tienda
-     4. Cabecera en las páginas de tienda
-     5. Contador del carrito            → TODAS las páginas
+     tracking-code-head.html → Settings → Tracking Code → HEAD
+     tracking-code-body.html → Settings → Tracking Code → BODY
 
-   Las partes 3 y 4 van detrás de un guardia de rutas. Las partes
-   1 y 5 NO: son de todo el sitio.
+   ------------------------------------------------------------
+   POR QUÉ DOS, Y NO UNO (17/8)
+
+   En /checkout el CSS tardaba unos segundos en aparecer: se veía
+   el formulario con el estilo de GHL y luego cambiaba al nuestro.
+
+   El CSS no llegaba tarde por sí mismo —se inyecta síncrono, en
+   cuanto corre el script—. Lo que llegaba tarde era EL SCRIPT: el
+   Tracking Code del BODY lo mete GHL dentro de un
+   <div id="gb-track-hl-custom-code"> del propio body, y el
+   checkout lo pinta el bundle de la tienda antes de que nosotros
+   lleguemos.
+
+   Así que el CSS se muda al HEAD, que el navegador tiene antes de
+   pintar nada, y en el BODY se queda solo lo que necesita que el
+   DOM exista.
+
+   El archivo fuente sigue siendo UNO —el sentido de la sección
+   27.7 era dejar de tener copias del CSS repartidas—. `build.sh`
+   envuelve el mismo código dos veces cambiando `MURA_PARTE`, y
+   cada bloque mira esa constante. Los dos pegables llevan el
+   código entero y solo se diferencian en esa línea: es a
+   propósito, para no partir el archivo con marcadores de texto,
+   que es la clase de build que se rompe en silencio.
+
+   Si falta la constante (por ejemplo, abriendo este .js a pelo),
+   `MURA_PARTE` vale 'todo' y se comporta como antes del cambio.
+
+   ------------------------------------------------------------
+   QUÉ HACE CADA PARTE
+
+     HEAD (CSS, nada toca el DOM)
+       1. Sistema de diseño `.mura-*`   → todas las páginas
+       2. CSS de la encuesta            → solo /experiencia
+       3. CSS del buscador              → rutas de rejilla
+       4. CSS que pisa la tienda de GHL → rutas de tienda
+
+     BODY (necesita el DOM)
+       5. Contador del carrito          → todas las páginas
+       6. Buscador de la rejilla        → rutas de rejilla
+       7. Cabecera inyectada + idioma   → rutas de tienda
+
+   El redirect de /cart va lo primero y en las dos partes: cuanto
+   antes salte, menos se ve el carrito viejo.
 
    ------------------------------------------------------------
    POR QUÉ EL CSS SE MOVIÓ AQUÍ (15/8)
@@ -59,7 +100,44 @@
    ============================================================ */
 
 (function () {
+  var PARTE = (typeof window !== 'undefined' && window.MURA_PARTE) || 'todo';
+  var HAY_CSS = PARTE === 'head' || PARTE === 'todo';
+  var HAY_DOM = PARTE === 'body' || PARTE === 'todo';
+
   var path = location.pathname.replace(/\/+$/, '');
+  var RUTAS_TIENDA = ['/products-list', '/product-details', '/checkout', '/thank-you'];
+  var RUTAS_REJILLA = ['/prendas', '/colecciones', '/novedades'];
+  var esTienda = RUTAS_TIENDA.indexOf(path) !== -1;
+  var esRejilla = RUTAS_REJILLA.indexOf(path) !== -1;
+
+  /* ============================================================
+     0 · /cart se retira: el carrito bueno es /carrito
+     ============================================================
+     No se puede borrar la página: la tienda de GHL necesita su
+     paso de carrito y tiene enlaces internos que apuntan ahí —el
+     "Editar" del resumen del checkout, sin ir más lejos—.
+
+     Va lo primero y EN LAS DOS PARTES: desde el head salta antes
+     de que se pinte nada. Con `replace` en vez de `href`, así no
+     deja entrada en el historial y el botón "atrás" no devuelve a
+     la clienta al carrito viejo. No hay bucle posible, /carrito
+     no entra aquí. */
+
+  if (path === '/cart') {
+    location.replace('/carrito' + location.search);
+    return;
+  }
+
+  /* Inyecta una hoja una sola vez. El guardia por `data-mura` importa:
+     si alguien pega el mismo bloque en head y en body, o `MURA_PARTE`
+     se queda en 'todo' por error, no se duplican las reglas. */
+  function estilo(nombre, css) {
+    if (document.querySelector('style[data-mura="' + nombre + '"]')) return;
+    var s = document.createElement('style');
+    s.setAttribute('data-mura', nombre);
+    s.textContent = css;
+    document.head.appendChild(s);
+  }
 
   /* ============================================================
      1 · SISTEMA DE DISEÑO `.mura-*` — todas las páginas
@@ -67,11 +145,6 @@
      Todo va prefijado, así que aplicarlo en todo el sitio no pisa
      nada del tema de GHL: solo toca elementos que llevan estas
      clases, y esos los ponemos nosotros. */
-
-  var fuente = document.createElement('link');
-  fuente.rel = 'stylesheet';
-  fuente.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Jost:wght@200;300;400&display=swap';
-  document.head.appendChild(fuente);
 
   var sistema = [
     '.mura, .mura *, .mura *::before, .mura *::after { box-sizing: border-box; }',
@@ -182,10 +255,17 @@
     '.mura-foot-c a:hover { color: #1D1B18; }'
   ].join('\n');
 
-  var st1 = document.createElement('style');
-  st1.setAttribute('data-mura', 'sistema');
-  st1.textContent = sistema;
-  document.head.appendChild(st1);
+  if (HAY_CSS) {
+    /* La fuente, con el CSS y no después: si el <link> entrara por el body,
+       el primer pintado saldría con la tipografía del tema y cambiaría al
+       cargar. Es el mismo parpadeo que estamos quitando, en pequeño. */
+    var fuente = document.createElement('link');
+    fuente.rel = 'stylesheet';
+    fuente.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Jost:wght@200;300;400&display=swap';
+    document.head.appendChild(fuente);
+
+    estilo('sistema', sistema);
+  }
 
   /* ============================================================
      5 · CONTADOR DEL CARRITO — todas las páginas
@@ -217,33 +297,13 @@
   }
 
   /* ============================================================
-     2 · /cart se retira: el carrito bueno es /carrito
-     ============================================================
-     No se puede borrar la página: la tienda de GHL necesita su
-     paso de carrito y tiene enlaces internos que apuntan ahí —el
-     "Editar" del resumen del checkout, sin ir más lejos—.
-
-     Va antes que nada y con `replace` en vez de `href`: así no
-     deja entrada en el historial y el botón "atrás" no devuelve a
-     la clienta al carrito viejo. No hay bucle posible, /carrito
-     no entra aquí. */
-
-  if (path === '/cart') {
-    location.replace('/carrito' + location.search);
-    return;
-  }
-
-  /* ============================================================
-     2.b · CSS de la encuesta — SOLO /experiencia
+     2 · CSS de la encuesta — SOLO /experiencia
      ============================================================
      Son ~40 reglas que no pintan nada en el resto del sitio, así
      que van detrás de su propio guardia en vez de engordar el
-     bloque `sistema`, que sí se carga en todas las páginas.
-     No lleva `return`: /experiencia no es página de tienda, así
-     que sigue hasta el guardia de RUTAS_TIENDA, pinta el contador
-     del carrito y sale por ahí. */
+     bloque `sistema`, que sí se carga en todas las páginas. */
 
-  if (path === '/experiencia') {
+  if (HAY_CSS && path === '/experiencia') {
     var encuesta = [
       '.mura-enc { max-width: 720px; margin: 0 auto; padding: clamp(56px,7vw,90px) clamp(20px,4vw,56px) clamp(80px,10vw,130px); }',
       '.mura-enc-cab { text-align: center; padding-bottom: clamp(44px,5vw,64px); }',
@@ -311,10 +371,7 @@
       '@media (max-width: 480px) { .mura-enc-estrellas label { font-size: 23px; } .mura-enc-nps label { min-width: 40px; height: 40px; } .mura-enc-navs { gap: 14px; } .mura-enc-navs .mura-btn { padding: 0 26px; flex: 1 1 auto; } }'
     ].join('\n');
 
-    var stEnc = document.createElement('style');
-    stEnc.setAttribute('data-mura', 'encuesta');
-    stEnc.textContent = encuesta;
-    document.head.appendChild(stEnc);
+    estilo('encuesta', encuesta);
   }
 
   /* ============================================================
@@ -338,13 +395,8 @@
      No hace nada si la página no trae rejilla, así que es inofensivo
      si alguna de esas rutas cambia de forma. */
 
-  var RUTAS_REJILLA = ['/prendas', '/colecciones', '/novedades'];
-  if (RUTAS_REJILLA.indexOf(path) !== -1) {
-    montarBuscador();
-  }
-
-  function montarBuscador() {
-    var css = [
+  if (HAY_CSS && esRejilla) {
+    estilo('buscador', [
       '.mura-oculta-busq { display: none !important; }',
       '.mura-busq { max-width: 420px; margin: 0 auto clamp(30px,3.5vw,46px); padding: 0 clamp(20px,4vw,56px); }',
       '.mura-busq-caja { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(29,27,24,.25); padding-bottom: 10px; transition: border-color .2s ease; }',
@@ -356,12 +408,10 @@
       ".mura-busq-x { border: none; background: transparent; cursor: pointer; color: #8A857B; font-family: 'Jost', sans-serif; font-size: 16px; line-height: 1; padding: 0 2px; display: none; }",
       '.mura-busq-x:hover { color: #1D1B18; }',
       '.mura-busq-nada { text-align: center; font-size: 13.5px; line-height: 1.8; color: #55524B; padding: clamp(40px,6vw,70px) 20px; display: none; }'
-    ].join('\n');
-    var stB = document.createElement('style');
-    stB.setAttribute('data-mura', 'buscador');
-    stB.textContent = css;
-    document.head.appendChild(stB);
+    ].join('\n'));
+  }
 
+  function montarBuscador() {
     /* Sin tildes y en minúsculas: quien busca "cardigan" tiene que encontrar
        "Cárdigan", y quien busca "MURA" tiene que encontrar "MÛRA". */
     function llano(s) {
@@ -439,16 +489,16 @@
   }
 
   /* ============================================================
-     3 y 4 · Solo en las páginas que renderiza la tienda de GHL
+     4 · CSS que pisa la tienda de GHL — solo rutas de tienda
      ============================================================
-     A partir de aquí se pisa el CSS del elemento de tienda, que
-     no es nuestro. En el resto del sitio no hay nada que pisar. */
+     Aquí se pisa el CSS del elemento de tienda, que no es nuestro.
+     En el resto del sitio no hay nada que pisar, y además NO PUEDE
+     aplicarse: `body, body *` con `!important` arrasaría con el
+     sistema `.mura-*` de nuestras propias páginas. De ahí el
+     guardia de rutas.
 
-  var RUTAS_TIENDA = ['/products-list', '/product-details', '/checkout', '/thank-you'];
-  if (RUTAS_TIENDA.indexOf(path) === -1) {
-    pintarContador();
-    return;
-  }
+     Este es el bloque por el que se partió el archivo: es el que
+     tarda en llegar si viaja en el Tracking Code del body. */
 
   var tienda = [
 
@@ -538,13 +588,23 @@
 
   ].join('\n');
 
-  var st2 = document.createElement('style');
-  st2.setAttribute('data-mura', 'tienda');
-  st2.textContent = tienda;
-  document.head.appendChild(st2);
+  if (HAY_CSS && esTienda) estilo('tienda', tienda);
 
   /* ============================================================
-     4 · Cabecera en las páginas de tienda
+     A PARTIR DE AQUÍ, SOLO LO QUE NECESITA EL DOM
+     ============================================================
+     Todo lo anterior era CSS y puede correr en el <head>, antes de
+     que exista el body. Lo que viene lee y escribe el DOM, así que
+     va en el Tracking Code del BODY. */
+
+  if (!HAY_DOM) return;
+
+  pintarContador();
+  if (esRejilla) montarBuscador();
+  if (!esTienda) return;
+
+  /* ============================================================
+     7 · Cabecera en las páginas de tienda
      ============================================================
      Usa las MISMAS clases que la cabecera del resto del sitio
      (`.mura-nav`), que ahora viven en la parte 1. Antes esto tenía

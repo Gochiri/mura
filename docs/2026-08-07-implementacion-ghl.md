@@ -1990,3 +1990,58 @@ de webhook a `experiencia-mura`. Son la misma pieza heredada.
 
 Y hay que avisar a Sonia de que, a partir de ese momento, su hoja deja de llenarse: las
 respuestas pasan a la hoja nueva, que escribe el flujo de la página.
+
+### 30.12 El FOUC del checkout: el global se parte en Head + Body (17/8)
+
+**Síntoma** (German): en `/checkout` el CSS tardaba unos segundos en pintarse — se veía el
+formulario con el estilo de GHL y luego cambiaba al nuestro.
+
+**Causa.** El CSS no llegaba tarde por sí mismo: se inyecta síncrono, en cuanto corre el
+script. Lo que llegaba tarde era **el script**. Vivía entero en *Tracking Code → Body*,
+que GHL mete dentro de un `<div id="gb-track-hl-custom-code">` del propio body; el
+checkout lo pinta el bundle de la tienda, y ahí llegábamos después. En nuestras páginas no
+se notaba porque su HTML ya está en el documento.
+
+**Arreglo.** El CSS se muda al **Head**, que el navegador tiene antes de pintar nada, y en
+el **Body** se queda solo lo que necesita que el DOM exista:
+
+```
+HEAD  sistema .mura-* · CSS encuesta · CSS buscador · CSS tienda
+BODY  contador del carrito · buscador · cabecera inyectada · red de idioma
+```
+
+El redirect de `/cart` pasó a ir **lo primero y en las dos partes**: desde el head salta
+antes de que se pinte nada del carrito viejo.
+
+**Un solo archivo fuente.** El sentido de la sección 27.7 era dejar de tener copias del
+CSS repartidas, así que no se duplicó nada: `build.sh` envuelve el mismo
+`codigo-global-tienda.js` dos veces fijando `MURA_PARTE` (`'head'` o `'body'`), y cada
+bloque mira esa constante. Los dos pegables llevan el código entero y solo se diferencian
+en esa línea — a propósito: partir el fuente por marcadores de texto ahorra unos kilobytes
+y deja un build que se rompe en silencio en cuanto alguien mueve una línea. Sin la
+constante (abriendo el `.js` a pelo) vale `'todo'` y se comporta como antes.
+
+`estilo(nombre, css)` centraliza la inyección y **no repite una hoja ya puesta**: si
+alguien pega el mismo bloque en los dos campos, o `MURA_PARTE` se queda en `'todo'`, las
+reglas no se duplican.
+
+⚠️ **Hay que pegar los dos.** Solo el Head: se ve el diseño pero sin cabecera inyectada,
+sin contador ni buscador. Solo el Body: todo funciona y no hay estilo ninguno.
+
+**Verificado en Chromium** con réplicas de `/checkout`, `/experiencia` y `/prendas`
+sirviendo head en `<head>` y body al final:
+
+- las hojas correctas en cada ruta (`sistema+tienda`, `sistema+encuesta`,
+  `sistema+buscador`) y ninguna donde no toca;
+- en `/checkout`, `style[data-mura=tienda]` **ya presente en `DOMContentLoaded`** — que es
+  justo lo que arregla el parpadeo —, fondo correcto, migas que no salen como botones
+  negros, botón de pago negro y cabecera del tema oculta;
+- **aislamiento**: el head solo pone CSS y no monta el buscador; el body monta el buscador
+  y no pone ni una hoja;
+- con los dos, el buscador sigue filtrando bien.
+
+*Lo que no se pudo medir:* el entorno no alcanza stylebymura.com, así que el diagnóstico
+del origen es razonamiento sobre el código. Si tras pegarlo quedara algo de parpadeo, lo
+que resta es el render del propio bundle de la tienda, que no se gana reordenando CSS —
+ahí la salida es la NOTA del final del archivo: **poner los textos de Cart y Checkout en
+los ajustes del elemento**, que hoy están en inglés y se reescriben después de pintar.

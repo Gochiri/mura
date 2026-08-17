@@ -4,6 +4,7 @@ Qué se pega y dónde. **En este orden**, siempre.
 
 | Archivo | Va en |
 |---|---|
+| `tracking-code-head.html` | Sitio "Mura" → Settings → **Tracking Code → Head** |
 | `tracking-code-body.html` | Sitio "Mura" → Settings → **Tracking Code → Body** |
 | `carrito.html` | página `carrito` → elemento de código `custom-code-DN8OVgnA5P` |
 | `gracias-compra.html` | página **"Thank you!"** (`/thank-you`), no `/gracias` |
@@ -21,19 +22,41 @@ activarlo y copiar la URL de **producción** — la `/webhook/…`. La de
 pruebas, `/webhook-test/…`, solo escucha con el editor de n8n abierto:
 en producción no llega nunca. Ese fue el bug del 06b.
 
+## Por qué el global son dos archivos, y no uno
+
+**El del Head lleva todo el CSS; el del Body, todo lo que toca el DOM.**
+
+En `/checkout` el estilo tardaba unos segundos en aparecer. El CSS no
+llegaba tarde por sí mismo —se inyecta síncrono— sino que llegaba tarde
+**el script**: el Tracking Code del Body lo mete GHL dentro de un `div`
+del propio body, y el checkout lo pinta el bundle de la tienda antes de
+que nosotros lleguemos. Con el CSS en el Head, el navegador lo tiene
+antes de pintar nada.
+
+**Hay que pegar los dos.** Solo el Head: se ve el diseño pero no hay
+cabecera inyectada, ni contador de carrito, ni buscador. Solo el Body:
+funciona todo y no hay estilo ninguno.
+
 ## El orden importa
 
-`tracking-code-body.html` lleva el sistema de diseño `.mura-*` que antes
-estaba copiado en cada página. `carrito.html` ya **no** trae CSS: cuenta
-con que el global esté puesto. Al revés, la página se queda en crudo.
+El Head lleva el sistema de diseño `.mura-*` que antes estaba copiado en
+cada página. `carrito.html` y las demás ya **no** traen CSS: cuentan con
+que el global esté puesto. Al revés, la página se queda en crudo.
 
-## Regenerar el archivo pegable
+## Regenerar los archivos pegables
 
-`tracking-code-body.html` está **generado**: es
-`codigo-global-tienda.js` envuelto en `<script>`, porque el campo de GHL
-espera HTML. Se edita el `.js` y se regenera:
+Los dos `tracking-code-*.html` están **generados**: son el mismo
+`codigo-global-tienda.js` envuelto en una etiqueta de script, con la
+constante `MURA_PARTE` fijada a `head` o a `body` — cada bloque del
+código mira esa constante para saber si le toca correr. Se edita el
+`.js` (nunca los `.html`) y se regeneran:
 
     cd tienda && ./build.sh
+
+Los dos llevan el código entero y solo se diferencian en esa línea. Es a
+propósito: partir el fuente por marcadores de texto ahorra unos kilobytes
+y a cambio deja un build que se rompe en silencio en cuanto alguien mueve
+una línea.
 
 ## Vaciar el resto de páginas
 

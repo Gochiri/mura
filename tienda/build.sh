@@ -1,18 +1,39 @@
 #!/bin/sh
-# Envuelve el código global en <script> para poder pegarlo en GHL,
-# cuyo campo de Tracking Code espera HTML y no JavaScript suelto.
+# Genera los DOS pegables de GHL a partir de un único archivo fuente.
+#
+#   tracking-code-head.html → Tracking Code → HEAD  (el CSS)
+#   tracking-code-body.html → Tracking Code → BODY  (lo que toca el DOM)
+#
+# Los dos llevan el mismo código y solo se diferencian en la constante
+# MURA_PARTE, que decide qué bloques corren. Se hace así, y no partiendo
+# el archivo por marcadores de texto, porque un build que trocea texto se
+# rompe en silencio en cuanto alguien mueve una línea.
+#
+# El campo de GHL espera HTML, no JavaScript suelto: de ahí el <script>.
 set -e
 cd "$(dirname "$0")"
-{
-  echo '<!-- ============================================================'
-  echo '     GENERADO — NO EDITAR ESTE ARCHIVO A MANO.'
-  echo '     La fuente es tienda/codigo-global-tienda.js; este es solo'
-  echo '     ese archivo envuelto en <script> para poder pegarlo en el'
-  echo '     campo de GHL, que espera HTML y no JavaScript suelto.'
-  echo '     Se regenera con:  ./build.sh'
-  echo '     ============================================================ -->'
-  echo '<script>'
-  cat codigo-global-tienda.js
-  echo '</script>'
-} > tracking-code-body.html
-echo "tracking-code-body.html regenerado ($(wc -c < tracking-code-body.html) bytes)"
+
+generar() {
+  parte="$1"; destino="$2"; campo="$3"; lleva="$4"
+  {
+    echo '<!-- ============================================================'
+    echo '     GENERADO — NO EDITAR ESTE ARCHIVO A MANO.'
+    echo "     Va en: Settings → Tracking Code → $campo"
+    echo "     Lleva: $lleva"
+    echo ''
+    echo '     La fuente es tienda/codigo-global-tienda.js, envuelto en una'
+    echo '     etiqueta de script y con MURA_PARTE fijada. Se regenera con:'
+    echo '       cd tienda && ./build.sh'
+    echo '     ============================================================ -->'
+    echo '<script>'
+    echo "window.MURA_PARTE = '$parte';"
+    cat codigo-global-tienda.js
+    echo '</script>'
+  } > "$destino"
+  echo "$destino regenerado ($(wc -c < "$destino") bytes)"
+}
+
+generar head tracking-code-head.html HEAD \
+  'el CSS: sistema de diseno, encuesta, buscador y tienda'
+generar body tracking-code-body.html BODY \
+  'lo que necesita el DOM: contador, buscador, cabecera e idioma'
