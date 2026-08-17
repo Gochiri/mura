@@ -554,9 +554,27 @@ window.MURA_PARTE = 'head';
 
     '.alert-danger { border: 1px solid rgba(29,27,24,.25) !important; background: transparent !important; border-radius: 0 !important; padding: 12px 14px; font-size: 13px; }',
 
-    /* Resumen del pedido, columna derecha */
-    '.hl-cart-summary-container { background: rgba(29,27,24,.03); border: 1px solid rgba(29,27,24,.10); padding: clamp(20px,2.5vw,32px); }',
-    '.cart-summary-heading-container { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 20px; border-bottom: 1px solid rgba(29,27,24,.10); }',
+    /* ---------- Resumen del pedido, columna derecha ----------
+       ⚠️ EL `!important` DE ESTE BLOQUE NO ES CAUTELA, ES NECESARIO.
+       Las hojas de los componentes de GHL —CartSummary.css, Coupon.css,
+       CheckoutElement.css— se cargan DESPUÉS que la nuestra en el head
+       (comprobado leyendo el head real el 17/8). A igualdad de
+       especificidad gana la última, así que sin `!important` GHL nos pisa
+       el fondo, los bordes y los separadores. */
+    '.hl-cart-summary-container { background: rgba(29,27,24,.03) !important; border: 1px solid rgba(29,27,24,.10) !important; box-shadow: none !important; padding: clamp(20px,2.5vw,32px) !important; }',
+    '.cart-summary-heading-container { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 20px; border-bottom: 1px solid rgba(29,27,24,.10); margin-bottom: 0 !important; }',
+
+    /* GHL pinta un fondo gris detrás de los títulos del resumen: es la barra
+       que se veía tras "Resumen del carrito" en la captura del 17/8. Nuestra
+       regla de arriba solo cubría `.hl-cart-heading`, así que la barra
+       reaparecía en los demás. Venía del skin viejo de la página, que se
+       retira con este cambio. */
+    '[class*="summary"] h1, [class*="summary"] h2, [class*="summary"] h3, [class*="summary"] h4, [class*="summary"] [class*="header"], [class*="summary"] [class*="title"] { background: transparent !important; }',
+
+    /* Iconos en tinta y no en el azul del tema. Se listan uno a uno en vez de
+       un `[class*="summary"] svg` general: ese cazaba también la ilustración
+       del carrito vacío y la dejaba como un manchón. */
+    '.edit-cart svg, .coupon-container svg, .checkout-breadcrumb-chevron { color: #55524B !important; }',
     '.hl-cart-summary-container .hl-cart-heading { font-size: 22px !important; margin: 0; }',
     '.edit-cart { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #55524B !important; cursor: pointer; }',
     '.edit-cart-icon { display: none !important; }',
@@ -571,8 +589,10 @@ window.MURA_PARTE = 'head';
     '.coupon-input { min-height: 44px !important; flex: 1; font-size: 13px !important; }',
     '.apply-coupon-btn { background: transparent !important; border: 1px solid rgba(29,27,24,.25) !important; border-left: none !important; border-radius: 0 !important; padding: 0 18px !important; font-size: 11px !important; letter-spacing: .16em; text-transform: uppercase; color: #1D1B18 !important; }',
     '.apply-coupon-btn:disabled { color: rgba(29,27,24,.35) !important; }',
-    '.hl-divider { border-top: 1px solid rgba(29,27,24,.10); margin: 20px 0; }',
-    '.cart-subtotal, .cart-total { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 0; }',
+    /* GHL le pone `border-bottom` a `.hl-divider`; si solo cambiamos el
+       border-top salen las dos líneas. */
+    '.hl-divider { border-top: 1px solid rgba(29,27,24,.10) !important; border-bottom: none !important; margin: 20px 0 !important; }',
+    '.cart-subtotal, .cart-total { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 0; margin: 0 !important; }',
     '.cart-subtotal p, .cart-total p { margin: 0; font-size: 14px !important; }',
     '.cart-subtotal p:first-child, .cart-total p:first-child { letter-spacing: .14em; text-transform: uppercase; font-size: 11.5px !important; color: #55524B !important; }',
     /* .ecom-gray-divider trae un gris de GHL que no es el nuestro */
@@ -582,7 +602,19 @@ window.MURA_PARTE = 'head';
     /* ---------- Listado y ficha de producto ---------- */
     "[class*='quantity'] button, [class*='quantity'] button * { background: transparent !important; border-radius: 0 !important; color: #1D1B18 !important; font-size: 14px !important; letter-spacing: 0 !important; }",
     "[class*='quantity'] button { border: 1px solid rgba(29,27,24,.25) !important; }",
-    "a[class*='continue'], button[class*='continue'] { background: transparent !important; border: none !important; border-bottom: 1px solid #1D1B18 !important; color: #1D1B18 !important; letter-spacing: .18em; text-transform: uppercase; font-size: 11.5px !important; }",
+    "a[class*='continue'], button[class*='continue'] { background: transparent !important; border: none !important; border-bottom: 1px solid #1D1B18 !important; color: #1D1B18 !important; letter-spacing: .18em; text-transform: uppercase; font-size: 11.5px !important; width: auto !important; margin: 0 auto !important; padding: 0 0 6px 0 !important; min-height: 0 !important; }",
+    /* la flechita que GHL le mete delante */
+    ".right-arrow, a[class*='continue'] svg, button[class*='continue'] svg { display: none !important; }",
+
+    /* ---------- Carrito vacío ----------
+       El dibujo es de GHL —un carrito con hojas verdes— y no es de la marca.
+       El TEXTO no se toca desde aquí: vive en los ajustes del elemento
+       (`emptyCartText`), y el que trae por defecto es una traducción
+       automática que además trata de usted. Ver la NOTA del final. */
+    '.empty-cart-container svg, .empty-cart-container img { display: none !important; }',
+    '.empty-cart-container { padding: clamp(30px,5vw,56px) 0; }',
+    ".empty-cart-heading { font-size: 22px !important; padding-top: 0 !important; }",
+    '.empty-cart-description { font-size: 13.5px !important; line-height: 1.9 !important; color: #55524B !important; max-width: 320px; margin: 12px auto 0 !important; padding: 0 !important; }',
 
     '@media (max-width: 719px) { .hl-cart-summary-container { margin-top: 28px; } }'
 
@@ -720,6 +752,13 @@ window.MURA_PARTE = 'head';
    Resumen
      headline                    → Tu pedido
      editCartButtonText          → Editar
+     emptyCartText               → Aún no has seleccionado ninguna pieza.
+     continueShopping            → Descubrir colección
+       ⚠️ El texto que trae GHL por defecto es una traducción automática
+       —"Las plantas rodadoras son espectaculares, pero este carrito anda
+       en busca de algo más emocionante"— que además trata de usted cuando
+       el resto de la web tutea. El dibujo del carrito con hojas verdes ya
+       se oculta desde el CSS; el texto solo se cambia aquí.
      quantityColumnHeading       → Ud.
      couponHeadline              → Código de descuento
      couponCodePlaceholder       → Introduce tu código
