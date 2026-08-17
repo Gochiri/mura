@@ -1915,7 +1915,25 @@ Los triggers creados por API son fantasma (sección 13), así que estos van a ma
    `encuesta-completada`**.
 3. **Checkout** — acción tras el pago → URL `/gracias` (venía de la sección 27.4).
 
-⚠️ **El 1 y el 2 hay que hacerlos ya.** Los pasos ya están quitados: hasta que el
-trigger cambie, LS02 no se dispara con nada (su Inbound Webhook sigue vivo pero la web ya
-no le habla) y el 06b tampoco. Es una ventana de "no pasa nada", no de "pasa algo malo",
-pero no conviene dejarla abierta.
+**Hechos por German el mismo 17/8, y verificados por API**
+(`GET /workflow/{locationId}/trigger?workflowId={id}` — que es por donde se leen; no
+vienen en el cuerpo del workflow):
+
+```
+LS02 — 1 trigger:  contact_tag → Tag added: nl                    ✓
+06b  — 2 triggers: form_submission → fvVToLx0e9pEjSRD6zq7  (el viejo, sigue activo)
+                   contact_tag → Tag added: encuesta-completada   ✓
+```
+
+**El Inbound Webhook de LS02 ya no está** (queda un único trigger), así que la cadena
+nueva está enganchada: n8n pone `nl` → arranca LS02.
+
+**El 06b se queda con los dos a propósito, de momento.** Hasta que `/experiencia` esté
+publicada y el custom value `url feedback` apunte ahí, el formulario viejo sigue siendo la
+única encuesta viva: quitarle el trigger dejaría a Sara sin aviso cuando alguien responda.
+Convivir no duplica nada — son puertas de entrada distintas y haría falta que una misma
+persona hiciera las dos cosas.
+
+⚠️ **Pero hay que borrar el `form_submission` cuando la página nueva esté en el aire.** Si
+se queda, es un camino zombi: el 06b arranca, avisa a Sara y dispara los dos webhooks,
+pero **no pone el tag** (ese paso se le quitó, porque ahora lo pone n8n).
