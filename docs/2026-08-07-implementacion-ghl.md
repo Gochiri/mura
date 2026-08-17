@@ -2093,3 +2093,26 @@ ocultos, y "Continuar comprando" como enlace de marca y no como botón a media a
 **Orden de aplicación — importa:** primero los dos tracking codes (ya hecho), luego este
 cambio del global, y **solo entonces borrar el elemento de la página**. Al revés se caen
 las reglas del resumen.
+
+**Cerrado el 17/8, verificado en vivo.** German vació la caja de **Custom CSS de la página
+`/checkout`** y con eso desaparecieron **las dos** copias.
+
+⚠️ Corrección de mi diagnóstico: por la posición de cada copia dentro del `<style>` —una
+antes de los estilos de sección y otra después— deduje que una estaba en el CSS del sitio
+y otra en el de la página. Era falso: **las dos estaban en la caja de la página**, pegadas
+por duplicado. Bien está, porque significa que **no hay ningún skin corriendo a nivel de
+sitio** pisando el resto de páginas — que era el riesgo de verdad, ya que su
+`input, select, textarea { border: none !important }` habría ganado a nuestras reglas de
+formulario, que no llevan `!important`.
+
+Estado final leído en el navegador:
+
+```
+skinViejo      0                          las dos copias fuera
+nuestras       sistema→HEAD, tienda→HEAD  el split, en pie
+resumenFondo   rgba(29,27,24,.03)         ganamos a GHL (#f9fafb)
+tituloResumen  rgba(0,0,0,0)              sin la barra gris
+bordeInput     1px / 1px                  recuadro completo
+```
+
+Queda solo cambiar el texto del carrito vacío en los ajustes del elemento.
