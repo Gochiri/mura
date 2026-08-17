@@ -1249,6 +1249,28 @@ of Birth `1975-07-27` mapeada** ✓, tag `nl` ✓. Dos fallos encontrados:
    argentino local no es E.164. Revisar de paso que Create/Update Contact tenga
    Phone mapeado. Con números españoles o con prefijo (+549…, +34…) debería entrar.
 
+### 28.c Circuito completo VERIFICADO de punta a punta (17/8)
+
+Envío por el webhook (con teléfono en E.164) → correo de doble opt-in 15:02:34 →
+clic de German → **bienvenida 15:03:14** → aterrizaje en `/suscripcion-confirmada`.
+Estado final del contacto, leído por API:
+
+- tags: **`nl` + `newsletter-suscrita`** ✓
+- Date of Birth: `1975-07-27` ✓
+- y un extra no documentado hasta ahora que estaba montado por German: al confirmar
+  se crea **oportunidad en el pipeline "Leads / Comunidad"** (`Y47eLa4dAIZTKLu2UpuX`),
+  etapa **"03 Suscrita Newsletter"** ✓ — el pipeline de comunidad tiene etapas
+  01 Lead Nuevo → 02 Interesada → 03 Suscrita Newsletter → 04 Primera Compradora →
+  05 Recurrente → 06 VIP.
+
+**Único flequito abierto: el teléfono sigue sin llegar** aunque esta vez fue en
+E.164 (`+5491130270115`) — descartado el formato, la causa es que el
+**Create/Update Contact del LS02a no tiene el campo Phone mapeado** (o lo tiene
+apuntando a otra clave). Arreglo: en esa acción, Phone ←
+`{{inboundWebhookRequest.phone}}`.
+
+El newsletter queda CERRADO: alta desde la home con diseño propio, doble opt-in
+RGPD, bienvenida, tags, oportunidad de comunidad y página de confirmación.
 ## 26. Fusión del 04b dentro del 04a (14/8)
 
 El correo de envío se enviaba desde **04b**, disparado por el tag `email-04-listo`.
