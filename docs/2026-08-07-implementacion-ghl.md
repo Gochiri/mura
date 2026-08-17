@@ -2045,3 +2045,51 @@ del origen es razonamiento sobre el código. Si tras pegarlo quedara algo de par
 que resta es el render del propio bundle de la tienda, que no se gana reordenando CSS —
 ahí la salida es la NOTA del final del archivo: **poner los textos de Cart y Checkout en
 los ajustes del elemento**, que hoy están en inglés y se reescriben después de pintar.
+
+### 30.13 El skin viejo de la página `/checkout`: qué era y cómo se retira
+
+Al leer el head real del checkout (17/8, tras pegar los dos tracking codes) aparecieron
+dos cosas: que el split funciona, y que dentro del `<style>` de la página vivía
+**duplicado** un skin anterior, `MÛRA · SKIN + TRADUCCIÓN DEL CHECKOUT NATIVO DE GHL`.
+
+**Estaba pegado con su `<script>` dentro de un `<style>`.** Ahí el navegador lo trata como
+CSS, así que ese JavaScript no se ejecuta nunca. Su CSS **sí** se aplica: el parser
+descarta lo malformado y sigue con las reglas siguientes. O sea, un skin fantasma
+compitiendo con el global — y ganábamos casi siempre solo porque estamos más abajo en el
+head, que es ganar por accidente.
+
+⚠️ **Corrección de una deducción mía.** De ahí concluí que "por eso el checkout sigue en
+inglés". **Falso**: la captura de German lo muestra en castellano. Los textos ya están en
+los ajustes del elemento y nunca dependieron de ese script.
+
+**Antes de borrarlo hubo que pasar al global lo que hacía y nosotros no cubríamos:**
+
+- `[class*="summary"] h1..h4, [class*="summary"] [class*="header"|"title"] { background:
+  transparent !important }` — es lo que mata **la barra gris detrás de "Resumen del
+  carrito"**, ya visible en la captura porque nuestra regla solo cubría `.hl-cart-heading`.
+- Los iconos en tinta y no en el azul del tema. Se listan **uno a uno** (`.edit-cart svg`,
+  `.coupon-container svg`, `.checkout-breadcrumb-chevron`) en vez de con el
+  `[class*="summary"] svg` general del skin viejo: ese cazaba también la ilustración del
+  carrito vacío y la dejaba como un manchón.
+
+**Y hubo que reforzar con `!important` el bloque del resumen.** Leyendo el head se ve que
+las hojas de componentes de GHL —`CartSummary.css`, `Coupon.css`, `CheckoutElement.css`—
+se cargan **después** de la nuestra. A igualdad de especificidad gana la última, así que
+sin `!important` GHL nos pisaba fondo, sombra, bordes y separadores. Parte lo tapaba el
+skin viejo; al retirarlo habría salido a la luz. Afecta a `.hl-cart-summary-container`,
+`.hl-divider` (GHL le pone `border-bottom`: sin anularlo salen dos líneas),
+`.cart-subtotal`, `.cart-total` y `.cart-summary-heading-container`.
+
+**De paso, el carrito vacío.** El dibujo de GHL —un carrito con hojas verdes— se oculta
+desde el CSS, y el texto se cambia en los ajustes: el que trae es *"Las plantas rodadoras
+son espectaculares…"*, traducción automática de *tumbleweeds*, y encima trata de usted
+cuando el resto de la web tutea. Anotado en la NOTA del final de `codigo-global-tienda.js`.
+
+**Verificado en Chromium** con una réplica que carga las reglas reales de GHL **después**
+de las nuestras, copiadas del head que pegó German: fondo del resumen correcto, sin
+sombra, sin barra gris tras el título, título en serif, un solo divisor, dibujo y flecha
+ocultos, y "Continuar comprando" como enlace de marca y no como botón a media anchura.
+
+**Orden de aplicación — importa:** primero los dos tracking codes (ya hecho), luego este
+cambio del global, y **solo entonces borrar el elemento de la página**. Al revés se caen
+las reglas del resumen.
