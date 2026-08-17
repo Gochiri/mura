@@ -1,47 +1,45 @@
 <!--
   ============================================================
-  MÛRA · NEWSLETTER (sección para el final de /home) · EMBED
+  MÛRA · NEWSLETTER (sección para el final de /home)
+  · patrón Inbound Webhook, calcado de ghlteamlatam.com/apply ·
   ============================================================
-  Decisión del 15/8 (experiencia de German): el formulario va
-  INCRUSTADO con el embed oficial de GHL. Es el único camino que
-  el backend acepta siempre, porque el iframe corre en el dominio
-  de GHL y su Turnstile se valida en casa. Los intentos de enviar
-  desde la página al endpoint /forms/submit acabaron todos en 429
-  (el token se genera en nuestro dominio y no lo aceptan); esa
-  historia queda en la sección 28 del doc de implementación.
+  CÓMO FUNCIONA (el patrón de German, que funciona siempre)
+  Campos HTML propios con el diseño de la web → POST JSON a un
+  INBOUND WEBHOOK de un workflow de GHL. Ese endpoint acepta
+  envíos desde cualquier dominio, sin captcha. Dentro del
+  workflow, un Create/Update Contact mapea el payload a los
+  campos del contacto y un Add Tag pone `nl`.
 
-  Ventajas de este camino: envíos en Forms → Submissions, campos
-  mapeados por el propio formulario, y el LS02 dispara por "form
-  submitted" tal como estaba previsto. Sin captcha que pelear.
+  (El endpoint del formulario /forms/submit NO sirve desde fuera:
+  valida el Turnstile contra sus propios dominios — cuatro
+  intentos, cuatro 429. Historia completa en la sección 28 del
+  doc. El formulario Opt-in de GHL queda sin uso.)
 
-  CÓMO SE PEGA
-  1. En el builder del formulario Opt-in Newsletter → Integrate →
-     Embed, copiar el código del iframe.
-  2. Pegarlo aquí donde marca EL HUECO (sustituyendo el
-     comentario), sin tocar nada más.
-  3. Esta sección va en el elemento de código de Home, dentro del
-     <div class="mura">, antes del <footer class="mura-foot">.
+  MONTAJE (una sola vez, en la UI de GHL):
+  1. Workflows → crear "LS02a · Alta newsletter web".
+  2. Trigger: **Inbound Webhook** (crearlo EN LA UI — los
+     triggers creados por API no disparan). GHL genera una URL
+     https://services.leadconnectorhq.com/hooks/…/webhook-trigger/…
+  3. Pegar esa URL abajo donde dice PEGAR_URL_DEL_WEBHOOK.
+  4. Pegar esta sección en Home (dentro del <div class="mura">,
+     antes del <footer>) y hacer UN envío de prueba: ese envío le
+     da a GHL el payload de ejemplo para poder mapear.
+  5. En el workflow, añadir acciones:
+     - Create/Update Contact:
+         First Name  ← {{inboundWebhookRequest.first_name}}
+         Last Name   ← {{inboundWebhookRequest.last_name}}
+         Email       ← {{inboundWebhookRequest.email}}
+         Phone       ← {{inboundWebhookRequest.phone}}
+         Date of Birth ← {{inboundWebhookRequest.fecha_nacimiento}}
+     - Add Contact Tag: `nl`
+     Publicar.
+  6. LS02 (bienvenida): trigger = Contact Tag Added `nl`,
+     publicar.
 
-  CHECKLIST DEL FORMULARIO EN EL BUILDER (antes de publicar):
-  - Borrar los DOS checkboxes de consentimiento SMS en inglés
-    (los de [BUSINESS NAME]): opcionales, en inglés, no pintan
-    nada aquí.
-  - Añadir un checkbox de consentimiento RGPD OBLIGATORIO:
-    "He leído y acepto la política de privacidad. MÛRA usará
-    estos datos solo para enviarme sus novedades; puedo darme de
-    baja en cualquier momento." (con el enlace a
-    /politica-privacidad en el texto).
-  - Texto del botón: QUIERO ENTERARME (hoy pone "Button").
-  - Styles del formulario: fondo #F0EEE8 (o transparente),
-    campos con borde fino, botón #1D1B18 con texto #F0EEE8.
-    Para clavar la tipografía (Cormorant/Jost) hace falta el
-    Custom CSS DEL BUILDER (el CSS de la página no entra en un
-    iframe): pasar a Claude el outerHTML del body del widget y
-    lo escribe sobre las clases reales.
-
-  El plan B por n8n queda montado y documentado
-  (tienda/n8n-newsletter-workflow.json) por si algún día hace
-  falta un alta sin formulario.
+  El checkbox RGPD es obligatorio (se valida aquí) y viaja como
+  `consentimiento` en el payload, para que quede registro.
+  Requiere el Tracking Code global pegado (las reglas .mura-nl-*
+  viven ahí).
   ============================================================
 -->
 <section class="mura-nl" id="mura-nl">
@@ -49,10 +47,63 @@
   <h2 class="mura-serif" style="font-size:clamp(28px,3.4vw,40px);font-weight:400">Las cápsulas, antes que nadie.</h2>
   <p style="margin-top:18px;font-size:14.5px;line-height:1.9;color:#55524B">Cada colección existe una sola vez. Déjanos tu correo y te avisamos cuando una nueva cápsula esté a punto de salir.</p>
 
-  <div style="margin-top:clamp(32px,4vw,44px)">
-    <!-- ================= EL HUECO =================
-         PEGAR AQUÍ el código de Integrate → Embed del
-         formulario Opt-in Newsletter (iframe + script).
-         ============================================ -->
-  </div>
+  <form id="mnl-form" novalidate>
+    <div class="mura-nl-fila">
+      <div class="mura-nl-campo"><label for="mnl-nombre">Nombre</label><input id="mnl-nombre" name="first_name" type="text" autocomplete="given-name"></div>
+      <div class="mura-nl-campo"><label for="mnl-apellido">Apellidos</label><input id="mnl-apellido" name="last_name" type="text" autocomplete="family-name"></div>
+    </div>
+    <div class="mura-nl-campo"><label for="mnl-email">Correo electrónico *</label><input id="mnl-email" name="email" type="email" autocomplete="email" required></div>
+    <div class="mura-nl-fila">
+      <div class="mura-nl-campo"><label for="mnl-tel">Teléfono *</label><input id="mnl-tel" name="phone" type="tel" autocomplete="tel" required></div>
+      <div class="mura-nl-campo"><label for="mnl-fecha">Fecha de nacimiento</label><input id="mnl-fecha" name="fecha_nacimiento" type="date"></div>
+    </div>
+    <label class="mura-nl-consent"><input id="mnl-rgpd" type="checkbox">
+      <span>He leído y acepto la <a href="/politica-privacidad">política de privacidad</a>. MÛRA usará estos datos solo para enviarme sus novedades; puedo darme de baja en cualquier momento.</span>
+    </label>
+    <button type="submit" class="mura-btn" id="mnl-btn">Quiero enterarme</button>
+    <div class="mura-nl-estado" id="mnl-estado" role="status" aria-live="polite"></div>
+  </form>
 </section>
+<script>(function(){
+/* URL del Inbound Webhook del workflow "LS02a · Alta newsletter web".
+   Se genera al crear el trigger en la UI de GHL (paso 2 de la cabecera). */
+var WEBHOOK='PEGAR_URL_DEL_WEBHOOK';
+
+var form=document.getElementById('mnl-form');
+var estado=document.getElementById('mnl-estado');
+var btn=document.getElementById('mnl-btn');
+function msg(t,err){estado.textContent=t;estado.className='mura-nl-estado'+(err?' err':'');}
+form.addEventListener('submit',function(ev){
+ ev.preventDefault();
+ var email=document.getElementById('mnl-email').value.trim();
+ var tel=document.getElementById('mnl-tel').value.trim();
+ if(!email||email.indexOf('@')<1){msg('Escribe tu correo electrónico para poder avisarte.',true);return;}
+ if(!tel){msg('Escribe tu teléfono, por favor.',true);return;}
+ if(!document.getElementById('mnl-rgpd').checked){msg('Para suscribirte necesitamos que aceptes la política de privacidad.',true);return;}
+ if(WEBHOOK.indexOf('http')!==0){msg('El formulario aún no está conectado. Escríbenos a hello@stylebymura.com.',true);console.error('MURA newsletter: falta pegar la URL del webhook');return;}
+
+ var datos={
+  first_name:document.getElementById('mnl-nombre').value.trim(),
+  last_name:document.getElementById('mnl-apellido').value.trim(),
+  email:email,
+  phone:tel,
+  fecha_nacimiento:document.getElementById('mnl-fecha').value||'',
+  consentimiento:'rgpd-aceptado',
+  origen:'newsletter-home'
+ };
+
+ btn.disabled=true;btn.style.opacity='.55';msg('Un momento…');
+ fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)})
+  .then(function(r){
+   if(!r.ok){console.error('MURA newsletter: HTTP '+r.status);throw new Error('HTTP '+r.status);}
+   form.querySelectorAll('input,button').forEach(function(e){e.disabled=true;});
+   form.style.opacity='.5';
+   msg('Ya estás dentro. Te escribiremos cuando la próxima cápsula esté a punto de salir.');
+  })
+  .catch(function(e){
+   console.error('MURA newsletter:',e);
+   btn.disabled=false;btn.style.opacity='';
+   msg('No hemos podido registrar tu suscripción. Inténtalo de nuevo en unos minutos o escríbenos a hello@stylebymura.com.',true);
+  });
+});
+})();</script>

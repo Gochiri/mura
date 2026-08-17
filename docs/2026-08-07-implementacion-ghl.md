@@ -1185,30 +1185,39 @@ captura — el widget acompaña el envío con `x-turnstile-non-interactive-wait-
 actual manda esas cabeceras con valores medidos de verdad, y si aun así el
 challenge invisible es rechazado, reintenta UNA vez con la clave visible
 (`0x4AAAAAACDfuwSBQ2sYO1VD`) mostrando el recuadro de verificación sobre el botón.
-El cuarto intento (cabeceras + fallback visible) tampoco entró — el contenedor del
-challenge visible además quedó mal colocado y no se veía. **Decisión final: el envío
-va por n8n.** Todo apunta a que el backend valida el dominio donde se generó el
-token de Turnstile y solo acepta los suyos; sin documentación, ese muro no se salta
-limpio, y la casa ya vive en n8n (Nacex, order_id).
-
-Arquitectura definitiva (sección `tienda/newsletter-home.html` +
-`tienda/n8n-newsletter-workflow.json` para importar):
+El cuarto intento (cabeceras + fallback visible) tampoco entró. **La solución la
+trajo el patrón de German**, extraído de `ghlteamlatam.com/apply` (su página, en
+producción, funcionando): los campos HTML propios no envían al formulario de GHL
+sino a un **Inbound Webhook de un workflow**:
 
 ```
-home → POST urlencoded a n8n /webhook/newsletter-mura (llave estática k)
-  → n8n: IF llave+email → POST /contacts/upsert (nombre, apellidos, email,
-    teléfono, dateOfBirth ESTÁNDAR de contacto) → POST /contacts/{id}/tags ['nl']
+POST https://services.leadconnectorhq.com/hooks/{locationId}/webhook-trigger/{uuid}
+Content-Type: application/json
+{ first_name, last_name, email, phone, fecha_nacimiento, consentimiento, origen }
 ```
 
-Consecuencias: el **LS02 pasa a disparar por tag añadido `nl`** (no "form
-submitted"); no hay rastro en Forms → Submissions — el rastro es el contacto y su
-tag; el formulario Opt-in de GHL queda sin uso (sus dos checkboxes SMS en inglés
-pueden borrarse sin más). La fecha va al campo estándar `dateOfBirth` del contacto,
-mejor aún para el correo de cumpleaños que el custom del formulario.
+Ese endpoint acepta envíos desde cualquier dominio, sin captcha — está hecho para
+eso. Dentro del workflow, **Create/Update Contact** mapea el payload
+(`{{inboundWebhookRequest.campo}}`) y **Add Tag** pone `nl`. Es el plan de n8n pero
+sin n8n: todo dentro de GHL. (El JSON de n8n queda en el repo como reliquia;
+`/forms/submit` queda documentado como inviable desde fuera: valida el Turnstile
+contra sus propios dominios.)
 
-Pendiente: importar el workflow en n8n (pegar el PIT en los dos nodos HTTP,
-activar), pegar la sección nueva en Home, cambiar el trigger del LS02 a tag `nl` y
-publicarlo, y un envío de prueba — el contacto y el tag se verifican por API.
+Arquitectura definitiva del newsletter:
+
+```
+home (sección .mura-nl, tienda/newsletter-home.html)
+  → POST JSON al Inbound Webhook del workflow "LS02a · Alta newsletter web"
+     → Create/Update Contact (nombre, apellidos, email, teléfono, Date of Birth)
+     → Add Tag `nl`
+  → LS02 (bienvenida) dispara por Contact Tag Added `nl`
+```
+
+Montaje pendiente (UI, German): crear LS02a con trigger Inbound Webhook — **el
+trigger en la UI**, los creados por API no disparan (sección 13) —, pegar la URL
+generada en el marcador `PEGAR_URL_DEL_WEBHOOK` de la sección, un envío de prueba
+para que GHL capture el payload de ejemplo, mapear, publicar; LS02 a trigger por
+tag `nl` y publicar. El contacto y el tag se verifican por API tras la prueba.
 
 ## 26. Fusión del 04b dentro del 04a (14/8)
 
