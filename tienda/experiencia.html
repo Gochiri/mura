@@ -50,12 +50,35 @@
   lo demás es libre, a propósito: la spec pide una conversación,
   no un interrogatorio.
 
+  ⚠️ TRES COSAS QUE TIENE QUE HACER EL FLUJO DE n8n, O ESTO NO VA
+  German decidió (17/8) mandar las respuestas a `experiencia-mura`,
+  que es el flujo de Sonia — el mismo al que el 06b manda su webhook
+  desde GHL. Hasta ahora ese flujo SOLO lo llamaba GHL, de servidor
+  a servidor. Al llamarlo un navegador cambian tres cosas:
+
+  1. CORS. El `Content-Type: application/json` dispara un preflight
+     OPTIONS. El nodo Webhook necesita Options → Allowed Origins =
+     https://stylebymura.com. GHL nunca lo necesitó porque los
+     servidores no hacen preflight. **Es el fallo más probable**, y
+     se ve en la consola como un error de CORS, no como un 4xx.
+
+  2. Nombres de campo. Esta página manda `nav_web`, `guia_tallas`,
+     `nps`… (la lista entera está en el `datos` de abajo). Si el
+     mapeo a la hoja está hecho para el payload de GHL, las
+     respuestas caen en columnas vacías SIN dar error. Hay que
+     mirar el flujo y añadir la rama, o distinguir por `origen`,
+     que viaja como `experiencia-web`.
+
+  3. NPS y tag. Si el flujo de Sonia no los escribe, no se escriben:
+     el campo `NPS` (contact.nps, id BpEcTG8IYDXRUQNrM3h0) se queda
+     vacío y el 06b no arranca, porque su trigger es el tag
+     `encuesta-completada`. En `n8n-experiencia-workflow.json` están
+     los nodos hechos: se pueden copiar a su flujo.
+
   CÓMO SE PEGA
   1. Sites → sitio Mura → página nueva con URL /experiencia.
   2. Elemento de código personalizado → pegar esto entero.
-  3. Sustituir PEGAR_URL_DEL_WEBHOOK_N8N por la URL real
-     (la de PRODUCCIÓN, `/webhook/…`, nunca `/webhook-test/…`).
-  4. Publicar, y poner esa URL en el custom value `url feedback`
+  3. Publicar, y poner esa URL en el custom value `url feedback`
      — los correos 06 y 07 la leen de ahí y se arreglan solos.
 
   ⚠️ SIN CSS PROPIO, A PROPÓSITO: las reglas .mura-enc-* viven en
@@ -333,8 +356,11 @@
 </div></footer>
 </div>
 <script>(function(){
-/* URL de PRODUCCIÓN del webhook de n8n (`/webhook/…`, nunca `/webhook-test/…`). */
-var WEBHOOK='PEGAR_URL_DEL_WEBHOOK_N8N';
+/* URL de PRODUCCIÓN del webhook de n8n (`/webhook/…`, nunca `/webhook-test/…`).
+   Decisión de German (17/8): la página va al flujo `experiencia-mura`, que es
+   el de Sonia — el mismo al que el 06b manda su webhook desde GHL. Ver los
+   avisos de la cabecera. */
+var WEBHOOK='https://n8n.letsbebanana.com/webhook/experiencia-mura';
 
 var form=document.getElementById('enc-form');
 var cab=document.getElementById('enc-cab');
