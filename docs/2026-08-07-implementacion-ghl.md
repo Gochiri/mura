@@ -1811,3 +1811,27 @@ Su documento da por rotas cosas que funcionan. Sin esto se gasta tiempo en balde
 - **Stripe**: el documento dice "dejar hecha toda la parte" sin detallar. Lo que se
   entiende que falta —Payment Mode a Live, claves live de Sara, recibos nativos y una
   compra real de prueba— depende de Sara y hay que confirmarlo con Sonia antes de tocar.
+
+### 30.8 Buscador de la rejilla, con lupa (petición de Sonia)
+
+En el global, detrás de un guardia de rutas (`/prendas`, `/colecciones`,
+`/novedades`). Inyecta una caja de búsqueda debajo de los filtros y filtra las
+`.mura-card` por su nombre, **sin tildes y sin distinguir mayúsculas**: quien escribe
+"cardigan" encuentra "Cárdigan", quien escribe "ONICE" encuentra "Ónice".
+
+**La parte que tenía miga: no pisar los filtros que ya existen.** Los `.mura-filtros`
+esconden tarjetas escribiendo en `style.display`. Si el buscador escribiera ahí también,
+el último en tocar ganaría: buscar borraría el filtro y filtrar borraría la búsqueda.
+Por eso el buscador **no toca `display`** — pone y quita la clase `.mura-oculta-busq`,
+que esconde con `!important`. Las dos capas se componen, y al vaciar la búsqueda
+reaparece lo que el filtro tuviera puesto, no la colección entera.
+
+Verificado en Chromium contra una réplica con filtros que sí escriben `display`:
+buscar dentro de "Camisas" deja solo la camisa que casa; buscar algo de otra categoría
+da cero resultados con su mensaje; y al borrar, el filtro "Camisas" sigue en pie.
+También se recuenta al pulsar un filtro, o el mensaje de "no hay resultados" se quedaba
+colgado.
+
+La rejilla puede pintarse después del script, así que hay un `MutationObserver` de
+respaldo **con tope de 8 s**, para no dejar un observer vivo indefinidamente en una
+página que no trae rejilla.

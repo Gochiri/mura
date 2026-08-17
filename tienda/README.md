@@ -7,6 +7,19 @@ Qué se pega y dónde. **En este orden**, siempre.
 | `tracking-code-body.html` | Sitio "Mura" → Settings → **Tracking Code → Body** |
 | `carrito.html` | página `carrito` → elemento de código `custom-code-DN8OVgnA5P` |
 | `gracias-compra.html` | página **"Thank you!"** (`/thank-you`), no `/gracias` |
+| `producto.html` | página `producto` → elemento `custom-code-oM1HT_mKKm` |
+| `suscripcion-confirmada.html` | página `/suscripcion-confirmada` |
+| `newsletter-home.html` | sección al final de `/home` |
+| `experiencia.html` | página `/experiencia` (nueva) |
+
+### Los dos que necesitan una URL antes de pegarse
+
+`newsletter-home.html` y `experiencia.html` llevan el marcador
+`PEGAR_URL_DEL_WEBHOOK_N8N`. Hay que importar antes su workflow en n8n
+(`n8n-newsletter-workflow.json` y `n8n-experiencia-workflow.json`),
+activarlo y copiar la URL de **producción** — la `/webhook/…`. La de
+pruebas, `/webhook-test/…`, solo escucha con el editor de n8n abierto:
+en producción no llega nunca. Ese fue el bug del 06b.
 
 ## El orden importa
 

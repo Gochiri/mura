@@ -318,6 +318,127 @@
   }
 
   /* ============================================================
+     2.c · Buscador de la rejilla — /prendas /colecciones /novedades
+     ============================================================
+     Petición de Sonia: "buscador de colección con lupa".
+
+     ⚠️ CÓMO OCULTA, Y POR QUÉ ASÍ
+     Esas páginas ya tienen los filtros `.mura-filtros`, que esconden
+     y enseñan tarjetas escribiendo en `style.display`. Si el buscador
+     escribiera también ahí, el último en tocar ganaría y las dos
+     cosas se pisarían: buscar borraría el filtro, filtrar borraría la
+     búsqueda.
+
+     Por eso el buscador NO toca `display`: pone y quita la clase
+     `.mura-oculta-busq`, que esconde con `!important`. Las dos capas
+     se componen — una tarjeta se ve solo si el filtro la dejó visible
+     Y además casa con lo escrito —, y al vaciar la búsqueda reaparece
+     lo que el filtro tuviera puesto, sin que haya que recordarlo.
+
+     No hace nada si la página no trae rejilla, así que es inofensivo
+     si alguna de esas rutas cambia de forma. */
+
+  var RUTAS_REJILLA = ['/prendas', '/colecciones', '/novedades'];
+  if (RUTAS_REJILLA.indexOf(path) !== -1) {
+    montarBuscador();
+  }
+
+  function montarBuscador() {
+    var css = [
+      '.mura-oculta-busq { display: none !important; }',
+      '.mura-busq { max-width: 420px; margin: 0 auto clamp(30px,3.5vw,46px); padding: 0 clamp(20px,4vw,56px); }',
+      '.mura-busq-caja { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(29,27,24,.25); padding-bottom: 10px; transition: border-color .2s ease; }',
+      '.mura-busq-caja:focus-within { border-bottom-color: #1D1B18; }',
+      '.mura-busq-caja svg { flex: 0 0 auto; width: 15px; height: 15px; stroke: #8A857B; fill: none; stroke-width: 1.4; }',
+      ".mura-busq input { flex: 1 1 auto; border: none; background: transparent; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 300; letter-spacing: .1em; padding: 0; }",
+      '.mura-busq input:focus { outline: none; }',
+      '.mura-busq input::placeholder { color: #9B968C; letter-spacing: .16em; text-transform: uppercase; font-size: 11px; }',
+      ".mura-busq-x { border: none; background: transparent; cursor: pointer; color: #8A857B; font-family: 'Jost', sans-serif; font-size: 16px; line-height: 1; padding: 0 2px; display: none; }",
+      '.mura-busq-x:hover { color: #1D1B18; }',
+      '.mura-busq-nada { text-align: center; font-size: 13.5px; line-height: 1.8; color: #55524B; padding: clamp(40px,6vw,70px) 20px; display: none; }'
+    ].join('\n');
+    var stB = document.createElement('style');
+    stB.setAttribute('data-mura', 'buscador');
+    stB.textContent = css;
+    document.head.appendChild(stB);
+
+    /* Sin tildes y en minúsculas: quien busca "cardigan" tiene que encontrar
+       "Cárdigan", y quien busca "MURA" tiene que encontrar "MÛRA". */
+    function llano(s) {
+      return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function arrancar() {
+      var grid = document.querySelector('.mura-grid');
+      if (!grid || grid.getAttribute('data-busq')) return false;
+      var cards = grid.querySelectorAll('.mura-card');
+      if (!cards.length) return false;
+      grid.setAttribute('data-busq', '1');
+
+      var caja = document.createElement('div');
+      caja.className = 'mura-busq';
+      caja.innerHTML =
+        '<div class="mura-busq-caja">' +
+        '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6"></circle><line x1="13.5" y1="13.5" x2="18" y2="18"></line></svg>' +
+        '<input type="search" id="mura-busq-i" placeholder="Buscar" aria-label="Buscar en la colección" autocomplete="off">' +
+        '<button type="button" class="mura-busq-x" id="mura-busq-x" aria-label="Borrar la búsqueda">×</button>' +
+        '</div>';
+
+      /* Debajo de los filtros si los hay; si no, justo encima de la rejilla. */
+      var filtros = document.querySelector('.mura-filtros');
+      if (filtros && filtros.parentNode) filtros.parentNode.insertBefore(caja, filtros.nextSibling);
+      else grid.parentNode.insertBefore(caja, grid);
+
+      var nada = document.createElement('p');
+      nada.className = 'mura-busq-nada';
+      nada.id = 'mura-busq-nada';
+      grid.parentNode.insertBefore(nada, grid.nextSibling);
+
+      var input = document.getElementById('mura-busq-i');
+      var borrar = document.getElementById('mura-busq-x');
+
+      function filtrar() {
+        var q = llano(input.value.trim());
+        borrar.style.display = q ? 'block' : 'none';
+        var vistas = 0;
+        grid.querySelectorAll('.mura-card').forEach(function (c) {
+          var nom = c.querySelector('.mura-card-name');
+          var texto = llano((nom ? nom.textContent : '') + ' ' + c.textContent);
+          var casa = !q || texto.indexOf(q) !== -1;
+          c.classList.toggle('mura-oculta-busq', !casa);
+          /* Cuenta solo lo que se ve de verdad: una tarjeta que el filtro de
+             categoría ya había escondido no es un resultado. */
+          if (casa && c.offsetParent !== null) vistas++;
+        });
+        if (q && vistas === 0) {
+          nada.textContent = 'No encontramos ninguna prenda con “' + input.value.trim() + '”. Prueba con otra palabra, o mira la colección entera.';
+          nada.style.display = 'block';
+        } else {
+          nada.style.display = 'none';
+        }
+      }
+
+      input.addEventListener('input', filtrar);
+      borrar.addEventListener('click', function () { input.value = ''; filtrar(); input.focus(); });
+      /* Los filtros de categoría se pintan después: al pulsarlos hay que
+         recontar, o el mensaje de "no hay resultados" se queda colgado. */
+      document.addEventListener('click', function (ev) {
+        if (ev.target.closest && ev.target.closest('.mura-filtros')) setTimeout(filtrar, 0);
+      });
+      return true;
+    }
+
+    /* La rejilla puede pintarse después de este script. Se intenta ya, y si
+       todavía no está, se espera a que aparezca — con tope, para no dejar un
+       observer vivo para siempre en una página que no la trae. */
+    if (!arrancar()) {
+      var obs = new MutationObserver(function () { if (arrancar()) obs.disconnect(); });
+      obs.observe(document.body, { childList: true, subtree: true });
+      setTimeout(function () { obs.disconnect(); }, 8000);
+    }
+  }
+
+  /* ============================================================
      3 y 4 · Solo en las páginas que renderiza la tienda de GHL
      ============================================================
      A partir de aquí se pisa el CSS del elemento de tienda, que
