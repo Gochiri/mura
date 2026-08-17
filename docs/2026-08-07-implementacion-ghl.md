@@ -1282,9 +1282,14 @@ dos huecos reales, cerrados hoy:
    Backup: `datos/backups/wf02_pre_remove_inactivo_20260817.json`.
 2. **`devolucion-activa` no se quitaba nunca** → nuevo workflow
    **08d · Devolucion cerrada - limpiar tag** (`2197b479`), un único paso
-   `remove devolucion-activa`, publicado. ⚠️ **Falta su trigger (UI, German)**:
-   cambio de etapa → pipeline Ventas/Pedidos → **09 Reembolso** (`e786e623`) — el
-   final natural de una devolución. Los triggers por API no disparan (sección 13).
+   `remove devolucion-activa`, publicado. German creó el trigger en la UI (cambio
+   de etapa → Ventas/Pedidos → **09 Reembolso**) y quedó **verificado en vivo**:
+   oportunidad de test movida a 09 → enrollment Finished → tag quitado. Por el
+   camino salió un tercer hueco: el 08d nació con `allowMultiple: false`, así que
+   una clienta con DOS devoluciones a lo largo del tiempo solo se habría limpiado
+   la primera — activado (`allowMultiple: true`, v4) y reverificado con re-entrada.
+   Es la misma trampa de la sección 17: **todo workflow nuevo nace sin re-entrada;
+   comprobarlo siempre.**
 
 `dev-ok` / `dev-x`: pendiente de decisión German+Sonia (segmentar el resultado de
 la devolución o descartarlos). `reviewera`, `compradora-activa`, `recurrente` y
