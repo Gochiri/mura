@@ -1,0 +1,121 @@
+{
+ "_id": "8e6ccd5a-8c90-4d41-b567-9947e61ed627",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "companyId": "5tNRocqWdcsz7Rii28bH",
+ "companyAge": 11,
+ "name": "05 · Entrega - mover + email",
+ "status": "published",
+ "version": 15,
+ "dataVersion": 7,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/8e6ccd5a-8c90-4d41-b567-9947e61ed627/15",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F8e6ccd5a-8c90-4d41-b567-9947e61ed627%2F15?alt=media&token=dec2dbad-de16-45d4-97b3-85ec455d5fd8",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "permission": 380,
+ "type": "workflow",
+ "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+ "createdAt": "2026-07-29T11:14:28.522Z",
+ "updatedAt": "2026-08-17T16:05:21.605Z",
+ "deleted": false,
+ "allowMultipleOpportunity": true,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "user",
+ "__v": 0,
+ "eventStartDate": null,
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/8e6ccd5a-8c90-4d41-b567-9947e61ed627/8",
+ "window": null,
+ "workflowNote": null,
+ "updatedBy": "eeuewX5uuHsscaW9uOFs",
+ "id": "8e6ccd5a-8c90-4d41-b567-9947e61ed627",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "b90cf78d-5a59-4f8a-87a3-c00b1e08627b",
+    "name": "Mover a 05 Entregado",
+    "type": "internal_update_opportunity",
+    "attributes": {
+     "allowBackward": true,
+     "type": "internal_update_opportunity",
+     "__customInputFields__": [
+      {
+       "__customInputs__": {},
+       "filterField": "pipelineId",
+       "value": "X7wvJysuBVmdXXl1b8zx",
+       "valueFieldType": "select"
+      },
+      {
+       "__customInputs__": {},
+       "filterField": "pipelineStageId",
+       "value": "789b85f8-5a2b-468a-936c-d643308340c3",
+       "valueFieldType": "select"
+      }
+     ],
+     "__customInputs__": {}
+    },
+    "workflowsActionType": "INTERNAL",
+    "order": 0,
+    "next": "04fc2de6-ea89-42f1-8883-a33cc9bc6930"
+   },
+   {
+    "id": "04fc2de6-ea89-42f1-8883-a33cc9bc6930",
+    "order": 1,
+    "attributes": {
+     "fieldDefaults": {
+      "subject": {
+       "contact.first_name:0": "Hola"
+      }
+     },
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "8e6ccd5a-8c90-4d41-b567-9947e61ed627:04fc2de6-ea89-42f1-8883-a33cc9bc6930"
+     },
+     "conditions": [],
+     "from_name": "{{business.name}}",
+     "from_email": "{{business.email}}",
+     "subject": "{{contact.first_name}}, ya está contigo.",
+     "preHeader": "Esperamos que la disfrutes durante mucho tiempo.",
+     "htmlDefaults": {},
+     "template_id": "6a81feac7717066f54f207f2",
+     "templatesource": "email-builder",
+     "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a6aa2ed3954360b6a94f117%2Findex.html?alt=media&token=ef106e02-1176-4ff7-aa1e-421faf3638e2",
+     "createdAt": "2026-07-30T01:03:41.436Z",
+     "updatedAt": "2026-08-14T09:37:42.783Z",
+     "templateCreationMode": "existing",
+     "attachments": []
+    },
+    "name": "Email 05 Entrega",
+    "type": "email",
+    "parentKey": "b90cf78d-5a59-4f8a-87a3-c00b1e08627b",
+    "next": "2ece8fa7-e9ba-4716-9cb9-b6bb2d55afe5"
+   },
+   {
+    "id": "2ece8fa7-e9ba-4716-9cb9-b6bb2d55afe5",
+    "order": 2,
+    "attributes": {
+     "method": "POST",
+     "url": "https://n8n.letsbebanana.com/webhook/avisos-sara",
+     "customData": [
+      {
+       "key": "mensaje",
+       "value": "Sara el pedido {{opportunity.name}} de {{contact.first_name}} se ha entregado."
+      }
+     ],
+     "headers": []
+    },
+    "name": "Webhook Telegram",
+    "type": "webhook",
+    "parentKey": "04fc2de6-ea89-42f1-8883-a33cc9bc6930"
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

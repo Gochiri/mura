@@ -2116,3 +2116,75 @@ bordeInput     1px / 1px                  recuadro completo
 ```
 
 Queda solo cambiar el texto del carrito vacío en los ajustes del elemento.
+
+## 31. Dos agujeros destapados por una compra real (17/8, noche)
+
+German hizo una compra de prueba y vio la oportunidad corriendo en SP01 mientras el
+tablero la mostraba en **05 Entregado**. Rastreando la cronología real por API aparecieron
+dos problemas distintos, los dos serios.
+
+Cronología de M100018 (horas UTC de la API; la UI de GHL las muestra 6 h menos):
+
+```
+16:50:45  M100018 creada por SP01
+16:52:33  correo OTP del checkout
+17:05:28  correo "Cada detalle cuenta"            ← el 03, preparación
+17:16:28  correo "Cada detalle cuenta"            ← EL 03 OTRA VEZ
+17:21:03  correo "Ya puedes seguir su recorrido"  ← el 04, envío
+17:21:59  última actualización → queda en 05
+```
+
+### 31.1 El correo 03 salía dos veces — arreglado
+
+**Causa, confirmada leyendo los dos workflows:** `03 · Email preparacion` dispara por
+**cambio de etapa → 03** y tiene re-entrada activada. Y `04a` tiene una rama `None` con
+aviso interno *"Pedido en Enviado sin peso/bultos"* → **`Devolver a 03 En Preparacion`** →
+Telegram. Es decir: mover a Enviado antes de rellenar peso/bultos devuelve la oportunidad
+a 03, y esa vuelta reescribe a la clienta. **No es un caso raro: pasa cada vez.**
+
+La vuelta a 03 **hace falta** —es lo que permite reintentar, porque volver a mover a 04
+solo dispara el 04a si antes salió de 04—, así que el arreglo va en el 03: un `if_else`
+delante del correo que mira el tag **`pedido-en-preparacion`**, que pone el propio 03.
+
+```
+etapa → 03 · ¿ya tiene `pedido-en-preparacion`?
+   SÍ → nada. (la vuelta del watchdog no reescribe)
+   NO → Email 03 → tag `pedido-en-preparacion` → quitar `pedido-confirmado`
+```
+
+Funciona para una segunda compra porque el 04a **quita** ese tag al enviar de verdad, así
+que el ciclo siguiente vuelve a avisar. `03` v13 → v14. Backup:
+`datos/backups/wf03_pre_duplicado_20260817.json`.
+
+### 31.2 Nadie ponía `pedido-entregado` — la entrega entera se saltaba
+
+**Solo el `05 · Entrega` mueve a la etapa 05**, y su trigger es el tag `pedido-entregado`.
+Rastreados los 18 workflows: **ningún paso de la cuenta añade ese tag.** Solo lo escuchan
+(05 y 06-12) y lo quitan (06-12 y 08b).
+
+Lo de hoy lo demuestra: la oportunidad llegó a 05 **desde fuera** —n8n o un arrastre a
+mano—, el contacto no tenía el tag, y **no salió el correo de entrega**. Consecuencia
+mayor: **el 06-12 tampoco arrancó**, así que a esa clienta no le llegarán ni el correo 06
+(experiencia) ni el 07 (reseña). El tablero decía "entregado" y la cadena no corrió.
+
+Arreglo, en dos mitades. La mía, ya hecha: **`05` pone el tag como primer paso** (v15 →
+v16). Backup: `datos/backups/wf05_pre_duplicado_20260817.json`.
+
+⚠️ **Es seguro en los dos estados, y por eso se hizo así:**
+
+- Con el trigger de hoy (tag añadido) el tag **ya está puesto** al llegar, así que
+  ponerlo otra vez no hace nada y **no se re-dispara** — un tag ya presente no dispara,
+  la lección de la sección 17. Sin esa propiedad esto sería un bucle.
+- Se **conserva** el paso "Mover a 05 Entregado": con el trigger nuevo será un no-op
+  (ya está en 05) y con el actual sigue haciendo falta. Así no hay ventana rota mientras
+  German cambia el trigger.
+
+**La mitad de German (UI, porque los triggers por API son fantasma):** en `05 · Entrega`,
+borrar el trigger *Contact Tag → `pedido-entregado`* y crear **Pipeline Stage Changed →
+Ventas/Pedidos → 05 Entregado**.
+
+**Por qué por etapa y no por tag:** ya hay algo moviendo etapas por fuera de GHL y no lo
+vamos a poder impedir. Disparando por etapa, la entrega funciona **la mueva quien la
+mueva** —n8n, Nacex o una mano—, y el propio 05 se encarga de poner el tag que arranca el
+06-12. La alternativa (que n8n ponga el tag) deja la cadena colgando de que Sonia se
+acuerde en cada flujo.
