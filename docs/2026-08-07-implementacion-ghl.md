@@ -2188,3 +2188,32 @@ vamos a poder impedir. Disparando por etapa, la entrega funciona **la mueva quie
 mueva** —n8n, Nacex o una mano—, y el propio 05 se encarga de poner el tag que arranca el
 06-12. La alternativa (que n8n ponga el tag) deja la cadena colgando de que Sonia se
 acuerde en cada flujo.
+
+### 31.3 Cerrado y verificado (17/8, noche)
+
+German cambió el trigger. Leído por API:
+
+```
+05 · Entrega          pipeline_stage_updated → Ventas/Pedidos → 05 ENTREGADO   ✓ único trigger
+03 · Email preparac.  pipeline_stage_updated → 03 En preparacion
+06-12 · Journey       contact_tag → pedido-entregado
+```
+
+**Comprobados también los pasos, porque editar en la UI sube de versión y puede tirar
+cosas** (05 pasó de v16 a v18 y 03 de v14 a v15). Los dos cambios sobrevivieron: el 05
+sigue poniendo `pedido-entregado` de primero y el 03 conserva su `if_else`. Único efecto
+de la UI: renombró la rama del 03 de `Ya se le aviso de la preparacion` a `Branch`. La
+condición está intacta; es solo la etiqueta.
+
+Cadena resultante:
+
+```
+etapa → 05 Entregado  (la mueva quien la mueva)
+   └─ 05 pone `pedido-entregado`  →  arranca el 06-12 (06 día 3, 07 día 10)
+   └─ mueve a 05 (no-op)
+   └─ correo 05 entrega + Telegram a Sara
+```
+
+**Pendiente de prueba en vivo:** mover una oportunidad de test a 05 y comprobar que salen
+el correo de entrega, el aviso de Telegram y la inscripción en el 06-12. No se hizo desde
+aquí porque enrola a un contacto real y le manda correo.
