@@ -2217,3 +2217,57 @@ etapa → 05 Entregado  (la mueva quien la mueva)
 **Pendiente de prueba en vivo:** mover una oportunidad de test a 05 y comprobar que salen
 el correo de entrega, el aviso de Telegram y la inscripción en el 06-12. No se hizo desde
 aquí porque enrola a un contacto real y le manda correo.
+
+## 32. La detección de entrega: media pieza ya estaba montada (17/8)
+
+Buscando quién mueve a la etapa 05 apareció que **el gancho ya existe desde el 14/8** y
+nadie se acordaba. Dentro de `04a`, la espera de 48 h —el plazo máximo de entrega de
+Nacex— no es solo un temporizador: al vencer comprueba **si la oportunidad sigue en «04
+Enviado»** y, si es así, llama a n8n.
+
+```
+04a · rama con seguimiento
+  Email 04 → tag `pedido-enviado` → quitar `email-04-listo`
+  → Wait 48 Hours
+  → ¿pipelineStageId == 04 Enviado?
+       SÍ → POST https://n8n.letsbebanana.com/webhook/watchdog-entrega
+       NO → (nada: ya se movió, no hay nada que vigilar)
+```
+
+**Y ese webhook ya manda lo que hace falta**, en su `customData`:
+
+```
+opportunityId  = {{opportunity.id}}
+albaran        = {{opportunity.albaran_nacex}}
+numero_pedido  = {{opportunity.name}}
+```
+
+⚠️ **Corrección de un aviso mío del mismo día.** Habiendo comprobado que
+`/opportunities/search?q=` **no llega a los campos personalizados** —buscar por el albarán
+`10530531` da 0 resultados; por el nombre `M100018` da 1— avisé de que n8n necesitaría el
+número de pedido en la referencia de Nacex para poder encontrar la oportunidad. **Eso no
+aplica a esta vía:** GHL ya le pasa el `opportunityId`, así que n8n no busca nada, hace un
+`PUT` directo. El aviso sigue siendo válido **solo** para una vía de push, donde es Nacex
+quien inicia y solo trae el albarán: ahí o la referencia del envío lleva el `M1000xx`, o
+n8n guarda el par albarán → opportunityId al crear el envío.
+
+**Lo que falta es solo lo que n8n haga con esa llamada:** preguntar a Nacex por el albarán
+y, si consta entregado, `PUT` de la oportunidad a la etapa **05 Entregado**. Con el trigger
+por etapa (sección 31.2) eso dispara el resto solo: tag `pedido-entregado` → correo de
+entrega → Telegram a Sara → journey 06-12.
+
+### ⚠️ El agujero del diseño: el watchdog salta UNA vez
+
+Si a las 48 h el paquete todavía no ha llegado —festivo, incidencia, o una entrega en punto
+Nacex que la clienta recoge el jueves— **nadie vuelve a mirar**. Ese pedido se queda en
+«Enviado» para siempre: sin correo de entrega, sin encuesta y sin reseña. Y falla en
+silencio, que es lo peor.
+
+Dos formas de taparlo, según lo que pueda Nacex (**pendiente de confirmar con Sonia**):
+
+- **Nacex avisa por push** → ese es el camino principal: entrega detectada al momento, y el
+  watchdog de 48 h se queda como red de seguridad por si el aviso no llega. Es lo mejor de
+  los dos, y no hace falta reintentar.
+- **Nacex no avisa** → el watchdog tiene que reintentar: reconsultar cada 24 h hasta que
+  Nacex diga entregado o hasta un tope razonable. Se puede montar en n8n (más limpio: es
+  suyo el reintento) o en GHL con un bucle de espera + reconsulta.
