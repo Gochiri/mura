@@ -2271,3 +2271,46 @@ Dos formas de taparlo, según lo que pueda Nacex (**pendiente de confirmar con S
 - **Nacex no avisa** → el watchdog tiene que reintentar: reconsultar cada 24 h hasta que
   Nacex diga entregado o hasta un tope razonable. Se puede montar en n8n (más limpio: es
   suyo el reintento) o en GHL con un bucle de espera + reconsulta.
+
+### 32.1 Resuelto por Sonia: el watchdog pregunta, y si no, avisa a Sara (22/8)
+
+Sonia contesta la pregunta abierta y cierra el diseño:
+
+> «Y si el Watchdog llama a Nacex pasadas 48 h de la entrega, si devuelve un mensaje Nacex
+> de que está entregado lo mueve al 05; si Nacex no dice que está entregado manda mensaje
+> a Sara».
+
+O sea: **no hay push de Nacex**. La detección es por consulta, y el caso «todavía no
+entregado» no se reintenta: **se escala a una persona**.
+
+```
+04a · Wait 48 h → ¿sigue en «04 Enviado»? → SÍ → n8n /watchdog-entrega
+                                                   │
+                          n8n pregunta a Nacex por el albarán
+                                                   │
+              ┌────────────────────────────────────┴─────────────────┐
+        consta ENTREGADO                                    no consta entregado
+              │                                                      │
+   PUT oportunidad → etapa «05 Entregado»                    aviso a Sara
+              │                                                      │
+   (trigger por etapa, §31.2)                          Sara mira y, si procede,
+   tag `pedido-entregado` → correo 05                   mueve la tarjeta a mano
+   → Telegram → journey 06-12                                        │
+                                                          → misma cadena de arriba
+```
+
+**El agujero de la §32 queda tapado, y por diseño, no por casualidad.** Lo que me
+preocupaba era que fallase *en silencio*; con el aviso a Sara ya no hay silencio: hay una
+persona mirando. Y **el trigger por cambio de etapa es justo lo que hace que la vía manual
+valga**: mueva la tarjeta n8n o la mueva Sara con el ratón, el 05 arranca igual. Con el
+trigger por tag que había antes (§31.1), la mano de Sara no habría disparado nada.
+
+Queda un matiz, sin urgencia: el aviso a Sara conviene que lleve **número de pedido, enlace
+de seguimiento y el estado literal que devolvió Nacex**, para que pueda decidir sin entrar
+a buscar. Los tres los tiene n8n en la misma llamada —`numero_pedido` y `opportunityId` se
+los manda GHL, el estado se lo acaba de dar Nacex—, así que es rellenar el mensaje, no
+traer datos nuevos.
+
+**Stripe sigue pendiente y es de Sonia.** En el mismo mensaje: *«falta revisar la parte de
+Stripe creo»*. Sigue sin concretarse el alcance —el documento decía «dejar hecha toda la
+parte»— y es lo único que separa la tienda de poder cobrar de verdad.
