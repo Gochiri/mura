@@ -2408,3 +2408,91 @@ Cambios en las plantillas (UI, campo del enlace del botón):
 Y rellenar los dos custom values vacíos: `url resena google` (ficha de Google de Sara) y
 `url pieza` (por campaña). `url feedback` sigue apuntando al formulario viejo
 `fvVToLx0e9pEjSRD6zq7`, así que se cambia cuando `/experiencia` esté publicada.
+
+### 33.4 Arreglado: los nueve correos, por API (22/8)
+
+Encontrado el endpoint y aplicado. **Cero `href` rotos en las 19 plantillas.**
+
+**El endpoint.** La API pública no tiene un "leer una plantilla", pero sí las otras dos
+piezas, y con eso basta:
+
+```
+LEER    el previewUrl que devuelve  GET /emails/builder?locationId=…&parentId=<carpeta>
+        Para plantillas templateType:"html" ese render ES el contenido guardado —
+        comprobado creando una de prueba: previewUrl y templateDataDownloadUrl
+        devolvieron el mismo byte a byte.
+ESCRIBIR POST /emails/builder/data
+        { locationId, templateId, updatedBy, editorType:"html", html }
+        `editorType` es obligatorio (sin él, 422). `name` y `templateType` se conservan.
+        No hace falta mandar `dnd`.
+BORRAR  DELETE /emails/builder/{locationId}/{templateId}
+```
+
+Dos trampas del camino:
+
+- **Las plantillas no salen en el listado raíz.** Están dentro de la carpeta *Correos*
+  (`6a6aa119fee4921a97537ba5`): sin `parentId` la API devuelve 9 cosas y ninguna es
+  nuestra. Con él, las 19.
+- **Cloudflare 1010 con urllib.** Los `POST` desde Python fallaban con 403 `error code:
+  1010` mientras el mismo `POST` por `curl` pasaba: falta el User-Agent de navegador. El
+  script terminó usando `curl` de transporte. **Nada se aplicó en ese primer intento** —los
+  nueve dieron 403—, así que no hubo estado a medias.
+
+**Ensayo antes de tocar nada real:** se creó una plantilla `ZZ · prueba endpoint`, se
+actualizó dos veces para confirmar que el render cambia y que el nombre sobrevive, y se
+borró al terminar.
+
+**El cambio, exactamente.** El script (`datos/fix_tpl.py`) solo sustituye lo que hay
+**dentro de `href="…"`**; el resto del HTML queda byte a byte. Verificado después con un
+diff contra la copia previa: nueve plantillas modificadas y **todos** los fragmentos
+cambiados contienen `href`.
+
+| Plantilla | Antes | Ahora | Sitios |
+|---|---|---|---|
+| 06 · experiencia | `{{contact.url_feedback}}` | `{{custom_values.url_feedback}}?cid={{contact.id}}` | 2 |
+| 07 · reseña | `AÑADIR ENLACE` | `{{custom_values.url_feedback}}?cid={{contact.id}}` | 2 |
+| 18 · reseña en Google | `AÑADIR ENLACE GOOGLE` | `{{custom_values.url_resena_google}}` | 2 |
+| 09A · devolución verificada | `{{contact.url_devolucion}}` | `{{custom_values.url_devoluciones}}` | 2 |
+| 10 · reembolso | `{{contact.url_devolucion}}` | `{{custom_values.url_devoluciones}}` | 2 |
+| 15 · reposición | `{{contact.url_pieza}}` | `{{custom_values.url_pieza}}` | 2 |
+| 16 · datos no coinciden | `AÑADIR LINK` / `AÑADIR CONTACTO` | `{{custom_values.url_devoluciones}}` / `{{custom_values.url_contacto}}` | 2+2 |
+| 03 · preparación | `{{contact.url_pedido}}` | la URL de pedido del `<a>` visible | 1 |
+| 08 · solicitud devolución | `{{contact.url_etiqueta_devolucion}}` | `{{opportunity.url_etiqueta_devolucion}}` | 1 |
+
+### ⚠️ Corrección: en el 03 y el 08 no sobraba ningún botón
+
+Ayer los di por "botón duplicado". **No lo era.** Cada botón de estas plantillas está
+escrito dos veces: el `<a>` normal y un **fallback VML para Outlook**
+(`<v:roundrect href="…">`) dentro de un `<!--[if mso]>`. El arreglo del 14/8 tocó el `<a>`
+visible y **dejó el de Outlook con el merge tag viejo**. Por eso aparecían dos destinos
+distintos en la misma plantilla y por eso el conteo de arriba dice "1 sitio" en el 03 y el
+08 y "2" en las demás. En Outlook esos dos correos llevaban al enlace equivocado; en el
+resto de clientes, bien.
+
+De ahí sale una regla para la próxima: **en estas plantillas, un botón son dos `href`.**
+Cambiar solo el visible deja la mitad rota, y es una mitad que no se ve al revisar.
+
+### Por qué el 07 va al mismo sitio que el 06
+
+No es un descuido heredado: lo dice la propia plantilla **18**, en un comentario de
+cabecera —*"el 07 lleva a un formulario de feedback propio (privado); este 18 lleva a
+Google (reseña pública)"*. Son las dos patas a propósito: opinión privada para mejorar y
+reseña pública para captar. El 06 invita el día 3 y el 07 insiste el día 10, los dos al
+mismo formulario.
+
+### Lo que sigue haciendo falta para que esos botones lleven a algún sitio
+
+Los enlaces ya son parametrizables, pero **tres custom values siguen vacíos o viejos**:
+
+- `url feedback` → hoy apunta al formulario viejo `fvVToLx0e9pEjSRD6zq7`. Se cambia por
+  `/experiencia` cuando esté publicada, y los correos 06 y 07 se arreglan solos.
+- `url resena google` → vacío. Es el enlace "escribir una reseña" de la ficha de Sara (18).
+- `url pieza` → vacío. Se pone por campaña (15).
+
+Y el destino del botón principal del **16** es una inferencia mía: puse la página de
+devoluciones, que es donde vive el formulario. Si hay una URL directa del formulario de
+solicitud, es mejor esa. El 16 no está montado en ningún workflow, así que no corre prisa.
+
+**Copias de seguridad:** `datos/backups/plantillas_20260822/` (las 19 tal como estaban) y
+`…_despues/` (tal como quedaron). Restaurar una es un `POST` con el HTML de la primera
+carpeta.

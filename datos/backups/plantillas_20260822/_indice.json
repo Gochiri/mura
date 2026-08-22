@@ -1,0 +1,116 @@
+{
+ "09A · devolución verificada": {
+  "id": "6a6aa2f38ea1ab2089eb114e",
+  "file": "09A_devoluci_n_verificada.html",
+  "lastUpdated": "2026-07-30T01:03:49.288Z",
+  "bytes": 10150
+ },
+ "09B · incidencia devolución": {
+  "id": "6a6aa2f661a2115039f00392",
+  "file": "09B_incidencia_devoluci_n.html",
+  "lastUpdated": "2026-07-30T01:03:51.419Z",
+  "bytes": 10964
+ },
+ "10 · reembolso": {
+  "id": "6a6aa2f8301f379d94c7b7ce",
+  "file": "10_reembolso.html",
+  "lastUpdated": "2026-07-30T01:03:53.488Z",
+  "bytes": 9485
+ },
+ "11 · segunda compra": {
+  "id": "6a6aa2fa8ea1ab2089eb119e",
+  "file": "11_segunda_compra.html",
+  "lastUpdated": "2026-07-30T01:03:55.578Z",
+  "bytes": 9985
+ },
+ "14 · lanzamiento": {
+  "id": "6a6aa2fe0d3eda23ad6dc3d7",
+  "file": "14_lanzamiento.html",
+  "lastUpdated": "2026-07-30T01:03:59.861Z",
+  "bytes": 10011
+ },
+ "15 · reposición": {
+  "id": "6a6aa30014830a62bce73d47",
+  "file": "15_reposici_n.html",
+  "lastUpdated": "2026-07-30T01:04:02.136Z",
+  "bytes": 9961
+ },
+ "06 · experiencia": {
+  "id": "6a6aa2ef3fca8e1053eff501",
+  "file": "06_experiencia.html",
+  "lastUpdated": "2026-08-07T14:04:25.563Z",
+  "bytes": 10067
+ },
+ "07 · reseña": {
+  "id": "6a75e5e973e37ca123637d76",
+  "file": "07_rese_a.html",
+  "lastUpdated": "2026-08-07T14:04:27.294Z",
+  "bytes": 10682
+ },
+ "16 · datos de devolución no coinciden": {
+  "id": "6a75e5eb96dc697014d600f7",
+  "file": "16_datos_de_devoluci_n_no_coinciden.html",
+  "lastUpdated": "2026-08-07T14:04:28.998Z",
+  "bytes": 14576
+ },
+ "17 · cumpleaños": {
+  "id": "6a75e5ed44a7d6989c157ce7",
+  "file": "17_cumplea_os.html",
+  "lastUpdated": "2026-08-07T14:04:30.737Z",
+  "bytes": 12792
+ },
+ "18 · reseña en Google": {
+  "id": "6a75e5ef7d94d21ac56215a0",
+  "file": "18_rese_a_en_Google.html",
+  "lastUpdated": "2026-08-07T14:04:32.482Z",
+  "bytes": 12131
+ },
+ "05 · entrega": {
+  "id": "6a6aa2ed3954360b6a94f117",
+  "file": "05_entrega.html",
+  "lastUpdated": "2026-08-14T09:37:42.783Z",
+  "bytes": 10008
+ },
+ "12 · hace tiempo": {
+  "id": "6a6aa2fc61a2115039f003cf",
+  "file": "12_hace_tiempo.html",
+  "lastUpdated": "2026-08-14T09:57:50.968Z",
+  "bytes": 9959
+ },
+ "02 · confirmación": {
+  "id": "6a6aa2e6e3d32f78af2869e2",
+  "file": "02_confirmaci_n.html",
+  "lastUpdated": "2026-08-14T18:09:23.566Z",
+  "bytes": 11219
+ },
+ "03 · preparación": {
+  "id": "6a6aa2e814830a62bce73c7a",
+  "file": "03_preparaci_n.html",
+  "lastUpdated": "2026-08-14T18:10:49.826Z",
+  "bytes": 9805
+ },
+ "08 · solicitud devolución": {
+  "id": "6a6aa2f161a2115039f0034f",
+  "file": "08_solicitud_devoluci_n.html",
+  "lastUpdated": "2026-08-14T18:47:56.023Z",
+  "bytes": 11046
+ },
+ "04 · envío": {
+  "id": "6a6aa2ea4eb3e6c4d953427c",
+  "file": "04_env_o.html",
+  "lastUpdated": "2026-08-14T22:39:45.499Z",
+  "bytes": 10258
+ },
+ "01 · bienvenida newsletter": {
+  "id": "6a6aa2e4a1ebd230f8649167",
+  "file": "01_bienvenida_newsletter.html",
+  "lastUpdated": "2026-08-16T16:49:57.892Z",
+  "bytes": 15751
+ },
+ "00 - Confirmación de mail": {
+  "id": "6a832d2b49311439952464f9",
+  "file": "00_Confirmaci_n_de_mail.html",
+  "lastUpdated": "2026-08-17T15:51:04.886Z",
+  "bytes": 10709
+ }
+}
