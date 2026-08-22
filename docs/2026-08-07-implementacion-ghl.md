@@ -2314,3 +2314,97 @@ traer datos nuevos.
 **Stripe sigue pendiente y es de Sonia.** En el mismo mensaje: *«falta revisar la parte de
 Stripe creo»*. Sigue sin concretarse el alcance —el documento decía «dejar hecha toda la
 parte»— y es lo único que separa la tienda de poder cobrar de verdad.
+
+## 33. Verificación del 22/8: los enlaces de las plantillas siguen rotos
+
+Repaso pedido por German con token nuevo. Lo de los workflows sale limpio; lo de las
+plantillas, no.
+
+### 33.1 Los tres workflows, como los dejamos
+
+```
+05 · Entrega          publicado · v19 · allowMultiple true
+  TRIGGER  pipeline_stage_updated            ✓ (el cambio del 17/8 sobrevivió)
+  0 add_contact_tag  pedido-entregado
+  1 email            05 · entrega
+  2 webhook          n8n /avisos-sara
+
+06b · Encuesta        publicado · v13
+  TRIGGER  form_submission   (el viejo, sigue vivo a propósito)
+  TRIGGER  contact_tag       ✓
+  0 internal_notification
+  1 webhook  n8n /db8ae6be-…       (aviso a Sara)
+  2 webhook  n8n /experiencia-mura  ← el que se retira CON el trigger viejo
+
+06-12 · Journey       publicado · v14 · allowMultiple false
+  0 wait 3 días → 1 Email 06 → 2 quita `pedido-entregado` → 3 pone `experiencia`
+  4 wait 7 días → 5 Email 07 → 6 quita `experiencia` → 7 pone `feedback`
+  8 wait 80 días → 9 if_else «Ya ha comprado dos veces»
+       SÍ  → quita `feedback`
+       NO  → pone `inactivo` + quita `feedback` + Email 12
+```
+
+Queda confirmado de paso que **el correo 07 sí está montado** —es el paso 5 del journey—,
+al contrario de lo que decía la nota del 13/8 en la sección 20b.
+
+### 33.2 ⚠️ Corrección de la sección 20b: los merge tags NO están arreglados
+
+La sección 20b dice que el 13/8 se arreglaron los cinco merge tags rotos y los dos
+`AÑADIR ENLACE`. **En la cuenta, hoy, siguen igual.** Bajadas las 19 plantillas de la
+carpeta *Correos* por API y leído el render de cada una:
+
+| Plantilla | Enlace del botón hoy | Estado |
+|---|---|---|
+| 06 · experiencia | `{{contact.url_feedback}}` | ⚠️ **vivo** (paso 1 del journey, día 3) |
+| 07 · reseña | `AÑADIR ENLACE` (literal) | ⚠️ **vivo** (paso 5 del journey, día 10) |
+| 18 · reseña en Google | `AÑADIR ENLACE GOOGLE` | sin workflow |
+| 16 · datos no coinciden | `AÑADIR CONTACTO`, `AÑADIR LINK` | sin workflow |
+| 09A · devolución verificada | `{{contact.url_devolucion}}` | |
+| 10 · reembolso | `{{contact.url_devolucion}}` | |
+| 15 · reposición | `{{contact.url_pieza}}` | sin workflow |
+| 08 · solicitud devolución | lleva el bueno `{{opportunity.url_etiqueta_devolucion}}` **y** un `{{contact.url_etiqueta_devolucion}}` de más | |
+| 03 · preparación | lleva el bueno **y** un `{{contact.url_pedido}}` de más | |
+
+**Tres señales independientes dicen lo mismo:**
+
+1. **`lastUpdated` de la API**: 06, 07, 16 y 18 → `2026-08-07`; 09A, 10 y 15 →
+   `2026-07-30`. **Ninguna** plantilla de la cuenta tiene fecha del 13/8. Si se hubieran
+   guardado ese día, la fecha lo diría.
+2. **El render**: el `previewUrl` que devuelve la API —que se regenera al guardar— sigue
+   trayendo `href="AÑADIR ENLACE"` y `href="{{contact.url_feedback}}"`.
+3. **Los campos no existen**: la cuenta tiene 23 campos de contacto y entre ellos **no
+   están** `url_feedback`, `url_devolucion` ni `url_pieza`. Sí existen `url_pedido` y
+   `url_etiqueta_devolucion`, que son los sobrantes del 03 y el 08.
+
+Consecuencia práctica: **el 06 sale hoy con un botón que no lleva a ningún sitio**, y a los
+siete días el 07 sale con `AÑADIR ENLACE` como destino. Los dos van dentro del journey
+publicado que arranca con el tag `pedido-entregado`, o sea el camino normal de cualquier
+compra entregada.
+
+**Lo que no pude comprobar:** el documento crudo de la plantilla. `/emails/builder/{loc}/{id}`
+devuelve 401 con el PIT y Cloudflare 1010 por la vía interna. Las tres señales de arriba son
+metadatos y render, no el JSON guardado — así que la confirmación de un segundo lo da abrir
+el 06 en la UI y mirar el botón. Si allí apareciera bien, el problema sería del render y no
+del correo; pero entonces la fecha del 13/8 tendría que estar, y no está.
+
+### 33.3 Qué hay que cambiar, y por qué no basta con rellenar el custom value
+
+Rellenar `url feedback` con la página `/experiencia` **no arregla el 06**: su botón apunta a
+`{{contact.url_feedback}}`, un campo que no existe, no al custom value. Hay que editar la
+plantilla. Y el **07 es un correo de reseña que apunta al mismo sitio que el 06** según la
+tabla del 13/8 — eso hay que decidirlo, no heredarlo: lo lógico es que el 07 lleve a la
+ficha de Google, que es justo el `url resena google` que sigue vacío.
+
+Cambios en las plantillas (UI, campo del enlace del botón):
+
+- **06** → `{{custom_values.url_feedback}}?cid={{contact.id}}`
+- **07** → `{{custom_values.url_resena_google}}` (o al feedback, si Sonia lo prefiere así)
+- **18** → `{{custom_values.url_resena_google}}`
+- **09A**, **10** → `{{custom_values.url_devoluciones}}`
+- **15** → `{{custom_values.url_pieza}}`
+- **16** → contacto y enlace de devoluciones
+- **03**, **08** → quitar el botón sobrante
+
+Y rellenar los dos custom values vacíos: `url resena google` (ficha de Google de Sara) y
+`url pieza` (por campaña). `url feedback` sigue apuntando al formulario viejo
+`fvVToLx0e9pEjSRD6zq7`, así que se cambia cuando `/experiencia` esté publicada.
