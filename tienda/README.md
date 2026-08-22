@@ -6,9 +6,9 @@ Qué se pega y dónde. **En este orden**, siempre.
 |---|---|
 | `tracking-code-head.html` | Sitio "Mura" → Settings → **Tracking Code → Head** |
 | `tracking-code-body.html` | Sitio "Mura" → Settings → **Tracking Code → Body** |
-| `css-paginas-tienda.css` | **Custom CSS** de `/checkout`, `/products-list`, `/product-details` y `/thank-you` |
+| `css-paginas-tienda.css` | **Custom CSS** de `/checkout` (las otras de tienda no se usan, ver abajo) |
 | `carrito.html` | página `carrito` → elemento de código `custom-code-DN8OVgnA5P` |
-| `gracias-compra.html` | página **"Thank you!"** (`/thank-you`), no `/gracias` |
+| `gracias-compra.html` | página **`/gracias`** |
 | `producto.html` | página `producto` → elemento `custom-code-oM1HT_mKKm` |
 | `suscripcion-confirmada.html` | página `/suscripcion-confirmada` |
 | `newsletter-home.html` | sección al final de `/home` |
@@ -35,9 +35,21 @@ Lo que sí viaja en el HTML es el **Custom CSS de la página**, que sale como
 primera hoja del head. Ahí va `css-paginas-tienda.css`, y así el navegador
 tiene el estilo antes de pintar sin depender de ningún script.
 
-Es **por página**: hay que pegarlo en las cuatro de tienda. El CSS sigue
-yendo también dentro del Head, que no estorba —son las mismas reglas— y
-cubre cualquier página donde no se haya pegado.
+Es **por página**, pero de las cuatro de tienda **solo se usa `/checkout`**
+(22/8, German). `/products-list`, `/product-details` y `/thank-you` existen
+porque la tienda de GHL las necesita, pero la clienta nunca las ve: la
+rejilla es `/prendas`, la ficha es `/producto` y el post-compra es
+`/gracias`. Tenerlo pegado también ahí no molesta y evita que se vean en
+crudo si algún enlace interno lleva a una de ellas.
+
+⚠️ **`gracias-compra.html` va en `/gracias`, no en `/thank-you`.** Este
+README dijo lo contrario hasta el 22/8. Comprobado por API: `/gracias`
+lleva el código MÛRA en su elemento y `/thank-you` no tiene ninguno. Si el
+checkout no redirige a `/gracias` tras el pago, la clienta acaba en una
+página vacía — conviene confirmarlo en los ajustes de la tienda.
+
+El CSS sigue yendo también dentro del Head, que no estorba —son las mismas
+reglas— y cubre cualquier página donde no se haya pegado.
 
 ## Por qué el global son dos archivos, y no uno
 

@@ -5,12 +5,15 @@
 
        cd tienda && node extraer-css.js
 
-   VA EN: cada página de tienda → Settings → Custom CSS
-     /checkout · /products-list · /product-details · /thank-you
+   VA EN: Settings → Custom CSS de /checkout, que es la única
+   página nativa de tienda que se usa. /products-list,
+   /product-details y /thank-you existen porque la tienda de GHL
+   las necesita, pero la clienta ve /prendas, /producto y
+   /gracias. Tenerlo pegado ahí tampoco estorba.
 
-   Se pega en las cuatro. Esa caja es por página y no hay una
-   global; el Tracking Code del Head no vale porque GHL no lo
-   sirve dentro del <head>, lo inyecta por JS cuando ya arrancó.
+   Esa caja es por página y no hay una global; el Tracking Code
+   del Head no vale porque GHL no lo sirve dentro del <head>, lo
+   inyecta por JS cuando ya arrancó.
 
    Sin <style>: la caja de GHL espera CSS suelto.
    ============================================================ */
