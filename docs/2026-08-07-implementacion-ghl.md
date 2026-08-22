@@ -2589,3 +2589,88 @@ corra un script, y la sección 9 se puede borrar entera.
 Detalle sin importancia práctica: los seis textos del elemento **Cart** viven en `/cart`, y
 `/cart` lo redirigimos a `/carrito` desde la primera línea del global. O sea que hoy no los
 ve nadie. Se traducen igual, como red por si algún día se llega a esa página.
+
+## 35. Dónde va de verdad el CSS de la tienda (22/8, noche)
+
+### 35.1 ⚠️ Corrección: el split del 17/8 no arregló el FOUC
+
+German avisa de que en `/checkout` el estilo tarda **unos 10 segundos**. Medido desde su
+navegador con `fetch(location.href)` sobre el HTML **servido**:
+
+```
+bytesDelHtml: 288.039     bytesDelHead: 92.337
+nuestroScriptEstaEnElHeadDelHtml: false
+vecesEnTodoElHtml: 2
+```
+
+**GHL no sirve el Tracking Code del Head dentro del `<head>`.** Lo deja en el body y lo
+sube arriba por JavaScript cuando la app ya arrancó. Por eso el CSS no existe hasta que ese
+bloque corre.
+
+Y por eso **la verificación del 17/8 estaba mal hecha**: di el split por bueno leyendo
+`document.head` en el navegador —el DOM ya montado, donde GHL ya lo había subido— en vez
+del HTML servido. La prueba correcta es la de arriba. La lección: *para saber si algo llega
+antes de pintar, hay que mirar lo que llega, no lo que hay después.*
+
+**De paso, otra falsa alarma mía.** El chequeo del DOM contaba **3** copias del global y
+avisé de una copia vieja sin borrar. En el HTML servido `MURA_PARTE` aparece exactamente
+**2** veces: los dos pegados. La tercera es un bloque de 185 KB del propio GHL que
+**contiene** nuestro código del Head dentro, y por eso el filtro lo contaba. No había nada
+que borrar.
+
+### 35.2 Lo que sí viaja en el HTML: el Custom CSS de la página
+
+Ya lo sabíamos sin saberlo: los 19 KB del skin viejo del checkout vivían en esa caja y
+salían como **primera hoja del head** (sección 27.4). Así que ahí va el CSS.
+
+`tienda/css-paginas-tienda.css` es nuevo y **generado**: `build.sh` lo saca del mismo
+`codigo-global-tienda.js` que los dos tracking codes. No parseando texto —eso se rompe en
+silencio— sino **ejecutando** el global con un DOM de mentira y quedándose con lo que el
+código le pasa a `estilo()`. La fuente, que se añade como `<link>`, se convierte en
+`@import` porque en esa caja no cabe una etiqueta.
+
+Va en las **cuatro** páginas de tienda: `/checkout`, `/products-list`, `/product-details`,
+`/thank-you`. Esa caja es por página y no hay una global.
+
+### 35.3 ⚠️ Y entonces el CSS se comió el editor
+
+Pegado en `/checkout`, el CSS **repintó también la barra de herramientas del constructor**.
+Causa: en el Tracking Code el bloque corría detrás de una guardia de ruta; en la caja de la
+página no hay guardia, y **el constructor pinta la página en su mismo documento**, así que
+un `body { }` le llega igual a la herramienta.
+
+Arreglado acotando **todo** el bloque `tienda` a `.hl_page-preview--content`, el envoltorio
+del contenido. La cadena real, leída en vivo:
+
+```
+body > div#__nuxt > div > div > div#preview-container.hl_page-preview--content
+     > … > div#store-checkout-sTf_Fd0JV5 > div.hl-store-checkout-container
+```
+
+En el editor ese envoltorio rodea el lienzo y no la barra: se ve lo que se edita sin teñir
+la herramienta. Lo hace `acotar()`, que prefija cada selector y entiende los `@media`; las
+dos reglas que iban sobre el `body` se marcan con `:scope` y se convierten en el propio
+envoltorio. El bloque `sistema` no se toca: ya va prefijado con `.mura-*`.
+
+### 35.4 Verificado
+
+Réplica con una barra de editor **fuera** del envoltorio y el contenido de tienda dentro:
+
+```
+            fuera (editor)        dentro (página)
+fondo       transparente          #F0EEE8
+titular     Times New Roman       Cormorant Garamond
+botón       gris del navegador    #1D1B18
+input       2px, por defecto      1px de marca
+```
+
+Y el CSS solo, sin ningún script: 142 reglas, resumen con el fondo de marca, divisor de
+1 px y el dibujo del carrito vacío oculto. La traducción de la sección 34 sigue sin dejar
+nada en inglés ni en el primer frame ni al final.
+
+### 35.5 Pendiente de comprobar en vivo
+
+Si con el CSS en la caja de la página `/checkout` sigue tardando, entonces ya no es cosa
+del CSS —estaría servido en el HTML— sino del bundle de la tienda, que pinta su formulario
+cuando quiere. Ahí la salida sería otra: reservar el hueco con un esqueleto, no reordenar
+hojas.

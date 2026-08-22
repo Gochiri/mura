@@ -504,11 +504,43 @@ window.MURA_PARTE = 'head';
      Este es el bloque por el que se partió el archivo: es el que
      tarda en llegar si viaja en el Tracking Code del body. */
 
+  /* ============================================================
+     Acotar el bloque de tienda al contenido de la página
+     ============================================================
+     Desde el 22/8 este mismo CSS se pega también en el Custom CSS
+     de cada página —es lo único que GHL sirve dentro del <head>—.
+     Y ahí no hay guardia de ruta que valga: el CONSTRUCTOR de GHL
+     pinta la página en su propio documento, así que un `body { }`
+     le repinta también la barra de herramientas al editor.
+
+     Todas las reglas cuelgan de `.hl_page-preview--content`, que
+     es el envoltorio del contenido —comprobado en vivo: body >
+     #__nuxt > … > #preview-container.hl_page-preview--content >
+     … > .hl-store-checkout-container—. En el editor ese envoltorio
+     rodea el lienzo y no la barra, así que se ve lo que se edita
+     sin teñir la herramienta.
+
+     `:scope` marca las reglas que van SOBRE el envoltorio y no
+     dentro (las que antes eran `body`). */
+  var RAIZ = '.hl_page-preview--content';
+
+  function acotar(regla) {
+    var m = regla.match(/^\s*(@media[^{]+)\{([\s\S]*)\}\s*$/);
+    if (m) return m[1] + '{ ' + acotar(m[2].trim()) + ' }';
+    var i = regla.indexOf('{');
+    if (i === -1) return regla;
+    var sels = regla.slice(0, i).split(',').map(function (s) {
+      s = s.trim();
+      return s.indexOf(':scope') === 0 ? s.replace(':scope', RAIZ) : RAIZ + ' ' + s;
+    });
+    return sels.join(', ') + ' ' + regla.slice(i);
+  }
+
   var tienda = [
 
     /* ---------- Base ---------- */
-    'body { background: #F0EEE8 !important; }',
-    "body, body * { font-family: 'Jost', sans-serif !important; font-weight: 300; }",
+    ':scope { background: #F0EEE8 !important; min-height: 100vh; }',
+    ":scope, :scope * { font-family: 'Jost', sans-serif !important; font-weight: 300; }",
     "h1, h2, h3, h4, [class*='title'], .hl-cart-heading, .empty-cart-heading { font-family: 'Cormorant Garamond', Georgia, serif !important; font-weight: 500 !important; color: #1D1B18 !important; background: transparent !important; }",
     'p, span, div, a, li, td { color: #1D1B18; }',
     'img { border-radius: 0 !important; }',
@@ -622,7 +654,7 @@ window.MURA_PARTE = 'head';
 
     '@media (max-width: 719px) { .hl-cart-summary-container { margin-top: 28px; } }'
 
-  ].join('\n');
+  ].map(acotar).join('\n');
 
   if (HAY_CSS && esTienda) estilo('tienda', tienda);
 
