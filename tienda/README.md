@@ -6,6 +6,7 @@ Qué se pega y dónde. **En este orden**, siempre.
 |---|---|
 | `tracking-code-head.html` | Sitio "Mura" → Settings → **Tracking Code → Head** |
 | `tracking-code-body.html` | Sitio "Mura" → Settings → **Tracking Code → Body** |
+| `css-paginas-tienda.css` | **Custom CSS** de `/checkout`, `/products-list`, `/product-details` y `/thank-you` |
 | `carrito.html` | página `carrito` → elemento de código `custom-code-DN8OVgnA5P` |
 | `gracias-compra.html` | página **"Thank you!"** (`/thank-you`), no `/gracias` |
 | `producto.html` | página `producto` → elemento `custom-code-oM1HT_mKKm` |
@@ -21,6 +22,22 @@ Qué se pega y dónde. **En este orden**, siempre.
 activarlo y copiar la URL de **producción** — la `/webhook/…`. La de
 pruebas, `/webhook-test/…`, solo escucha con el editor de n8n abierto:
 en producción no llega nunca. Ese fue el bug del 06b.
+
+## Por qué además hay un CSS suelto (22/8)
+
+**GHL no sirve el Tracking Code del Head dentro del `<head>`.** Lo deja en
+el body y lo sube arriba por JavaScript cuando la app ya arrancó. Medido en
+`/checkout` con `fetch(location.href)`: en el HTML servido `MURA_PARTE`
+aparece dos veces y **ninguna** antes de `</head>`. De ahí que el estilo
+tardara ~10 s en aparecer.
+
+Lo que sí viaja en el HTML es el **Custom CSS de la página**, que sale como
+primera hoja del head. Ahí va `css-paginas-tienda.css`, y así el navegador
+tiene el estilo antes de pintar sin depender de ningún script.
+
+Es **por página**: hay que pegarlo en las cuatro de tienda. El CSS sigue
+yendo también dentro del Head, que no estorba —son las mismas reglas— y
+cubre cualquier página donde no se haya pegado.
 
 ## Por qué el global son dos archivos, y no uno
 
@@ -52,6 +69,11 @@ código mira esa constante para saber si le toca correr. Se edita el
 `.js` (nunca los `.html`) y se regeneran:
 
     cd tienda && ./build.sh
+
+Eso regenera los dos pegables **y** `css-paginas-tienda.css`, que no se
+extrae buscando texto sino **ejecutando** el global con un DOM de mentira y
+quedándose con lo que le pasa a `estilo()`. Si cambian los bloques o las
+guardias de ruta, sigue sacando lo correcto.
 
 Los dos llevan el código entero y solo se diferencian en esa línea. Es a
 propósito: partir el fuente por marcadores de texto ahorra unos kilobytes
