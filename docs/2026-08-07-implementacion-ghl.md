@@ -2496,3 +2496,96 @@ solicitud, es mejor esa. El 16 no está montado en ningún workflow, así que no
 **Copias de seguridad:** `datos/backups/plantillas_20260822/` (las 19 tal como estaban) y
 `…_despues/` (tal como quedaron). Restaurar una es un `POST` con el HTML de la primera
 carpeta.
+
+## 34. Los textos del checkout y el carrito vacío (22/8)
+
+### 34.1 Lo que había, leído por API
+
+El contenido de una página se lee en `GET /funnels/page/{pageId}` del backend interno
+—con `token-id`; el PIT da 401 ahí— y el JSON de los elementos vive en el `pageDataUrl`
+que ese objeto trae, un fichero de Firebase. Bajados los dos:
+
+```
+Cart      · elemento store-cart-J14MT1D5-f       → los SEIS textos en inglés
+Checkout  · elemento store-checkout-sTf_Fd0JV5   → 42 textos, casi todos ya en castellano
+```
+
+En el checkout quedaban tres clases de cabo suelto:
+
+- **inglés**: `notesTextBoxPlaceholder` = *"Add notes about your order or special notes for
+  delivery"*.
+- **español de América**: «Busca tu domicilio», «Domicilio completo», «Agregar notas a tu
+  pedido», «Regresar a Contacto y Envío», «Estado / Provincia». La tienda vende en España.
+- **una tilde**: «Codigo Postal».
+
+Y aparte, el vacío del resumen —el *tumbleweeds* traducido a máquina— **no es un ajuste**:
+no existe esa clave en el elemento, lo pone GHL por su cuenta.
+
+### 34.2 ⚠️ No hay ruta de escritura alcanzable para las páginas
+
+Lo suyo era cambiarlos en el ajuste del elemento y quedarse sin script. No se pudo:
+
+```
+GET  /funnels/page/{pageId}                    200  ✓ (token-id, no PIT)
+POST/PUT/PATCH sobre /funnels/page/{id}        404 "Cannot POST /funnels/page/…"
+  …y sobre /data, /save, /sections, /content, /funnels/page/save, /funnels/page/update,
+  /funnels/funnel/{fid}/page/{pid}, /funnels/page-data/{id}                 404 igual
+```
+
+«Cannot POST» es **ruta inexistente**, no permiso denegado: el builder guarda por otra vía.
+Averiguar cuál pedía leer su bundle, y `app.gohighlevel.com` no se alcanza desde el entorno
+(el proxy lo rechaza). Se deja anotado; el día que aparezca la ruta, esto se hace bien en
+dos minutos.
+
+### 34.3 Lo hecho: la traducción se muda al HEAD
+
+La sección 9 del `codigo-global-tienda.js` es nueva. Antes había un mapa de textos dentro
+del bloque del BODY que, en cada mutación, **recorría el documento entero**; corría después
+de pintar, así que «My cart» se veía un instante, y solo cubría seis cadenas.
+
+Ahora:
+
+- va con el **HEAD**, así que está escuchando antes de que el bundle de la tienda pinte;
+- observa desde `documentElement` y traduce **solo los nodos que se insertan**, no todo el
+  documento en cada cambio;
+- cubre las **42 cadenas** del checkout y el carrito, más los **placeholders** —que son
+  atributos y el mapa viejo ni los miraba—;
+- el vacío del resumen y el placeholder de notas van **por prefijo**, no por igualdad: de
+  esos dos no tengo el literal exacto (lo pone GHL y cambia con la versión) y una coma de
+  diferencia dejaría la regla muda sin avisar.
+
+### 34.4 Verificado en réplica, con los textos reales de la cuenta
+
+La réplica no se escribió a mano: se **genera desde el JSON de los elementos** que devuelve
+la API, así que prueba las cadenas que hay de verdad y no las que yo recuerde. Pinta a los
+400 ms, como hace el bundle.
+
+```
+errores JS:                          ninguno
+PRIMER FRAME pintado, sin traducir:  NINGUNO
+al final, sin traducir:              NINGUNO
+placeholders: Busca tu dirección · Indicaciones para la entrega · Introduce tu código
+dibujo del carrito vacío:            display none
+```
+
+Lo del **primer frame** es la medida que importa: se captura en el `requestAnimationFrame`
+siguiente a la inserción, o sea antes del primer pintado de ese contenido. Si ahí ya está
+en castellano, no hay parpadeo que ver.
+
+**Un fallo que solo apareció al probar:** `querySelectorAll('[placeholder]')` mira
+descendientes, no el nodo en sí. Cuando el `<input>` **es** el nodo insertado —y en el
+checkout lo es— se escapaba. Dos placeholders se quedaron en inglés en la primera pasada
+del test. Arreglado comprobando también el propio nodo.
+
+Regresión mirada aparte: `/prendas` sigue montando el buscador y filtrando («cardigan» →
+1 pieza de 3), sin errores.
+
+### 34.5 Lo que sigue siendo mejor hacer a mano
+
+La lista completa para pegar en los ajustes de los elementos está al final de
+`tienda/codigo-global-tienda.js`. Puestos ahí salen bien de origen, sin depender de que
+corra un script, y la sección 9 se puede borrar entera.
+
+Detalle sin importancia práctica: los seis textos del elemento **Cart** viven en `/cart`, y
+`/cart` lo redirigimos a `/carrito` desde la primera línea del global. O sea que hoy no los
+ve nadie. Se traducen igual, como red por si algún día se llega a esa página.

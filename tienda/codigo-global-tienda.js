@@ -92,6 +92,10 @@
   var PARTE = (typeof window !== 'undefined' && window.MURA_PARTE) || 'todo';
   var HAY_CSS = PARTE === 'head' || PARTE === 'todo';
   var HAY_DOM = PARTE === 'body' || PARTE === 'todo';
+  /* La traducción va con el HEAD, no con el BODY: tiene que estar
+     escuchando ANTES de que el bundle de la tienda pinte, o el texto
+     en inglés se ve un instante. Ver la sección 9. */
+  var HAY_TRAD = HAY_CSS;
 
   var path = location.pathname.replace(/\/+$/, '');
   var RUTAS_TIENDA = ['/products-list', '/product-details', '/checkout', '/thank-you'];
@@ -612,6 +616,135 @@
   if (HAY_CSS && esTienda) estilo('tienda', tienda);
 
   /* ============================================================
+     9 · Textos de los elementos Cart y Checkout
+     ============================================================
+     Estos textos son ajustes del elemento y viven en la página, no
+     aquí. Lo suyo es cambiarlos ahí —salen bien al primer pintado y
+     esto se queda sin trabajo—, pero la API de páginas de GHL no
+     tiene ruta de escritura alcanzable: `GET /funnels/page/{id}`
+     responde, y todas las de guardado dan «Cannot POST». Así que
+     mientras tanto los arregla este bloque.
+
+     Corre en el HEAD y observa desde `documentElement`, así que
+     reescribe cada nodo EN CUANTO SE INSERTA, no después de pintar.
+     Esa es la diferencia con la versión anterior, que iba en el body
+     y repasaba el documento entero en cada mutación: se veía «My
+     cart» un instante y costaba más.
+
+     Lo que se toca y por qué:
+       · inglés puro          — el elemento Cart tiene sus seis textos
+                                sin traducir, y el checkout se dejó el
+                                placeholder de las notas.
+       · traducción de máquina — el vacío del resumen es el «tumbleweeds»
+                                literal de GHL, y encima trata de usted.
+       · español de América    — «domicilio», «agregar», «regresar»:
+                                la tienda vende en España.
+       · el resto              — copia acordada, la que ya estaba escrita
+                                en la NOTA del final de este archivo. */
+
+  if (HAY_TRAD && esTienda) traducirTextos();
+
+  function traducirTextos() {
+    var exacto = {
+      // --- elemento Cart ---
+      'My cart': 'Tu selección',
+      'My Cart': 'Tu selección',
+      'Your Cart is empty': 'Aún no has seleccionado ninguna pieza.',
+      'Continue Shopping': 'Descubrir colección',
+      'Continue shopping': 'Descubrir colección',
+      'Checkout': 'Completar pedido',
+      'Qty': 'Ud.',
+      'Cant': 'Ud.',
+      // --- checkout: migas y secciones ---
+      'Contacto y Envío': 'Datos y envío',
+      'Regresar a Contacto y Envío': 'Volver a datos y envío',
+      'Continuar a pagar': 'Continuar al pago',
+      'Email': 'Correo electrónico',
+      'Detalles de envío': 'Datos de envío',
+      'Detalles del Pago': 'Datos de facturación',
+      'Nombre completo': 'Nombre y apellidos',
+      'Busca tu domicilio': 'Busca tu dirección',
+      'Domicilio completo': 'Dirección completa',
+      'Estado / Provincia': 'Provincia',
+      'Codigo Postal': 'Código postal',
+      'Agregar notas a tu pedido': 'Añadir una nota al pedido',
+      'Métodos de envío': 'Forma de envío',
+      'Dirección de facturación igual que la de envío':
+        'La dirección de facturación es la misma que la de envío',
+      '* Pagos 100% seguros y protegidos *': 'Pago seguro',
+      // --- checkout: resumen ---
+      'Resumen del carrito': 'Tu pedido',
+      'Editar carrito': 'Editar',
+      'Cupón': 'Código de descuento',
+      'Introduce el código del cupón': 'Introduce tu código',
+      'Descuento (cupón)': 'Descuento',
+      'Eliminar': 'Quitar'
+    };
+
+    /* Por prefijo, no exactos: de estos dos no tengo el texto literal
+       —el de GHL cambia con la versión— y una coma de diferencia
+       dejaría la regla muda sin que nadie se entere. */
+    var patrones = [
+      [/^Las plantas rodadoras/i, 'Aún no has seleccionado ninguna pieza.'],
+      [/^Add notes about your order/i, 'Indicaciones para la entrega']
+    ];
+
+    function traduccion(t) {
+      if (!t) return null;
+      if (exacto[t]) return exacto[t];
+      for (var i = 0; i < patrones.length; i++) {
+        if (patrones[i][0].test(t)) return patrones[i][1];
+      }
+      return null;
+    }
+
+    function pasada(nodo) {
+      if (!nodo) return;
+      if (nodo.nodeType === 3) {           // nodo de texto suelto
+        var v = traduccion(nodo.textContent.trim());
+        if (v) nodo.textContent = nodo.textContent.replace(nodo.textContent.trim(), v);
+        return;
+      }
+      if (nodo.nodeType !== 1) return;     // comentarios y demás, fuera
+      var w = document.createTreeWalker(nodo, NodeFilter.SHOW_TEXT), n;
+      while ((n = w.nextNode())) {
+        var t = n.textContent.trim();
+        var r = traduccion(t);
+        if (r) n.textContent = n.textContent.replace(t, r);
+      }
+      /* Los placeholders son atributos, no nodos de texto. Y ojo:
+         `querySelectorAll` solo mira DESCENDIENTES, así que el propio
+         nodo insertado hay que comprobarlo aparte — si el <input> es
+         justo lo que se inserta, por ahí se escapaba. */
+      var campos = [];
+      if (nodo.hasAttribute && nodo.hasAttribute('placeholder')) campos.push(nodo);
+      if (nodo.querySelectorAll) {
+        var dentro = nodo.querySelectorAll('[placeholder]');
+        for (var k = 0; k < dentro.length; k++) campos.push(dentro[k]);
+      }
+      for (var i = 0; i < campos.length; i++) {
+        var p = traduccion((campos[i].getAttribute('placeholder') || '').trim());
+        if (p) campos[i].setAttribute('placeholder', p);
+      }
+    }
+
+    new MutationObserver(function (ms) {
+      for (var i = 0; i < ms.length; i++) {
+        var m = ms[i];
+        if (m.type === 'characterData') { pasada(m.target); continue; }
+        for (var j = 0; j < m.addedNodes.length; j++) pasada(m.addedNodes[j]);
+      }
+    }).observe(document.documentElement, {
+      childList: true, subtree: true, characterData: true
+    });
+
+    // y una pasada de arranque, por lo que ya estuviera puesto
+    function arranque() { pasada(document.body); }
+    if (document.body) arranque();
+    else document.addEventListener('DOMContentLoaded', arranque);
+  }
+
+  /* ============================================================
      A PARTIR DE AQUÍ, SOLO LO QUE NECESITA EL DOM
      ============================================================
      Todo lo anterior era CSS y puede correr en el <head>, antes de
@@ -660,26 +793,10 @@
 
     pintarContador();
 
-    /* Red de seguridad de idioma. Queda inerte en cuanto los textos se
-       pongan en los ajustes de los elementos Cart y Checkout (ver NOTA al
-       final), porque entonces ninguna de estas claves llega al DOM. */
-    var map = {
-      'My cart': 'Tu selección',
-      'My Cart': 'Tu selección',
-      'Your Cart is empty': 'Aún no has seleccionado ninguna pieza.',
-      'Continue Shopping': 'Descubrir colección',
-      'Checkout': 'Completar pedido',
-      'Qty': 'Ud.'
-    };
-    function tr() {
-      var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n;
-      while ((n = w.nextNode())) {
-        var t = n.textContent.trim();
-        if (map[t]) n.textContent = n.textContent.replace(t, map[t]);
-      }
-    }
-    tr();
-    new MutationObserver(function () { tr(); pintarContador(); })
+    /* Los textos ya no se tocan aquí: de eso se encarga la sección 9,
+       que corre desde el HEAD y llega antes de que se pinten. Este
+       observer se queda solo con el contador del carrito. */
+    new MutationObserver(pintarContador)
       .observe(document.body, { childList: true, subtree: true });
   }
 
@@ -692,13 +809,31 @@
    NOTA · LOS TEXTOS VAN EN EL ELEMENTO, NO EN JS
 
    Los elementos Cart y Checkout guardan sus textos como ajustes
-   propios. Hoy están TODOS en inglés. En el carrito los reescribe
-   el MutationObserver de arriba, que corre DESPUÉS de pintar: se
-   ve "My cart" un instante. En el checkout no los reescribe nadie,
-   así que la clienta paga en un formulario en inglés entero.
+   propios. Leídos por API el 22/8, así están:
 
-   Puestos en los ajustes salen traducidos al primer pintado, sin
-   parpadeo, y el mapa del JavaScript se queda sin nada que hacer.
+     · Cart     — los SEIS en inglés ("My cart", "Your Cart is
+                  empty", "Continue Shopping"…).
+     · Checkout — traducido casi entero, con tres cabos: el
+                  placeholder de las notas en inglés, varios
+                  regionalismos de América ("domicilio", "agregar",
+                  "regresar") y "Codigo Postal" sin tilde.
+
+   La sección 9 los arregla desde el HEAD, así que hoy se ven bien.
+   Pero el sitio bueno sigue siendo el ajuste del elemento: salen
+   traducidos de origen, sin depender de que corra un script.
+
+   NO SE PUDO HACER POR API (22/8). El contenido de una página se
+   LEE en `GET /funnels/page/{pageId}` (backend interno, token-id;
+   el PIT da 401 ahí) y el JSON del elemento vive en el
+   `pageDataUrl` de Firebase. Para ESCRIBIR no hay ruta alcanzable:
+   POST/PUT/PATCH sobre /funnels/page/{id} y sus variantes
+   (/data, /save, /sections, /funnel/{id}/page/{id}…) responden
+   "Cannot POST", que es ruta inexistente, no permiso denegado. El
+   builder guarda por otra vía y app.gohighlevel.com no se alcanza
+   desde el entorno para averiguar cuál.
+
+   Así que esta lista es para pegar A MANO. El día que se haga, la
+   sección 9 se queda sin trabajo y se puede borrar entera.
 
    ---- Página Cart → elemento Cart → Settings ----
      headline               → Tu selección
