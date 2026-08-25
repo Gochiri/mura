@@ -24,6 +24,14 @@ así que el primer pedido real de Sara será el M100001.
   y GHL no deja: son registros de pago. Da igual, están en `liveMode: false`.
 - **Los contactos de prueba.** Se dejan a propósito: son con los que se
   probaron los flujos y borrarlos se lleva por delante ese historial.
-- **El pipeline Leads/Comunidad** conserva 2 oportunidades (German y Laura
-  Perez, del 17 y el 25/8). No entraban en el encargo; si también sobran, se
-  borran igual.
+## Leads/Comunidad: borradas también (mismo día)
+
+`leads_antes.json` guarda las dos: *German Emiliano Borrello* (25/8) y
+*Laura Perez* con el correo de Javi (17/8). Los dos pipelines quedan a cero.
+
+⚠️ **El buscador de oportunidades va con retraso.** Justo después de los dos
+`DELETE` —los dos con `success: true`— `/opportunities/search` seguía
+devolviendo las dos. No era un borrado fallido: `GET /opportunities/{id}`
+daba **404** en las dos, y a los pocos segundos el buscador ya devolvía 0.
+Conviene recordarlo: para comprobar un borrado, preguntar por id, no por el
+buscador.
