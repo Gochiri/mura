@@ -14,11 +14,18 @@ De las 33 emparejadas, **29 cuadran exactamente**.
 |---|---|---|---|
 | Pantalón Encaje Eclipse | 4 | 3 | **falta 1** |
 
-La que falta es con toda probabilidad `IMG_4097.jpg`, subida a Drive el **13/7**,
-después de que se cargara la tienda. En la carpeta de *Camisa negra encaje collar
-perla* hay otro archivo con **el mismo nombre y distinto tamaño**, también del
-13/7 — conviene mirar los dos, no vaya a ser que uno esté en la carpeta
-equivocada.
+Es `IMG_4097.jpg` (`1KLj62MyHun0duoUy6f-b-58FCQGuHUxE`), subida a Drive el **13/7**,
+después de cargar la tienda. **Comprobada abriéndola:** es la foto del conjunto
+—camisa negra de encaje con cuello de perlas y pantalón de encaje transparente—,
+archivada una vez en la carpeta de cada prenda. Está donde debe. Solo hay que
+subirla al producto.
+
+⚠️ **Corrección de una hipótesis mía.** Al ver cuatro archivos llamados
+`IMG_4097.jpg` del mismo día en cuatro carpetas distintas, di por hecho que eran
+una tanda mal colocada y que al pantalón no le faltaba nada. **Falso:** las dos
+de la camisa y el pantalón son la misma toma del conjunto, bien archivada. La
+coincidencia de nombre venía de exportarlas del mismo carrete, no de un error.
+Las únicas mal colocadas son las dos del body (ver abajo).
 
 ## Cuatro piezas sin carpeta `Fotos web`
 
@@ -30,10 +37,17 @@ equivocada.
 | Chalequillo blanco | *(no existe)* | — |
 
 Las tres primeras están publicadas con una o dos fotos y **no hay de dónde sacar
-más**: su carpeta de Drive no tiene `Fotos web` (las dos primeras solo tienen
-`Ficha técnica`, y *Top print vaquero* no tiene ninguna subcarpeta). Sus fotos
-actuales salieron de otro sitio. Con una sola foto, el Body Lencero Negro es el
-más flojo de la tienda.
+más**: su carpeta de Drive no tiene `Fotos web`. Sus fotos actuales salieron de
+otro sitio. Con una sola foto, el Body Lencero Negro es el más flojo de la tienda.
+
+**Y en la carpeta del body hay dos fotos que no son suyas.** No tiene subcarpeta:
+dentro están sueltos una foto del body (16/6, la que está publicada), la ficha
+técnica, y **dos `IMG_4097.jpg` del 13/7 que son de una blazer gris** —
+comprobado en pantalla. Esas dos no pintan nada ahí; si son de la *Blazer Gris
+Arquitectónica*, son dos fotos más disponibles para ella, que hoy tiene 4:
+
+- `1EWePFlxL0Kf9AYJc84PsiSqAjySkjSTr` · 1.485.493 b · 13/7 14:19
+- `1R7Dyv5aBtLWiEq7wttoI_K615yWYZNwc` · 1.622.300 b · 13/7 14:20
 
 **Chalequillo Traje Blanco** sigue sin existir como producto, y tampoco tiene
 fotos web. Es la única pieza de la hoja de stock que hoy no se puede vender.
