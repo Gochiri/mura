@@ -16,8 +16,10 @@ Qué se pega y dónde. **En este orden**, siempre.
 
 ### Los dos que necesitan una URL antes de pegarse
 
-`newsletter-home.html` y `experiencia.html` llevan el marcador
-`PEGAR_URL_DEL_WEBHOOK_N8N`. Hay que importar antes su workflow en n8n
+`experiencia.html` es el que sigue pendiente de URL. El del newsletter ya
+está puesto (22/8): `https://n8n.letsbebanana.com/webhook/alta-newsletter`,
+la de producción del flujo de Sonia. El JSON importable declara ese mismo
+path, para que no diverjan. Hay que importar antes su workflow en n8n
 (`n8n-newsletter-workflow.json` y `n8n-experiencia-workflow.json`),
 activarlo y copiar la URL de **producción** — la `/webhook/…`. La de
 pruebas, `/webhook-test/…`, solo escucha con el editor de n8n abierto:
