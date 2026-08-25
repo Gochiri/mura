@@ -2755,3 +2755,46 @@ La página en vivo llevaba dos cambios que no estaban aquí. Se traen ya:
 - En «Entrega y devoluciones» **desapareció la frase** *«Los artículos adquiridos
   con descuento no admiten reembolso»*. Se conserva la versión en vivo, pero
   conviene confirmar que la retirada fue a propósito: es una condición de venta.
+
+### 36.5 Parcheado (25/8)
+
+Con el código del worker delante, confirmado: `imagenes` se construía sobre `p`
+del **listado**, así que la parte de `medias` nunca aportaba nada y siempre
+quedaba `[p.image]`.
+
+⚠️ **Y no era «cambiar una línea», como parecía.** Mapear `p.medias` sin más
+deja el array vacío y entra el respaldo de la destacada: se ve exactamente
+igual, y encima parece que el arreglo no funciona. Hay que ir al detalle.
+
+**Lo que NO se hizo, y por qué.** Lo evidente era pedir el detalle de las 36 en
+el mismo `Promise.all`: 1 + 36 + 36 = **73 subpeticiones**, y el plan gratuito de
+Workers corta en **50 por petición**. El catálogo entero dejaría de responder —
+un fallo peor que el que se arregla. Hoy son 37, con margen justo.
+
+**Lo que se hizo:** la galería se resuelve solo cuando se pide una pieza,
+`GET /products?id=…`, que es la única pantalla que la necesita. Detalle + precios
+= **2 subpeticiones**. La rejilla sigue igual. Y el detalle **no trae precios**
+(comprobado: sus claves son `variants`, no `prices`), así que la llamada de
+precios se conserva.
+
+Archivos: `tienda/worker-productos.js` —el fuente del worker entra por fin al
+repositorio— y `tienda/producto.html`, que ahora llama con `?id=`.
+
+**Compatible en los dos sentidos**, así que da igual el orden en que se pegue: el
+worker viejo ignora el `?id=` y devuelve el catálogo entero (la página filtra
+como siempre), y el worker nuevo sin `id` responde el catálogo como antes.
+
+**Simulado contra la API real** con el *Pantalón Encaje Esmeralda*, la pieza que
+citaba Sonia:
+
+```
+imagenes : 4 · la destacada es la primera
+tallas   : S 159 € (2) · M 159 € (1) · L 159 € (1)
+estado   : disponible
+miniaturas (imgs.length > 1): sí
+```
+
+Detalle que no estaba en ninguno de los dos diagnósticos: **la destacada va
+primera y el `Set` quita su duplicado**, así que la portada de la ficha es la
+misma que la de la rejilla. Si se mapeara solo `medias`, en las piezas donde la
+destacada no sea `medias[0]` la portada cambiaría al abrir la ficha.

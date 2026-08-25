@@ -157,7 +157,7 @@ document.getElementById('md-add').onclick=function(){
  ghlCount();
  document.getElementById('md-added').style.display='block';
 };
-fetch(API+'/products').then(function(r){return r.json()}).then(function(d){
+fetch(API+'/products?id='+encodeURIComponent(id||'')).then(function(r){return r.json()}).then(function(d){
  var ps=d.piezas||[];pieza=null;
  ps.forEach(function(p){if(p.id===id)pieza=p});
  if(!pieza)pieza=ps[0];
