@@ -12,11 +12,20 @@
   solo el HTML y la lógica de la ficha. El global tiene que estar
   pegado antes que esto.
 
-  CAMBIO DEL 15/8 — el único funcional:
+  CAMBIO DEL 25/8 — desplegable «Talla y ajuste»:
+  Nuevo acordeón entre «Descripción» y «Composición y cuidados».
+  Su contenido depende de las tallas que devuelve el worker:
+  - Si alguna talla contiene «única» → versión talla única, sin
+    tabla (diseñada para adaptarse aprox. a tallas S–L).
+  - Si no → versión S–XL con la tabla de medidas corporales.
+  En ambas: medidas de la modelo (1,65 m · 87 · 61 · 94) y enlace
+  de dudas por WhatsApp (wa.me/34637681234, mensaje prerrellenado).
+  Todo lo demás queda byte a byte como estaba.
+
+  CAMBIO DEL 15/8:
   El enlace "Ver carrito" del aviso "Esta pieza ya forma parte de
   tu selección" iba a /checkout: saltaba directo al formulario de
   pago sin pasar por la revisión del carrito. Ahora va a /carrito.
-  Todo lo demás queda byte a byte como estaba.
 
   CÓMO FUNCIONA (para quien llegue después):
   - Los productos vienen de un worker de Cloudflare:
@@ -86,6 +95,22 @@ function toText(html){var d=document.createElement('div');d.innerHTML=html;
  d.querySelectorAll('p,h3').forEach(function(p){p.textContent=p.textContent+'\n\n'});
  return d.textContent.replace(/\n{3,}/g,'\n\n').trim();}
 function acc(title,body){return '<div class="mura-acc"><button>'+title+'<span class="mura-serif" style="font-size:20px">+</span></button><div>'+body+'</div></div>';}
+function tallaAjuste(p){
+ var unica=(p.tallas||[]).some(function(t){return /[úu]nic/i.test(t.talla||'')});
+ var modelo='<p style="margin:14px 0 0;font-size:12.5px;color:#8A857B;line-height:1.8">Medidas de la modelo — Altura: 1,65 m · Pecho: 87 cm · Cintura: 61 cm · Cadera: 94 cm.</p>';
+ var dudas='<p style="margin:14px 0 0;font-size:12.5px;color:#55524B;line-height:1.8">¿Dudas con tu talla? <a href="https://wa.me/34637681234?text=Hola%2C%20tengo%20una%20duda%20con%20mi%20talla" target="_blank" rel="noopener" style="border-bottom:1px solid rgba(29,27,24,.4)">Escríbenos por WhatsApp</a> y te ayudaremos a encontrar la opción más adecuada.</p>';
+ if(unica)return '<div style="white-space:normal">'
+  +'<p style="margin:0;font-size:12.5px;color:#55524B;line-height:1.8">Talla única. Diseñada para adaptarse aproximadamente a tallas S–L.</p>'
+  +'<p style="margin:14px 0 0;font-size:12.5px;color:#55524B;line-height:1.8">La modelo mide 1,65 m y lleva la talla única.</p>'
+  +modelo+dudas+'</div>';
+ var filas=[['S','84–86 cm','66–70 cm','92–95 cm'],['M','87–90 cm','71–74 cm','96–99 cm'],['L','91–94 cm','75–78 cm','100–103 cm'],['XL','95–98 cm','79–83 cm','104–107 cm']];
+ var tabla='<table style="width:100%;border-collapse:collapse;margin:16px 0 0;font-size:12px;line-height:1.6"><thead><tr>'+['Talla','Pecho','Cintura','Cadera'].map(function(h){return '<th style="text-align:left;font-weight:500;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#8A857B;padding:0 8px 8px 0;border-bottom:1px solid rgba(29,27,24,.18)">'+h+'</th>'}).join('')+'</tr></thead><tbody>'+filas.map(function(f){return '<tr>'+f.map(function(c,i){return '<td style="padding:8px 8px 8px 0;border-bottom:1px solid rgba(29,27,24,.1);color:'+(i===0?'#1D1B18':'#55524B')+'">'+c+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table>';
+ return '<div style="white-space:normal">'
+  +'<p style="margin:0;font-size:12.5px;color:#55524B;line-height:1.8">La modelo mide 1,65 m y lleva la talla S.</p>'
+  +modelo+tabla
+  +'<p style="margin:16px 0 0;font-size:12.5px;color:#8A857B;line-height:1.8">Las medidas indicadas en esta tabla corresponden al cuerpo y no a las medidas de la prenda. El ajuste puede variar ligeramente según el diseño, el tejido y el patrón de cada pieza.</p>'
+  +dudas+'</div>';
+}
 function render(){
  var p=pieza,imgs=(p.imagenes||[]).filter(Boolean),sold=p.estado==='agotado';
  document.getElementById('md-migas').textContent=p.nombre;
@@ -140,7 +165,7 @@ fetch(API+'/products').then(function(r){return r.json()}).then(function(d){
  var html=dec(pieza.descripcion),ix=html.search(/<h3[^>]*>\s*(Composición|Cuidados)/i);
  var desc=ix>-1?toText(html.slice(0,ix)):toText(html),comp=ix>-1?toText(html.slice(ix)):'';
  var a=document.getElementById('md-accs');
- a.innerHTML=acc('Descripción',desc||'')+(comp?acc('Composición y cuidados',comp):'')+acc('Entrega y devoluciones','Cada pedido se prepara cuidadosamente desde nuestro estudio en 1-2 días laborables. Dispones de 15 días desde la recepción para solicitar una devolución. Los artículos adquiridos con descuento no admiten reembolso.');
+ a.innerHTML=acc('Descripción',desc||'')+acc('Talla y ajuste',tallaAjuste(pieza))+(comp?acc('Composición y cuidados',comp):'')+acc('Entrega y devoluciones','Cada pedido se prepara cuidadosamente desde nuestro estudio en 1-2 días laborables. Dispones de 15 días desde la recepción para solicitar una devolución.');
  a.querySelectorAll('.mura-acc > button').forEach(function(b){b.onclick=function(){
   var open=b.parentElement.classList.toggle('open');
   b.querySelector('span').textContent=open?'−':'+';

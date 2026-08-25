@@ -2674,3 +2674,84 @@ Si con el CSS en la caja de la página `/checkout` sigue tardando, entonces ya n
 del CSS —estaría servido en el HTML— sino del bundle de la tienda, que pinta su formulario
 cuando quiere. Ahí la salida sería otra: reservar el hueco con un esqueleto, no reordenar
 hojas.
+
+## 36. Por qué la ficha de producto enseña una sola foto (25/8)
+
+German avisa de que en la página de producto se ve **una foto por pieza**, y que
+por eso Sara creía que faltaban fotos por subir. No faltan: en GHL hay entre 1 y
+7 por producto, 125 en total (sección 35 del informe de fotos).
+
+### 36.1 El fallo no está en la página
+
+`tienda/producto.html` pinta la galería así:
+
+```js
+var imgs = (p.imagenes || []).filter(Boolean);
+if (imgs.length) { im.src = imgs[img]; … }
+if (imgs.length > 1) imgs.forEach(…miniaturas…);
+```
+
+O sea: enseña lo que le llegue en `imagenes`, y las miniaturas solo aparecen si
+hay más de una. Si se ve una sola, es que el array trae una sola.
+
+**Ese array no lo arma la página, lo arma el Worker**
+`https://mura-productos.germanborrello-d78.workers.dev`, que no está en este
+repositorio y al que la red del entorno no llega (`HTTP 000`). Así que lo que
+sigue es un diagnóstico por descarte, no lectura del código del Worker.
+
+### 36.2 Los dos endpoints de GHL no traen lo mismo
+
+Comprobado con el PIT sobre la *Blazer Blanca Arquitectónica*:
+
+```
+GET /products/?locationId=…        (listado)
+  claves: _id, name, description, image, variants, …
+  image  → UNA url
+  medias → NO EXISTE el campo
+
+GET /products/{id}?locationId=…    (detalle)
+  image  → UNA url (la destacada)
+  medias → 5 entradas, todas type:image
+```
+
+**El listado no trae `medias` en absoluto.** Si el Worker construye el catálogo
+con el listado —que es lo natural: una sola llamada para todas las piezas—, lo
+máximo que puede poner en `imagenes` es la foto destacada. Encaja con el síntoma
+exacto: una foto, sin miniaturas, en todas las piezas por igual.
+
+### 36.3 El arreglo, en el Worker
+
+Cuando se pide una pieza concreta (`?id=`), hay que ir al detalle y quedarse con
+`medias`:
+
+```js
+const r = await fetch(`https://services.leadconnectorhq.com/products/${id}?locationId=${LOC}`, {
+  headers: { Authorization: `Bearer ${PIT}`, Version: '2021-07-28' }
+});
+const p = await r.json();
+const imagenes = (p.medias || [])
+  .filter(m => (m.type || 'image') === 'image')
+  .map(m => m.url);
+if (!imagenes.length && p.image) imagenes.push(p.image);   // red por si acaso
+```
+
+El orden de `medias` es el de la galería en GHL, así que se respeta tal cual. En
+la pieza comprobada la destacada coincide con `medias[0]`, pero **no conviene
+darlo por hecho** en todas: si alguna difiere, la portada de la ficha saldría
+distinta de la de la rejilla.
+
+Para la rejilla (`/prendas`) el listado sigue valiendo: ahí solo se necesita una
+foto por tarjeta y ahorra 36 llamadas.
+
+### 36.4 De paso, el código del repositorio estaba viejo
+
+La página en vivo llevaba dos cambios que no estaban aquí. Se traen ya:
+
+- **Desplegable «Talla y ajuste»** (25/8): tabla de medidas corporales S–XL, o
+  texto de talla única cuando alguna talla contiene «única»; medidas de la modelo
+  (1,65 m · 87 · 61 · 94) y enlace de dudas a `wa.me/34637681234` con el mensaje
+  prerrellenado. Ese número, por cierto, resuelve uno de los datos que estaban
+  «esperando a Sara».
+- En «Entrega y devoluciones» **desapareció la frase** *«Los artículos adquiridos
+  con descuento no admiten reembolso»*. Se conserva la versión en vivo, pero
+  conviene confirmar que la retirada fue a propósito: es una condición de venta.
