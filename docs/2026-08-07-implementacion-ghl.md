@@ -3072,3 +3072,40 @@ práctica solo puede pasar si n8n no ha escrito aún —la carrera de tiempos de
 §38.3—, porque las 36 piezas de la tienda tienen foto.
 
 Probado el nodo con cuatro casos: un artículo, dos, uno sin foto y ninguno.
+
+### 39.6 La redirección a /gracias, hecha (27/8)
+
+De las dos salidas de la §37.1 se toma la segunda: **redirigir desde el global**,
+como ya se hacía con `/cart` → `/carrito`. Las dos rutas pasan a estar en la
+misma tabla, al principio del archivo y en las dos partes del pegable:
+
+```js
+var REDIRECCIONES = {
+  '/cart':      '/carrito',
+  '/thank-you': '/gracias'
+};
+if (REDIRECCIONES[path]) { location.replace(REDIRECCIONES[path] + location.search); return; }
+```
+
+Se usa `location.replace` y no `href`: así no queda entrada en el historial y el
+botón «atrás» no devuelve a la clienta a la página nativa. Comprobado en la
+réplica —`history.length` se queda en 2, el mismo valor que sin navegar.
+
+**Probado con cinco casos**, todos sin errores de JS:
+
+```
+/thank-you/                   → /gracias/                    ✓
+/thank-you/?orderId=6a9071f9  → /gracias/?orderId=6a9071f9   ✓  (los parámetros viajan)
+/cart/                        → /carrito/                    ✓  (no se rompió)
+/checkout/                    → /checkout/                   ✓  (no se toca)
+/gracias/                     → /gracias/                    ✓  (sin bucle)
+```
+
+`/thank-you` se queda en `RUTAS_TIENDA` a propósito: si algún día el script no
+corriera, la página nativa al menos saldría con el estilo de marca en vez de en
+crudo.
+
+⚠️ **Aviso para el futuro: el píxel de conversión.** El evento de compra se suele
+disparar en la página de gracias. Con esta redirección, quien lo monte tiene que
+ponerlo en `/gracias` y no en `/thank-you`, o no se contará ni una venta. Queda
+anotado también en el comentario del código, que es donde se va a mirar.

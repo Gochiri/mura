@@ -127,8 +127,29 @@ window.MURA_PARTE = 'head';
      la clienta al carrito viejo. No hay bucle posible, /carrito
      no entra aquí. */
 
-  if (path === '/cart') {
-    location.replace('/carrito' + location.search);
+  /* ============================================================
+     0b · /thank-you se retira: el post-compra bueno es /gracias
+     ============================================================
+     El checkout de la tienda termina SIEMPRE en su propio paso
+     «Thank you!» y no hay ajuste que lo cambie: no está en el JSON
+     de la página, ni en `GET /store/store-setting`, y `/stores` y
+     `/payments/settings` no existen (sección 37.1).
+
+     Así que se salta desde aquí, igual que /cart. La clienta ve un
+     instante la página nativa —el redirect es de navegador, no de
+     servidor— y aterriza en la nuestra.
+
+     ⚠️ Si algún día se pone un píxel de conversión, OJO: el evento
+     de compra suele dispararse en la página de gracias. Habría que
+     montarlo en /gracias, no en /thank-you, o no se contará nunca. */
+
+  var REDIRECCIONES = {
+    '/cart': '/carrito',
+    '/thank-you': '/gracias'
+  };
+
+  if (REDIRECCIONES[path]) {
+    location.replace(REDIRECCIONES[path] + location.search);
     return;
   }
 
