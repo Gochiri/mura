@@ -3038,3 +3038,37 @@ raíz. Hay que mirarlo desde dentro del workflow.
 **los dos de la tienda** —`source: app`—, no tienda + SP01. Sigue en pie
 desactivar la notificación de la tienda desde la interfaz (§38.2), y con más
 motivo: es justo el correo que sale con el enlace roto.
+
+### 39.5 La foto de la prenda en el correo (27/8)
+
+Pedida por German. El dato no cuesta ninguna llamada nueva: el pedido que n8n ya
+descarga trae la foto destacada de cada artículo en `items[].product.image`.
+
+Campo nuevo **`opportunity.imagen_pedido`** (`iD7d3mDjPgprfh4cqvhz`, texto), y el
+nodo de n8n escribe los dos campos en el mismo `PUT`.
+
+**Una foto, la de la primera prenda.** Una plantilla de GHL **no puede recorrer
+una lista**: no hay bucle ni condicional, un merge field es un valor y se pinta
+una vez. Se descartaron las dos alternativas por motivos concretos:
+
+- *Meter varias `<img>` dentro del campo* dependía de que GHL no escape el HTML
+  del valor. **Sin comprobar**, y si escapa, la clienta recibe etiquetas en crudo
+  en su correo de compra.
+- *Campos numerados* (`imagen_1`, `imagen_2`…) obliga a fijar un máximo y deja
+  huecos vacíos en los pedidos de una pieza, que son casi todos.
+
+Con una foto y el listado completo debajo, un pedido de tres piezas se ve como
+una imagen y tres líneas: no se oculta nada.
+
+Va en `src="{{opportunity.imagen_pedido}}"`, el mismo mecanismo que ya está
+probado en producción: el `href` con `{{opportunity.order_id}}` del correo 03
+salió resuelto en el envío real (§39.3).
+
+**El caso vacío.** Renderizado a propósito con el campo en blanco: Chromium pinta
+el icono de imagen rota y el `alt`. Se dejó el **`alt` vacío** para que al menos
+no aparezca texto; en Gmail y Apple Mail una `src` vacía no pinta nada. No se
+puso una foto de marca como respaldo porque parecería que es la prenda. En la
+práctica solo puede pasar si n8n no ha escrito aún —la carrera de tiempos de
+§38.3—, porque las 36 piezas de la tienda tienen foto.
+
+Probado el nodo con cuatro casos: un artículo, dos, uno sin foto y ninguno.

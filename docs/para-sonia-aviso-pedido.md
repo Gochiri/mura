@@ -34,8 +34,9 @@ lienzo con Ctrl+V):
    solo prepara dos textos y los deja en el item, `{{ $json.mensaje }}` para el
    aviso y `{{ $json.resumen }}` para el correo. Quien guarda y quien envía son
    los dos nodos siguientes.
-3. **Guardar resumen en la oportunidad** — `PUT /opportunities/{opportunityId}`
-   escribiendo el campo `resumen_pedido`. Es lo que hace que **la clienta vea
+3. **Guardar pedido en la oportunidad** — `PUT /opportunities/{opportunityId}`
+   escribiendo **dos** campos en la misma llamada: `resumen_pedido` y
+   `imagen_pedido`. Es lo que hace que **la clienta vea
    qué ha comprado dentro del correo**, sin ir al portal.
 
    Va en la **oportunidad**, no en el contacto: el resumen es de *ese* pedido, y
@@ -110,7 +111,14 @@ mismo campo:
 - Por eso el nodo 3: la plantilla muestra `{{contact.resumen_pedido}}` dentro de
   un bloque con `white-space: pre-line`, que es lo que respeta los saltos de
   línea del campo.
-- El campo ya está creado en GHL: `opportunity.resumen_pedido`, texto largo.
+- Los campos ya están creados en GHL: `opportunity.resumen_pedido` (texto
+  largo) e `opportunity.imagen_pedido` (texto).
+
+**La foto es la de la primera prenda.** Una plantilla de GHL no puede recorrer
+una lista, así que el correo enseña una imagen y debajo el desglose completo en
+texto, que sí nombra todas las piezas. Sale de `items[0].product.image`, la
+destacada — la misma que se ve en la rejilla —, con respaldo en
+`items[0].product.medias[0].url`.
 
 ⚠️ **Hay una carrera de tiempos que conviene mirar en la primera prueba real.**
 SP01 espera **1 minuto** entre el webhook que te llama y el correo a la clienta.
