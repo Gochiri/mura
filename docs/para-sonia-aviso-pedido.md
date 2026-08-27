@@ -36,8 +36,32 @@ lienzo con Ctrl+V):
    el campo `resumen_pedido`. Es lo que hace que **la clienta vea qué ha
    comprado dentro del correo**, sin ir al portal.
 
-⚠️ El nodo de código lee el webhook con `$('Webhook')`. Si tu nodo de webhook se
-llama de otra forma, cambia ese nombre en las dos líneas donde aparece.
+### Cómo pegarlo
+
+1. Abre en n8n el workflow que recibe ese webhook.
+2. Abre `n8n-aviso-pedido-nodos.json` en un editor de texto, selecciona todo y
+   **copia**.
+3. Clic en un hueco vacío del lienzo y **Ctrl+V** (Cmd+V en Mac). Los tres nodos
+   aparecen ya enlazados entre ellos.
+
+⚠️ **No uses «Import from File»**: eso reemplaza el lienzo o te crea otro
+workflow. Aquí lo que hace falta es añadir tres nodos a uno que ya existe.
+
+Luego quedan cuatro cosas a mano:
+
+- **La entrada** — del nodo donde ya tienes el `orderId` → *Pedido completo (GHL)*.
+- **La salida** — de *Mensaje para Sara* → tu nodo de Telegram, que leerá
+  `{{ $json.mensaje }}`.
+- **El PIT** — sustituir `PEGAR_AQUI_EL_PIT` en los dos nodos HTTP. Mejor aún: si
+  tienes credencial de GHL en n8n, úsala en vez de escribir la clave en la
+  cabecera.
+- **El nombre del webhook** — el nodo de código lo lee con `$('Webhook')`. Si el
+  tuyo se llama de otra forma, cambia ese nombre en las dos líneas donde aparece.
+
+Y al terminar, **guardar y comprobar que el workflow queda activo**.
+
+Si al pegar n8n se queja, borra el bloque `"meta"` del principio del JSON y pega
+desde `"nodes"`: son notas mías, no formato de n8n.
 
 **Cómo queda** (probado con un pedido real de la cuenta y con uno de dos piezas):
 
