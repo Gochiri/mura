@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "descripcion": "MÛRA · dos nodos para que el aviso de pedido a Sara diga QUÉ hay que preparar. Se copian y se pegan en el lienzo de n8n (Ctrl+V pega nodos desde el portapapeles), dentro del flujo que ya recibe el webhook 'guardar order id'. Sustituir PEGAR_AQUI_EL_PIT.",
+    "va_despues_de": "el nodo donde el flujo ya tiene el orderId del pedido",
+    "va_antes_de": "el nodo que envía a Telegram"
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://services.leadconnectorhq.com/payments/orders/{{ $json.orderId }}?altId=NxPF5fOicowujokEk5Hm&altType=location",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer PEGAR_AQUI_EL_PIT" },
+            { "name": "Version", "value": "2021-07-28" },
+            { "name": "Accept", "value": "application/json" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "mura-pedido-completo",
+      "name": "Pedido completo (GHL)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [0, 0],
+      "notes": "El listado de pedidos NO trae los artículos: vienen vacíos. Hay que pedir el pedido por su id."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Arma el aviso de Telegram con lo que hay que preparar.\n//\n// `items[].name` ya viene con la talla pegada —\"Vestido Asimetría Floral - M\"—\n// que es justo lo que hace falta para coger la prenda de la estantería.\n// `price.name` trae la talla suelta por si algún día se quiere en otra columna.\n\nconst pedido = $input.first().json;\nconst items = pedido.items || [];\n\nconst euros = (n) =>\n  new Intl.NumberFormat('es-ES', { style: 'currency', currency: pedido.currency || 'EUR' }).format(n || 0);\n\nconst lineas = items.map((it) => {\n  const talla = it.price && it.price.name ? it.price.name : null;\n  // el nombre suele acabar en \" - M\": si ya lleva la talla, no se repite\n  const nombre = it.name || (it.product && it.product.name) || 'Artículo';\n  const yaLaLleva = talla && nombre.toLowerCase().endsWith('- ' + String(talla).toLowerCase());\n  const cantidad = it.qty || it.quantity || 1;\n  return '· ' + nombre + (talla && !yaLaLleva ? ' — talla ' + talla : '') + ' ×' + cantidad;\n});\n\n// Si el pedido llegara sin artículos, se avisa en vez de mandar un mensaje mudo:\n// es preferible que Sara vea \"no he podido leerlo\" a que crea que no hay nada.\nconst cuerpo = lineas.length\n  ? lineas.join('\\n')\n  : '⚠️ No he podido leer los artículos de este pedido. Míralo en Payments → Orders.';\n\nconst quien = [\n  $('Webhook').first().json.body?.numero_pedido,\n  pedido.contactSnapshot ? [pedido.contactSnapshot.firstName, pedido.contactSnapshot.lastName].filter(Boolean).join(' ') : null,\n].filter(Boolean).join(' · ');\n\nconst mensaje = [\n  'Pedido nuevo' + (quien ? ' ' + quien : ''),\n  '',\n  cuerpo,\n  '',\n  'Total ' + euros(pedido.amount),\n].join('\\n');\n\nreturn [{ json: { mensaje, orderId: pedido._id, articulos: items.length } }];"
+      },
+      "id": "mura-mensaje-sara",
+      "name": "Mensaje para Sara",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    }
+  ],
+  "connections": {
+    "Pedido completo (GHL)": {
+      "main": [[{ "node": "Mensaje para Sara", "type": "main", "index": 0 }]]
+    }
+  }
+}
