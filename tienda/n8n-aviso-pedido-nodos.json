@@ -1,10 +1,10 @@
 {
   "meta": {
-    "descripcion": "MÛRA · tres nodos para que (a) el aviso a Sara diga QUÉ preparar y (b) la clienta vea su pedido dentro del correo, leyendo opportunity.resumen_pedido. Se copian y se pegan en el lienzo de n8n (Ctrl+V pega nodos desde el portapapeles), dentro del flujo que ya recibe el webhook 'guardar order id'. Sustituir PEGAR_AQUI_EL_PIT.",
+    "descripcion": "MÛRA · cuatro nodos para que (a) el aviso a Sara diga QUÉ preparar y (b) la clienta vea su pedido dentro del correo, con foto y desglose, leyendo opportunity.resumen_pedido e opportunity.imagen_pedido. Se copian y se pegan en el lienzo de n8n (Ctrl+V pega nodos desde el portapapeles), dentro del flujo que ya recibe el webhook 'guardar order id'. Sustituir PEGAR_AQUI_EL_PIT.",
     "va_despues_de": "el nodo donde el flujo ya tiene el orderId del pedido",
     "va_antes_de": "nada: los dos nodos finales cierran el circuito (uno guarda, otro avisa)",
     "ojo": "El nodo de código lee el webhook con $('Webhook'). Si tu nodo de webhook se llama de otra forma, cambia ese nombre en las dos líneas donde aparece.",
-    "por_que_bifurca": "El nodo de codigo NO guarda ni envia: solo prepara dos textos. Quien guarda es 'Guardar pedido en la oportunidad' y quien avisa es 'Avisar a Sara'. Van en paralelo desde el mismo nodo porque los dos necesitan leer $json.mensaje/$json.resumen: si se encadenaran, el segundo recibiria la respuesta del primero y perderia el texto."
+    "por_que_bifurca": "El nodo de codigo NO guarda ni envia: solo prepara textos —mensaje, resumen e imagen—. Quien guarda es 'Guardar pedido en la oportunidad' y quien avisa es 'Avisar a Sara'. Van en paralelo desde el mismo nodo porque los dos necesitan leer $json.mensaje / $json.resumen / $json.imagen: si se encadenaran, el segundo recibiria la respuesta del primero y perderia el texto."
   },
   "nodes": [
     {
