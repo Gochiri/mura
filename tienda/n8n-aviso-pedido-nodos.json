@@ -2,8 +2,9 @@
   "meta": {
     "descripcion": "MÛRA · tres nodos para que (a) el aviso a Sara diga QUÉ preparar y (b) la clienta vea su pedido dentro del correo, leyendo opportunity.resumen_pedido. Se copian y se pegan en el lienzo de n8n (Ctrl+V pega nodos desde el portapapeles), dentro del flujo que ya recibe el webhook 'guardar order id'. Sustituir PEGAR_AQUI_EL_PIT.",
     "va_despues_de": "el nodo donde el flujo ya tiene el orderId del pedido",
-    "va_antes_de": "el nodo que envía a Telegram",
-    "ojo": "El nodo de código lee el webhook con $('Webhook'). Si tu nodo de webhook se llama de otra forma, cambia ese nombre en las dos líneas donde aparece."
+    "va_antes_de": "nada: los dos nodos finales cierran el circuito (uno guarda, otro avisa)",
+    "ojo": "El nodo de código lee el webhook con $('Webhook'). Si tu nodo de webhook se llama de otra forma, cambia ese nombre en las dos líneas donde aparece.",
+    "por_que_bifurca": "El nodo de codigo NO guarda ni envia: solo prepara dos textos. Quien guarda es 'Guardar resumen en la oportunidad' y quien avisa es 'Avisar a Sara'. Van en paralelo desde el mismo nodo porque los dos necesitan leer $json.mensaje/$json.resumen: si se encadenaran, el segundo recibiria la respuesta del primero y perderia el texto."
   },
   "nodes": [
     {
@@ -86,6 +87,25 @@
         0
       ],
       "notes": "Escribe opportunity.resumen_pedido, que es lo que muestran los correos 02 y 03. Va en la OPORTUNIDAD y no en el contacto porque el resumen es de ese pedido: en el contacto se pisaría en cada compra. Comprobado que los campos custom de oportunidad SÍ resuelven en los correos que manda un workflow."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.letsbebanana.com/webhook/db8ae6be-6621-4e34-9400-391e5d8c494c",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ mensaje: $json.mensaje }) }}",
+        "options": {}
+      },
+      "id": "mura-avisar-sara",
+      "name": "Avisar a Sara (Telegram)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        180
+      ],
+      "notes": "Reutiliza el flujo de avisos que ya manda a Telegram: el mismo webhook que SP01 llama hoy, con el mismo campo `mensaje`. Si prefieres, cambia este nodo por un nodo Telegram con tus credenciales; lo que importa es que reciba $json.mensaje."
     }
   ],
   "connections": {
@@ -105,6 +125,11 @@
         [
           {
             "node": "Guardar resumen en la oportunidad",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Avisar a Sara (Telegram)",
             "type": "main",
             "index": 0
           }

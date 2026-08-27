@@ -26,12 +26,14 @@ Authorization: Bearer <PIT>      Version: 2021-07-28
 —«guardar order id»—, que es el que ya tiene el `orderId`. GHL te manda ahí
 `opportunityId`, `contactId` y `numero_pedido`.
 
-Se añaden **tres** nodos, en `tienda/n8n-aviso-pedido-nodos.json` (se pegan en el
+Se añaden **cuatro** nodos, en `tienda/n8n-aviso-pedido-nodos.json` (se pegan en el
 lienzo con Ctrl+V):
 
 1. **Pedido completo (GHL)** — HTTP GET al pedido por id.
-2. **Mensaje para Sara** — arma el texto y lo deja en `{{ $json.mensaje }}`,
-   listo para el nodo de Telegram que ya tienes.
+2. **Mensaje para Sara** — un nodo de código que **no guarda ni envía nada**:
+   solo prepara dos textos y los deja en el item, `{{ $json.mensaje }}` para el
+   aviso y `{{ $json.resumen }}` para el correo. Quien guarda y quien envía son
+   los dos nodos siguientes.
 3. **Guardar resumen en la oportunidad** — `PUT /opportunities/{opportunityId}`
    escribiendo el campo `resumen_pedido`. Es lo que hace que **la clienta vea
    qué ha comprado dentro del correo**, sin ir al portal.
@@ -39,6 +41,15 @@ lienzo con Ctrl+V):
    Va en la **oportunidad**, no en el contacto: el resumen es de *ese* pedido, y
    en el contacto se pisaría en cada compra. GHL te manda el `opportunityId` en
    el mismo webhook.
+
+4. **Avisar a Sara (Telegram)** — `POST` al webhook de avisos que ya tienes
+   (`…/webhook/db8ae6be-…`) con el campo `mensaje`, el mismo que usa SP01 hoy.
+   Si prefieres un nodo Telegram con tus credenciales, cámbialo: lo único que
+   importa es que reciba `$json.mensaje`.
+
+⚠️ **Los nodos 3 y 4 van en paralelo, los dos colgando del nodo de código.** No
+encadenados: si el de Telegram fuera detrás del que guarda, recibiría la
+respuesta de GHL y se quedaría sin el texto.
 
 ### Cómo pegarlo
 
@@ -54,8 +65,9 @@ workflow. Aquí lo que hace falta es añadir tres nodos a uno que ya existe.
 Luego quedan cuatro cosas a mano:
 
 - **La entrada** — del nodo donde ya tienes el `orderId` → *Pedido completo (GHL)*.
-- **La salida** — de *Mensaje para Sara* → tu nodo de Telegram, que leerá
-  `{{ $json.mensaje }}`.
+- **La salida** — ninguna: los dos nodos finales cierran el circuito. Si tenías
+  un nodo de Telegram propio en este flujo, quítalo o quita el nuestro, o Sara
+  recibirá el aviso dos veces.
 - **El PIT** — sustituir `PEGAR_AQUI_EL_PIT` en los dos nodos HTTP. Mejor aún: si
   tienes credencial de GHL en n8n, úsala en vez de escribir la clave en la
   cabecera.
