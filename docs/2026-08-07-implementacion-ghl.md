@@ -2798,3 +2798,88 @@ Detalle que no estaba en ninguno de los dos diagnósticos: **la destacada va
 primera y el `Set` quita su duplicado**, así que la portada de la ficha es la
 misma que la de la rejilla. Si se mapeara solo `medias`, en las piezas donde la
 destacada no sea `medias[0]` la portada cambiaría al abrir la ficha.
+
+## 37. El checkout va a /thank-you y Sara no ve qué se ha comprado (25/8)
+
+### 37.1 La redirección: no hay ajuste que la cambie
+
+Buscada donde podría estar:
+
+```
+JSON de la página /checkout        → ni "thank", ni "redirect", ni "success"
+GET /store/store-setting           → notificaciones, envío y progreso; ninguna URL de gracias
+GET /stores, /payments/settings    → no existen
+```
+
+El checkout de la tienda de GHL **termina siempre en su propio paso «Thank you!»**
+(`/thank-you`), que es de la tienda y no se configura desde la página. Puede haber
+un ajuste en la interfaz que la API no expone; por API no aparece.
+
+Dos salidas, las dos de un minuto:
+
+1. **Pegar `gracias-compra.html` en `/thank-you`** y dejar `/gracias` como
+   duplicado o borrarla. Es lo que decía el README original, antes de que el plan
+   del 17/8 lo cambiara a `/gracias` — y resulta que el README tenía razón.
+2. **Redirigir `/thank-you` → `/gracias`** desde el global, igual que se hace con
+   `/cart` → `/carrito`. Una línea. Cuesta un parpadeo.
+
+La 1 es más limpia: no hay salto y no depende de que corra un script.
+
+### 37.2 ⚠️ Lo grave: nadie le dice a Sara qué preparar
+
+Leídos los tres avisos que salen de `01 · Compra confirmada (SP01)`:
+
+```
+Notificación interna → "Nuevo pedido confirmado. Revisa detalles para preparar
+                        la entrega. Accede al contacto para más info."
+Telegram (n8n)       → "Sara tienes un pedido nuevo de {{first_name}}
+                        {{last_name}} listo para preparar y enviar"
+SMS a la clienta     → "Hemos recibido tu pedido Nº {{opportunity.name}}"
+```
+
+**Ninguno dice qué se ha comprado.** Ni prenda, ni talla, ni cantidad. Sara recibe
+«hay un pedido» y tiene que ir a buscarlo a Payments → Orders.
+
+Y hay una segunda capa. La tienda manda su propio correo de confirmación
+(`storeOrderNotification.enabled: true`), y **está apuntando a nuestra plantilla
+«02 · confirmación»** (`6a6aa2e6…`) en vez de a la de GHL
+(`Default - Order Template`, `6a7dff32…`). La de GHL lleva la tabla de artículos;
+la nuestra es un correo de marca sin lista. O sea que **el desglose no lo ve
+nadie**: ni la clienta en su correo, ni Sara en su aviso.
+
+### 37.3 El dato existe, solo hay que traerlo
+
+El pedido lo tiene todo:
+
+```json
+items[0] = { "name": "Vestido Asimetría Floral - M", "qty": 1,
+             "price": { "name": "M", "amount": 119, "currency": "EUR" } }
+```
+
+`name` ya trae la talla pegada al nombre, que es justo lo que hace falta para
+preparar el paquete.
+
+**Y n8n ya puede llegar ahí.** El paso 1 de SP01 le manda `opportunityId`,
+`contactId` y `numero_pedido`, y n8n escribe el order id en la oportunidad — o
+sea que lo tiene. Con ese id, `GET /payments/orders/{orderId}` devuelve los
+artículos y el mensaje de Telegram puede pasar de «tienes un pedido nuevo» a:
+
+```
+Pedido M100019 · Laura Pérez
+· Vestido Asimetría Floral — talla M ×1
+· Blazer Gris Arquitectónica — talla única ×1
+Total 278 €
+```
+
+Es cambio en el flujo de n8n, no en GHL.
+
+### 37.4 De paso: la clienta recibe dos correos de confirmación
+
+La tienda manda el suyo (plantilla 02) y **SP01 manda otro** en su paso 3, con la
+plantilla `6a7dfb827717066f54ba6ff6` — que **no está ni en la carpeta Correos ni
+en la raíz**: es una copia que el editor de workflows guarda aparte. Dos correos
+casi iguales por cada compra.
+
+⚠️ Y eso tiene una consecuencia que conviene no olvidar: **los arreglos que se
+hagan sobre las plantillas de la carpeta no llegan a esa copia**. Lo que SP01
+envía hay que editarlo desde dentro del propio workflow.
