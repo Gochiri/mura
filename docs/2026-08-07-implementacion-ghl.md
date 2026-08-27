@@ -2964,3 +2964,77 @@ SP01 espera **1 minuto** entre el webhook que llama a n8n y el correo a la
 clienta. Si n8n tarda más en escribir el campo, el correo sale con el hueco
 vacío. Es un número en un paso de espera; si en la prueba va justo, se sube a
 2-3 minutos.
+
+## 39. Los correos reales de una compra, leídos uno a uno (27/8)
+
+German pidió que el resumen fuera a un campo de **oportunidad** y no de contacto.
+Tiene razón —el resumen es de ese pedido, en el contacto se pisa en cada compra—
+pero antes había que resolver la duda de la §24: **¿resuelven los campos custom
+de oportunidad dentro de un correo?**
+
+Se puede mirar sin suponer: GHL guarda el **cuerpo enviado** de cada correo.
+
+```
+GET /conversations/search?locationId=…&contactId=…
+GET /conversations/{id}/messages
+GET /conversations/messages/{messageId}      ← el HTML tal como salió
+```
+
+⚠️ Ojo con la ruta: `/conversations/messages/email/{id}` da 400 para estos
+mensajes; la buena es `/conversations/messages/{id}`.
+
+### 39.1 Lo que salió de la compra de Sonia
+
+```
+17:25:03  email  · source app       · plantilla 02 · href …/orders/          ← VACÍO
+17:25:03  email  · source app       · plantilla genérica de GHL
+17:26:33  SMS    · source workflow  · "pedido Nº M100001"
+17:36:40  email  · source workflow  · plantilla 03 · href …/orders/6a9071f9…  ← RESUELTO
+17:37:05  email  · OTP en inglés
+```
+
+**Cuatro correos, y ninguno es el de SP01.**
+
+### 39.2 ⚠️ Corrección: el enlace no se perdió en el login
+
+Ayer expliqué que el enlace del correo llevaba a la lista de pedidos porque el
+portal pierde el destino al pedir el OTP. **Falso, y ahora hay prueba.** El
+correo salió con `href="…/store/account/orders/"`, **sin id**: el merge field
+resolvió vacío. Sonia no perdió el destino; nunca lo tuvo.
+
+La causa es de tiempos: ese correo lo manda **la tienda** en el instante de la
+compra —`source: app`, 17:25:03— y la oportunidad no existía hasta 17:25:04. Un
+correo que sale antes que la oportunidad no puede leer sus campos.
+
+### 39.3 Y la respuesta a la pregunta de fondo: sí resuelven
+
+El correo **03**, mandado por un workflow once minutos después, trae el enlace
+completo con el id dentro. Es el mismo campo custom de oportunidad
+(`order_id`) que salió vacío en el otro.
+
+**Conclusión: los campos custom de oportunidad SÍ se renderizan** en los correos
+que manda un workflow, siempre que alguien los haya escrito antes. Lo que no
+funciona es leerlos desde un correo que dispara la tienda.
+
+Así que el resumen puede vivir donde pedía German. Hecho:
+
+- Campo **`opportunity.resumen_pedido`** (`qLuRjgyMjv1rw7dRCzgA`, texto largo).
+- Plantillas **02** y **03** apuntando a `{{opportunity.resumen_pedido}}`.
+- El nodo de n8n pasa a `PUT /opportunities/{opportunityId}` — el
+  `opportunityId` ya viaja en el mismo webhook.
+- Borrado el `contact.resumen_pedido` que se había creado por la mañana, para
+  que no queden dos campos con el mismo nombre invitando a error.
+
+### 39.4 ⚠️ Dos cosas nuevas que hay que arreglar
+
+**El correo de confirmación de SP01 no se envía.** En la conversación hay cuatro
+correos y ninguno lleva `source: workflow` a la hora que tocaba (~17:26:30). El
+SMS del paso siguiente sí salió, también `source: workflow`, así que el workflow
+pasó por ahí: es el paso de correo el que no entregó. Su plantilla es la copia
+huérfana `6a7dfb827717066f54ba6ff6`, la que no aparece ni en la carpeta ni en la
+raíz. Hay que mirarlo desde dentro del workflow.
+
+**Y el duplicado no era el que yo decía.** Los dos correos de las 17:25:03 son
+**los dos de la tienda** —`source: app`—, no tienda + SP01. Sigue en pie
+desactivar la notificación de la tienda desde la interfaz (§38.2), y con más
+motivo: es justo el correo que sale con el enlace roto.

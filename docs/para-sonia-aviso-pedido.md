@@ -32,9 +32,13 @@ lienzo con Ctrl+V):
 1. **Pedido completo (GHL)** — HTTP GET al pedido por id.
 2. **Mensaje para Sara** — arma el texto y lo deja en `{{ $json.mensaje }}`,
    listo para el nodo de Telegram que ya tienes.
-3. **Guardar resumen en el contacto** — `PUT /contacts/{contactId}` escribiendo
-   el campo `resumen_pedido`. Es lo que hace que **la clienta vea qué ha
-   comprado dentro del correo**, sin ir al portal.
+3. **Guardar resumen en la oportunidad** — `PUT /opportunities/{opportunityId}`
+   escribiendo el campo `resumen_pedido`. Es lo que hace que **la clienta vea
+   qué ha comprado dentro del correo**, sin ir al portal.
+
+   Va en la **oportunidad**, no en el contacto: el resumen es de *ese* pedido, y
+   en el contacto se pisaría en cada compra. GHL te manda el `opportunityId` en
+   el mismo webhook.
 
 ### Cómo pegarlo
 
@@ -94,7 +98,7 @@ mismo campo:
 - Por eso el nodo 3: la plantilla muestra `{{contact.resumen_pedido}}` dentro de
   un bloque con `white-space: pre-line`, que es lo que respeta los saltos de
   línea del campo.
-- El campo ya está creado en GHL: `contact.resumen_pedido`, texto largo.
+- El campo ya está creado en GHL: `opportunity.resumen_pedido`, texto largo.
 
 ⚠️ **Hay una carrera de tiempos que conviene mirar en la primera prueba real.**
 SP01 espera **1 minuto** entre el webhook que te llama y el correo a la clienta.
