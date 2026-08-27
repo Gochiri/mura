@@ -1,8 +1,9 @@
 {
   "meta": {
-    "descripcion": "MÛRA · dos nodos para que el aviso de pedido a Sara diga QUÉ hay que preparar. Se copian y se pegan en el lienzo de n8n (Ctrl+V pega nodos desde el portapapeles), dentro del flujo que ya recibe el webhook 'guardar order id'. Sustituir PEGAR_AQUI_EL_PIT.",
+    "descripcion": "MÛRA · tres nodos para que (a) el aviso a Sara diga QUÉ preparar y (b) la clienta vea su pedido dentro del correo. Se copian y se pegan en el lienzo de n8n (Ctrl+V pega nodos desde el portapapeles), dentro del flujo que ya recibe el webhook 'guardar order id'. Sustituir PEGAR_AQUI_EL_PIT.",
     "va_despues_de": "el nodo donde el flujo ya tiene el orderId del pedido",
-    "va_antes_de": "el nodo que envía a Telegram"
+    "va_antes_de": "el nodo que envía a Telegram",
+    "ojo": "El nodo de código lee el webhook con $('Webhook'). Si tu nodo de webhook se llama de otra forma, cambia ese nombre en las dos líneas donde aparece."
   },
   "nodes": [
     {
@@ -27,18 +28,45 @@
     },
     {
       "parameters": {
-        "jsCode": "// Arma el aviso de Telegram con lo que hay que preparar.\n//\n// `items[].name` ya viene con la talla pegada —\"Vestido Asimetría Floral - M\"—\n// que es justo lo que hace falta para coger la prenda de la estantería.\n// `price.name` trae la talla suelta por si algún día se quiere en otra columna.\n\nconst pedido = $input.first().json;\nconst items = pedido.items || [];\n\nconst euros = (n) =>\n  new Intl.NumberFormat('es-ES', { style: 'currency', currency: pedido.currency || 'EUR' }).format(n || 0);\n\nconst lineas = items.map((it) => {\n  const talla = it.price && it.price.name ? it.price.name : null;\n  // el nombre suele acabar en \" - M\": si ya lleva la talla, no se repite\n  const nombre = it.name || (it.product && it.product.name) || 'Artículo';\n  const yaLaLleva = talla && nombre.toLowerCase().endsWith('- ' + String(talla).toLowerCase());\n  const cantidad = it.qty || it.quantity || 1;\n  return '· ' + nombre + (talla && !yaLaLleva ? ' — talla ' + talla : '') + ' ×' + cantidad;\n});\n\n// Si el pedido llegara sin artículos, se avisa en vez de mandar un mensaje mudo:\n// es preferible que Sara vea \"no he podido leerlo\" a que crea que no hay nada.\nconst cuerpo = lineas.length\n  ? lineas.join('\\n')\n  : '⚠️ No he podido leer los artículos de este pedido. Míralo en Payments → Orders.';\n\nconst quien = [\n  $('Webhook').first().json.body?.numero_pedido,\n  pedido.contactSnapshot ? [pedido.contactSnapshot.firstName, pedido.contactSnapshot.lastName].filter(Boolean).join(' ') : null,\n].filter(Boolean).join(' · ');\n\nconst mensaje = [\n  'Pedido nuevo' + (quien ? ' ' + quien : ''),\n  '',\n  cuerpo,\n  '',\n  'Total ' + euros(pedido.amount),\n].join('\\n');\n\nreturn [{ json: { mensaje, orderId: pedido._id, articulos: items.length } }];"
+        "jsCode": "// Arma dos cosas con el mismo pedido:\n//   · `mensaje`  → el aviso de Telegram para Sara\n//   · `resumen`  → el desglose que va DENTRO del correo de la clienta,\n//                  guardado en el campo de contacto `resumen_pedido`\n//\n// `items[].name` ya viene con la talla pegada —\"Vestido Asimetría Floral - M\"—\n// que es justo lo que hace falta para coger la prenda de la estantería.\n\nconst pedido = $input.first().json;\nconst items = pedido.items || [];\n\n// Datos del webhook de GHL. Si tu nodo se llama distinto, cambia 'Webhook'.\nlet delWebhook = {};\ntry { delWebhook = $('Webhook').first().json.body || $('Webhook').first().json || {}; } catch (e) { delWebhook = {}; }\n\nconst euros = (n) =>\n  new Intl.NumberFormat('es-ES', { style: 'currency', currency: pedido.currency || 'EUR' }).format(n || 0);\n\nconst lineas = items.map((it) => {\n  const talla = it.price && it.price.name ? it.price.name : null;\n  const nombre = it.name || (it.product && it.product.name) || 'Artículo';\n  // el nombre suele acabar en \" - M\": si ya lleva la talla, no se repite\n  const yaLaLleva = talla && nombre.toLowerCase().endsWith('- ' + String(talla).toLowerCase());\n  const cantidad = it.qty || it.quantity || 1;\n  return '· ' + nombre + (talla && !yaLaLleva ? ' — talla ' + talla : '') + ' ×' + cantidad;\n});\n\n// Si el pedido llegara sin artículos, se avisa en vez de mandar un mensaje mudo:\n// es preferible que Sara vea \"no he podido leerlo\" a que crea que no hay nada.\nconst cuerpo = lineas.length\n  ? lineas.join('\\n')\n  : '⚠️ No he podido leer los artículos de este pedido. Míralo en Payments → Orders.';\n\nconst quien = [\n  delWebhook.numero_pedido,\n  pedido.contactSnapshot\n    ? [pedido.contactSnapshot.firstName, pedido.contactSnapshot.lastName].filter(Boolean).join(' ')\n    : null,\n].filter(Boolean).join(' · ');\n\nconst mensaje = [\n  'Pedido nuevo' + (quien ? ' ' + quien : ''),\n  '',\n  cuerpo,\n  '',\n  'Total ' + euros(pedido.amount),\n].join('\\n');\n\n// El del correo va sin cabecera ni total: la plantilla ya los pone.\n// Si no hay artículos se manda cadena vacía, para que el correo no enseñe\n// un aviso técnico a la clienta.\nconst resumen = lineas.length ? lineas.join('\\n') : '';\n\nreturn [{\n  json: {\n    mensaje,\n    resumen,\n    contactId: delWebhook.contactId || pedido.contactId || null,\n    orderId: pedido._id,\n    articulos: items.length,\n  },\n}];"
       },
       "id": "mura-mensaje-sara",
       "name": "Mensaje para Sara",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "=https://services.leadconnectorhq.com/contacts/{{ $json.contactId }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer PEGAR_AQUI_EL_PIT" },
+            { "name": "Version", "value": "2021-07-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ customFields: [ { key: 'resumen_pedido', field_value: $json.resumen } ] }) }}",
+        "options": {}
+      },
+      "id": "mura-guardar-resumen",
+      "name": "Guardar resumen en el contacto",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 0],
+      "notes": "Escribe contact.resumen_pedido, que es lo que muestran los correos 02 y 03. SP01 espera 1 minuto entre el webhook y el correo: si este nodo tarda más, el correo sale sin desglose."
     }
   ],
   "connections": {
     "Pedido completo (GHL)": {
       "main": [[{ "node": "Mensaje para Sara", "type": "main", "index": 0 }]]
+    },
+    "Mensaje para Sara": {
+      "main": [[{ "node": "Guardar resumen en el contacto", "type": "main", "index": 0 }]]
     }
   }
 }

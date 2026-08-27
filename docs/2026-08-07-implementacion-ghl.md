@@ -2883,3 +2883,84 @@ casi iguales por cada compra.
 ⚠️ Y eso tiene una consecuencia que conviene no olvidar: **los arreglos que se
 hagan sobre las plantillas de la carpeta no llegan a esa copia**. Lo que SP01
 envía hay que editarlo desde dentro del propio workflow.
+
+## 38. El desglose del pedido, dentro del correo (27/8)
+
+Sonia hizo una compra de prueba y reportó tres cosas con la misma raíz: **el
+correo no dice qué se ha comprado, y para verlo manda al portal nativo de GHL.**
+
+- El botón «Ver mi pedido» de **02** y **03** iba a
+  `stylebymura.com/store/account/orders/{{opportunity.order_id}}`, que sale **en
+  inglés**, con la cabecera genérica *Mura / Orders / Wishlist* y un botón azul
+  *Go to store*.
+- Para entrar, ese portal manda un **correo de OTP en inglés**.
+- Y la clienta recibía **dos correos de confirmación**, ninguno con la lista.
+
+El portal no se puede traducir desde la subcuenta: la cuenta está en
+`locale: es_ES` y aun así sale en inglés; `/store/customer-portal` y
+`/store/portal-setting` → 404.
+
+**Decidido con German:** no se manda a nadie al portal. El desglose va dentro del
+correo. El OTP desaparece solo, porque ya nadie entra.
+
+### 38.1 Hecho
+
+**Campo nuevo** `contact.resumen_pedido` (`CHLDDgPFzUyQUsMkeNwV`, texto largo).
+Guarda el desglose del **último** pedido; se sobrescribe en cada compra, que es
+suficiente porque el correo sale justo después.
+
+**Plantillas 02 y 03**: fuera la fila del botón —**entera**, con sus dos enlaces,
+el `<a>` visible y el fallback VML de Outlook, que es la lección de §33.4— y en
+su lugar un bloque con filete arriba y abajo:
+
+```html
+<p>TU SELECCIÓN</p>
+<div style="white-space:pre-line; …">{{contact.resumen_pedido}}</div>
+```
+
+`white-space: pre-line` es lo que hace que los saltos de línea del campo se vean;
+sin eso saldría todo en una línea. Verificado releyendo de la cuenta: **cero
+`href` al portal** en las dos, y renderizado en Chromium con el campo lleno y
+vacío. Vacío se degrada a un «Tu selección» con el hueco en blanco: feo pero no
+roto.
+
+Copia previa en `datos/backups/plantillas_20260827/`.
+
+**Los comentarios de cabecera** de la 02 seguían describiendo el botón viejo,
+con su NOTA del 14/8 explicando por qué apuntaba al portal. Actualizados: una
+plantilla que se documenta a sí misma no sirve de nada si el comentario miente.
+
+**n8n** (`tienda/n8n-aviso-pedido-nodos.json`): un tercer nodo,
+`PUT /contacts/{id}` con `resumen_pedido`. El mismo texto que ya se arma para el
+Telegram de Sara, sin cabecera ni total, alimenta el correo. Un solo sitio donde
+se compone, dos consumidores.
+
+### 38.2 ⚠️ El correo duplicado no se pudo desactivar por API
+
+`storeOrderNotification.enabled` sigue en `true`. Existe la ruta de escritura
+—`POST /store/store-setting`, comprobado con un `altId` falso: contesta 401, no
+404— pero **rechaza los propios datos de la cuenta**:
+
+```
+shippingOrigin.state must be one of the following values: AL, AK, AS, AZ, …
+   guardado en la cuenta: state = "Huelva", country = "ES"
+```
+
+El validador solo admite **estados de Estados Unidos**, y la dirección de origen
+es de Huelva. O sea que los ajustes de la tienda de una cuenta española **no se
+pueden reescribir por API**: cualquier POST arrastra ese campo y muere en la
+validación.
+
+**No se ha tocado nada** —comprobado releyendo: notificación intacta y origen de
+envío intacto—, porque el riesgo era peor que el problema: mandar el cuerpo sin
+`shippingOrigin` podía borrar la dirección del remitente, y no habría forma de
+volver a escribirla por API.
+
+Se desactiva **en la interfaz**: Settings → Store → notificación de pedido.
+
+### 38.3 La carrera de tiempos que hay que mirar en la primera compra real
+
+SP01 espera **1 minuto** entre el webhook que llama a n8n y el correo a la
+clienta. Si n8n tarda más en escribir el campo, el correo sale con el hueco
+vacío. Es un número en un paso de espera; si en la prueba va justo, se sube a
+2-3 minutos.
