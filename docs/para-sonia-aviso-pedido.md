@@ -31,12 +31,13 @@ lienzo con Ctrl+V):
 
 1. **Pedido completo (GHL)** — HTTP GET al pedido por id.
 2. **Mensaje para Sara** — un nodo de código que **no guarda ni envía nada**:
-   solo prepara dos textos y los deja en el item, `{{ $json.mensaje }}` para el
-   aviso y `{{ $json.resumen }}` para el correo. Quien guarda y quien envía son
-   los dos nodos siguientes.
+   solo prepara tres textos y los deja en el item —`{{ $json.mensaje }}` para el
+   aviso de Telegram, `{{ $json.resumen }}` en texto plano y
+   `{{ $json.resumenHtml }}`, que es el bloque que se ve dentro del correo—.
+   Quien guarda y quien envía son los dos nodos siguientes.
 3. **Guardar pedido en la oportunidad** — `PUT /opportunities/{opportunityId}`
    escribiendo **dos** campos en la misma llamada: `resumen_pedido` y
-   `imagen_pedido`. Es lo que hace que **la clienta vea
+   `resumen_pedido_html`. Es lo que hace que **la clienta vea
    qué ha comprado dentro del correo**, sin ir al portal.
 
    Va en la **oportunidad**, no en el contacto: el resumen es de *ese* pedido, y
@@ -108,23 +109,31 @@ mismo campo:
 - El botón **«Ver mi pedido»** llevaba al portal nativo de GHL —en inglés, sin
   marca— y para entrar mandaba un **OTP también en inglés**. Ese botón ya se ha
   quitado de los correos **02** y **03**; en su lugar va el desglose del pedido.
-- Por eso el nodo 3: la plantilla muestra `{{contact.resumen_pedido}}` dentro de
-  un bloque con `white-space: pre-line`, que es lo que respeta los saltos de
-  línea del campo.
-- Los campos ya están creados en GHL: `opportunity.resumen_pedido` (texto
-  largo) e `opportunity.imagen_pedido` (texto).
+- Por eso el nodo 3: la plantilla inserta `{{{opportunity.resumen_pedido_html}}}`
+  —con **triple llave**, que en Handlebars significa «sin escapar el HTML»—
+  dentro de la celda del bloque «Tu selección».
+- Los campos ya están creados en GHL: `opportunity.resumen_pedido` (texto largo,
+  el desglose en texto plano) y `opportunity.resumen_pedido_html` (texto largo,
+  las filas de tabla).
 
-**La foto es la de la primera prenda.** Una plantilla de GHL no puede recorrer
-una lista, así que el correo enseña una imagen y debajo el desglose completo en
-texto, que sí nombra todas las piezas. Sale de `items[0].product.image`, la
-destacada — la misma que se ve en la rejilla —, con respaldo en
-`items[0].product.medias[0].url`.
+**Cada prenda lleva su foto**, no una sola foto para todo el pedido. Una
+plantilla de GHL no sabe recorrer los artículos —no hay bucle ni condicional—,
+así que el bucle lo hace el nodo de código: monta una fila por pieza con el
+nombre, la talla, el importe y la foto a la derecha, y guarda el HTML entero en
+`resumen_pedido_html`. La foto sale de `product.image`, la destacada —la misma
+que se ve en la rejilla—, con respaldo en `product.medias[0].url`; si una prenda
+no tiene, esa fila va sin celda de imagen en vez de con un hueco roto.
+
+El campo antiguo `imagen_pedido` **ya no existe**: era el apaño de una foto por
+pedido, la de la primera prenda, que con dos artículos enseñaba una y callaba la
+otra.
 
 ⚠️ **Hay una carrera de tiempos que conviene mirar en la primera prueba real.**
-SP01 espera **1 minuto** entre el webhook que te llama y el correo a la clienta.
+SP01 espera **3 minutos** entre el webhook que te llama y el correo a la clienta
+(era 1 minuto; se subió el 28/8 justo por este margen).
 Si tu flujo tarda más en escribir el campo, el correo sale con el hueco vacío
-—se ve el título «Tu selección» y debajo nada—. Si va justo, subimos esa espera
-en SP01: es cambiar un número.
+—se ve el título «Tu selección» y debajo nada—. Si aun así va justo, subimos esa
+espera otra vez: es cambiar un número.
 
 ---
 

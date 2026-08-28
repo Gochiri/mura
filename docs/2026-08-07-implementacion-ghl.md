@@ -3109,3 +3109,171 @@ crudo.
 disparar en la página de gracias. Con esta redirección, quien lo monte tiene que
 ponerlo en `/gracias` y no en `/thank-you`, o no se contará ni una venta. Queda
 anotado también en el comentario del código, que es donde se va a mirar.
+
+---
+
+## 40. El correo de compra sale del flujo, y el recibo lleva plantilla propia (28/8)
+
+German da con la razón de fondo: **el correo de confirmación tiene que salir del
+workflow `01 · Compra confirmada`, no de la tienda.** La tienda lo manda en el
+instante de la compra, cuando n8n todavía no ha escrito el desglose en la
+oportunidad, así que llega con los huecos vacíos. El flujo espera y sale con los
+datos puestos.
+
+Al abrir SP01 para encenderlo aparecieron **tres cosas rotas encadenadas**, y
+cualquiera de ellas sola habría bastado para que el correo saliera mudo.
+
+### 40.1 El paso estaba apagado
+
+```
+attr.subject       : {{contact.first_name}}, hemos recibido tu elección.
+advanceCanvasMeta  : { isDisabled: true }
+```
+
+No fallaba: no estaba encendido. Lo encendió German desde la interfaz antes de
+que llegáramos aquí.
+
+### 40.2 La espera de un minuto era demasiado justa
+
+Entre el webhook a n8n y el correo, SP01 esperaba **1 minuto**. Ese minuto es
+todo el margen que tiene n8n para leer el pedido en GHL y escribir el desglose
+en la oportunidad. Con el correo apagado daba igual; encendido, ese minuto justo
+es la diferencia entre un correo completo y uno con huecos.
+
+**Subido a 3 minutos.** Nadie nota la diferencia y el margen se triplica.
+
+### 40.3 El paso apuntaba a una copia congelada de la plantilla
+
+Lo que no se veía desde la interfaz:
+
+```
+attributes.template_id : 6a7dfb827717066f54ba6ff6
+```
+
+Ese id **no es la plantilla `02 · confirmación`**. Es una copia suelta que se
+generó el 13/8, no vive en la carpeta *Correos* y no aparece en ningún listado
+por el que se navegue. Se quedó congelada con el estado de aquel día: el botón
+al portal en inglés, el `{{order.order_url}}` que salía vacío (§39.2) y **ningún
+bloque de desglose**. O sea que encender el paso no bastaba — el correo habría
+salido igual de mudo, y encima con el enlace roto.
+
+Se reapuntó el paso a la `02 · confirmación` (`6a6aa2e6e3d32f78af2869e2`), que
+es la que se ha ido manteniendo. Una plantilla, no dos.
+
+⚠️ **Y ahí saltó algo que conviene no repetir.** Al guardar el workflow con el
+`template_id` cambiado, **GHL machacó el contenido de la 02 con el de la copia
+huérfana**: el `index.html` de la plantilla buena pasó de 12.356 a 11.092 bytes,
+exactamente el tamaño del archivo de la copia. No es que se perdiera el puntero:
+se sobrescribió el archivo. Se restauró volviendo a subir el HTML.
+
+Comprobado después que **un guardado normal del workflow no lo hace**: se volvió
+a hacer un `PUT` sin tocar nada y la plantilla siguió intacta. Solo lo provoca
+el cambio de `template_id`. Conclusión práctica: **antes de reapuntar un paso de
+email a otra plantilla, guardar una copia del HTML de destino**, porque el
+guardado se lo lleva por delante.
+
+### 40.4 El desglose con foto por prenda
+
+Hasta ayer eran dos piezas sueltas: un `<img>` colgando de
+`opportunity.imagen_pedido` —la foto de la primera prenda— y debajo el texto
+plano de `opportunity.resumen_pedido`. Con más de un artículo eso enseña la foto
+de una prenda y el nombre de las otras, que es peor que no enseñar ninguna.
+
+La solución es mover el bucle a donde sí hay bucle: **n8n compone el bloque
+entero** y lo guarda en el campo custom `opportunity.resumen_pedido_html`
+(`wq6dRJdf6jLfWwreqAR5`, texto largo). La plantilla lo inserta con **triple
+llave**, que en Handlebars significa «sin escapar el HTML»:
+
+```html
+<td style="padding:20px 0 22px 0;">
+  <p style="…">Tu selecci&oacute;n</p>
+  {{{opportunity.resumen_pedido_html}}}
+</td>
+```
+
+Tres detalles que costaron encontrarse y conviene dejar escritos:
+
+- **La triple llave va DENTRO de la celda.** Texto suelto entre celdas de una
+  tabla es HTML inválido y el editor de GHL lo recoloca fuera del bloque.
+- **Faltaba el `</td>`** en la 02: la celda quedaba abierta contra el `</tr>`.
+  Cerrado.
+- **El nodo de código escapa** todo lo que sale del pedido antes de meterlo en
+  el HTML. Un nombre de prenda con `&` o con comillas rompería la maqueta.
+
+`opportunity.imagen_pedido` **ya no existe** — era el apaño de una foto por
+pedido. La `03 · preparación` seguía apuntando a él, así que habría salido con
+una imagen rota: se le puso el mismo bloque que la 02. El campo de texto plano
+`resumen_pedido` se sigue rellenando, pero para la oportunidad y para el aviso
+de Telegram, no para los correos.
+
+El JSON de n8n (`tienda/n8n-aviso-pedido-nodos.json`) queda con el nodo de
+código produciendo las tres representaciones —`mensaje`, `resumen`,
+`resumenHtml`— y el nodo de guardado escribiendo `resumen_pedido` y
+`resumen_pedido_html` en la misma llamada.
+
+Probado en local con el pedido real del 27/8 duplicado a dos artículos, uno de
+ellos con comillas y `&` en el nombre: el bloque sale bien escapado y la
+maqueta, renderizada dentro de la plantilla, no se descuadra.
+
+### 40.5 El recibo: `01 · Recibo`
+
+Los dos correos que salieron a las 17:25:03 con `source: app` eran de la tienda,
+y el segundo es el que German buscaba: *«Please find attached the Sales Receipt
+for your purchase»*, en **inglés**, plantilla genérica de GHL, **con el recibo
+adjunto**. La factura la genera GHL; lo que se puede cambiar es la plantilla del
+correo que la lleva.
+
+Plantilla nueva **`01 · Recibo`** (`6a90dd80f98ccc652507a173`), en castellano y
+con la estética de las demás. Y **sin un solo merge field vivo**, a propósito:
+
+> Ese correo sale en el instante de la compra, antes de que exista la
+> oportunidad, y es un correo de sistema: no tiene ese contexto. Un campo que no
+> resuelva sale impreso en crudo en el correo de la clienta.
+
+Hasta el pie va con las URLs escritas a mano en vez de `{{custom_values.…}}`.
+El desglose no hace falta en el cuerpo: viaja en el PDF adjunto.
+
+De la captura de la pantalla *Pagos → Configuración → Recibos* salen dos cosas:
+
+- Los recibos automáticos **están activados**, con serie `REC26` desde el
+  `50000`. Se numera solo, aparte del `M1000xx` del pedido: **son dos
+  numeraciones distintas** y conviene no confundirlas.
+- El asunto por defecto es `[{{receipt.company.name}}] Aqui tienes la factura de
+  tu pedido.` — **ese correo tiene sus propias variables `{{receipt.*}}`**.
+
+⚠️ **Falta la lista de variables del recibo.** En esa pantalla, el icono de
+etiqueta a la derecha del campo *Asunto* abre el selector. Con esa lista la
+plantilla puede llevar además número de recibo, fecha e importe sin depender del
+adjunto. Sin la lista no se inventan nombres: uno que no exista sale impreso.
+
+De paso, el asunto dice «la factura» cuando el documento es un *sales receipt*.
+Conviene decidir si se deja así.
+
+### 40.6 Lo que queda en la interfaz (German)
+
+- **Seleccionar** `01 · Recibo` como plantilla del recibo, en Pagos →
+  Configuración → Recibos.
+- **Desactivar la notificación de pedido de la tienda.** Con el correo de SP01
+  encendido, esa es el duplicado. No se puede por API: el validador de
+  `POST /store/store-setting` rechaza `shippingOrigin.state` «Huelva» porque solo
+  admite estados de EE. UU. (§38.2).
+
+### 40.7 Verificación pendiente: una compra de prueba
+
+Leyendo **los correos que salieron**, no la bandeja (§39.1):
+
+1. **Dos correos y no cuatro**: el de SP01 (`source: workflow`) y el recibo
+   (`source: app`). Ni rastro del de la tienda.
+2. El de SP01 **con el desglose**: buscar en el HTML enviado el nombre de la
+   prenda y un `src` con una URL real.
+3. El recibo **en castellano**, con nuestra plantilla y con el adjunto.
+4. `GET /opportunities/{id}` → `resumen_pedido_html` escrito **antes** de la hora
+   del correo.
+
+Esa misma compra resuelve la duda que queda abierta: **si GHL escapa el HTML** de
+un campo custom al insertarlo con triple llave. Si no lo escapa —que es lo que
+dice la documentación de Handlebars—, el bloque sale montado. Si lo escapa, sale
+el código en crudo y hay que volver a una foto por pedido.
+
+⚠️ **«Send test email» no sirve para esto**: nunca lleva oportunidad en
+contexto, así que la triple llave se ve literal. Tiene que ser una compra real.
