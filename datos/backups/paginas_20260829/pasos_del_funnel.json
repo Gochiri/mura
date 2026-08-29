@@ -1,0 +1,355 @@
+{
+ "leido": "2026-08-29",
+ "funnelId": "rlc7iAyGF4U1nfwAJOJQ",
+ "funnelName": "Mura ",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "domainId": "c8MNhJTKbRFUshtryQ3C",
+ "urlBase": "/home-536034",
+ "pasos": [
+  {
+   "secuencia": 1,
+   "url": "/home",
+   "nombre": "Home",
+   "stepId": "5b8cdc7c-c65d-4583-9fcc-d86a50f8cd57",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "jCl0erpmUk8Os4AGnx7M",
+     "nombre": "Home",
+     "actualizada": "2026-08-29T06:42:47.217Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 2,
+   "url": "/prendas",
+   "nombre": "prendas",
+   "stepId": "7ae2e388-a635-4a5e-94a2-1c325935fe11",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "s5fa5bucD6xe6IHXumRf",
+     "nombre": "prendas",
+     "actualizada": "2026-08-29T04:18:51.240Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 3,
+   "url": "/producto",
+   "nombre": "producto",
+   "stepId": "0ff62be3-ddbd-4155-b8fc-9d8915b9e43a",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "cmPhl3N0IF3smLo8Oy8x",
+     "nombre": "producto",
+     "actualizada": "2026-08-25T19:49:39.197Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 4,
+   "url": "/novedades",
+   "nombre": "novedades",
+   "stepId": "e012a41d-113f-45a2-bb09-24574c969d96",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "RL1DrjCiiqGEgDMKfV70",
+     "nombre": "novedades",
+     "actualizada": "2026-08-29T06:44:11.758Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 5,
+   "url": "/colecciones",
+   "nombre": "colecciones",
+   "stepId": "76a20796-4660-4b7c-a832-ff1e62a7b2aa",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "3t6UDEyhxmRJCMgeGHLW",
+     "nombre": "colecciones",
+     "actualizada": "2026-07-23T17:04:33.089Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 6,
+   "url": "/mura",
+   "nombre": "mura",
+   "stepId": "84a99082-cc34-485d-87d5-1dfccf5b25e4",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "2j3lWbVzAl8btZDuTcny",
+     "nombre": "mura",
+     "actualizada": "2026-08-17T14:21:15.620Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 7,
+   "url": "/carrito",
+   "nombre": "carrito",
+   "stepId": "546b488d-49ee-4bde-aaef-524c5f7519be",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "qsUEwHJLz2xiSulCN5jD",
+     "nombre": "carrito",
+     "actualizada": "2026-08-17T21:23:53.547Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 8,
+   "url": "/contacto",
+   "nombre": "contacto",
+   "stepId": "89b58817-d312-46d1-8040-c84c64bd13d1",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "IAQR8eOiAWObBSeesnH4",
+     "nombre": "contacto",
+     "actualizada": "2026-08-17T12:50:17.037Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 9,
+   "url": "/devoluciones",
+   "nombre": "devoluciones",
+   "stepId": "5cec5ea7-bd8c-41d1-bd48-47e78262dc6e",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "ep1EkcwisLfPZwloPsoN",
+     "nombre": "devoluciones",
+     "actualizada": "2026-08-26T14:46:58.721Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 10,
+   "url": "/gracias",
+   "nombre": "gracias",
+   "stepId": "bb1db404-da6a-4671-b14d-f45aa0b22a1e",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "Y1YEzfjU3JNDkTBCZiSo",
+     "nombre": "gracias",
+     "actualizada": "2026-08-29T08:34:18.811Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 11,
+   "url": "/products-list",
+   "nombre": "Products List",
+   "stepId": "81589785-c1ae-442a-b3b8-674d6d9197c4",
+   "type": "store",
+   "paginas": [
+    {
+     "pageId": "6sb8InLCPWUaexCqrDQc",
+     "nombre": "Products List",
+     "actualizada": "2026-08-22T20:03:55.535Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 12,
+   "url": "/product-details",
+   "nombre": "Product details",
+   "stepId": "7a307be0-dcfc-474a-91f6-8a08f54b5bb7",
+   "type": "store",
+   "paginas": [
+    {
+     "pageId": "ekVq2EDJNGlMxOPFuF9t",
+     "nombre": "Product details",
+     "actualizada": "2026-08-22T20:04:50.041Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 13,
+   "url": "/cart",
+   "nombre": "Cart",
+   "stepId": "a47742ae-8644-4fc3-b8c1-16583446b6b1",
+   "type": "store",
+   "paginas": [
+    {
+     "pageId": "2FoBJpJqCmc0z0Y4xZEo",
+     "nombre": "Cart",
+     "actualizada": "2026-07-22T21:34:21.600Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 14,
+   "url": "/checkout",
+   "nombre": "Checkout",
+   "stepId": "486f410f-8dbc-473b-b5a4-4806dbf0bd5c",
+   "type": "store",
+   "paginas": [
+    {
+     "pageId": "qSiwg2brakjiGqpIaCmN",
+     "nombre": "Checkout",
+     "actualizada": "2026-08-22T19:58:45.762Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 15,
+   "url": "/thank-you",
+   "nombre": "Thank you!",
+   "stepId": "768eab2c-5b7f-4745-b3e4-11ac4b89311f",
+   "type": "store",
+   "paginas": [
+    {
+     "pageId": "6DEiCsQRzJ6NsbhkP43n",
+     "nombre": "Thank you!",
+     "actualizada": "2026-08-22T20:06:05.662Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 16,
+   "url": "/aviso-legal",
+   "nombre": "aviso-legal",
+   "stepId": "f47889f7-bd63-4049-b778-f791f9dfbee0",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "UhAG3g54WF3NypfU16lJ",
+     "nombre": "aviso-legal",
+     "actualizada": "2026-08-29T08:55:40.978Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 17,
+   "url": "/politica-privacidad",
+   "nombre": "politica-privacidad",
+   "stepId": "040a59eb-9e64-44ca-adf7-92473851b176",
+   "type": "page",
+   "paginas": [
+    {
+     "pageId": "RNZg6K76ULbIn5o4d703",
+     "nombre": "politica-privacidad",
+     "actualizada": "2026-08-29T08:57:38.285Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 18,
+   "url": "/politica-cookies",
+   "nombre": "politica-cookies",
+   "stepId": "5452ae93-0f13-4ece-8909-b69a26ccad62",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "oX6ieI7lEruoTE97I9Yy",
+     "nombre": "politica-cookies",
+     "actualizada": "2026-08-29T08:58:24.273Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 19,
+   "url": "/condiciones-contratacion",
+   "nombre": "condiciones-contratacion",
+   "stepId": "e1a378b5-ed47-4395-abe7-535172955387",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "L9r6MRtIIYI1vF8BK2XF",
+     "nombre": "condiciones-contratacion",
+     "actualizada": "2026-08-29T08:59:00.980Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 20,
+   "url": "/devolucion",
+   "nombre": "devolucion",
+   "stepId": "a377e648-77b1-472f-87fd-8247590ba76a",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "wZTcQ5OQx8ffWhHkdkoK",
+     "nombre": "devolucion",
+     "actualizada": "2026-08-14T22:00:50.741Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 21,
+   "url": "/suscripcion-confirmada",
+   "nombre": "suscripcion confirmada",
+   "stepId": "eb3118a2-3f1f-47b9-9fc5-959ffdfd397e",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "rGNlVDb91GoTnWQD9Wh8",
+     "nombre": "suscripcion confirmada",
+     "actualizada": "2026-08-17T14:32:20.213Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 22,
+   "url": "/experiencia",
+   "nombre": "experiencia",
+   "stepId": "89345d2d-539a-4ab0-854d-1f65473acbad",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "UyeQYFnQv8CsRBa2D4hQ",
+     "nombre": "experiencia",
+     "actualizada": "2026-08-25T15:44:37.442Z",
+     "borrada": false
+    }
+   ]
+  },
+  {
+   "secuencia": 23,
+   "url": "/gracias-devolucion",
+   "nombre": "Gracias devolución",
+   "stepId": "dad672ca-7187-422a-9fc7-70510db5af9d",
+   "type": "optin_funnel_page",
+   "paginas": [
+    {
+     "pageId": "fkkFrnjWY72XvbsdJomU",
+     "nombre": "Gracias devolución",
+     "actualizada": "2026-08-29T10:55:52.903Z",
+     "borrada": false
+    }
+   ]
+  }
+ ]
+}

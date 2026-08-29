@@ -3277,3 +3277,161 @@ el código en crudo y hay que volver a una foto por pedido.
 
 ⚠️ **«Send test email» no sirve para esto**: nunca lleva oportunidad en
 contexto, así que la triple llave se ve literal. Tiene que ser una compra real.
+
+---
+
+## 41. El formulario de devolución no tenía por dónde entrar ni por dónde salir (29/8)
+
+Sonia pregunta dos cosas y las dos tienen la misma raíz.
+
+### 41.1 «No encuentro el formulario de solicitar devolución»
+
+Existe y funciona: **`Formulario Devolución v2`**, id `HBK7tGDlcIFN0vaXoksg`, en
+la raíz de Forms —sin carpeta—, con **tres envíos reales**:
+
+```
+2026-08-14 18:43  German Emiliano Borrello
+2026-08-14 20:16  German Emiliano Borrello
+2026-08-16 18:32  Martin Garcia Castizo   ·  pedido M100017  ·  motivo "porque si"
+```
+
+La cuenta solo tiene cuatro formularios (`total: 4`): este, `Opt-in Newsletter`,
+`Encuesta Post-Compra` y `Form 1`. El formulario antiguo —«Formulario Devolución
+/ Cambio»— **ya no está**, y su campo duplicado de contacto tampoco: esa limpieza
+pendiente de §14.5 quedó hecha en algún momento y nadie lo anotó.
+
+Lo que no existe es **la forma de llegar a él**. No está embebido en ninguna
+página, no había ningún custom value que lo apuntara, y el correo 16 —el único
+que debía llevar ahí— tenía el botón apuntando a la página de instrucciones como
+apaño. Estaba escrito desde el 12/8 (§14.5, «*Página Devoluciones: añadir el form
+Devolución v2 — funnel builder, manual*») y nunca se hizo.
+
+Por eso Sonia no lo encuentra desde la web: **desde la web no se puede llegar.**
+
+**La URL directa del formulario.** No hacía falta inventarla: ya había un
+precedente funcionando en la cuenta, el `{{custom_values.url_feedback}}` de la
+Encuesta Post-Compra.
+
+```
+url_feedback                 https://api.leadconnectorhq.com/widget/form/fvVToLx0e9pEjSRD6zq7
+url_formulario_devolucion    https://api.leadconnectorhq.com/widget/form/HBK7tGDlcIFN0vaXoksg
+```
+
+Creado el custom value **`url_formulario_devolucion`** (`2S2b9lrVpft9p1adZxN5`).
+
+### 41.2 «La página de gracias-devolución ya no está»
+
+No se borró. Casi seguro que nació con otro nombre.
+
+El funnel tiene hoy **23 pasos**. El volcado del 22/8 tenía 22, y en aquel
+volcado **no había ninguna `/gracias-devolucion`**. Lo que había, y sigue
+habiendo, es un paso **`/devolucion`** en singular:
+
+```
+paso 20  /devolucion   pageId wZTcQ5OQx8ffWhHkdkoK   actualizada 2026-08-14 22:00
+paso 23  /gracias-devolucion   fkkFrnjWY72XvbsdJomU   creada 2026-08-29 10:55  ← la de hoy
+```
+
+Ese `14/8 a las 22:00` es justo el día en que se probó la cadena de devolución de
+punta a punta (§25.3) y en que se corrigieron los dos bugs de maquetación de
+`legal/gracias-devolucion.html`. Encaja.
+
+⚠️ **No se puede confirmar desde aquí.** La política de red del entorno bloquea
+`stylebymura.com` (`CONNECT → 403`) y la ruta de lectura de páginas de GHL
+responde `401 "This route is not yet supported by the IAM Service"` con el PIT y
+`401/403` con el token interno. Es un vistazo de diez segundos en el editor y no
+merece más investigación por API.
+
+### 41.3 El inventario de páginas, que no existía
+
+Esto es lo que hace que una página «desaparezca» sin que nadie pueda
+comprobarlo: **no había en el repo ninguna lista de las páginas del funnel.**
+Estaban dispersas en cabeceras de HTML, con backup de dos de veintitrés.
+
+Funnel `Mura` · `rlc7iAyGF4U1nfwAJOJQ` · dominio `c8MNhJTKbRFUshtryQ3C`:
+
+| # | url | nombre | pageId |
+|---|---|---|---|
+| 1 | `/home` | Home | `jCl0erpmUk8Os4AGnx7M` |
+| 2 | `/prendas` | prendas | `s5fa5bucD6xe6IHXumRf` |
+| 3 | `/producto` | producto | `cmPhl3N0IF3smLo8Oy8x` |
+| 4 | `/novedades` | novedades | `RL1DrjCiiqGEgDMKfV70` |
+| 5 | `/colecciones` | colecciones | `3t6UDEyhxmRJCMgeGHLW` |
+| 6 | `/mura` | mura | `2j3lWbVzAl8btZDuTcny` |
+| 7 | `/carrito` | carrito | `qsUEwHJLz2xiSulCN5jD` |
+| 8 | `/contacto` | contacto | `IAQR8eOiAWObBSeesnH4` |
+| 9 | `/devoluciones` | devoluciones | `ep1EkcwisLfPZwloPsoN` |
+| 10 | `/gracias` | gracias | `Y1YEzfjU3JNDkTBCZiSo` |
+| 11 | `/products-list` | Products List | `6sb8InLCPWUaexCqrDQc` |
+| 12 | `/product-details` | Product details | `ekVq2EDJNGlMxOPFuF9t` |
+| 13 | `/cart` | Cart | `2FoBJpJqCmc0z0Y4xZEo` |
+| 14 | `/checkout` | Checkout | `qSiwg2brakjiGqpIaCmN` |
+| 15 | `/thank-you` | Thank you! | `6DEiCsQRzJ6NsbhkP43n` |
+| 16 | `/aviso-legal` | aviso-legal | `UhAG3g54WF3NypfU16lJ` |
+| 17 | `/politica-privacidad` | politica-privacidad | `RNZg6K76ULbIn5o4d703` |
+| 18 | `/politica-cookies` | politica-cookies | `oX6ieI7lEruoTE97I9Yy` |
+| 19 | `/condiciones-contratacion` | condiciones-contratacion | `L9r6MRtIIYI1vF8BK2XF` |
+| 20 | `/devolucion` | devolucion | `wZTcQ5OQx8ffWhHkdkoK` |
+| 21 | `/suscripcion-confirmada` | suscripcion confirmada | `rGNlVDb91GoTnWQD9Wh8` |
+| 22 | `/experiencia` | experiencia | `UyeQYFnQv8CsRBa2D4hQ` |
+| 23 | `/gracias-devolucion` | Gracias devolución | `fkkFrnjWY72XvbsdJomU` |
+
+⚠️ **`qsUEwHJLz2xiSulCN5jD` (`/carrito`) y `qSiwg2brakjiGqpIaCmN` (`Checkout`)**
+empiezan casi igual y se confunden al leer. Son páginas distintas.
+
+Nota sobre el paginado: `GET /funnels/page` **corta en 20 por página** y exige
+`offset`; sin él devuelve 422. Con `limit=100` no salen las 23. El volcado crudo
+queda en `datos/backups/paginas_20260829/pasos_del_funnel.json`.
+
+### 41.4 De paso: el botón de cuatro correos llevaba a un 404
+
+Buscando el custom value del formulario apareció otro que estaba mal:
+
+```
+{{custom_values.url_coleccion}}   =  https://www.stylebymura.com/coleccion
+paso del funnel                   =  /colecciones
+```
+
+**No existe ningún paso `/coleccion`** —están los 23 arriba— y en el repo hay 20
+enlaces a `/colecciones` y ninguno a `/coleccion`. Ese custom value es el botón
+principal de **cuatro correos**: 05 · entrega, 11 · segunda compra,
+14 · lanzamiento y 17 · cumpleaños. Los cuatro llevaban a un 404.
+
+Corregido el valor (`FBLfpmf7IrgXfx0qMHPR`). Las plantillas no se tocan: por eso
+el enlace estaba en un custom value.
+
+### 41.5 El correo 16 ya apunta al formulario
+
+`16 · datos de devolución no coinciden` (`6a75e5eb96dc697014d600f7`). Su CTA
+«Realizar solicitud» llevaba a `{{custom_values.url_devoluciones}}` —la página de
+instrucciones— y estaba anotado como apaño: «*el destino del botón principal del
+16 es una inferencia mía… si hay una URL directa del formulario, es mejor esa*».
+Ya la hay.
+
+Cambiados **los dos hrefs**, el `<a>` visible y el `<v:roundrect>` de Outlook
+(§33: cambiar solo uno deja la mitad de los clientes con el enlace viejo).
+Verificado en el HTML servido: `url_formulario_devolucion` ×2 en el botón,
+`url_devoluciones` ×1 en el pie —que es lo que toca, uno lleva a rellenar y el
+otro a leer— y `url_contacto` ×2 en el botón secundario, que ya estaba puesto
+aunque la cabecera dijera «pendiente».
+
+### 41.6 Lo que queda, y es todo de interfaz
+
+Ni el builder de formularios ni el de páginas tienen ruta de escritura
+alcanzable: §14.5 para los forms, §34.2 para las páginas —todos los
+`POST/PUT/PATCH` sobre `/funnels/page/{id}` responden «Cannot POST», que es ruta
+inexistente, no permiso denegado—. Va en `docs/para-sonia-formulario-devolucion.md`.
+
+1. Abrir `/devolucion` (paso 20) y ver qué hay. Una de las dos páginas sobra.
+2. **Embeber el formulario en `/devoluciones`**, con el elemento *Form* nativo.
+3. **On Submit → redirigir a la página de gracias.** Ese es el eslabón que nunca
+   se configuró.
+4. Traducir las etiquetas, que siguen en inglés.
+5. Publicar.
+
+⚠️ **El consentimiento del formulario habla de SMS de marketing.** En el envío de
+Martin se lee, en el campo `terms_and_conditions`: «*Al marcar esta casilla,
+acepto recibir mensajes de texto no comerciales de Mura sobre nuevos
+productos…*». En un formulario de **devolución** eso no pinta nada, y pedir
+consentimiento de marketing para tramitar una devolución es discutible en RGPD.
+Quitarlo o sustituirlo por la aceptación de la política de privacidad.
