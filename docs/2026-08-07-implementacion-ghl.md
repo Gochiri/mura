@@ -3501,7 +3501,43 @@ Va a la lista de la interfaz.
 Las dos conviven y no se pierde ninguna solicitud. Retirarlo antes deja el
 periodo intermedio sin entrada.
 
-### 41.8 Lo que queda, y es todo de interfaz
+### 41.8 El pegado del HEAD, comprobado — y dos trampas de medición
+
+German pegó el Tracking Code del HEAD. Comprobado en el DOM:
+
+```
+reglasDevolucion: true    reglaTextarea: true    hojas: ["sistema", "bocadillo"]
+```
+
+Una sola hoja `sistema`. Ese es el dato que importa: `estilo()` lleva un guardia
+por `data-mura`, así que aunque el bloque corriera de más, la hoja no se apila.
+
+**Trampa 1 — mi contador de copias estaba mal.** Conté apariciones de la cadena
+`MURA_PARTE` en el HTML y salió 23. Cada copia del global contiene esa cadena
+**seis** veces —en los comentarios, en la asignación y en la lectura—, así que
+«dos copias» nunca iba a dar 2. Para contar bloques hay que contar elementos
+`<script>` que la contengan, no ocurrencias del texto.
+
+**Trampa 2 — la que ya me comí el 22/8.** Contando bien salen **3** bloques:
+`head`, `body` y otro `head`. Estuve a punto de avisar otra vez de una copia
+vieja sin borrar. No lo es, y está escrito en §35.1: el tercero es el envoltorio
+de GHL que **contiene** el nuestro dentro. Se distingue por tamaño:
+
+```
+head · 58 KB · tieneDev true     ← nuestro pegado nuevo
+body · 58 KB · tieneDev false    ← nuestro pegado del BODY, de ayer
+head · 142 KB · tieneDev true    ← el bloque de GHL, con el nuestro dentro
+```
+
+⚠️ **Y ahí se ve una deriva que conviene tener presente: el BODY de producción ya
+no coincide con el del repo** (`tieneDev: false`). Hoy es irrelevante, porque el
+body nunca inyecta CSS —`HAY_CSS` es falso cuando `MURA_PARTE` vale `'body'`— y
+el cambio de hoy era solo CSS. Pero el día que se toque la parte del DOM
+—contador, buscador, cabecera, traducción— habrá que repegar también el body, y
+**el síntoma será que el cambio no aparece, sin ningún error**. Es de los fallos
+más caros de diagnosticar: todo parece correcto y no pasa nada.
+
+### 41.9 Lo que queda, y es todo de interfaz
 
 Ni el builder de formularios ni el de páginas tienen ruta de escritura
 alcanzable: §14.5 para los forms, §34.2 para las páginas —todos los
@@ -3517,10 +3553,17 @@ inexistente, no permiso denegado—. Va en `docs/para-sonia-formulario-devolucio
    archivar el formulario viejo. **No antes.**
 5. Publicar las dos páginas.
 
-Y en n8n, un flujo nuevo en `/webhook/devolucion-web`: busca el contacto por
-correo, escribe los dos campos, quita y vuelve a poner el tag —el remove antes
-del add, §17— y responde `ok` o `sin-pedido`. La especificación entera está en
-`docs/para-sonia-formulario-devolucion.md`.
+Y en n8n, un flujo nuevo en `/webhook/devolucion-web`. Ya no va como
+especificación en prosa: está montado en `tienda/n8n-devolucion-web-nodos.json`,
+diez nodos listos para pegar en el lienzo, calcados llamada por llamada del alta
+de newsletter (`tienda/n8n-newsletter-workflow.json`), que hace exactamente lo
+mismo con otros campos.
+
+Los dos campos de contacto se escriben **por `id` y no por `key`**: las claves de
+GHL llegan con los acentos comidos —`n_de_pedido_lo_encuentras_en_tu_mail_de_confirmacin`,
+`motivo_de_devolucin__cambio`— y una letra de más o de menos falla en silencio.
+`q73ODvZiPLCMqRrUkVCK` es el número de pedido y `2GQ11kHcaUggy8K4P9U4` el motivo,
+los mismos que ya lee el 08a.
 
 Ya no hace falta traducir las etiquetas del formulario de GHL ni quitarle el
 consentimiento de SMS: ese formulario se retira. El nuevo nace en castellano y

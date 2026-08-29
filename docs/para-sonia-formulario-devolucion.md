@@ -70,47 +70,54 @@ trigger.
 
 ## Lo que hay que hacer en n8n
 
-Un flujo nuevo con el webhook **`/webhook/devolucion-web`** (de producción,
-`/webhook/…`, nunca `/webhook-test/…` — fue el bug del 06b).
+**No hace falta que lo montes a mano: está hecho.** Los diez nodos están en
+`tienda/n8n-devolucion-web-nodos.json`, calcados llamada por llamada del alta de
+newsletter que ya te funciona, porque hace exactamente lo mismo con otros campos.
 
-Recibe esto:
+### Cómo pegarlo
 
-```json
-{
-  "first_name": "...", "last_name": "...",
-  "email": "...", "phone": "...",
-  "numero_pedido": "M100017",
-  "motivo": "...",
-  "consentimiento": "rgpd-aceptado",
-  "origen": "devoluciones-web"
-}
+1. Abre el archivo, copia todo el contenido.
+2. **Ctrl+V sobre el lienzo de n8n.** No uses *Import from File*: eso reemplaza
+   el workflow entero en vez de añadir los nodos.
+3. Sustituye `PEGAR_AQUI_EL_PIT` en las cuatro llamadas HTTP. Si prefieres, muévelo
+   a una credencial Header Auth y quita la cabecera `Authorization` de cada nodo.
+4. Guarda y **actívalo**. Sin activar, la URL de producción
+   `/webhook/devolucion-web` no escucha.
+
+### Qué hace, por si quieres revisarlo antes
+
+```
+Webhook devolucion-web
+  → Datos completos?          no → responde datos-invalidos
+  → Buscar contacto por email
+  → ¿Existe el contacto?      no → responde sin-pedido
+  → Guardar pedido y motivo   (POST /contacts/upsert)
+  → Quitar tag  →  Poner tag  (solicitud-devolucion)
+  → responde ok
 ```
 
-Y tiene que hacer cuatro cosas:
+Tres detalles que te van a interesar:
 
-1. **Buscar el contacto por correo.**
-   - Si no existe → responder `{"status":"sin-pedido"}`. La página se lo dice y
-     la deja corregir, sin crear un contacto fantasma.
-   - Si existe → seguir. De su ficha salen la dirección, el CP y la población,
-     que es lo que Nacex necesita.
-2. **Escribir los dos campos de contacto** que leen los correos, con los nombres
-   exactos que ya usa el `08a`:
-   - `n_de_pedido_lo_encuentras_en_tu_mail_de_confirmacin`
-   - `motivo_de_devolucin__cambio`
-3. **Quitar y volver a poner el tag `solicitud-devolucion`.**
+- **Los dos campos se escriben por `id`, no por `key`.** Las claves de GHL llegan
+  con los acentos comidos —`n_de_pedido_lo_encuentras_en_tu_mail_de_confirmacin`,
+  `motivo_de_devolucin__cambio`— y una letra de más o de menos falla en silencio.
+  `q73ODvZiPLCMqRrUkVCK` es el número de pedido, `2GQ11kHcaUggy8K4P9U4` el motivo.
+  Son los mismos que ya lee el 08a.
+- **El remove del tag va antes del add**, con `neverError` para que la primera vez
+  no falle. Sin eso, la segunda devolución de una misma clienta no entra nunca.
+- **La dirección no se toca.** La de la ficha es la que dejó al comprar, y es la
+  que necesita Nacex.
 
-   ⚠️ **El remove antes del add.** Un tag que ya está puesto no vuelve a
-   disparar. Sin el remove, quien devuelva por segunda vez no reentraría nunca.
-   Es la misma trampa de la newsletter.
-4. **Responder `{"status":"ok"}`**, para que la página redirija a la confirmación.
+### Lo que NO hace, a propósito
 
-El resto de la cadena no cambia: el `08a` sigue llamando a Nacex y mandando el
-aviso, y de ahí salen el `08b` y el `08c` igual que hoy.
+No comprueba que el número de pedido sea de esa clienta: `sin-pedido` solo mira si
+el contacto existe. Verificar el pedido ya lo hace la cadena de abajo —el 08a
+busca la oportunidad y, si no la encuentra, el tag `devolucion-no-encontrada`
+dispara el 08c—. Ponerlo también aquí sería mantener la misma regla en dos sitios.
 
-Si prefieres, el `08a` puede desaparecer y llamar tú a Nacex directamente desde
-ese mismo flujo — te ahorrarías un webhook de salida de GHL, que **sí es
-premium** y se cobra por ejecución. Lo dejo a tu criterio; con el tag funciona
-igual.
+Si prefieres, el 08a puede desaparecer y llamas tú a Nacex desde este mismo flujo
+— te ahorrarías un webhook de salida de GHL, que **sí es premium** y se cobra por
+ejecución. A tu criterio; con el tag funciona igual.
 
 ---
 
@@ -142,8 +149,9 @@ desplegable.
 ⚠️ **Esto no lo he podido hacer por API y no es por falta de permisos.** Los
 triggers de ese workflow están migrados a un almacén aparte
 (`isTriggerBucketMigrated: true`): el endpoint antiguo acepta el POST, devuelve
-un id y no escribe nada. Lo comprobé tres veces y luego leyendo el trigger por su
-id, que responde 404. Son treinta segundos en el editor.
+un id y no escribe nada. Lo probé cuatro veces —con y sin `targetActionId`, con y
+sin `advanceCanvasMeta`, y con el `workflowId` en la query— y luego leyendo el
+trigger por su id, que responde 404. Son treinta segundos en el editor.
 
 ### 4. Cuando la nueva entrada funcione, retirar la vieja
 

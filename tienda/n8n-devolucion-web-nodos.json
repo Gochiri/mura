@@ -1,0 +1,445 @@
+{
+  "name": "MURA · Solicitud de devolucion web",
+  "meta": {
+    "descripcion": "Solicitud de devolucion desde /devolucion. n8n es el dueno de la entrada: valida, busca el contacto, le escribe el numero de pedido y el motivo, y le pone el tag `solicitud-devolucion`. Ese tag es lo que dispara 08a · Devolucion dentro de GHL, que sigue llamando a Nacex igual que hoy.",
+    "antes-de-importar": [
+      "1. Sustituir PEGAR_AQUI_EL_PIT en las cuatro llamadas HTTP (o moverlo a una credencial Header Auth y quitar la cabecera Authorization de cada nodo).",
+      "2. Guardar y ACTIVAR el workflow: sin activar, la URL de produccion /webhook/devolucion-web no escucha.",
+      "3. En GHL, anadir al 08a el trigger Contact Tag -> Tag Added -> solicitud-devolucion. El tag ya existe.",
+      "4. Publicar /devolucion solo despues de esto: hasta entonces el formulario da error al enviar."
+    ],
+    "como-pegarlo": "Copiar el contenido de este archivo y pegarlo con Ctrl+V sobre el lienzo de n8n. NO usar 'Import from File': eso reemplaza el workflow entero en vez de anadir los nodos.",
+    "sustituye-a": "El formulario nativo `Formulario Devolucion v2` (HBK7tGDlcIFN0vaXoksg), cuyo envio disparaba el 08a con un trigger form_submission. Ese trigger (EQfcssMWOwqEkHqAFxZj) se deja ACTIVO hasta que esto funcione: mientras tanto conviven las dos entradas y no se pierde ninguna solicitud.",
+    "lo-que-no-hace": "No comprueba que el numero de pedido sea de esa clienta. `sin-pedido` solo mira si el contacto existe. Verificar el pedido ya lo hace la cadena de abajo: el 08a busca la oportunidad y, si no la encuentra, el tag `devolucion-no-encontrada` dispara el 08c. Duplicarlo aqui seria mantener la misma regla en dos sitios.",
+    "respuestas": {
+      "ok": "la pagina redirige a /gracias-devolucion",
+      "sin-pedido": "la pagina avisa y deja corregir, sin redirigir",
+      "datos-invalidos": "solo puede salir si alguien postea al webhook sin pasar por la pagina"
+    }
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "devolucion-web",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "https://stylebymura.com"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        0
+      ],
+      "id": "bb000001-0000-4000-8000-000000000001",
+      "name": "Webhook devolucion",
+      "notes": "La URL de PRODUCCION es /webhook/devolucion-web. La de pruebas (/webhook-test/) solo escucha con el editor abierto: en produccion no llega nunca. Fue el bug del 06b."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.body.email }}",
+              "rightValue": "@",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "c2",
+              "leftValue": "={{ $json.body.numero_pedido }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "c3",
+              "leftValue": "={{ $json.body.motivo }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "c4",
+              "leftValue": "={{ $json.body.consentimiento }}",
+              "rightValue": "rgpd-aceptado",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "bb000001-0000-4000-8000-000000000002",
+      "name": "Datos completos",
+      "notes": "La pagina ya valida lo mismo, pero un POST se puede mandar sin pasar por ella. El consentimiento se comprueba aqui tambien para que quede registro de que llego marcado."
+    },
+    {
+      "parameters": {
+        "url": "https://services.leadconnectorhq.com/contacts/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "locationId",
+              "value": "NxPF5fOicowujokEk5Hm"
+            },
+            {
+              "name": "query",
+              "value": "={{ $json.body.email }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer PEGAR_AQUI_EL_PIT"
+            },
+            {
+              "name": "Version",
+              "value": "2021-07-28"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        -100
+      ],
+      "id": "bb000001-0000-4000-8000-000000000003",
+      "name": "Buscar contacto por email",
+      "notes": "Mismo nodo que en el alta de newsletter. Se usa /contacts/?query= y no /contacts/search/duplicate porque este devuelve lista vacia cuando no hay nada, en vez de un 404 que habria que capturar."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d1",
+              "leftValue": "={{ ($json.contacts || []).filter(c => (c.email || '').toLowerCase() === $('Webhook devolucion').item.json.body.email.toLowerCase()).length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        -100
+      ],
+      "id": "bb000001-0000-4000-8000-000000000004",
+      "name": "Existe el contacto",
+      "notes": "Si no existe, no se crea nada: quien no ha comprado no puede devolver. Se responde sin-pedido y la pagina le pide que revise el numero, sin dejar contactos fantasma en la cuenta."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ status: 'sin-pedido' }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        -220
+      ],
+      "id": "bb000001-0000-4000-8000-000000000005",
+      "name": "Responder sin-pedido",
+      "notes": "El texto exacto 'sin-pedido' lo espera la pagina: con el NO redirige y deja corregir. Cualquier otro valor se trata como alta correcta y manda a la pagina de gracias."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/contacts/upsert",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer PEGAR_AQUI_EL_PIT"
+            },
+            {
+              "name": "Version",
+              "value": "2021-07-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify(Object.assign(Object.fromEntries(Object.entries({ locationId: 'NxPF5fOicowujokEk5Hm', email: $('Webhook devolucion').item.json.body.email, firstName: $('Webhook devolucion').item.json.body.first_name, lastName: $('Webhook devolucion').item.json.body.last_name, phone: $('Webhook devolucion').item.json.body.phone }).filter(([,v]) => v !== '' && v != null)), { customFields: [{ id: 'q73ODvZiPLCMqRrUkVCK', field_value: $('Webhook devolucion').item.json.body.numero_pedido }, { id: '2GQ11kHcaUggy8K4P9U4', field_value: $('Webhook devolucion').item.json.body.motivo } ] })) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        0
+      ],
+      "id": "bb000001-0000-4000-8000-000000000006",
+      "name": "Guardar pedido y motivo",
+      "notes": "Los dos campos van por ID y no por key: las claves de GHL llegan con los acentos comidos (n_de_pedido_lo_encuentras_en_tu_mail_de_confirmacin, motivo_de_devolucin__cambio) y una letra de mas o de menos falla en silencio. q73O... = numero de pedido, 2GQ1... = motivo. Son los mismos que lee el 08a. La direccion NO se toca: la de la ficha es la que dejo al comprar."
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "=https://services.leadconnectorhq.com/contacts/{{ $json.contact.id }}/tags",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer PEGAR_AQUI_EL_PIT"
+            },
+            {
+              "name": "Version",
+              "value": "2021-07-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ tags: ['solicitud-devolucion'] }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        0
+      ],
+      "id": "bb000001-0000-4000-8000-000000000007",
+      "name": "Quitar tag",
+      "notes": "Un tag que YA esta puesto no vuelve a disparar. Sin este remove, la segunda devolucion de una misma clienta no entraria nunca en el 08a. La primera vez el remove no hace nada: por eso neverError."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://services.leadconnectorhq.com/contacts/{{ $('Guardar pedido y motivo').item.json.contact.id }}/tags",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer PEGAR_AQUI_EL_PIT"
+            },
+            {
+              "name": "Version",
+              "value": "2021-07-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ tags: ['solicitud-devolucion'] }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        0
+      ],
+      "id": "bb000001-0000-4000-8000-000000000008",
+      "name": "Poner tag",
+      "notes": "Este tag es el que dispara 08a. El id se lee del upsert y no del nodo anterior porque el DELETE devuelve el contacto ya sin el tag y, con neverError, podria venir vacio."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ status: 'ok' }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1320,
+        0
+      ],
+      "id": "bb000001-0000-4000-8000-000000000009",
+      "name": "Responder ok",
+      "notes": "Con esto la pagina redirige a /gracias-devolucion."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ status: 'datos-invalidos' }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        180
+      ],
+      "id": "bb000001-0000-4000-8000-000000000010",
+      "name": "Responder datos invalidos"
+    }
+  ],
+  "connections": {
+    "Webhook devolucion": {
+      "main": [
+        [
+          {
+            "node": "Datos completos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Datos completos": {
+      "main": [
+        [
+          {
+            "node": "Buscar contacto por email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder datos invalidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar contacto por email": {
+      "main": [
+        [
+          {
+            "node": "Existe el contacto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Existe el contacto": {
+      "main": [
+        [
+          {
+            "node": "Guardar pedido y motivo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder sin-pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar pedido y motivo": {
+      "main": [
+        [
+          {
+            "node": "Quitar tag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quitar tag": {
+      "main": [
+        [
+          {
+            "node": "Poner tag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Poner tag": {
+      "main": [
+        [
+          {
+            "node": "Responder ok",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}
