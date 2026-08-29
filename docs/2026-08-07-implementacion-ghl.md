@@ -3336,11 +3336,15 @@ Ese `14/8 a las 22:00` es justo el día en que se probó la cadena de devolució
 punta a punta (§25.3) y en que se corrigieron los dos bugs de maquetación de
 `legal/gracias-devolucion.html`. Encaja.
 
-⚠️ **No se puede confirmar desde aquí.** La política de red del entorno bloquea
-`stylebymura.com` (`CONNECT → 403`) y la ruta de lectura de páginas de GHL
-responde `401 "This route is not yet supported by the IAM Service"` con el PIT y
-`401/403` con el token interno. Es un vistazo de diez segundos en el editor y no
-merece más investigación por API.
+**CONFIRMADO** (Sonia, 11:32): mandó la captura de `/devolucion` y dentro pone
+«Hemos recibido tu solicitud». Es su página de gracias del 14/8, con el nombre en
+singular. No se había borrado nada.
+
+Yo no pude verlo desde aquí —la política de red del entorno bloquea
+`stylebymura.com` (`CONNECT → 403`) y la ruta de lectura de páginas responde
+`401 "This route is not yet supported by the IAM Service"` con el PIT y `401/403`
+con el token interno—, así que lo cerró ella en diez segundos. No merecía más
+investigación por API.
 
 ### 41.3 El inventario de páginas, que no existía
 
@@ -3415,23 +3419,117 @@ Verificado en el HTML servido: `url_formulario_devolucion` ×2 en el botón,
 otro a leer— y `url_contacto` ×2 en el botón secundario, que ya estaba puesto
 aunque la cabecera dijera «pendiente».
 
-### 41.6 Lo que queda, y es todo de interfaz
+### 41.6 Corrección: aquí no se embeben formularios de GHL
+
+Escribí que el formulario iba embebido en `/devoluciones` «con el elemento *Form*
+nativo del builder». **German lo paró: en este proyecto no se ha embebido ni un
+formulario nativo.** Comprobado — `widget/form` y `form_embed.js` aparecen
+**cero** veces en todo el repo. Los dos formularios que hay son HTML nuestro con
+un `fetch` a n8n:
+
+```
+tienda/newsletter-home.html   → POST /webhook/alta-newsletter
+tienda/experiencia.html       → POST /webhook/experiencia-mura
+```
+
+Yo di por buena una práctica que no era la de la casa sin comprobarla. La razón
+por la que se hace así está escrita en la cabecera de `experiencia.html` —el
+Survey de GHL no da control de maquetación— y en §30.1 —el Inbound Webhook es
+premium y se cobra por ejecución—.
+
+⚠️ **Ese segundo motivo no aplica aquí, y conviene no repetirlo mal.** El
+`form_submission` que dispara el 08a **no es premium**: es un trigger normal. La
+devolución no se pasa a código propio para ahorrar coste, sino por el diseño.
+Quien argumente lo contrario en el futuro estará copiando el razonamiento del
+newsletter a un caso que no es el mismo.
+
+**Decisión de German: a mano, como los otros dos.** Nuevo
+`tienda/devoluciones-form.html`, con las primitivas de formulario que ya existían
+en el global —`.mura-nl-fila`, `-campo`, `-consent`, `-estado`, que llevan el
+nombre de la newsletter porque nacieron ahí— y un bloque `.mura-dev-*` propio.
+
+Dos cosas que salieron al renderizarlo y que valen para el siguiente que pegue
+una sección suelta:
+
+- **El `box-sizing: border-box` del global está limitado a `.mura` y sus
+  descendientes**, y estas secciones se pegan sueltas, sin ese envoltorio. En la
+  home cuela porque el reset de GHL lo cubre; apoyarse en eso es frágil. La
+  sección nueva declara el suyo.
+- **La captura «de móvil» no lo era.** Chromium en este entorno fija el viewport
+  de layout en 485 px: pedir `--window-size=390` recorta la imagen pero no
+  estrecha el layout, así que lo que parecía un desbordamiento era el recorte.
+  Medido de verdad con dos iframes de 360 y 480 px, `scrollWidth == clientWidth`
+  en los dos. Para comprobar responsive aquí, iframes, no `--window-size`.
+
+### 41.7 Y las tres páginas, que no eran dos
+
+Con la captura de Sonia y su reparto, queda así:
+
+| Página | Qué es |
+|---|---|
+| `/devoluciones` | Instrucciones — «Envíos y devoluciones». No se toca. |
+| `/devolucion` | **El formulario.** Se vacía la página de gracias que tenía. |
+| `/gracias-devolucion` | La confirmación. Se queda el contenido que había en la otra. |
+
+`{{custom_values.url_formulario_devolucion}}` pasa a apuntar a
+`https://www.stylebymura.com/devolucion` en vez de a la URL del widget de GHL,
+que ya no se usa. Sonia decía que «los mails ya dirigen ahí»: no es literal
+—ninguna plantilla apunta hoy al singular, van todas a `url_devoluciones`, en
+plural—, pero el fondo es correcto y mejor: **no hay que tocar ninguna
+plantilla**, porque el destino vive en un custom value.
+
+Y la entrada del 08a pasa de formulario a tag. El tag `solicitud-devolucion`
+(`k1wdT7fvuRS5ilFgHDZl`) queda creado.
+
+⚠️ **El trigger no se pudo crear por API, y no es cuestión de permisos.** Los
+triggers de ese workflow están migrados a un almacén aparte:
+
+```
+isTriggerBucketMigrated : true
+triggersFilePath        : location/…/workflow-triggers/6b3064f7-…/6
+```
+
+`POST /workflow/{loc}/trigger` **acepta la petición y devuelve un id**, pero no
+escribe nada: el listado sigue enseñando un solo trigger y leer ese id devuelve
+404. Probado cuatro veces —con y sin `targetActionId`, con y sin
+`advanceCanvasMeta`, y con el `workflowId` en la query—. Es la misma clase de
+trampa que el «Cannot POST» de las páginas: la ruta antigua sigue ahí y miente.
+Va a la lista de la interfaz.
+
+⚠️ **El orden importa.** El trigger `form_submission` del formulario viejo
+(`EQfcssMWOwqEkHqAFxZj`) **se queda activo** hasta que la entrada nueva funcione.
+Las dos conviven y no se pierde ninguna solicitud. Retirarlo antes deja el
+periodo intermedio sin entrada.
+
+### 41.8 Lo que queda, y es todo de interfaz
 
 Ni el builder de formularios ni el de páginas tienen ruta de escritura
 alcanzable: §14.5 para los forms, §34.2 para las páginas —todos los
 `POST/PUT/PATCH` sobre `/funnels/page/{id}` responden «Cannot POST», que es ruta
 inexistente, no permiso denegado—. Va en `docs/para-sonia-formulario-devolucion.md`.
 
-1. Abrir `/devolucion` (paso 20) y ver qué hay. Una de las dos páginas sobra.
-2. **Embeber el formulario en `/devoluciones`**, con el elemento *Form* nativo.
-3. **On Submit → redirigir a la página de gracias.** Ese es el eslabón que nunca
-   se configuró.
-4. Traducir las etiquetas, que siguen en inglés.
-5. Publicar.
+1. Vaciar `/devolucion` y pegar ahí `tienda/devoluciones-form.html`.
+2. Terminar `/gracias-devolucion` con el HTML de `legal/gracias-devolucion.html`.
+   Ya no hace falta configurar ningún «On Submit»: el formulario es nuestro y
+   redirige él solo.
+3. Añadir al 08a el trigger `Contact Tag → Tag Added → solicitud-devolucion`.
+4. Cuando la entrada nueva funcione, desactivar el trigger `Form Submitted` y
+   archivar el formulario viejo. **No antes.**
+5. Publicar las dos páginas.
 
-⚠️ **El consentimiento del formulario habla de SMS de marketing.** En el envío de
-Martin se lee, en el campo `terms_and_conditions`: «*Al marcar esta casilla,
-acepto recibir mensajes de texto no comerciales de Mura sobre nuevos
-productos…*». En un formulario de **devolución** eso no pinta nada, y pedir
-consentimiento de marketing para tramitar una devolución es discutible en RGPD.
-Quitarlo o sustituirlo por la aceptación de la política de privacidad.
+Y en n8n, un flujo nuevo en `/webhook/devolucion-web`: busca el contacto por
+correo, escribe los dos campos, quita y vuelve a poner el tag —el remove antes
+del add, §17— y responde `ok` o `sin-pedido`. La especificación entera está en
+`docs/para-sonia-formulario-devolucion.md`.
+
+Ya no hace falta traducir las etiquetas del formulario de GHL ni quitarle el
+consentimiento de SMS: ese formulario se retira. El nuevo nace en castellano y
+con el consentimiento de privacidad, que es el que toca.
+
+De dónde salió lo del consentimiento, para que no se repita: en el envío de
+Martin, el campo `terms_and_conditions` guardó «*Al marcar esta casilla, acepto
+recibir mensajes de texto no comerciales de Mura sobre nuevos productos…*». Es el
+texto por defecto de GHL y nadie lo revisó. En un formulario de **devolución** no
+pinta nada, y atar la tramitación de una devolución a un consentimiento de
+marketing es discutible en RGPD: son dos bases jurídicas distintas. Vale la pena
+mirar ese checkbox en cualquier formulario nativo que quede.

@@ -230,7 +230,11 @@
     '.mura-linea-acc { display: flex; align-items: center; gap: clamp(14px,2vw,26px); }',
     '@media (max-width: 560px) { .mura-linea { flex-wrap: wrap; } .mura-linea-acc { width: 100%; justify-content: space-between; padding-left: 88px; } }',
 
-    /* ---- Newsletter (sección de /home) ---- */
+    /* ---- Formularios: newsletter (/home) y devolución (/devoluciones) ----
+       Las clases .mura-nl-fila / -campo / -consent / -estado son las
+       primitivas de formulario y las comparten /home y /devolucion. Llevan el
+       nombre de la newsletter porque nacieron ahí, no porque sean suyas;
+       no se renombran para no tener que repegar la home. */
     '.mura-nl { max-width: 1120px; margin: 0 auto; padding: clamp(70px,9vw,120px) clamp(20px,4vw,56px); text-align: center; }',
     '.mura-nl form { text-align: left; margin-top: clamp(32px,4vw,44px); }',
 
@@ -249,7 +253,9 @@
     '.mura-nl-campo { margin-bottom: 18px; }',
     '.mura-nl-campo label { display: block; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: #55524B; padding-bottom: 8px; }',
     ".mura-nl-campo input { width: 100%; height: 50px; padding: 0 14px; border: 1px solid rgba(29,27,24,.25); background: transparent; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 300; border-radius: 0; -webkit-appearance: none; appearance: none; }",
-    '.mura-nl-campo input:focus { outline: none; border-color: #1D1B18; }',
+    ".mura-nl-campo textarea { width: 100%; min-height: 108px; padding: 13px 14px; border: 1px solid rgba(29,27,24,.25); background: transparent; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 300; line-height: 1.7; border-radius: 0; -webkit-appearance: none; appearance: none; resize: vertical; display: block; }",
+    '.mura-nl-campo input:focus, .mura-nl-campo textarea:focus { outline: none; border-color: #1D1B18; }',
+    '.mura-nl-campo textarea::placeholder { color: rgba(29,27,24,.4); }',
     '.mura-nl-campo input::placeholder { color: rgba(29,27,24,.4); }',
     /* el icono nativo del date picker, en tinta y no en azul del sistema */
     '.mura-nl-campo input[type=date] { color-scheme: light; }',
@@ -258,6 +264,23 @@
     '.mura-nl-consent a { color: #55524B; border-bottom: 1px solid rgba(29,27,24,.3); }',
     '.mura-nl-estado { margin-top: 18px; font-size: 13.5px; line-height: 1.7; }',
     '.mura-nl-estado.err { color: #7A2E2E; }',
+
+    /* ---- Solicitud de devolución (página /devolucion) ----
+       Una sola columna y estrecha: aquí no hay lista de ventajas al lado
+       como en la newsletter, y un formulario a 1120 px de ancho deja los
+       campos ridículamente largos para lo que se escribe en ellos. */
+    '.mura-dev { max-width: 620px; }',
+    /* El border-box va aquí y no se hereda del bloque `.mura`: esta sección
+       se pega suelta en la página, sin el envoltorio. Sin esto, el ancho del
+       100 % más el padding desborda la celda del grid y los campos en pareja
+       se montan uno encima del otro. */
+    '.mura-dev, .mura-dev *, .mura-dev *::before, .mura-dev *::after { box-sizing: border-box; }',
+    '.mura-dev form { margin-top: clamp(36px,4vw,48px); }',
+    '.mura-dev-ayuda { display: block; margin-top: 7px; font-size: 12px; line-height: 1.6; color: #8A857B; }',
+    /* El botón no va a todo el ancho: en la newsletter vive en una columna
+       estrecha, aquí ocuparía los 620 px enteros y pesa demasiado. */
+    '.mura-dev .mura-btn { width: auto; padding: 0 clamp(32px,4vw,54px); }',
+    '@media (max-width: 480px) { .mura-dev .mura-btn { width: 100%; padding: 0; } }',
 
     /* ---- Pie ---- */
     '.mura-foot { border-top: 1px solid rgba(29,27,24,.12); }',

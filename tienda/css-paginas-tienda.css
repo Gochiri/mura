@@ -84,7 +84,9 @@
 .mura-nl-campo { margin-bottom: 18px; }
 .mura-nl-campo label { display: block; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: #55524B; padding-bottom: 8px; }
 .mura-nl-campo input { width: 100%; height: 50px; padding: 0 14px; border: 1px solid rgba(29,27,24,.25); background: transparent; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 300; border-radius: 0; -webkit-appearance: none; appearance: none; }
-.mura-nl-campo input:focus { outline: none; border-color: #1D1B18; }
+.mura-nl-campo textarea { width: 100%; min-height: 108px; padding: 13px 14px; border: 1px solid rgba(29,27,24,.25); background: transparent; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 300; line-height: 1.7; border-radius: 0; -webkit-appearance: none; appearance: none; resize: vertical; display: block; }
+.mura-nl-campo input:focus, .mura-nl-campo textarea:focus { outline: none; border-color: #1D1B18; }
+.mura-nl-campo textarea::placeholder { color: rgba(29,27,24,.4); }
 .mura-nl-campo input::placeholder { color: rgba(29,27,24,.4); }
 .mura-nl-campo input[type=date] { color-scheme: light; }
 .mura-nl-consent { display: flex; gap: 12px; align-items: flex-start; margin: 6px 0 26px 0; font-size: 12.5px; line-height: 1.7; color: #55524B; }
@@ -92,6 +94,12 @@
 .mura-nl-consent a { color: #55524B; border-bottom: 1px solid rgba(29,27,24,.3); }
 .mura-nl-estado { margin-top: 18px; font-size: 13.5px; line-height: 1.7; }
 .mura-nl-estado.err { color: #7A2E2E; }
+.mura-dev { max-width: 620px; }
+.mura-dev, .mura-dev *, .mura-dev *::before, .mura-dev *::after { box-sizing: border-box; }
+.mura-dev form { margin-top: clamp(36px,4vw,48px); }
+.mura-dev-ayuda { display: block; margin-top: 7px; font-size: 12px; line-height: 1.6; color: #8A857B; }
+.mura-dev .mura-btn { width: auto; padding: 0 clamp(32px,4vw,54px); }
+@media (max-width: 480px) { .mura-dev .mura-btn { width: 100%; padding: 0; } }
 .mura-foot { border-top: 1px solid rgba(29,27,24,.12); }
 .mura-foot-in { max-width: 1440px; margin: 0 auto; padding: clamp(70px,8vw,110px) clamp(20px,4vw,56px) 30px; }
 .mura-foot-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: clamp(36px,5vw,72px); }
