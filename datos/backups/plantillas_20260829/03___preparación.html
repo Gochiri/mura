@@ -2,21 +2,25 @@
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <!--
   ============================================================
-  MÛRA · 09A · DEVOLUCION VERIFICADA
+  MÛRA · 03 · PREPARACION
   ============================================================
-  ASUNTO: Hemos revisado tu devolución.
-  PREVISUALIZACION: Todo está correcto. Tu reembolso se procesará en breve.
+  ASUNTO: {{contact.first_name}}, estamos preparando tu MÛRA.
+  PREVISUALIZACION: Cada detalle cuenta.
   CLASE: transaccional  →  sin enlace de baja
-  DISPARADOR: La devolucion ha sido recibida y revisada correctamente.
-  CTA: Consultar el proceso  →  {{custom_values.url_devoluciones}}
+  DISPARADOR: Estado "Preparando" (1 dia despues).
+  CTA: Ver mi pedido  →  {{contact.url_pedido}}
 
-  NOTA (29/8): el boton decia «Ver mi devolución» y llevaba a
-  {{custom_values.url_devoluciones}}, que es la pagina general de instrucciones.
-  No existe ninguna pagina «mi devolucion»: la cabecera declaraba
-  {{contact.url_devolucion}}, un campo que NO existe en la cuenta, y por eso se
-  sustituyo en su dia por la general sin ajustar el texto. El enlace estaba bien;
-  el que mentia era el rotulo. Se usa la misma formula que el correo 08, que ya
-  apuntaba ahi con ese nombre.
+  NOTA (28/8): el desglose es ahora el MISMO bloque que el correo 02 —una fila
+  por prenda con su foto a la derecha—, compuesto entero por n8n y guardado en
+  el campo custom de oportunidad resumen_pedido_html; la plantilla lo inserta
+  con triple llave, que en Handlebars significa "sin escapar el HTML".
+  Antes habia dos piezas sueltas: un <img> colgando de opportunity.imagen_pedido
+  y el campo de texto plano resumen_pedido debajo. imagen_pedido ya no existe
+  —era el apano de una sola foto por pedido, la de la primera prenda—, asi que
+  ese <img> habria salido roto. El campo resumen_pedido se sigue rellenando,
+  pero para la oportunidad y para Telegram, no para este correo.
+  En la vista previa del editor la triple llave se ve como texto literal; solo
+  resuelve en el correo enviado por el workflow con oportunidad en contexto.
   ============================================================
 -->
 <head>
@@ -51,7 +55,7 @@
 <body style="margin:0; padding:0; background-color:#D9D1C5;">
 
 <div style="display:none; font-size:1px; color:#D9D1C5; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all;">
-  Todo está correcto. Tu reembolso se procesará en breve.
+  Cada detalle cuenta.
 </div>
 <!-- Relleno del preheader: evita que el cliente de correo arrastre texto del cuerpo -->
 <div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
@@ -82,9 +86,9 @@
 
     <!-- TITULO -->
     <tr>
-      <td class="aire-lat aire-sup" align="center" style="padding:56px 48px 0 48px;">
+      <td class="aire-lat aire-sup" align="center" style="padding:0 48px 0 48px;">
         <h1 class="titulo" style="margin:0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:30px; font-weight:400; line-height:1.35; letter-spacing:0.5px; color:#1E1B1A;">
-          Tu devolución ha sido verificada.
+          Ya casi está listo.
         </h1>
       </td>
     </tr>
@@ -93,40 +97,31 @@
     <tr>
       <td class="aire-lat" align="center" style="padding:28px 48px 0 48px;">
         <p style="margin:0 0 18px 0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:17px; font-weight:400; line-height:1.9; color:#1E1B1A;">
-          Hemos recibido tu devolución y hemos revisado la prenda.<br />
-          Confirmamos que cumple las condiciones establecidas en nuestra política de devoluciones, por lo que el reembolso ha sido autorizado.
-        </p>
-        <p style="margin:0 0 18px 0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:17px; font-weight:400; line-height:1.9; color:#1E1B1A;">
-          En breve procesaremos el importe correspondiente mediante el mismo método de pago utilizado en tu compra.<br />
-          En cuanto el reembolso haya sido emitido, recibirás un nuevo correo de confirmación.
+          Cada pieza pasa por nuestras manos antes de llegar a las tuyas.
         </p>
         <p style="margin:0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:17px; font-weight:400; line-height:1.9; color:#1E1B1A;">
-          Gracias por haber confiado en MÛRA.
+          Tu pedido {{opportunity.name}} muy pronto estará en camino.
+        </p>
+          <p style="margin:6px 0 0 0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:12px; font-weight:400; line-height:1.5; color:#8A7E71;">
+          Guárdalo por si necesitas gestionar una devolución.
         </p>
       </td>
     </tr>
 
-    <!-- BOTON — bulletproof, con fallback VML para Outlook. -->
-    <tr>
-      <td class="aire-lat" align="center" style="padding:44px 48px 0 48px;">
-        <!--[if mso]>
-        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"
-                     href="{{custom_values.url_devoluciones}}" style="height:52px; v-text-anchor:middle; width:220px;"
-                     arcsize="0%" stroke="f" fillcolor="#1E1B1A">
-          <w:anchorlock/>
-          <center style="color:#F6F2EB; font-family:Georgia, 'Times New Roman', serif; font-size:12px; letter-spacing:2px;">
-            CONSULTAR EL PROCESO
-          </center>
-        </v:roundrect>
-        <![endif]-->
-        <!--[if !mso]><!-->
-        <a href="{{custom_values.url_devoluciones}}"
-           style="display:inline-block; background-color:#1E1B1A; color:#F6F2EB; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; text-decoration:none; padding:17px 42px; mso-hide:all;">
-          Consultar el proceso
-        </a>
-        <!--<![endif]-->
-      </td>
-    </tr>
+        <!-- RESUMEN DEL PEDIDO — ver NOTA (28/8) de la cabecera. El mismo bloque
+     que el correo 02: una fila por prenda con su foto. -->
+        <tr>
+          <td class="aire-lat" align="center" style="padding:40px 48px 0 48px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-top:1px solid rgba(30,27,26,.14); border-bottom:1px solid rgba(30,27,26,.14);">
+              <tr>
+                <td style="padding:20px 0 22px 0;">
+                  <p style="margin:0 0 12px 0; font-family:Georgia, 'Times New Roman', serif; font-size:10px; font-weight:400; letter-spacing:2px; text-transform:uppercase; color:#8A7E71; text-align:left;">Tu selecci&oacute;n</p>
+                  {{{contact.resumen_pedido_html}}}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
 
     <!-- AIRE — 45 px entre el boton y el pie -->
     <tr><td style="height:45px; line-height:45px; font-size:0;">&nbsp;</td></tr>

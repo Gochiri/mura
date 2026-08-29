@@ -2,21 +2,13 @@
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <!--
   ============================================================
-  MÛRA · 09A · DEVOLUCION VERIFICADA
+  MÛRA · 11 · SEGUNDA COMPRA
   ============================================================
-  ASUNTO: Hemos revisado tu devolución.
-  PREVISUALIZACION: Todo está correcto. Tu reembolso se procesará en breve.
-  CLASE: transaccional  →  sin enlace de baja
-  DISPARADOR: La devolucion ha sido recibida y revisada correctamente.
-  CTA: Consultar el proceso  →  {{custom_values.url_devoluciones}}
-
-  NOTA (29/8): el boton decia «Ver mi devolución» y llevaba a
-  {{custom_values.url_devoluciones}}, que es la pagina general de instrucciones.
-  No existe ninguna pagina «mi devolucion»: la cabecera declaraba
-  {{contact.url_devolucion}}, un campo que NO existe en la cuenta, y por eso se
-  sustituyo en su dia por la general sin ajustar el texto. El enlace estaba bien;
-  el que mentia era el rotulo. Se usa la misma formula que el correo 08, que ya
-  apuntaba ahi con ese nombre.
+  ASUNTO: Qué alegría volver a encontrarnos.
+  PREVISUALIZACION: Gracias por volver a elegir MÛRA.
+  CLASE: comercial  →  lleva enlace de baja
+  DISPARADOR: Segunda compra realizada.
+  CTA: Descubrir novedades  →  {{custom_values.url_coleccion}}
   ============================================================
 -->
 <head>
@@ -51,7 +43,7 @@
 <body style="margin:0; padding:0; background-color:#D9D1C5;">
 
 <div style="display:none; font-size:1px; color:#D9D1C5; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all;">
-  Todo está correcto. Tu reembolso se procesará en breve.
+  Gracias por volver a elegir MÛRA.
 </div>
 <!-- Relleno del preheader: evita que el cliente de correo arrastre texto del cuerpo -->
 <div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
@@ -84,7 +76,7 @@
     <tr>
       <td class="aire-lat aire-sup" align="center" style="padding:56px 48px 0 48px;">
         <h1 class="titulo" style="margin:0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:30px; font-weight:400; line-height:1.35; letter-spacing:0.5px; color:#1E1B1A;">
-          Tu devolución ha sido verificada.
+          Bienvenida de nuevo.
         </h1>
       </td>
     </tr>
@@ -93,15 +85,10 @@
     <tr>
       <td class="aire-lat" align="center" style="padding:28px 48px 0 48px;">
         <p style="margin:0 0 18px 0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:17px; font-weight:400; line-height:1.9; color:#1E1B1A;">
-          Hemos recibido tu devolución y hemos revisado la prenda.<br />
-          Confirmamos que cumple las condiciones establecidas en nuestra política de devoluciones, por lo que el reembolso ha sido autorizado.
-        </p>
-        <p style="margin:0 0 18px 0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:17px; font-weight:400; line-height:1.9; color:#1E1B1A;">
-          En breve procesaremos el importe correspondiente mediante el mismo método de pago utilizado en tu compra.<br />
-          En cuanto el reembolso haya sido emitido, recibirás un nuevo correo de confirmación.
+          Volver a encontrarnos significa mucho para nosotros.
         </p>
         <p style="margin:0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:17px; font-weight:400; line-height:1.9; color:#1E1B1A;">
-          Gracias por haber confiado en MÛRA.
+          Gracias por seguir formando parte de MÛRA.
         </p>
       </td>
     </tr>
@@ -111,18 +98,18 @@
       <td class="aire-lat" align="center" style="padding:44px 48px 0 48px;">
         <!--[if mso]>
         <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"
-                     href="{{custom_values.url_devoluciones}}" style="height:52px; v-text-anchor:middle; width:220px;"
+                     href="{{custom_values.url_coleccion}}" style="height:52px; v-text-anchor:middle; width:240px;"
                      arcsize="0%" stroke="f" fillcolor="#1E1B1A">
           <w:anchorlock/>
           <center style="color:#F6F2EB; font-family:Georgia, 'Times New Roman', serif; font-size:12px; letter-spacing:2px;">
-            CONSULTAR EL PROCESO
+            DESCUBRIR NOVEDADES
           </center>
         </v:roundrect>
         <![endif]-->
         <!--[if !mso]><!-->
-        <a href="{{custom_values.url_devoluciones}}"
+        <a href="{{custom_values.url_coleccion}}"
            style="display:inline-block; background-color:#1E1B1A; color:#F6F2EB; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; text-decoration:none; padding:17px 42px; mso-hide:all;">
-          Consultar el proceso
+          Descubrir novedades
         </a>
         <!--<![endif]-->
       </td>
@@ -163,6 +150,9 @@
               <a href="https://www.instagram.com/bymurastudio/" style="color:#8A7E71; text-decoration:underline;; mso-style-textfill-fill-color: #8A7E71;"><!--[if mso]><font color="#8A7E71"><![endif]-->Instagram<!--[if mso]></font><![endif]--></a>
               &nbsp;·&nbsp;
               <a href="{{custom_values.url_politica_privacidad}}" style="color:#8A7E71; text-decoration:underline;; mso-style-textfill-fill-color: #8A7E71;"><!--[if mso]><font color="#8A7E71"><![endif]-->Política de privacidad<!--[if mso]></font><![endif]--></a>
+              &nbsp;·&nbsp;
+              <!-- NOTA: la variable unsubscribe_link es un PLACEHOLDER. Cada cuenta de GHL tiene su propio token de baja. Verificar el token real en la cuenta antes del primer envio. -->
+              <a href="{{custom_values.unsuscribe}}" style="color:#8A7E71; text-decoration:underline;; mso-style-textfill-fill-color: #8A7E71;"><!--[if mso]><font color="#8A7E71"><![endif]-->Cancelar suscripción<!--[if mso]></font><![endif]--></a>
             </td>
           </tr>
 

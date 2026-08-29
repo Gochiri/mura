@@ -1,22 +1,27 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <!--
   ============================================================
-  MÛRA · 09A · DEVOLUCION VERIFICADA
+  MÛRA · 04 · ENVIO
   ============================================================
-  ASUNTO: Hemos revisado tu devolución.
-  PREVISUALIZACION: Todo está correcto. Tu reembolso se procesará en breve.
+  ASUNTO: {{contact.first_name}}, tu MÛRA ya está en camino.
+  PREVISUALIZACION: Ya puedes seguir su recorrido.
   CLASE: transaccional  →  sin enlace de baja
-  DISPARADOR: La devolucion ha sido recibida y revisada correctamente.
-  CTA: Consultar el proceso  →  {{custom_values.url_devoluciones}}
+  DISPARADOR: Pedido enviado.
+  CTA: Seguir mi envío  →  {{opportunity.url_seguimiento}}
 
-  NOTA (29/8): el boton decia «Ver mi devolución» y llevaba a
-  {{custom_values.url_devoluciones}}, que es la pagina general de instrucciones.
-  No existe ninguna pagina «mi devolucion»: la cabecera declaraba
-  {{contact.url_devolucion}}, un campo que NO existe en la cuenta, y por eso se
-  sustituyo en su dia por la general sin ajustar el texto. El enlace estaba bien;
-  el que mentia era el rotulo. Se usa la misma formula que el correo 08, que ya
-  apuntaba ahi con ese nombre.
+  NOTA (13/8): el asunto llevaba contact.first_name con "| default: Hola". GHL
+  parsea Handlebars, NO Liquid: los filtros con "|" dan "Template Parser error".
+  Se dejo el merge tag pelado. Sin fallback posible; al ser correo post-compra,
+  first_name siempre viene relleno desde el checkout.
+
+  NOTA (14/8): el correo pasa a enviarse desde el 04a (rama "Nacex respondio"),
+  no desde el 04b, que queda fusionado. Motivo: 04a dispara por cambio de etapa
+  y ahi SI resuelven los campos custom de oportunidad; el 04b disparaba por tag,
+  donde no esta verificado que resuelvan. Por eso el enlace usa ahora
+  opportunity.url_seguimiento en vez del de contacto, que ademas conservaba el
+  valor de un pedido anterior y llevaba al seguimiento equivocado.
   ============================================================
 -->
 <head>
@@ -51,7 +56,7 @@
 <body style="margin:0; padding:0; background-color:#D9D1C5;">
 
 <div style="display:none; font-size:1px; color:#D9D1C5; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all;">
-  Todo está correcto. Tu reembolso se procesará en breve.
+  Ya puedes seguir su recorrido.
 </div>
 <!-- Relleno del preheader: evita que el cliente de correo arrastre texto del cuerpo -->
 <div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
@@ -84,7 +89,7 @@
     <tr>
       <td class="aire-lat aire-sup" align="center" style="padding:56px 48px 0 48px;">
         <h1 class="titulo" style="margin:0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:30px; font-weight:400; line-height:1.35; letter-spacing:0.5px; color:#1E1B1A;">
-          Tu devolución ha sido verificada.
+          Cada vez queda menos.
         </h1>
       </td>
     </tr>
@@ -93,15 +98,10 @@
     <tr>
       <td class="aire-lat" align="center" style="padding:28px 48px 0 48px;">
         <p style="margin:0 0 18px 0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:17px; font-weight:400; line-height:1.9; color:#1E1B1A;">
-          Hemos recibido tu devolución y hemos revisado la prenda.<br />
-          Confirmamos que cumple las condiciones establecidas en nuestra política de devoluciones, por lo que el reembolso ha sido autorizado.
-        </p>
-        <p style="margin:0 0 18px 0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:17px; font-weight:400; line-height:1.9; color:#1E1B1A;">
-          En breve procesaremos el importe correspondiente mediante el mismo método de pago utilizado en tu compra.<br />
-          En cuanto el reembolso haya sido emitido, recibirás un nuevo correo de confirmación.
+          Tu MÛRA ya ha comenzado el viaje.
         </p>
         <p style="margin:0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:17px; font-weight:400; line-height:1.9; color:#1E1B1A;">
-          Gracias por haber confiado en MÛRA.
+          Ahora solo queda esperar ese momento de abrir la caja.
         </p>
       </td>
     </tr>
@@ -111,18 +111,18 @@
       <td class="aire-lat" align="center" style="padding:44px 48px 0 48px;">
         <!--[if mso]>
         <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"
-                     href="{{custom_values.url_devoluciones}}" style="height:52px; v-text-anchor:middle; width:220px;"
+                     href="{{opportunity.url_seguimiento}}" style="height:52px; v-text-anchor:middle; width:210px;"
                      arcsize="0%" stroke="f" fillcolor="#1E1B1A">
           <w:anchorlock/>
           <center style="color:#F6F2EB; font-family:Georgia, 'Times New Roman', serif; font-size:12px; letter-spacing:2px;">
-            CONSULTAR EL PROCESO
+            SEGUIR MI ENVÍO
           </center>
         </v:roundrect>
         <![endif]-->
         <!--[if !mso]><!-->
-        <a href="{{custom_values.url_devoluciones}}"
+        <a href="{{opportunity.url_seguimiento}}"
            style="display:inline-block; background-color:#1E1B1A; color:#F6F2EB; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; text-decoration:none; padding:17px 42px; mso-hide:all;">
-          Consultar el proceso
+          Seguir mi envío
         </a>
         <!--<![endif]-->
       </td>

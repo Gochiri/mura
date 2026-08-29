@@ -3537,7 +3537,45 @@ el cambio de hoy era solo CSS. Pero el día que se toque la parte del DOM
 **el síntoma será que el cambio no aparece, sin ningún error**. Es de los fallos
 más caros de diagnosticar: todo parece correcto y no pasa nada.
 
-### 41.9 Lo que queda, y es todo de interfaz
+### 41.9 Auditoría de los enlaces de devolución en las 20 plantillas
+
+German pide revisar si alguna plantilla apunta mal ahora que el formulario tiene
+página propia. Leídas las **20 plantillas vivas** de la carpeta *Correos*, no las
+copias del repo, y separando el cuerpo de los comentarios de cabecera.
+
+**Ningún enlace lleva a la página equivocada.** El reparto queda así:
+
+| Plantilla | Enlace | Destino | ¿Correcto? |
+|---|---|---|---|
+| 08 · solicitud devolución | Descargar etiqueta | `opportunity.url_etiqueta_devolucion` | sí |
+| 08 · solicitud devolución | Consultar el proceso de devolución | `url_devoluciones` | sí |
+| 16 · datos no coinciden | Realizar solicitud | `url_formulario_devolucion` | sí |
+| 16 · datos no coinciden | Política de devoluciones (pie) | `url_devoluciones` | sí |
+| 09A · verificada | «Ver mi devolución» | `url_devoluciones` | **el rótulo, no** |
+| 10 · reembolso | «Ver detalles» | `url_devoluciones` | **el rótulo, no** |
+
+Solo la 16 lleva al formulario, que es la única que invita a *empezar* una
+devolución. Las demás salen después de haberla pedido y llevan a las
+instrucciones, que es lo que toca.
+
+**Lo que sí estaba mal eran dos rótulos.** «Ver mi devolución» y «Ver detalles»
+prometen una página de *esa* devolución y aterrizaban en la página general. Las
+cabeceras lo delataban: las dos declaraban `{{contact.url_devolucion}}`, **un
+campo que no existe en la cuenta** —comprobado en el listado de campos de
+contacto—, y por eso en su día se sustituyó el destino por el general sin ajustar
+el texto. El enlace estaba bien; el que mentía era el rótulo.
+
+Es la misma clase de fallo que el botón al portal que quitamos en §39.2: un
+enlace que promete algo concreto y entrega algo genérico. Cambiados los dos a
+**«Consultar el proceso»**, que no es copy nuevo: es la fórmula que ya usaba la
+08 para ese mismo destino. Cambiados **los dos hrefs de cada botón** —el `<a>` y
+el `<v:roundrect>` de Outlook— y verificado en el HTML servido.
+
+**Lo que NO se ha tocado, y queda como observación:** la 05 · entrega no menciona
+las devoluciones. Es el momento natural para decir «si algo no encaja, tienes N
+días», pero eso es copy nuevo y decisión de Sara, no un fallo.
+
+### 41.10 Lo que queda, y es todo de interfaz
 
 Ni el builder de formularios ni el de páginas tienen ruta de escritura
 alcanzable: §14.5 para los forms, §34.2 para las páginas —todos los

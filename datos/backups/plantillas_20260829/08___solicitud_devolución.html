@@ -2,21 +2,20 @@
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <!--
   ============================================================
-  MÛRA · 09A · DEVOLUCION VERIFICADA
+  MÛRA · 08 · SOLICITUD DEVOLUCION
   ============================================================
-  ASUNTO: Hemos revisado tu devolución.
-  PREVISUALIZACION: Todo está correcto. Tu reembolso se procesará en breve.
+  ASUNTO: Hemos recibido tu solicitud de devolución.
+  PREVISUALIZACION: Te acompañamos en los siguientes pasos.
   CLASE: transaccional  →  sin enlace de baja
-  DISPARADOR: La devolucion ha sido recibida y revisada correctamente.
-  CTA: Consultar el proceso  →  {{custom_values.url_devoluciones}}
+  DISPARADOR: La clienta solicita una devolucion desde "Gestionar mi pedido".
+  BOTON: Descargar etiqueta  →  {{contact.url_etiqueta_devolucion}}
+         (la etiqueta de devolucion que genera n8n via Nacex / getAlbDevolucion)
+  ENLACE (bajo el boton): Consultar el proceso de devolucion
+         →  {{custom_values.url_devoluciones}}  (pagina de instrucciones)
 
-  NOTA (29/8): el boton decia «Ver mi devolución» y llevaba a
-  {{custom_values.url_devoluciones}}, que es la pagina general de instrucciones.
-  No existe ninguna pagina «mi devolucion»: la cabecera declaraba
-  {{contact.url_devolucion}}, un campo que NO existe en la cuenta, y por eso se
-  sustituyo en su dia por la general sin ajustar el texto. El enlace estaba bien;
-  el que mentia era el rotulo. Se usa la misma formula que el correo 08, que ya
-  apuntaba ahi con ese nombre.
+  NOTA: {{contact.url_etiqueta_devolucion}} lo rellena el workflow n8n
+  "08 · Devolucion" tras generar la etiqueta. url_devoluciones apunta a la
+  pagina "Como devolver un pedido" (pendiente de crear).
   ============================================================
 -->
 <head>
@@ -51,7 +50,7 @@
 <body style="margin:0; padding:0; background-color:#D9D1C5;">
 
 <div style="display:none; font-size:1px; color:#D9D1C5; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all;">
-  Todo está correcto. Tu reembolso se procesará en breve.
+  Te acompañamos en los siguientes pasos.
 </div>
 <!-- Relleno del preheader: evita que el cliente de correo arrastre texto del cuerpo -->
 <div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
@@ -84,7 +83,7 @@
     <tr>
       <td class="aire-lat aire-sup" align="center" style="padding:56px 48px 0 48px;">
         <h1 class="titulo" style="margin:0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:30px; font-weight:400; line-height:1.35; letter-spacing:0.5px; color:#1E1B1A;">
-          Tu devolución ha sido verificada.
+          Estamos gestionando tu solicitud.
         </h1>
       </td>
     </tr>
@@ -93,15 +92,15 @@
     <tr>
       <td class="aire-lat" align="center" style="padding:28px 48px 0 48px;">
         <p style="margin:0 0 18px 0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:17px; font-weight:400; line-height:1.9; color:#1E1B1A;">
-          Hemos recibido tu devolución y hemos revisado la prenda.<br />
-          Confirmamos que cumple las condiciones establecidas en nuestra política de devoluciones, por lo que el reembolso ha sido autorizado.
+          Hemos recibido correctamente tu solicitud de devolución.<br />
+          Ya estamos gestionando el proceso y hemos registrado la opción de envío seleccionada.
         </p>
         <p style="margin:0 0 18px 0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:17px; font-weight:400; line-height:1.9; color:#1E1B1A;">
-          En breve procesaremos el importe correspondiente mediante el mismo método de pago utilizado en tu compra.<br />
-          En cuanto el reembolso haya sido emitido, recibirás un nuevo correo de confirmación.
+          El reembolso se realizará una vez recibamos la prenda y verifiquemos que cumple las condiciones establecidas en nuestra política de devoluciones.
         </p>
         <p style="margin:0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:17px; font-weight:400; line-height:1.9; color:#1E1B1A;">
-          Gracias por haber confiado en MÛRA.
+          Te mantendremos informada durante todo el proceso.<br />
+          Si necesitas ayuda, estaremos encantadas de atenderte.
         </p>
       </td>
     </tr>
@@ -111,20 +110,30 @@
       <td class="aire-lat" align="center" style="padding:44px 48px 0 48px;">
         <!--[if mso]>
         <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"
-                     href="{{custom_values.url_devoluciones}}" style="height:52px; v-text-anchor:middle; width:220px;"
+                     href="{{opportunity.url_etiqueta_devolucion}}" style="height:52px; v-text-anchor:middle; width:250px;"
                      arcsize="0%" stroke="f" fillcolor="#1E1B1A">
           <w:anchorlock/>
           <center style="color:#F6F2EB; font-family:Georgia, 'Times New Roman', serif; font-size:12px; letter-spacing:2px;">
-            CONSULTAR EL PROCESO
+            DESCARGAR ETIQUETA
           </center>
         </v:roundrect>
         <![endif]-->
         <!--[if !mso]><!-->
-        <a href="{{custom_values.url_devoluciones}}"
+        <a href="{{opportunity.url_etiqueta_devolucion}}"
            style="display:inline-block; background-color:#1E1B1A; color:#F6F2EB; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; text-decoration:none; padding:17px 42px; mso-hide:all;">
-          Consultar el proceso
+          Descargar etiqueta
         </a>
         <!--<![endif]-->
+      </td>
+    </tr>
+
+    <!-- ENLACE — proceso de devolucion (instrucciones paso a paso) -->
+    <tr>
+      <td class="aire-lat" align="center" style="padding:22px 48px 0 48px;">
+        <a href="{{custom_values.url_devoluciones}}"
+           style="font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:13px; font-weight:400; letter-spacing:1px; color:#8A7E71; text-decoration:underline;">
+          Consultar el proceso de devolución
+        </a>
       </td>
     </tr>
 
