@@ -1,0 +1,98 @@
+{
+ "_id": "94779fd6-15bb-4387-9af0-244409fcd671",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "companyId": "5tNRocqWdcsz7Rii28bH",
+ "companyAge": 12,
+ "name": "06b · Encuesta post-compra completada",
+ "version": 14,
+ "dataVersion": 7,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/94779fd6-15bb-4387-9af0-244409fcd671/14",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F94779fd6-15bb-4387-9af0-244409fcd671%2F14?alt=media&token=b5ab89db-b1a0-417d-a3a7-757d9ea852cc",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "permission": 380,
+ "type": "workflow",
+ "createdAt": "2026-08-13T23:32:54.575Z",
+ "updatedAt": "2026-08-29T20:13:50.674Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "user",
+ "__v": 0,
+ "allowMultipleOpportunity": false,
+ "eventStartDate": null,
+ "status": "published",
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/94779fd6-15bb-4387-9af0-244409fcd671/13",
+ "window": null,
+ "workflowNote": null,
+ "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+ "updatedBy": "eeuewX5uuHsscaW9uOFs",
+ "id": "94779fd6-15bb-4387-9af0-244409fcd671",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "1d1d71ec-6a0f-4238-9bdf-5cd72d6e3edf",
+    "name": "Encuesta post-compra respondida",
+    "type": "internal_notification",
+    "attributes": {
+     "sms": {
+      "body": ""
+     },
+     "type": "notification",
+     "userType": "all",
+     "notification": {
+      "userType": "all",
+      "redirectPage": "contact",
+      "title": "Encuesta post-compra respondida",
+      "body": "La clienta {{contact.name}} ha respondido la encuesta post-compra."
+     },
+     "email": {
+      "subject": "",
+      "html": ""
+     }
+    },
+    "order": 0,
+    "next": "ddfaf1f2-e2b1-476d-a8f2-e71e01c6e048"
+   },
+   {
+    "id": "ddfaf1f2-e2b1-476d-a8f2-e71e01c6e048",
+    "order": 1,
+    "attributes": {
+     "method": "POST",
+     "url": "https://n8n.letsbebanana.com/webhook/avisos-sara",
+     "customData": [
+      {
+       "key": "mensaje",
+       "value": "{{contact.name}} ha respondido la encuesta post-compra."
+      }
+     ],
+     "headers": []
+    },
+    "name": "Webhook Telegram",
+    "type": "webhook",
+    "parentKey": "1d1d71ec-6a0f-4238-9bdf-5cd72d6e3edf",
+    "next": "b630d920-89c5-4b6f-9f8f-f3f17557ae02"
+   },
+   {
+    "id": "b630d920-89c5-4b6f-9f8f-f3f17557ae02",
+    "order": 2,
+    "attributes": {
+     "method": "POST",
+     "url": "https://n8n.letsbebanana.com/webhook/experiencia-mura",
+     "customData": [],
+     "headers": []
+    },
+    "name": "Webhook",
+    "type": "webhook",
+    "parentKey": "ddfaf1f2-e2b1-476d-a8f2-e71e01c6e048"
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

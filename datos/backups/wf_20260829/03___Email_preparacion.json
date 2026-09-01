@@ -1,0 +1,245 @@
+{
+ "_id": "cc2c8b77-a5e3-4f00-85e0-bc6900b3eb4c",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "companyId": "5tNRocqWdcsz7Rii28bH",
+ "companyAge": 11,
+ "name": "03 · Email preparacion",
+ "version": 22,
+ "dataVersion": 7,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/cc2c8b77-a5e3-4f00-85e0-bc6900b3eb4c/22",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2Fcc2c8b77-a5e3-4f00-85e0-bc6900b3eb4c%2F22?alt=media&token=ba57016f-3d5c-4c2d-a79d-563cab4e54f3",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "permission": 380,
+ "type": "workflow",
+ "createdAt": "2026-08-07T15:39:42.411Z",
+ "updatedAt": "2026-09-01T12:14:51.072Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "user",
+ "__v": 0,
+ "allowMultipleOpportunity": false,
+ "eventStartDate": null,
+ "status": "published",
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/cc2c8b77-a5e3-4f00-85e0-bc6900b3eb4c/7",
+ "window": null,
+ "workflowNote": null,
+ "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+ "updatedBy": "eeuewX5uuHsscaW9uOFs",
+ "id": "cc2c8b77-a5e3-4f00-85e0-bc6900b3eb4c",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "15961cff-151e-4f7b-9685-2af355652331",
+    "order": 0,
+    "attributes": {
+     "currentRecipeType": "CUSTOM",
+     "branches": [
+      {
+       "id": "6b0e88ee-f16f-4e75-9d3e-13b63a6bda1a",
+       "name": "Branch",
+       "segments": [
+        {
+         "__segmentId": "8eda106b-2e52-431d-b3ec-583fae1f40be",
+         "operator": "and",
+         "conditions": [
+          {
+           "conditionType": "contact_detail",
+           "conditionSubType": "tags",
+           "conditionOperator": "index-of-false",
+           "conditionValue": [
+            "pedido-en-preparacion"
+           ],
+           "__conditionId": "a94024d7-bff7-4d3e-bdee-6c095c4acc1a",
+           "ifElseNodeId": "",
+           "__customFieldType__": "standard",
+           "isWait": false,
+           "nestedDropdownTypes": [
+            "inboundWebhookRequest",
+            "sheet",
+            "datetime_formatter",
+            "custom_webhook",
+            "array_functions",
+            "ivr_gather",
+            "ivr_connect_call",
+            "custom_code",
+            "ai_agent",
+            "task-notification",
+            "event"
+           ],
+           "allowIsOperatorTypes": [
+            "contact_reply",
+            "inboundWebhookRequest",
+            "custom_webhook",
+            "custom_code",
+            "ai_agent",
+            "contact_detail",
+            "array_functions",
+            "appointment",
+            "service_booking",
+            "rental_booking"
+           ]
+          }
+         ]
+        }
+       ],
+       "operator": "and",
+       "showErrors": false,
+       "branchNameError": "¡El nombre de la rama no puede estar vacío!"
+      }
+     ],
+     "operator": "and",
+     "if": true,
+     "conditionName": "Condition",
+     "version": 2,
+     "noneBranchName": "None"
+    },
+    "name": "yes",
+    "type": "if_else",
+    "cat": "conditions",
+    "next": [
+     "6b0e88ee-f16f-4e75-9d3e-13b63a6bda1a",
+     "d085f945-3fa1-4a01-a768-935f8e02d38b"
+    ],
+    "comments": [],
+    "nodeType": "condition-node"
+   },
+   {
+    "id": "6b0e88ee-f16f-4e75-9d3e-13b63a6bda1a",
+    "parent": "15961cff-151e-4f7b-9685-2af355652331",
+    "order": 1,
+    "attributes": {
+     "if": false,
+     "conditionName": "Condition",
+     "operator": "and",
+     "branches": []
+    },
+    "name": "Branch",
+    "type": "if_else",
+    "cat": "conditions",
+    "sibling": [
+     "d085f945-3fa1-4a01-a768-935f8e02d38b"
+    ],
+    "comments": [],
+    "nodeType": "branch-yes",
+    "parentKey": "15961cff-151e-4f7b-9685-2af355652331",
+    "next": "d5c22036-37f1-4f24-b735-fa8bd211e54b"
+   },
+   {
+    "id": "d5c22036-37f1-4f24-b735-fa8bd211e54b",
+    "parent": "6b0e88ee-f16f-4e75-9d3e-13b63a6bda1a",
+    "order": 0,
+    "attributes": {
+     "method": "POST",
+     "url": "https://n8n.letsbebanana.com/webhook/avisos-sara",
+     "customData": [
+      {
+       "key": "mensaje",
+       "value": "Sara, revisa el pedido {{opportunity.name}}está en comprado pero no se ha pasado a en preparación"
+      }
+     ],
+     "headers": []
+    },
+    "name": "Webhook télegram",
+    "type": "webhook",
+    "parentKey": "6b0e88ee-f16f-4e75-9d3e-13b63a6bda1a",
+    "next": "e7b162e5-7106-404f-a3f8-1bc23f39895f"
+   },
+   {
+    "id": "e7b162e5-7106-404f-a3f8-1bc23f39895f",
+    "parent": "6b0e88ee-f16f-4e75-9d3e-13b63a6bda1a",
+    "order": 1,
+    "attributes": {
+     "allowBackward": false,
+     "type": "internal_update_opportunity",
+     "__customInputFields__": [
+      {
+       "__customInputs__": {},
+       "dataType": "SINGLE_OPTIONS",
+       "filterField": "pipelineId",
+       "value": "X7wvJysuBVmdXXl1b8zx",
+       "valueFieldType": "select"
+      },
+      {
+       "__customInputs__": {},
+       "dataType": "SINGLE_OPTIONS",
+       "filterField": "pipelineStageId",
+       "value": "169e313b-c8f0-47d4-956c-ff02da730fe5",
+       "valueFieldType": "select"
+      }
+     ],
+     "__customInputs__": {}
+    },
+    "name": "Update opportunity",
+    "type": "internal_update_opportunity",
+    "workflowsActionType": "INTERNAL",
+    "parentKey": "d5c22036-37f1-4f24-b735-fa8bd211e54b"
+   },
+   {
+    "id": "d085f945-3fa1-4a01-a768-935f8e02d38b",
+    "parent": "15961cff-151e-4f7b-9685-2af355652331",
+    "order": 1,
+    "attributes": {
+     "else": true
+    },
+    "name": "None",
+    "type": "if_else",
+    "cat": "conditions",
+    "next": "c2072303-3608-4f53-83cd-43a94f0a4843",
+    "sibling": [
+     "6b0e88ee-f16f-4e75-9d3e-13b63a6bda1a"
+    ],
+    "comments": [],
+    "nodeType": "branch-no",
+    "parentKey": "15961cff-151e-4f7b-9685-2af355652331"
+   },
+   {
+    "id": "c2072303-3608-4f53-83cd-43a94f0a4843",
+    "parent": "d085f945-3fa1-4a01-a768-935f8e02d38b",
+    "order": 0,
+    "attributes": {
+     "fieldDefaults": {
+      "from_name": {
+       "business.name:0": "MÛRA"
+      },
+      "from_email": {
+       "business.email:0": "hello@stylebymura.com"
+      },
+      "subject": {
+       "contact.first_name:0": "Hola"
+      }
+     },
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "cc2c8b77-a5e3-4f00-85e0-bc6900b3eb4c:c2072303-3608-4f53-83cd-43a94f0a4843"
+     },
+     "conditions": [],
+     "from_name": "{{business.name}}",
+     "from_email": "{{business.email}}",
+     "subject": "{{contact.first_name}}, estamos preparando tu MÛRA.",
+     "preHeader": "Preparando tu MÛRA",
+     "template_id": "6a96c1af5a23650e2956c3f3",
+     "templatesource": "email-builder",
+     "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a6aa2e814830a62bce73c7a%2Findex.html?alt=media&token=21e92f78-2bac-43e6-8061-c435e3bfb8b0",
+     "createdAt": "2026-07-30T01:03:37.204Z",
+     "updatedAt": "2026-09-01T10:51:57.114Z",
+     "templateCreationMode": "existing",
+     "attachments": []
+    },
+    "name": "Email 03 · preparación",
+    "type": "email",
+    "parentKey": "d085f945-3fa1-4a01-a768-935f8e02d38b"
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

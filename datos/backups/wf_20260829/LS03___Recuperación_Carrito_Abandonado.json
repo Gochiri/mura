@@ -1,0 +1,581 @@
+{
+ "_id": "1e240ed6-846d-42ad-8e34-e4eecc36f67f",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "name": "LS03 · Recuperación Carrito Abandonado",
+ "status": "draft",
+ "version": 2,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/1e240ed6-846d-42ad-8e34-e4eecc36f67f/2",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F1e240ed6-846d-42ad-8e34-e4eecc36f67f%2F2?alt=media&token=94e5e906-0c30-4829-8b5a-cface5667fea",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "originId": "0370547f-f3a9-4e71-8e83-024bab5a8e16",
+ "permission": 380,
+ "type": "workflow",
+ "meta": {
+  "advanceCanvasMeta": {
+   "enabled": false,
+   "disabledAt": "2026-03-12T21:04:32.263Z"
+  }
+ },
+ "updatedBy": "snapshot",
+ "createdAt": "2026-03-25T21:17:15.715Z",
+ "updatedAt": "2026-08-08T13:54:08.901Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "snapshot",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "dataVersion": 7,
+ "eventStartDate": null,
+ "senderAddress": null,
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/1e240ed6-846d-42ad-8e34-e4eecc36f67f/2",
+ "window": null,
+ "workflowNote": {
+  "content": "",
+  "createdBy": "snapshot",
+  "createdByName": "snapshot",
+  "createdAt": "2026-03-25T21:17:19.623Z",
+  "updatedBy": "snapshot",
+  "updatedByName": "snapshot",
+  "updatedAt": "2026-03-25T21:17:19.623Z"
+ },
+ "parentId": "45bf759c-b8bd-4d20-99de-91b4d1609611",
+ "id": "1e240ed6-846d-42ad-8e34-e4eecc36f67f",
+ "workflowData": {
+  "templates": [
+   {
+    "attributes": {
+     "html": "<p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Hola {{contact.name}},<br><br>Hemos notado que recientemente iniciaste una compra en nuestra tienda pero no completaste el pago.<br>Queremos asegurarnos de que tengas toda la ayuda necesaria para finalizar tu pedido sin inconvenientes.<br><br>Si tienes alguna pregunta o necesitas asistencia, no dudes en contactarnos. Estamos aquí para ayudarte.<br><br>Haz clic en el siguiente enlace para regresar a tu carrito y completar tu compra:<br><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"{{order.abandoned_checkout_url}}\">Completar mi compra</a><br><br>Gracias por elegirnos.<br><br>Saludos cordiales,<br>{{user.name}}<br>{{user.email_signature}}</p>",
+     "subject": "¿Aún interesado? Completa tu compra con facilidad",
+     "attachments": []
+    },
+    "id": "280d7909-4f1a-4772-bb7b-f41cea5bdb44",
+    "type": "email",
+    "next": "ae6d46b9-d640-4ade-a5bd-a6c325a7343d",
+    "name": "Send First Recovery Email (1hr)",
+    "order": 0,
+    "advanceCanvasMeta": {
+     "position": {
+      "x": -266.0094722815676,
+      "y": 133.0007921962103
+     }
+    }
+   },
+   {
+    "attributes": {
+     "startAfter": {
+      "when": "after",
+      "action_in": 1,
+      "value": 1,
+      "type": "hour"
+     },
+     "isHybridAction": true,
+     "condition": {
+      "currentRecipeType": "CUSTOM",
+      "branches": [
+       {
+        "id": "b4d8bcd8-5fd7-44e8-9963-b83a7f72b843",
+        "name": "Branch",
+        "segments": [
+         {
+          "__segmentId": "2e21154d-fd02-479f-b31e-732c7c49010f",
+          "operator": "and",
+          "conditions": [
+           {
+            "conditionType": "contact_detail",
+            "conditionSubType": "tags",
+            "conditionOperator": "index-of-true",
+            "conditionValue": [
+             "pedido-confirmado"
+            ],
+            "__conditionId": "164647b8-a1c5-4037-ab6e-8de4319f0bc5",
+            "ifElseNodeId": "",
+            "__customFieldType__": "standard",
+            "isWait": true,
+            "nestedDropdownTypes": [
+             "inboundWebhookRequest",
+             "sheet",
+             "datetime_formatter",
+             "custom_webhook",
+             "array_functions",
+             "ivr_gather",
+             "ivr_connect_call",
+             "custom_code",
+             "ai_agent"
+            ],
+            "allowIsOperatorTypes": [
+             "contact_reply",
+             "inboundWebhookRequest",
+             "custom_webhook",
+             "custom_code",
+             "ai_agent",
+             "contact_detail",
+             "array_functions",
+             "appointment",
+             "service_booking",
+             "rental_booking"
+            ]
+           }
+          ]
+         }
+        ],
+        "operator": "and",
+        "showErrors": false,
+        "branchNameError": "Branch name cannot be empty!"
+       }
+      ],
+      "operator": "or",
+      "if": true,
+      "conditionName": "Condition",
+      "version": 2,
+      "noneBranchName": "None"
+     },
+     "name": "Wait 1 Hour or Payment Completed",
+     "hybridActionType": "wait",
+     "transitions": [
+      {
+       "name": "wait",
+       "conditionType": "user-defined",
+       "isPrimaryBranch": true,
+       "condition": "primary",
+       "id": "1998e69c-33e6-48ba-a21c-2378122b982f",
+       "attributes": {
+        "type": "wait_condition",
+        "description": "What will happen when specified conditions are met"
+       }
+      },
+      {
+       "conditionType": "user-defined",
+       "name": "timeout",
+       "condition": "timeout",
+       "isPrimaryBranch": false,
+       "id": "9e9b4709-d5be-489e-9f35-4eea9e1106b9",
+       "attributes": {
+        "type": "wait_timeout",
+        "description": "What will happen after 1 hour"
+       }
+      }
+     ],
+     "cat": "multi-path",
+     "type": "condition",
+     "convertToMultipath": true
+    },
+    "id": "ae6d46b9-d640-4ade-a5bd-a6c325a7343d",
+    "cat": "multi-path",
+    "convertToMultipath": true,
+    "type": "wait",
+    "name": "Wait 1 Hour or Payment Completed",
+    "parentKey": "280d7909-4f1a-4772-bb7b-f41cea5bdb44",
+    "next": [
+     "1998e69c-33e6-48ba-a21c-2378122b982f",
+     "9e9b4709-d5be-489e-9f35-4eea9e1106b9"
+    ],
+    "order": 1,
+    "advanceCanvasMeta": {
+     "position": {
+      "x": -36.00947228156758,
+      "y": 133.0007921962103
+     }
+    }
+   },
+   {
+    "cat": "transition",
+    "id": "1998e69c-33e6-48ba-a21c-2378122b982f",
+    "attributes": {
+     "type": "wait_condition",
+     "description": "What will happen when specified conditions are met"
+    },
+    "parentKey": "ae6d46b9-d640-4ade-a5bd-a6c325a7343d",
+    "conditionType": "user-defined",
+    "isPrimaryBranch": true,
+    "type": "transition",
+    "name": "wait",
+    "condition": "primary",
+    "parent": "ae6d46b9-d640-4ade-a5bd-a6c325a7343d",
+    "order": 2,
+    "advanceCanvasMeta": {
+     "position": {
+      "x": 193.99052771843242,
+      "y": 46.500792196210305
+     }
+    }
+   },
+   {
+    "type": "transition",
+    "isPrimaryBranch": false,
+    "parentKey": "ae6d46b9-d640-4ade-a5bd-a6c325a7343d",
+    "conditionType": "user-defined",
+    "next": "b3c5bda2-6f3e-4cf1-a666-e18f23eb5a6c",
+    "attributes": {
+     "type": "wait_timeout",
+     "description": "What will happen after 1 hour"
+    },
+    "id": "9e9b4709-d5be-489e-9f35-4eea9e1106b9",
+    "cat": "transition",
+    "condition": "timeout",
+    "name": "timeout",
+    "parent": "ae6d46b9-d640-4ade-a5bd-a6c325a7343d",
+    "order": 2,
+    "advanceCanvasMeta": {
+     "position": {
+      "x": 223.99052771843242,
+      "y": 240.5007921962103
+     }
+    }
+   },
+   {
+    "attributes": {
+     "condition": {
+      "currentRecipeType": "CUSTOM",
+      "branches": [
+       {
+        "id": "be58ade9-70ec-433c-851b-71a20a623313",
+        "name": "Branch",
+        "segments": [
+         {
+          "__segmentId": "e438b2a2-e86d-4baf-8d9c-310b70454b96",
+          "operator": "and",
+          "conditions": [
+           {
+            "conditionType": "contact_detail",
+            "conditionSubType": "tags",
+            "conditionOperator": "index-of-true",
+            "conditionValue": [
+             "pedido-confirmado"
+            ],
+            "__conditionId": "c9486a91-c6d8-44a2-bb8a-19384709a3dc",
+            "ifElseNodeId": "",
+            "__customFieldType__": "standard",
+            "isWait": true,
+            "nestedDropdownTypes": [
+             "inboundWebhookRequest",
+             "sheet",
+             "datetime_formatter",
+             "custom_webhook",
+             "array_functions",
+             "ivr_gather",
+             "ivr_connect_call",
+             "custom_code",
+             "ai_agent"
+            ],
+            "allowIsOperatorTypes": [
+             "contact_reply",
+             "inboundWebhookRequest",
+             "custom_webhook",
+             "custom_code",
+             "ai_agent",
+             "contact_detail",
+             "array_functions",
+             "appointment",
+             "service_booking",
+             "rental_booking"
+            ]
+           }
+          ]
+         }
+        ],
+        "operator": "and",
+        "showErrors": false,
+        "branchNameError": "Branch name cannot be empty!"
+       }
+      ],
+      "operator": "or",
+      "if": true,
+      "conditionName": "Condition",
+      "version": 2,
+      "noneBranchName": "None"
+     },
+     "hybridActionType": "wait",
+     "name": "Wait 24 Hours or Payment Completed",
+     "startAfter": {
+      "when": "after",
+      "action_in": 1,
+      "value": 24,
+      "type": "hour"
+     },
+     "isHybridAction": true,
+     "convertToMultipath": true,
+     "type": "condition",
+     "transitions": [
+      {
+       "conditionType": "user-defined",
+       "name": "wait",
+       "isPrimaryBranch": true,
+       "condition": "primary",
+       "id": "5321ff2a-896a-4b69-a801-ca666c7fee99",
+       "attributes": {
+        "type": "wait_condition",
+        "description": "What will happen when specified conditions are met"
+       }
+      },
+      {
+       "attributes": {
+        "type": "wait_timeout",
+        "description": "What will happen after 24 hour"
+       },
+       "id": "5e53d835-1cb1-4bfa-888e-7823066afa4d",
+       "condition": "timeout",
+       "isPrimaryBranch": false,
+       "name": "timeout",
+       "conditionType": "user-defined"
+      }
+     ],
+     "cat": "multi-path"
+    },
+    "id": "b3c5bda2-6f3e-4cf1-a666-e18f23eb5a6c",
+    "cat": "multi-path",
+    "type": "wait",
+    "convertToMultipath": true,
+    "name": "Wait 24 Hours or Payment Completed",
+    "parentKey": "9e9b4709-d5be-489e-9f35-4eea9e1106b9",
+    "next": [
+     "5321ff2a-896a-4b69-a801-ca666c7fee99",
+     "5e53d835-1cb1-4bfa-888e-7823066afa4d"
+    ],
+    "parent": "9e9b4709-d5be-489e-9f35-4eea9e1106b9",
+    "order": 0,
+    "advanceCanvasMeta": {
+     "position": {
+      "x": 643.9905277184324,
+      "y": 230.0007921962103
+     }
+    }
+   },
+   {
+    "name": "wait",
+    "condition": "primary",
+    "cat": "transition",
+    "id": "5321ff2a-896a-4b69-a801-ca666c7fee99",
+    "attributes": {
+     "type": "wait_condition",
+     "description": "What will happen when specified conditions are met"
+    },
+    "parentKey": "b3c5bda2-6f3e-4cf1-a666-e18f23eb5a6c",
+    "conditionType": "user-defined",
+    "isPrimaryBranch": true,
+    "type": "transition",
+    "parent": "b3c5bda2-6f3e-4cf1-a666-e18f23eb5a6c",
+    "order": 1,
+    "advanceCanvasMeta": {
+     "position": {
+      "x": 873.9905277184324,
+      "y": 143.5007921962103
+     }
+    }
+   },
+   {
+    "condition": "timeout",
+    "name": "timeout",
+    "isPrimaryBranch": false,
+    "type": "transition",
+    "next": "4bfcf756-dee4-4917-826e-bfd6b1614e43",
+    "conditionType": "user-defined",
+    "parentKey": "b3c5bda2-6f3e-4cf1-a666-e18f23eb5a6c",
+    "attributes": {
+     "type": "wait_timeout",
+     "description": "What will happen after 24 hour"
+    },
+    "cat": "transition",
+    "id": "5e53d835-1cb1-4bfa-888e-7823066afa4d",
+    "parent": "b3c5bda2-6f3e-4cf1-a666-e18f23eb5a6c",
+    "order": 1,
+    "advanceCanvasMeta": {
+     "position": {
+      "x": 903.9905277184324,
+      "y": 337.5007921962103
+     }
+    }
+   },
+   {
+    "attributes": {
+     "condition": {
+      "currentRecipeType": "CUSTOM",
+      "branches": [
+       {
+        "id": "17080c0e-91c0-4ae4-89df-cb852ed22fa6",
+        "name": "Branch",
+        "segments": [
+         {
+          "__segmentId": "de19f55d-6243-4d70-8052-454d75b618ac",
+          "operator": "and",
+          "conditions": [
+           {
+            "conditionType": "contact_detail",
+            "conditionSubType": "tags",
+            "conditionOperator": "index-of-true",
+            "conditionValue": [
+             "pedido-confirmado"
+            ],
+            "__conditionId": "d7fb36ff-d498-446e-8b0b-4e2fcbbee8b0",
+            "ifElseNodeId": "",
+            "__customFieldType__": "standard",
+            "isWait": true,
+            "nestedDropdownTypes": [
+             "inboundWebhookRequest",
+             "sheet",
+             "datetime_formatter",
+             "custom_webhook",
+             "array_functions",
+             "ivr_gather",
+             "ivr_connect_call",
+             "custom_code",
+             "ai_agent"
+            ],
+            "allowIsOperatorTypes": [
+             "contact_reply",
+             "inboundWebhookRequest",
+             "custom_webhook",
+             "custom_code",
+             "ai_agent",
+             "contact_detail",
+             "array_functions",
+             "appointment",
+             "service_booking",
+             "rental_booking"
+            ]
+           }
+          ]
+         }
+        ],
+        "operator": "and",
+        "showErrors": false,
+        "branchNameError": "Branch name cannot be empty!"
+       }
+      ],
+      "operator": "or",
+      "if": true,
+      "conditionName": "Condition",
+      "version": 2,
+      "noneBranchName": "None"
+     },
+     "hybridActionType": "wait",
+     "name": "Wait 48 Hours or Payment Completed",
+     "startAfter": {
+      "action_in": 48,
+      "value": 48,
+      "type": "hour",
+      "when": "after"
+     },
+     "isHybridAction": true,
+     "type": "condition",
+     "convertToMultipath": true,
+     "transitions": [
+      {
+       "name": "wait",
+       "conditionType": "user-defined",
+       "condition": "primary",
+       "isPrimaryBranch": true,
+       "id": "9550900b-7c8c-4451-8c40-1e810bf875bb",
+       "attributes": {
+        "type": "wait_condition",
+        "description": "What will happen when specified conditions are met"
+       }
+      },
+      {
+       "id": "e7187c36-b1c9-473d-a35e-cbef16ad26fe",
+       "attributes": {
+        "type": "wait_timeout",
+        "description": "What will happen after 48 hour"
+       },
+       "name": "timeout",
+       "conditionType": "user-defined",
+       "isPrimaryBranch": false,
+       "condition": "timeout"
+      }
+     ],
+     "cat": "multi-path"
+    },
+    "cat": "multi-path",
+    "id": "4bfcf756-dee4-4917-826e-bfd6b1614e43",
+    "convertToMultipath": true,
+    "type": "wait",
+    "next": [
+     "9550900b-7c8c-4451-8c40-1e810bf875bb",
+     "e7187c36-b1c9-473d-a35e-cbef16ad26fe"
+    ],
+    "parentKey": "5e53d835-1cb1-4bfa-888e-7823066afa4d",
+    "name": "Wait 48 Hours or Payment Completed",
+    "parent": "5e53d835-1cb1-4bfa-888e-7823066afa4d",
+    "order": 0,
+    "advanceCanvasMeta": {
+     "position": {
+      "x": 1323.9905277184325,
+      "y": 327.0007921962103
+     }
+    }
+   },
+   {
+    "condition": "primary",
+    "name": "wait",
+    "isPrimaryBranch": true,
+    "type": "transition",
+    "conditionType": "user-defined",
+    "parentKey": "4bfcf756-dee4-4917-826e-bfd6b1614e43",
+    "attributes": {
+     "type": "wait_condition",
+     "description": "What will happen when specified conditions are met"
+    },
+    "cat": "transition",
+    "id": "9550900b-7c8c-4451-8c40-1e810bf875bb",
+    "parent": "4bfcf756-dee4-4917-826e-bfd6b1614e43",
+    "order": 1,
+    "advanceCanvasMeta": {
+     "position": {
+      "x": 1553.9905277184325,
+      "y": 240.5007921962103
+     }
+    }
+   },
+   {
+    "parentKey": "4bfcf756-dee4-4917-826e-bfd6b1614e43",
+    "next": "5a4a5f44-4f8f-41ed-a437-babb5719cf5a",
+    "conditionType": "user-defined",
+    "isPrimaryBranch": false,
+    "type": "transition",
+    "cat": "transition",
+    "id": "e7187c36-b1c9-473d-a35e-cbef16ad26fe",
+    "attributes": {
+     "type": "wait_timeout",
+     "description": "What will happen after 48 hour"
+    },
+    "name": "timeout",
+    "condition": "timeout",
+    "parent": "4bfcf756-dee4-4917-826e-bfd6b1614e43",
+    "order": 1,
+    "advanceCanvasMeta": {
+     "position": {
+      "x": 1583.9905277184325,
+      "y": 434.5007921962103
+     }
+    }
+   },
+   {
+    "attributes": {
+     "tags": [
+      "carrito-no-recuperado"
+     ]
+    },
+    "id": "5a4a5f44-4f8f-41ed-a437-babb5719cf5a",
+    "type": "add_contact_tag",
+    "parentKey": "e7187c36-b1c9-473d-a35e-cbef16ad26fe",
+    "name": "Tag Non-Converted Lead for Inactivity",
+    "parent": "e7187c36-b1c9-473d-a35e-cbef16ad26fe",
+    "order": 0,
+    "advanceCanvasMeta": {
+     "position": {
+      "x": 2003.9905277184325,
+      "y": 424.0007921962103
+     }
+    }
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

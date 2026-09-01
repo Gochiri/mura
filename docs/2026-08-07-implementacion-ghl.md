@@ -3614,3 +3614,98 @@ texto por defecto de GHL y nadie lo revisó. En un formulario de **devolución**
 pinta nada, y atar la tramitación de una devolución a un consentimiento de
 marketing es discutible en RGPD: son dos bases jurídicas distintas. Vale la pena
 mirar ese checkbox en cualquier formulario nativo que quede.
+
+
+---
+
+## 42. «Non-branching node has next as an array»: un fallo mío de hace semanas
+
+German avisa de errores en varios workflows:
+
+> *Non-branching node has "next" as an array — only multi-path and if/else
+> condition nodes may have array next*
+
+Descargados los **19 workflows** de la cuenta y revisados nodo a nodo:
+**16 tienen al menos un nodo con `next` como array**, y los 19 son
+`creationSource: builder` —creados por API, por nosotros—. Los cuatro limpios lo
+están solo porque son lineales y de dos o tres pasos.
+
+### 42.1 El origen, localizado
+
+`scratchpad/fix04a.py`:
+
+```python
+if nexts is not None: t['next'] = [full(x) for x in nexts]
+```
+
+Escribía **siempre** una lista, también cuando el nodo tenía un solo sucesor. El
+helper bueno, `ghl_build.chain()`, escribe una cadena:
+
+```python
+if i < len(steps) - 1:
+    s['next'] = steps[i+1]['id']
+```
+
+De ahí salen los `remove_contact_tag` con `next=[1]` y el `08d` con `next=[]`.
+
+### 42.2 Por qué aparece ahora y no hace tres semanas
+
+**No lo han provocado los guardados de hoy.** El 04a de la captura está en draft y
+no se tocó hoy; lo de hoy fue SP01 y las plantillas. Los `next` en array vienen de
+la construcción original. Lo que ha cambiado es que **GHL ha empezado a
+validarlo**, y encaja con que salten 16 workflows a la vez.
+
+**Y no rompe la ejecución.** SP01 lleva su `find_opportunity` con `next=[2]` desde
+el principio y hoy mismo ha mandado correos. Es el editor nuevo el que se niega,
+no el motor.
+
+### 42.3 Dos formas de array, y solo una es claramente un error
+
+| Forma | Dónde | ¿Error claro? |
+|---|---|---|
+| `next: []` o `next: [uno]` | `remove_contact_tag`, `wait`, `if_else` hijo | **Sí.** Un solo sucesor no necesita array; pasarlo a cadena no puede cambiar el comportamiento. |
+| `next: [dos o más]` | `if_else` principal, `find_opportunity`, `wait` con condición | **No está claro.** Son nodos que sí ramifican, y el mensaje dice que los de if/else pueden llevar array. |
+
+⚠️ **No hay con qué comparar.** Los 19 son `builder`: no queda ningún workflow
+hecho a mano en la interfaz del que copiar la forma canónica de un `if_else`.
+Tocar el segundo grupo sería adivinar sobre nodos de ramificación, que es como se
+rompe un flujo en silencio.
+
+### 42.4 Lo arregla la interfaz, no la API
+
+Al preparar el arreglo apareció algo que lo decide: **el 04a estaba siendo editado
+a mano en ese momento** —`updatedAt` movido 15 minutos después de la descarga,
+mismo `updatedBy`—. Comparando la copia con lo vivo:
+
+```
+Remove Tag                  list[1]  →  desaparece, y aparece otro nodo con next str
+Remove Tag email-04-listo   list[1]  →  igual
+Branch                      list[1]  →  str
+Webhook                     (sin next) →  list[2]     ← ojo
+```
+
+O sea que el botón *«How to fix»* de GHL recrea los nodos con `next` en cadena. Es
+su propio esquema arreglándose solo, y es mejor que lo haga él que nosotros a
+ciegas.
+
+⚠️ **Pero deja algo que conviene mirar**: el nodo `Webhook` pasó de no tener `next`
+a tener `next: [2]`. Es un array en un nodo que no ramifica, exactamente la clase
+de cosa que el validador rechaza. Puede ser un estado intermedio de la edición o
+un error nuevo; hay que comprobarlo cuando termine.
+
+**Decisión: no se escribe por API mientras haya alguien editando.** Un `PUT`
+nuestro sobrescribiría esas ediciones con una foto vieja. Queda preparado
+`datos/backups/wf_20260829/fix_next.py`, en modo seco por defecto, por si hiciera
+falta hacerlo en bloque: convierte solo los arrays de 0 y 1, manda el `status` que
+el workflow ya tenía —sin él GHL despublica en silencio (§17)— y no toca los
+borradores.
+
+Copia de los 19 en `datos/backups/wf_20260829/`.
+
+### 42.5 La regla que sale de esto
+
+**Que la API acepte una estructura no significa que sea la correcta.** GHL tragó
+estos `next` durante semanas y los validó tres semanas después. Cuando un helper
+escriba una estructura nueva, hay que compararla con un objeto creado en la
+interfaz —y aquí ya no se puede, porque no queda ninguno—. Para lo próximo:
+**crear uno a mano primero, leerlo, y calcar esa forma.**

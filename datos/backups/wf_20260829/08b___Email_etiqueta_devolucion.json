@@ -1,0 +1,193 @@
+{
+ "_id": "466bbb08-ae6a-448e-8cc1-9e49b77d3a84",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "companyId": "5tNRocqWdcsz7Rii28bH",
+ "companyAge": 11,
+ "name": "08b · Email etiqueta devolucion",
+ "version": 13,
+ "dataVersion": 7,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/466bbb08-ae6a-448e-8cc1-9e49b77d3a84/13",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F466bbb08-ae6a-448e-8cc1-9e49b77d3a84%2F13?alt=media&token=b8a9b0e5-ca9d-4670-8b33-cb3037d76e00",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "permission": 380,
+ "type": "workflow",
+ "createdAt": "2026-08-07T15:39:37.992Z",
+ "updatedAt": "2026-09-01T12:21:24.039Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "user",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "eventStartDate": null,
+ "status": "published",
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/466bbb08-ae6a-448e-8cc1-9e49b77d3a84/6",
+ "window": null,
+ "workflowNote": null,
+ "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+ "updatedBy": "eeuewX5uuHsscaW9uOFs",
+ "id": "466bbb08-ae6a-448e-8cc1-9e49b77d3a84",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "e19cd1cc-42f6-415b-8b0f-6cb413e2ee03",
+    "order": 0,
+    "attributes": {
+     "tags": [
+      "devolucion-activa"
+     ]
+    },
+    "name": "Add Tag devolucion-activa",
+    "type": "add_contact_tag",
+    "next": "21ee40eb-0587-45ad-9201-85dd033c38b4"
+   },
+   {
+    "id": "21ee40eb-0587-45ad-9201-85dd033c38b4",
+    "order": 1,
+    "attributes": {
+     "tags": [
+      "pedido-entregado"
+     ],
+     "type": "remove_contact_tag"
+    },
+    "name": "Remove Tag pedido-entregado",
+    "type": "remove_contact_tag",
+    "next": "5c582744-51bd-41cf-a733-c2bb204ea989",
+    "parentKey": "e19cd1cc-42f6-415b-8b0f-6cb413e2ee03"
+   },
+   {
+    "id": "5c582744-51bd-41cf-a733-c2bb204ea989",
+    "order": 2,
+    "attributes": {
+     "fieldDefaults": {
+      "from_name": {
+       "business.name:0": "MÛRA"
+      },
+      "from_email": {
+       "business.email:0": "hello@stylebymura.com"
+      },
+      "subject": {
+       "contact.first_name:0": "Hola"
+      }
+     },
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "466bbb08-ae6a-448e-8cc1-9e49b77d3a84:5c582744-51bd-41cf-a733-c2bb204ea989"
+     },
+     "conditions": [],
+     "from_name": "{{business.name}}",
+     "from_email": "{{business.email}}",
+     "subject": "{{contact.first_name}}, tu etiqueta de devolución está lista",
+     "preHeader": "",
+     "template_id": "6a96c343bf528d081c181625",
+     "templatesource": "email-builder",
+     "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a6aa2f161a2115039f0034f%2Findex.html?alt=media&token=25ec5e12-7aa7-4975-abf6-60320149f0f7",
+     "createdAt": "2026-07-30T01:03:46.155Z",
+     "updatedAt": "2026-09-01T10:48:19.639Z",
+     "templateCreationMode": "existing",
+     "attachments": []
+    },
+    "name": "Email 08 · solicitud devolución",
+    "type": "email",
+    "next": "b393aa2c-7558-4a34-84d6-9cfec89bee36",
+    "parentKey": "21ee40eb-0587-45ad-9201-85dd033c38b4"
+   },
+   {
+    "id": "b393aa2c-7558-4a34-84d6-9cfec89bee36",
+    "parentKey": "5c582744-51bd-41cf-a733-c2bb204ea989",
+    "type": "find_opportunity",
+    "name": "Find opportunity",
+    "attributes": {
+     "sorting": "latest",
+     "type": "find_opportunity",
+     "__customInputs__": {},
+     "cat": "multi-path",
+     "convertToMultipath": true,
+     "transitions": [
+      {
+       "id": "6e6c6fd0-2c13-48cd-b6b0-6bf485463b74",
+       "name": "Opportunity Found",
+       "fields": [],
+       "meta": {
+        "__branchKey__": "predefined_Opportunity Found"
+       },
+       "conditionType": "pre-defined"
+      },
+      {
+       "id": "8870b260-64d0-40ab-8e37-3cabc1d70ea8",
+       "name": "Opportunity Not Found",
+       "fields": [],
+       "meta": {
+        "__branchKey__": "predefined_Opportunity Not Found"
+       },
+       "conditionType": "pre-defined"
+      }
+     ],
+     "__name__": "Find opportunity",
+     "__customInputFields__": []
+    },
+    "order": 3,
+    "cat": "multi-path",
+    "workflowsActionType": "INTERNAL",
+    "next": [
+     "6e6c6fd0-2c13-48cd-b6b0-6bf485463b74",
+     "8870b260-64d0-40ab-8e37-3cabc1d70ea8"
+    ]
+   },
+   {
+    "id": "6e6c6fd0-2c13-48cd-b6b0-6bf485463b74",
+    "parentKey": "b393aa2c-7558-4a34-84d6-9cfec89bee36",
+    "parent": "b393aa2c-7558-4a34-84d6-9cfec89bee36",
+    "type": "transition",
+    "name": "Opportunity Found",
+    "attributes": {},
+    "order": 4,
+    "cat": "transition",
+    "next": "5be84a3d-f02b-48d1-a203-a9f2e0646a94"
+   },
+   {
+    "id": "5be84a3d-f02b-48d1-a203-a9f2e0646a94",
+    "parent": "6e6c6fd0-2c13-48cd-b6b0-6bf485463b74",
+    "order": 0,
+    "attributes": {
+     "allowBackward": false,
+     "type": "internal_update_opportunity",
+     "__customInputFields__": [
+      {
+       "__customInputs__": {},
+       "dataType": "LARGE_TEXT",
+       "filterField": "custom_fields.PFiAHPZEfOU8uYPk4AYH",
+       "value": "{{contact.motivo_de_devolucin__cambio}}",
+       "valueFieldType": "textarea"
+      }
+     ],
+     "__customInputs__": {}
+    },
+    "name": "Update opportunity",
+    "type": "internal_update_opportunity",
+    "workflowsActionType": "INTERNAL",
+    "parentKey": "6e6c6fd0-2c13-48cd-b6b0-6bf485463b74"
+   },
+   {
+    "id": "8870b260-64d0-40ab-8e37-3cabc1d70ea8",
+    "parentKey": "b393aa2c-7558-4a34-84d6-9cfec89bee36",
+    "parent": "b393aa2c-7558-4a34-84d6-9cfec89bee36",
+    "type": "transition",
+    "name": "Opportunity Not Found",
+    "attributes": {},
+    "order": 4,
+    "cat": "transition"
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

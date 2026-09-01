@@ -1,0 +1,678 @@
+{
+ "_id": "603de6df-18af-48ff-8b07-508f0cb5ba87",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "name": "AP02 · Lanzamiento Nueva Cápsula",
+ "status": "draft",
+ "version": 3,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/603de6df-18af-48ff-8b07-508f0cb5ba87/3",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F603de6df-18af-48ff-8b07-508f0cb5ba87%2F3?alt=media&token=31afa381-00b8-42c4-bd2f-b3663f657dba",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "originId": "b4cf6b0d-3338-496f-b138-7a817c2f9cc5",
+ "permission": 380,
+ "type": "workflow",
+ "meta": null,
+ "updatedBy": "snapshot",
+ "createdAt": "2026-03-25T21:17:15.088Z",
+ "updatedAt": "2026-08-08T14:04:22.390Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "snapshot",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "dataVersion": 7,
+ "eventStartDate": null,
+ "senderAddress": null,
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/603de6df-18af-48ff-8b07-508f0cb5ba87/2",
+ "window": null,
+ "workflowNote": {
+  "content": "",
+  "updatedBy": "snapshot",
+  "updatedOn": "2026-03-12T22:39:59.697Z",
+  "updatedByName": "snapshot",
+  "createdBy": "snapshot",
+  "createdOn": "2026-03-12T22:39:59.697Z",
+  "createdByName": "snapshot",
+  "createdAt": "2026-03-25T21:17:19.794Z",
+  "updatedAt": "2026-03-25T21:17:19.794Z"
+ },
+ "parentId": "00129828-6d8b-4b8d-9d14-941f8c94e624",
+ "id": "603de6df-18af-48ff-8b07-508f0cb5ba87",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "e8480f68-507a-45d4-be04-0800ebf2fa88",
+    "next": "285f32ff-70da-417e-85b0-76e55b5e7d74",
+    "attributes": {
+     "subject": "¡Nos adelantamos para ti, {{contact.name}}!",
+     "html": "Hola {{contact.name}},<br><br>Estamos muy emocionados de compartir contigo una noticia que seguro te encantará. Hemos decidido adelantar el lanzamiento de nuestro esperado producto para que puedas disfrutarlo antes que nadie.<br><br>Gracias por ser parte de esta experiencia única y por confiar en nosotros. Estamos seguros de que este nuevo lanzamiento superará todas tus expectativas. Mantente atento a tu bandeja de entrada, porque pronto recibirás más detalles exclusivos y sorpresas preparadas especialmente para ti.<br><br>¡No podemos esperar a que lo descubras!<br><br>Un cordial saludo,<br><br>{{user.name}}<br>{{user.email_signature}}"
+    },
+    "name": "Enviar Email de Avance",
+    "type": "email",
+    "order": 0
+   },
+   {
+    "parentKey": "e8480f68-507a-45d4-be04-0800ebf2fa88",
+    "id": "285f32ff-70da-417e-85b0-76e55b5e7d74",
+    "attributes": {
+     "startAfter": {
+      "value": 7,
+      "type": "days",
+      "when": "after"
+     },
+     "convertToMultipath": false,
+     "transitions": [],
+     "hybridActionType": "wait",
+     "cat": "action",
+     "name": "Wait 7 Days",
+     "isHybridAction": true,
+     "type": "time"
+    },
+    "next": "7776a0ba-dadf-4fc4-93af-35d8e0526c28",
+    "type": "wait",
+    "name": "Wait 7 Days",
+    "order": 1
+   },
+   {
+    "type": "email",
+    "name": "Enviar email de lanzamiento de colección cápsula",
+    "parentKey": "285f32ff-70da-417e-85b0-76e55b5e7d74",
+    "id": "7776a0ba-dadf-4fc4-93af-35d8e0526c28",
+    "next": "b3507256-807f-472c-8b93-ed1c6f6c9c9c",
+    "attributes": {
+     "subject": "¡Descubre la nueva colección cápsula que acaba de llegar!",
+     "html": "Hola {{contact.name}},<br><br>Estamos emocionados de anunciar el lanzamiento oficial de nuestra exclusiva colección cápsula. Cada pieza ha sido diseñada con detalle y pasión para ofrecerte estilo y calidad únicos.<br><br>No pierdas la oportunidad de renovar tu guardarropa con estas creaciones limitadas que reflejan lo mejor de la moda actual. Te invitamos a explorar la colección y encontrar tus nuevos favoritos.<br><br>Visita nuestra tienda online y descubre todo lo que hemos preparado especialmente para ti.<br><br>¡Esperamos que te encante!<br><br>Saludos cordiales,<br><br>{{user.name}}<br>{{user.email_signature}}"
+    },
+    "order": 2
+   },
+   {
+    "next": "a64138f8-069c-497a-b3fa-e267bdc6d960",
+    "attributes": {
+     "userType": "all",
+     "notification": {
+      "body": "A post for the new capsule launch has been scheduled in GHL Social Planner.",
+      "title": "Launch Post Scheduled",
+      "redirectPage": "contact",
+      "userType": "all"
+     },
+     "email": {
+      "subject": "",
+      "html": ""
+     },
+     "sms": {
+      "body": ""
+     },
+     "type": "notification"
+    },
+    "id": "b3507256-807f-472c-8b93-ed1c6f6c9c9c",
+    "parentKey": "7776a0ba-dadf-4fc4-93af-35d8e0526c28",
+    "name": "Schedule Social Post",
+    "type": "internal_notification",
+    "order": 3
+   },
+   {
+    "type": "wait",
+    "name": "VIP Early Access SMS Branch",
+    "parentKey": "b3507256-807f-472c-8b93-ed1c6f6c9c9c",
+    "next": "26589d6b-35a8-4ded-95b6-9dcb948239c1",
+    "attributes": {
+     "cat": "",
+     "name": "VIP Early Access SMS Branch",
+     "isHybridAction": true,
+     "type": "condition",
+     "condition": {
+      "name": "Check VIP Tag for Early Access SMS",
+      "operator": "and",
+      "segments": [
+       {
+        "conditions": [
+         {
+          "conditionType": "contact_detail",
+          "conditionOperator": "index-of-true",
+          "conditionValue": [
+           "vip"
+          ],
+          "conditionSubType": "tags"
+         }
+        ],
+        "operator": "and"
+       }
+      ]
+     },
+     "hybridActionType": "wait",
+     "convertToMultipath": false,
+     "transitions": []
+    },
+    "id": "a64138f8-069c-497a-b3fa-e267bdc6d960",
+    "order": 4
+   },
+   {
+    "name": "Contact Has VIP Tag",
+    "type": "if_else",
+    "parentKey": "a64138f8-069c-497a-b3fa-e267bdc6d960",
+    "next": [
+     "ea7c43e4-80a3-4bdc-9383-7c8cf2d92655",
+     "acec8739-492c-40e1-b12b-bcc9d5112037"
+    ],
+    "branches": [
+     "branch_1"
+    ],
+    "nodeType": "condition-node",
+    "cat": "conditions",
+    "id": "26589d6b-35a8-4ded-95b6-9dcb948239c1",
+    "attributes": {
+     "if": true,
+     "branches": [
+      {
+       "name": "Check if contact has VIP tag",
+       "id": "ea7c43e4-80a3-4bdc-9383-7c8cf2d92655",
+       "segments": [
+        {
+         "conditions": [
+          {
+           "conditionOperator": "index-of-true",
+           "conditionSubType": "tags",
+           "conditionValue": [
+            "vip"
+           ],
+           "conditionType": "contact_detail"
+          }
+         ],
+         "operator": "and"
+        }
+       ],
+       "operator": "and"
+      }
+     ],
+     "noneBranchName": "None",
+     "operator": "and",
+     "version": 2,
+     "conditionName": "Contact Has VIP Tag",
+     "currentRecipeType": "CUSTOM"
+    },
+    "order": 5
+   },
+   {
+    "name": "VIP Contact",
+    "type": "if_else",
+    "parentKey": "26589d6b-35a8-4ded-95b6-9dcb948239c1",
+    "next": "ee37da5c-98fd-4364-bf8c-a0a72ed8acfc",
+    "sibling": [
+     "acec8739-492c-40e1-b12b-bcc9d5112037",
+     "2039cdc6-b44b-44e7-b40b-e641ae6f9195",
+     "fcaa1874-840d-411b-a20d-f4218efa8b30",
+     "a0eb74e4-2d6c-48a7-943a-58838be7200b",
+     "9438dee1-ba16-4d1d-a8f5-b8e4e234eba2"
+    ],
+    "nodeType": "branch-yes",
+    "cat": "conditions",
+    "id": "ea7c43e4-80a3-4bdc-9383-7c8cf2d92655",
+    "attributes": {
+     "if": false,
+     "operator": "and",
+     "branches": [],
+     "conditionName": "Condition"
+    },
+    "parent": "26589d6b-35a8-4ded-95b6-9dcb948239c1",
+    "order": 6
+   },
+   {
+    "parentKey": "ea7c43e4-80a3-4bdc-9383-7c8cf2d92655",
+    "next": "b1189926-9f1b-4bb5-befb-51e37b86a0b4",
+    "attributes": {
+     "body": "Hello {{contact.first_name}},<br><br>We're excited to offer you exclusive early access to our new capsule collection! Shop now before anyone else.<br><br>Best regards,<br>{{user.name}}"
+    },
+    "id": "ee37da5c-98fd-4364-bf8c-a0a72ed8acfc",
+    "type": "sms",
+    "name": "Send Early Access SMS",
+    "parent": "ea7c43e4-80a3-4bdc-9383-7c8cf2d92655",
+    "order": 0
+   },
+   {
+    "name": "Wait 48 Hours (VIP SMS)",
+    "type": "wait",
+    "parentKey": "ee37da5c-98fd-4364-bf8c-a0a72ed8acfc",
+    "id": "b1189926-9f1b-4bb5-befb-51e37b86a0b4",
+    "attributes": {
+     "isHybridAction": true,
+     "name": "Wait 48 Hours (VIP SMS)",
+     "type": "time",
+     "cat": "action",
+     "hybridActionType": "wait",
+     "transitions": [],
+     "convertToMultipath": false,
+     "startAfter": {
+      "value": 48,
+      "type": "hour",
+      "when": "after"
+     }
+    },
+    "next": "4524ae0e-2c6a-43de-a068-4484d1f15e48",
+    "parent": "ea7c43e4-80a3-4bdc-9383-7c8cf2d92655",
+    "order": 1
+   },
+   {
+    "name": "Opened Launch Email, Not Purchased (VIP)",
+    "type": "wait",
+    "parentKey": "b1189926-9f1b-4bb5-befb-51e37b86a0b4",
+    "id": "4524ae0e-2c6a-43de-a068-4484d1f15e48",
+    "next": "df22ea2b-5587-45d8-97e6-738cc580c9c4",
+    "attributes": {
+     "type": "email_event",
+     "name": "Opened Launch Email, Not Purchased (VIP)",
+     "emailEventSteps": [],
+     "emailEventStepsLabel": [],
+     "cat": "",
+     "isHybridAction": true,
+     "hybridActionType": "wait",
+     "emailEventTypes": [
+      "opened"
+     ],
+     "convertToMultipath": false,
+     "transitions": []
+    },
+    "parent": "ea7c43e4-80a3-4bdc-9383-7c8cf2d92655",
+    "order": 2
+   },
+   {
+    "parentKey": "4524ae0e-2c6a-43de-a068-4484d1f15e48",
+    "id": "df22ea2b-5587-45d8-97e6-738cc580c9c4",
+    "next": "48483797-08fd-4c94-b723-20d056ec1360",
+    "attributes": {
+     "startAfter": {
+      "when": "after",
+      "value": 0,
+      "type": "minutes"
+     },
+     "emailEventSteps": [],
+     "emailEventStepsLabel": [],
+     "name": "Wait",
+     "type": "email_event",
+     "convertToMultipath": false,
+     "transitions": [],
+     "emailEventTypes": [
+      "opened",
+      "clicked",
+      "unsubscribed",
+      "complained",
+      "failed"
+     ],
+     "hybridActionType": "wait",
+     "cat": "",
+     "isHybridAction": true
+    },
+    "name": "Wait",
+    "type": "wait",
+    "cat": "action",
+    "parent": "ea7c43e4-80a3-4bdc-9383-7c8cf2d92655",
+    "order": 3
+   },
+   {
+    "attributes": {
+     "noneBranchName": "None",
+     "branches": [
+      {
+       "segments": [
+        {
+         "conditions": [
+          {
+           "conditionSubType": "email_event",
+           "conditionValue": "OPENED",
+           "conditionOperator": "==",
+           "conditionType": "events"
+          },
+          {
+           "conditionType": "payment",
+           "conditionOperator": "!=",
+           "conditionSubType": "payment_status",
+           "conditionValue": "succeeded"
+          }
+         ],
+         "operator": "and"
+        }
+       ],
+       "operator": "and",
+       "name": "Contact Opened Launch Email and Has Not Made Purchase (VIP Path)",
+       "id": "a0eb74e4-2d6c-48a7-943a-58838be7200b"
+      }
+     ],
+     "if": true,
+     "currentRecipeType": "CUSTOM",
+     "conditionName": "Opened Launch Email But Not Purchased (VIP)",
+     "version": 2,
+     "operator": "and"
+    },
+    "id": "48483797-08fd-4c94-b723-20d056ec1360",
+    "nodeType": "condition-node",
+    "branches": [
+     "branch_4"
+    ],
+    "cat": "conditions",
+    "parentKey": "df22ea2b-5587-45d8-97e6-738cc580c9c4",
+    "next": [
+     "a0eb74e4-2d6c-48a7-943a-58838be7200b",
+     "9438dee1-ba16-4d1d-a8f5-b8e4e234eba2"
+    ],
+    "name": "Opened Launch Email But Not Purchased (VIP)",
+    "type": "if_else",
+    "parent": "ea7c43e4-80a3-4bdc-9383-7c8cf2d92655",
+    "order": 4
+   },
+   {
+    "parentKey": "48483797-08fd-4c94-b723-20d056ec1360",
+    "next": "092046ba-ca93-436b-8659-518599614ead",
+    "type": "if_else",
+    "name": "Opened Email, Not Purchased (VIP)",
+    "id": "a0eb74e4-2d6c-48a7-943a-58838be7200b",
+    "attributes": {
+     "conditionName": "Condition",
+     "operator": "and",
+     "if": false,
+     "branches": []
+    },
+    "sibling": [
+     "ea7c43e4-80a3-4bdc-9383-7c8cf2d92655",
+     "acec8739-492c-40e1-b12b-bcc9d5112037",
+     "2039cdc6-b44b-44e7-b40b-e641ae6f9195",
+     "fcaa1874-840d-411b-a20d-f4218efa8b30",
+     "9438dee1-ba16-4d1d-a8f5-b8e4e234eba2"
+    ],
+    "nodeType": "branch-yes",
+    "cat": "conditions",
+    "parent": "48483797-08fd-4c94-b723-20d056ec1360",
+    "order": 5
+   },
+   {
+    "parentKey": "a0eb74e4-2d6c-48a7-943a-58838be7200b",
+    "id": "092046ba-ca93-436b-8659-518599614ead",
+    "next": "fb9e4db1-bc78-4138-8234-aca958fe7aae",
+    "attributes": {
+     "status_type": "invalid"
+    },
+    "type": "update_appointment_status",
+    "name": "Update Opportunity (VIP Engaged)",
+    "parent": "a0eb74e4-2d6c-48a7-943a-58838be7200b",
+    "order": 0
+   },
+   {
+    "name": "Email de Urgencia por Disponibilidad Limitada",
+    "type": "email",
+    "parentKey": "092046ba-ca93-436b-8659-518599614ead",
+    "id": "fb9e4db1-bc78-4138-8234-aca958fe7aae",
+    "attributes": {
+     "subject": "¡Atención {{contact.name}}! Disponibilidad limitada, actúa rápido",
+     "html": "Hola {{contact.name}},<br><br>Queremos informarte que nuestro producto/servicio {{contact.sku_comprado}} está teniendo una disponibilidad muy limitada en este momento. Muchas personas han mostrado interés y las unidades están volando.<br><br>Si estabas pensando en aprovechar esta oportunidad, te recomendamos hacerlo cuanto antes para no quedarte sin tu pedido. Recuerda que tu talla preferida {{contact.talla_pedida}} y el color {{contact.color_variante}} están a punto de agotarse.<br><br>Nos encantaría ayudarte a asegurar tu compra y responder cualquier pregunta que tengas. ¡No dudes en contactarnos!<br><br>Gracias por confiar en nosotros.<br><br>Un saludo cordial,<br>{{user.name}}<br>{{user.email_signature}}"
+    },
+    "parent": "a0eb74e4-2d6c-48a7-943a-58838be7200b",
+    "order": 1
+   },
+   {
+    "next": "f7cd373e-de84-46ba-803f-3b2d23f7d36d",
+    "parentKey": "48483797-08fd-4c94-b723-20d056ec1360",
+    "name": "None",
+    "type": "if_else",
+    "id": "9438dee1-ba16-4d1d-a8f5-b8e4e234eba2",
+    "attributes": {
+     "else": true
+    },
+    "cat": "conditions",
+    "sibling": [
+     "ea7c43e4-80a3-4bdc-9383-7c8cf2d92655",
+     "2039cdc6-b44b-44e7-b40b-e641ae6f9195",
+     "a0eb74e4-2d6c-48a7-943a-58838be7200b"
+    ],
+    "nodeType": "branch-no",
+    "parent": "48483797-08fd-4c94-b723-20d056ec1360",
+    "order": 5
+   },
+   {
+    "parentKey": "9438dee1-ba16-4d1d-a8f5-b8e4e234eba2",
+    "attributes": {
+     "subject": "¡Atención {{contact.name}}! Disponibilidad Limitada - Actúa Rápido",
+     "html": "Hola {{contact.name}},<br><br>Queremos informarte que nuestro producto/servicio {{contact.categora_prenda}} está con disponibilidad muy limitada debido a la alta demanda.<br><br>Te recomendamos realizar tu pedido lo antes posible para asegurar tu compra. Actualmente, solo quedan {{contact.n_total_compras}} unidades disponibles y una vez se agoten, no podremos garantizar la fecha de entrega.<br><br>Si tienes alguna duda o necesitas asistencia, no dudes en contactarnos a {{contact.email}} o llamarnos al {{contact.phone}}.<br><br>Gracias por confiar en nosotros.<br><br>Saludos cordiales,<br>{{user.name}}<br>{{user.email_signature}}"
+    },
+    "id": "f7cd373e-de84-46ba-803f-3b2d23f7d36d",
+    "type": "email",
+    "name": "Enviar correo urgente sobre disponibilidad limitada",
+    "parent": "9438dee1-ba16-4d1d-a8f5-b8e4e234eba2",
+    "order": 0
+   },
+   {
+    "next": "21b6cd36-c46d-41e2-9cdc-2a4d38dc8b19",
+    "parentKey": "26589d6b-35a8-4ded-95b6-9dcb948239c1",
+    "type": "if_else",
+    "name": "None",
+    "attributes": {
+     "else": true
+    },
+    "id": "acec8739-492c-40e1-b12b-bcc9d5112037",
+    "cat": "conditions",
+    "nodeType": "branch-no",
+    "sibling": [
+     "ea7c43e4-80a3-4bdc-9383-7c8cf2d92655",
+     "2039cdc6-b44b-44e7-b40b-e641ae6f9195",
+     "a0eb74e4-2d6c-48a7-943a-58838be7200b"
+    ],
+    "parent": "26589d6b-35a8-4ded-95b6-9dcb948239c1",
+    "order": 6
+   },
+   {
+    "parentKey": "acec8739-492c-40e1-b12b-bcc9d5112037",
+    "id": "21b6cd36-c46d-41e2-9cdc-2a4d38dc8b19",
+    "next": "7241886a-1529-423e-b422-e5b231f63f4e",
+    "attributes": {
+     "type": "time",
+     "isHybridAction": true,
+     "name": "Wait 48 Hours (Non-VIP)",
+     "cat": "action",
+     "hybridActionType": "wait",
+     "transitions": [],
+     "startAfter": {
+      "when": "after",
+      "type": "hour",
+      "value": 48
+     },
+     "convertToMultipath": false
+    },
+    "type": "wait",
+    "name": "Wait 48 Hours (Non-VIP)",
+    "parent": "acec8739-492c-40e1-b12b-bcc9d5112037",
+    "order": 0
+   },
+   {
+    "attributes": {
+     "name": "Opened Launch Email, Not Purchased (Non-VIP)",
+     "type": "email_event",
+     "emailEventSteps": [],
+     "emailEventStepsLabel": [],
+     "hybridActionType": "wait",
+     "cat": "",
+     "isHybridAction": true,
+     "convertToMultipath": false,
+     "transitions": [],
+     "emailEventTypes": [
+      "opened"
+     ]
+    },
+    "next": "f7526a3c-a6eb-42a1-a7ca-43844634b2e8",
+    "id": "7241886a-1529-423e-b422-e5b231f63f4e",
+    "parentKey": "21b6cd36-c46d-41e2-9cdc-2a4d38dc8b19",
+    "name": "Opened Launch Email, Not Purchased (Non-VIP)",
+    "type": "wait",
+    "parent": "acec8739-492c-40e1-b12b-bcc9d5112037",
+    "order": 1
+   },
+   {
+    "cat": "action",
+    "type": "wait",
+    "name": "Wait",
+    "attributes": {
+     "name": "Wait",
+     "type": "email_event",
+     "startAfter": {
+      "when": "after",
+      "value": 0,
+      "type": "minutes"
+     },
+     "emailEventStepsLabel": [],
+     "emailEventSteps": [],
+     "hybridActionType": "wait",
+     "isHybridAction": true,
+     "cat": "",
+     "transitions": [],
+     "convertToMultipath": false,
+     "emailEventTypes": [
+      "opened",
+      "clicked",
+      "unsubscribed",
+      "complained",
+      "failed"
+     ]
+    },
+    "next": "fa36aeae-1206-454e-8bb5-56c3ee7348dc",
+    "id": "f7526a3c-a6eb-42a1-a7ca-43844634b2e8",
+    "parentKey": "7241886a-1529-423e-b422-e5b231f63f4e",
+    "parent": "acec8739-492c-40e1-b12b-bcc9d5112037",
+    "order": 2
+   },
+   {
+    "name": "Opened Launch Email But Not Purchased (Non-VIP)",
+    "type": "if_else",
+    "parentKey": "f7526a3c-a6eb-42a1-a7ca-43844634b2e8",
+    "next": [
+     "2039cdc6-b44b-44e7-b40b-e641ae6f9195",
+     "fcaa1874-840d-411b-a20d-f4218efa8b30"
+    ],
+    "nodeType": "condition-node",
+    "branches": [
+     "branch_2"
+    ],
+    "cat": "conditions",
+    "id": "fa36aeae-1206-454e-8bb5-56c3ee7348dc",
+    "attributes": {
+     "branches": [
+      {
+       "segments": [
+        {
+         "conditions": [
+          {
+           "conditionType": "events",
+           "conditionSubType": "email_event",
+           "conditionValue": "OPENED",
+           "conditionOperator": "=="
+          },
+          {
+           "conditionType": "payment",
+           "conditionValue": "succeeded",
+           "conditionSubType": "payment_status",
+           "conditionOperator": "!="
+          }
+         ],
+         "operator": "and"
+        }
+       ],
+       "operator": "and",
+       "name": "Opened Launch Email and No Purchase (Non-VIP Path)",
+       "id": "2039cdc6-b44b-44e7-b40b-e641ae6f9195"
+      }
+     ],
+     "if": true,
+     "noneBranchName": "None",
+     "operator": "and",
+     "version": 2,
+     "currentRecipeType": "CUSTOM",
+     "conditionName": "Opened Launch Email But Not Purchased (Non-VIP)"
+    },
+    "parent": "acec8739-492c-40e1-b12b-bcc9d5112037",
+    "order": 3
+   },
+   {
+    "type": "if_else",
+    "name": "Opened Email, Not Purchased (Non-VIP)",
+    "parentKey": "fa36aeae-1206-454e-8bb5-56c3ee7348dc",
+    "next": "0c999a61-bf18-4938-bb25-8427f8c28b4b",
+    "sibling": [
+     "ea7c43e4-80a3-4bdc-9383-7c8cf2d92655",
+     "acec8739-492c-40e1-b12b-bcc9d5112037",
+     "fcaa1874-840d-411b-a20d-f4218efa8b30",
+     "a0eb74e4-2d6c-48a7-943a-58838be7200b",
+     "9438dee1-ba16-4d1d-a8f5-b8e4e234eba2"
+    ],
+    "nodeType": "branch-yes",
+    "cat": "conditions",
+    "attributes": {
+     "conditionName": "Condition",
+     "branches": [],
+     "if": false,
+     "operator": "and"
+    },
+    "id": "2039cdc6-b44b-44e7-b40b-e641ae6f9195",
+    "parent": "fa36aeae-1206-454e-8bb5-56c3ee7348dc",
+    "order": 4
+   },
+   {
+    "attributes": {
+     "status_type": "invalid"
+    },
+    "next": "f26f7636-2dd9-49fb-8715-365a07c25249",
+    "id": "0c999a61-bf18-4938-bb25-8427f8c28b4b",
+    "parentKey": "2039cdc6-b44b-44e7-b40b-e641ae6f9195",
+    "type": "update_appointment_status",
+    "name": "Update Opportunity (Non-VIP Engaged)",
+    "parent": "2039cdc6-b44b-44e7-b40b-e641ae6f9195",
+    "order": 0
+   },
+   {
+    "parentKey": "0c999a61-bf18-4938-bb25-8427f8c28b4b",
+    "id": "f26f7636-2dd9-49fb-8715-365a07c25249",
+    "attributes": {
+     "subject": "Oferta Exclusiva por Tiempo Limitado para Ti, {{contact.name}}",
+     "html": "Hola {{contact.name}},<br><br>Queremos informarte de una oportunidad única que no puedes dejar pasar. Por tiempo limitado, tenemos una oferta exclusiva diseñada especialmente para ti.<br><br>Esta es tu chance de acceder a beneficios y descuentos que solo ofrecemos a un grupo selecto de clientes. Pero recuerda, esta promoción es temporal y estará disponible solo por unos días.<br><br>No dejes que esta oportunidad se escape. Contáctanos o visita nuestro sitio para aprovechar esta oferta exclusiva antes de que finalice.<br><br>Esperamos que disfrutes de esta ventaja especial.<br><br>Saludos cordiales,<br>{{user.name}}"
+    },
+    "type": "email",
+    "name": "Email Oferta Exclusiva - Urgente",
+    "parent": "2039cdc6-b44b-44e7-b40b-e641ae6f9195",
+    "order": 1
+   },
+   {
+    "id": "fcaa1874-840d-411b-a20d-f4218efa8b30",
+    "attributes": {
+     "else": true
+    },
+    "nodeType": "branch-no",
+    "sibling": [
+     "ea7c43e4-80a3-4bdc-9383-7c8cf2d92655",
+     "2039cdc6-b44b-44e7-b40b-e641ae6f9195",
+     "a0eb74e4-2d6c-48a7-943a-58838be7200b"
+    ],
+    "cat": "conditions",
+    "parentKey": "fa36aeae-1206-454e-8bb5-56c3ee7348dc",
+    "next": "07d566e4-fb58-4b19-b6c4-897bc0d34f10",
+    "type": "if_else",
+    "name": "None",
+    "parent": "fa36aeae-1206-454e-8bb5-56c3ee7348dc",
+    "order": 4
+   },
+   {
+    "parentKey": "fcaa1874-840d-411b-a20d-f4218efa8b30",
+    "id": "07d566e4-fb58-4b19-b6c4-897bc0d34f10",
+    "attributes": {
+     "subject": "¡Última oportunidad para aprovechar esta oferta exclusiva!",
+     "html": "Hola {{contact.name}},<br><br>Queremos informarte que esta es tu última oportunidad para beneficiarte de nuestra oferta exclusiva. La disponibilidad es muy limitada y el tiempo está corriendo.<br><br>Si has estado pensando en aprovechar esta promoción, ahora es el momento. No esperes más, ya que una vez que se agote el stock, no podremos extender esta oferta.<br><br>Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Estamos aquí para asistirte.<br><br>Gracias por confiar en nosotros.<br><br>Saludos cordiales,<br>{{user.name}}<br>{{user.email_signature}}"
+    },
+    "name": "Enviar Email de Última Oportunidad",
+    "type": "email",
+    "parent": "fcaa1874-840d-411b-a20d-f4218efa8b30",
+    "order": 0
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}
