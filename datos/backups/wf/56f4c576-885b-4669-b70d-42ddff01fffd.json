@@ -1,0 +1,340 @@
+{
+ "_id": "56f4c576-885b-4669-b70d-42ddff01fffd",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "name": "PS02 · Fidelización VIP / Recurrencia",
+ "status": "draft",
+ "version": 2,
+ "allowMultiple": false,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/56f4c576-885b-4669-b70d-42ddff01fffd/2",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F56f4c576-885b-4669-b70d-42ddff01fffd%2F2?alt=media&token=a895e20a-7c0a-4bdb-8c6f-72809f614644",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "originId": "e9cbeb01-ab0b-4a56-8989-4b4c44d72d71",
+ "permission": 380,
+ "type": "workflow",
+ "meta": null,
+ "updatedBy": "snapshot",
+ "createdAt": "2026-03-25T21:17:16.149Z",
+ "updatedAt": "2026-03-25T21:17:20.034Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "snapshot",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "dataVersion": 7,
+ "eventStartDate": null,
+ "senderAddress": null,
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/56f4c576-885b-4669-b70d-42ddff01fffd/2",
+ "window": null,
+ "workflowNote": {
+  "content": "",
+  "createdBy": "snapshot",
+  "createdByName": "snapshot",
+  "createdAt": "2026-03-25T21:17:19.620Z",
+  "updatedBy": "snapshot",
+  "updatedByName": "snapshot",
+  "updatedAt": "2026-03-25T21:17:19.620Z"
+ },
+ "id": "56f4c576-885b-4669-b70d-42ddff01fffd",
+ "workflowData": {
+  "templates": [
+   {
+    "name": "Add 'recurrente' Tag",
+    "id": "ba5be2e8-ede0-4b32-8664-7974f679cc46",
+    "next": "93f62a1a-347c-4fad-abce-fe024ae1b33d",
+    "type": "add_contact_tag",
+    "attributes": {
+     "tags": [
+      "recurrente"
+     ]
+    },
+    "order": 0
+   },
+   {
+    "workflowsActionType": "INTERNAL",
+    "attributes": {
+     "allowBackward": true,
+     "type": "internal_update_opportunity",
+     "__customInputFields__": [
+      {
+       "__customInputs__": {},
+       "filterField": "pipelineId",
+       "value": "Y47eLa4dAIZTKLu2UpuX",
+       "valueFieldType": "select"
+      },
+      {
+       "__customInputs__": {},
+       "filterField": "pipelineStageId",
+       "value": "eb42208b-de79-4e1c-8239-9c4f36a95218",
+       "valueFieldType": "select"
+      }
+     ],
+     "__customInputs__": {}
+    },
+    "parentKey": "ba5be2e8-ede0-4b32-8664-7974f679cc46",
+    "type": "internal_update_opportunity",
+    "next": "15c60e34-9a21-40fd-998a-5f83b32d01cc",
+    "name": "Move Opportunity to 'P2-05 Recurrente'",
+    "id": "93f62a1a-347c-4fad-abce-fe024ae1b33d",
+    "order": 1
+   },
+   {
+    "id": "15c60e34-9a21-40fd-998a-5f83b32d01cc",
+    "name": "Send Personalized Repeat Client Email",
+    "next": "efcbcf54-0f99-441b-8325-dff844380f64",
+    "type": "email",
+    "parentKey": "93f62a1a-347c-4fad-abce-fe024ae1b33d",
+    "attributes": {
+     "subject": "Welcome Back as a Valued Repeat Client!",
+     "html": "<p style=\"margin:0px; padding-left: 0px!important;\"><span style=\"font-size: 14px; font-family: Roboto, Helvetica, sans-serif; color: rgb(60, 81, 180)\">Hola {{contact.name}},</span><br><br><span style=\"font-size: 14px; font-family: Roboto, Helvetica, sans-serif; color: rgb(60, 81, 180)\">¡Muchas gracias por su continua confianza y lealtad al elegirnos nuevamente! Estamos encantados de darle la bienvenida de nuevo como cliente recurrente y realmente apreciamos su apoyo.</span><br><br><span style=\"font-size: 14px; font-family: Roboto, Helvetica, sans-serif; color: rgb(60, 81, 180)\">Su satisfacción es muy importante para nosotros, y estamos comprometidos a brindarle el mejor servicio y los mejores productos posibles. Si hay algo especial que le gustaría que supiéramos o alguna solicitud personalizada, no dude en comunicarse con nosotros.</span><br><br><span style=\"font-size: 14px; font-family: Roboto, Helvetica, sans-serif; color: rgb(60, 81, 180)\">Esperamos continuar atendiéndole y superar sus expectativas.</span><br><br><span style=\"font-size: 14px; font-family: Roboto, Helvetica, sans-serif; color: rgb(60, 81, 180)\">Saludos cordiales,</span><br><span style=\"font-size: 14px; font-family: Roboto, Helvetica, sans-serif; color: rgb(60, 81, 180)\">{{user.name}}</span><br><span style=\"font-size: 14px; font-family: Roboto, Helvetica, sans-serif; color: rgb(60, 81, 180)\">{{user.email_signature}}</span></p>",
+     "trackingOptions": {
+      "hasTrackingLinks": true,
+      "hasUtmTracking": true,
+      "hasTags": false,
+      "sourceId": "e9cbeb01-ab0b-4a56-8989-4b4c44d72d71:15c60e34-9a21-40fd-998a-5f83b32d01cc"
+     },
+     "conditions": [],
+     "attachments": []
+    },
+    "order": 2
+   },
+   {
+    "cat": "",
+    "attributes": {
+     "cat": "",
+     "convertToMultipath": false,
+     "type": "condition",
+     "isHybridAction": true,
+     "condition": {
+      "currentRecipeType": "CUSTOM",
+      "branches": [
+       {
+        "id": "27bf1223-c2fd-458b-b162-e4b9e60ec701",
+        "name": "Branch",
+        "segments": [
+         {
+          "__segmentId": "ae6f8baa-fce5-4d12-9915-db71de69cacf",
+          "operator": "and",
+          "conditions": [
+           {
+            "conditionType": "contact_detail",
+            "conditionSubType": "a47cYvki8JPPTIdN3dCh",
+            "conditionOperator": ">=",
+            "conditionValue": 3,
+            "__conditionId": "126f1d8a-fac6-47d6-94be-d26e58faadc2",
+            "ifElseNodeId": "",
+            "__customFieldType__": "standard",
+            "isWait": true,
+            "nestedDropdownTypes": [
+             "inboundWebhookRequest",
+             "sheet",
+             "datetime_formatter",
+             "custom_webhook",
+             "array_functions",
+             "ivr_gather",
+             "ivr_connect_call",
+             "custom_code",
+             "ai_agent"
+            ],
+            "allowIsOperatorTypes": [
+             "contact_reply",
+             "inboundWebhookRequest",
+             "custom_webhook",
+             "custom_code",
+             "ai_agent",
+             "contact_detail",
+             "array_functions",
+             "appointment",
+             "service_booking",
+             "rental_booking"
+            ]
+           }
+          ]
+         }
+        ],
+        "operator": "and",
+        "showErrors": false,
+        "branchNameError": "Branch name cannot be empty!"
+       }
+      ],
+      "operator": "or",
+      "if": true,
+      "conditionName": "",
+      "version": 2,
+      "noneBranchName": "None"
+     },
+     "transitions": [],
+     "hybridActionType": "wait",
+     "name": "Check for Third Purchase (VIP Status)",
+     "startAfter": {
+      "when": "after",
+      "value": 0,
+      "type": "minutes",
+      "action_in": 0
+     }
+    },
+    "parentKey": "15c60e34-9a21-40fd-998a-5f83b32d01cc",
+    "type": "wait",
+    "next": "71df6d1e-2e1d-4c97-a5de-13f3f3404922",
+    "convertToMultipath": true,
+    "name": "Check for Third Purchase (VIP Status)",
+    "id": "efcbcf54-0f99-441b-8325-dff844380f64",
+    "order": 3
+   },
+   {
+    "cat": "conditions",
+    "type": "if_else",
+    "attributes": {
+     "currentRecipeType": "CUSTOM",
+     "branches": [
+      {
+       "id": "ccc17c44-fb45-49e2-957f-8f28e8aac338",
+       "name": "Check if contact is VIP based on total orders",
+       "segments": [
+        {
+         "__segmentId": "b61d10c6-ae8f-4e17-a22e-7b8fe88f8eed",
+         "operator": "and",
+         "conditions": [
+          {
+           "conditionType": "contact_detail",
+           "conditionSubType": "total_orders",
+           "conditionOperator": "==",
+           "conditionValue": "3",
+           "__conditionId": "b19fd88e-1015-4826-a7fc-09d82eeff92a",
+           "ifElseNodeId": "",
+           "__customFieldType__": "standard",
+           "isWait": false,
+           "nestedDropdownTypes": [
+            "inboundWebhookRequest",
+            "sheet",
+            "datetime_formatter",
+            "custom_webhook",
+            "array_functions",
+            "ivr_gather",
+            "ivr_connect_call",
+            "custom_code",
+            "ai_agent"
+           ],
+           "allowIsOperatorTypes": [
+            "contact_reply",
+            "inboundWebhookRequest",
+            "custom_webhook",
+            "custom_code",
+            "ai_agent",
+            "contact_detail",
+            "array_functions",
+            "appointment",
+            "service_booking",
+            "rental_booking"
+           ]
+          }
+         ]
+        }
+       ],
+       "operator": "and",
+       "showErrors": false,
+       "branchNameError": "Branch name cannot be empty!"
+      }
+     ],
+     "operator": "and",
+     "if": true,
+     "conditionName": "Third Purchase Condition",
+     "version": 2,
+     "noneBranchName": "None"
+    },
+    "parentKey": "efcbcf54-0f99-441b-8325-dff844380f64",
+    "branches": [
+     "branch_1"
+    ],
+    "name": "yes",
+    "id": "71df6d1e-2e1d-4c97-a5de-13f3f3404922",
+    "nodeType": "condition-node",
+    "next": [
+     "ccc17c44-fb45-49e2-957f-8f28e8aac338",
+     "be3dc828-e9fa-4349-8758-6208879f5785"
+    ],
+    "order": 4
+   },
+   {
+    "nodeType": "branch-yes",
+    "sibling": [
+     "be3dc828-e9fa-4349-8758-6208879f5785"
+    ],
+    "type": "if_else",
+    "id": "ccc17c44-fb45-49e2-957f-8f28e8aac338",
+    "name": "Third Purchase (VIP)",
+    "cat": "conditions",
+    "parentKey": "71df6d1e-2e1d-4c97-a5de-13f3f3404922",
+    "attributes": {
+     "branches": [],
+     "if": false,
+     "operator": "and",
+     "conditionName": "Condition"
+    },
+    "parent": "71df6d1e-2e1d-4c97-a5de-13f3f3404922",
+    "order": 5,
+    "next": "850d6290-78d7-4eb0-990c-bb93bdabf47a"
+   },
+   {
+    "id": "850d6290-78d7-4eb0-990c-bb93bdabf47a",
+    "parent": "ccc17c44-fb45-49e2-957f-8f28e8aac338",
+    "order": 0,
+    "attributes": {
+     "type": "notification",
+     "notification": {
+      "type": "send_notification",
+      "body": "historial de compras y le sugiere una accion personalizada: una nota manuscrita, un descuento sorpresa o una llamada de atencion en el siguiente pedido.",
+      "title": "Nueva Cliente VIP",
+      "redirectPage": "opportunity",
+      "userType": "all"
+     }
+    },
+    "name": "Internal Notification",
+    "type": "internal_notification",
+    "next": "ccff339e-f05f-4ee4-a41c-e5cc24d2a7be",
+    "parentKey": "ccc17c44-fb45-49e2-957f-8f28e8aac338"
+   },
+   {
+    "id": "ccff339e-f05f-4ee4-a41c-e5cc24d2a7be",
+    "parent": "ccc17c44-fb45-49e2-957f-8f28e8aac338",
+    "order": 1,
+    "attributes": {
+     "fields": [],
+     "type": "create_opportunity",
+     "pipeline_id": "Y47eLa4dAIZTKLu2UpuX",
+     "pipeline_stage_id": "24520481-c54f-474c-bc25-387b038e7b50",
+     "opportunity_name": "{{contact.name}}",
+     "opportunity_source": "{{contact.source}}",
+     "opportunity_status": "open",
+     "monetary_value": ""
+    },
+    "name": "Create Or Update Opportunity",
+    "type": "create_opportunity",
+    "parentKey": "850d6290-78d7-4eb0-990c-bb93bdabf47a"
+   },
+   {
+    "name": "None",
+    "id": "be3dc828-e9fa-4349-8758-6208879f5785",
+    "nodeType": "branch-no",
+    "type": "if_else",
+    "sibling": [
+     "ccc17c44-fb45-49e2-957f-8f28e8aac338"
+    ],
+    "parentKey": "71df6d1e-2e1d-4c97-a5de-13f3f3404922",
+    "attributes": {
+     "else": true
+    },
+    "cat": "conditions",
+    "parent": "71df6d1e-2e1d-4c97-a5de-13f3f3404922",
+    "order": 5
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

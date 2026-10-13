@@ -1,0 +1,32 @@
+[
+ {
+  "id": "bl06yAS3vYcigpeP6br3",
+  "date_added": "2026-07-29T11:43:13.580Z",
+  "deleted": false,
+  "actions": [
+   {
+    "workflow_id": "873e4590-a8ff-4675-a0cd-ec2cc17bcef6",
+    "type": "add_to_workflow"
+   }
+  ],
+  "type": "contact_tag",
+  "masterType": "highlevel",
+  "workflow_id": "873e4590-a8ff-4675-a0cd-ec2cc17bcef6",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "name": "Contact Tag",
+  "belongs_to": "workflow",
+  "schedule_config": {},
+  "active": true,
+  "conditions": [
+   {
+    "operator": "index-of-true",
+    "field": "tagsAdded",
+    "value": "email-04-listo",
+    "title": "Tag added",
+    "type": "select",
+    "id": "tag-added"
+   }
+  ],
+  "date_updated": "2026-07-29T20:16:27.629Z"
+ }
+]

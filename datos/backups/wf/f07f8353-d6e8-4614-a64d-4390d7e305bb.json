@@ -1,0 +1,591 @@
+{
+ "_id": "f07f8353-d6e8-4614-a64d-4390d7e305bb",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "name": "SP05 · Reactivación Leads Fríos",
+ "status": "draft",
+ "version": 2,
+ "allowMultiple": false,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/f07f8353-d6e8-4614-a64d-4390d7e305bb/2",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2Ff07f8353-d6e8-4614-a64d-4390d7e305bb%2F2?alt=media&token=abb018f6-a77c-46cf-93f4-1c9e7dccbf31",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "originId": "6d8e2c8e-1c7c-4bb0-b31f-e27ee06bc1f1",
+ "permission": 380,
+ "type": "workflow",
+ "meta": null,
+ "updatedBy": "snapshot",
+ "createdAt": "2026-03-25T21:17:17.353Z",
+ "updatedAt": "2026-03-25T21:17:20.124Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "snapshot",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "dataVersion": 7,
+ "eventStartDate": null,
+ "senderAddress": null,
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/f07f8353-d6e8-4614-a64d-4390d7e305bb/2",
+ "window": null,
+ "workflowNote": {
+  "content": "",
+  "createdBy": "snapshot",
+  "createdByName": "snapshot",
+  "createdAt": "2026-03-25T21:17:19.680Z",
+  "updatedBy": "snapshot",
+  "updatedByName": "snapshot",
+  "updatedAt": "2026-03-25T21:17:19.680Z"
+ },
+ "id": "f07f8353-d6e8-4614-a64d-4390d7e305bb",
+ "workflowData": {
+  "templates": [
+   {
+    "attributes": {
+     "html": "<p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Hola {{contact.name}},<br><br>Esperamos que este mensaje te encuentre bien. Somos conscientes de que ha pasado un tiempo desde nuestra última comunicación, y en {{contact.company_name}} queremos asegurarnos de que sigas disfrutando del mejor servicio y ofertas exclusivas.<br><br>Hemos preparado para ti contenido personalizado y promociones especiales que creemos que serán de tu interés. No dudes en visitarnos y descubrir todo lo que tenemos para ofrecerte.<br><br>Si tienes alguna pregunta o deseas asistencia personalizada, estamos aquí para ayudarte. No dudes en contactarnos.<br><br>¡Esperamos volver a saber de ti pronto!<br><br>Un cordial saludo,<br><br>{{user.name}}<br>{{user.email_signature}}</p>",
+     "subject": "We Miss You at {{contact.company_name}} – Here's Something Special for You",
+     "trackingOptions": {
+      "hasTrackingLinks": true,
+      "hasUtmTracking": true,
+      "hasTags": false,
+      "sourceId": "6d8e2c8e-1c7c-4bb0-b31f-e27ee06bc1f1:eea6f1ea-c46f-4d70-bee3-a1fdca56573d"
+     },
+     "conditions": [],
+     "attachments": []
+    },
+    "next": "4c0aa9a5-a713-49a0-85d2-95f0474a1c13",
+    "id": "eea6f1ea-c46f-4d70-bee3-a1fdca56573d",
+    "name": "Send Value Email 1",
+    "type": "email",
+    "order": 0
+   },
+   {
+    "parentKey": "eea6f1ea-c46f-4d70-bee3-a1fdca56573d",
+    "id": "4c0aa9a5-a713-49a0-85d2-95f0474a1c13",
+    "type": "wait",
+    "name": "Wait 7 Days after Email 1",
+    "attributes": {
+     "isHybridAction": true,
+     "transitions": [],
+     "type": "email_event",
+     "hybridActionType": "wait",
+     "name": "Wait 7 Days after Email 1",
+     "startAfter": {
+      "action_in": 0,
+      "when": "after",
+      "value": 0,
+      "type": "days"
+     },
+     "cat": "",
+     "convertToMultipath": false,
+     "emailEventSteps": [
+      "eea6f1ea-c46f-4d70-bee3-a1fdca56573d"
+     ],
+     "emailEventStepsLabel": [
+      "Send Value Email 1"
+     ],
+     "emailEventTypes": [
+      "opened"
+     ]
+    },
+    "next": "a2a98a78-2eb3-4a0b-b715-37a7f7ff67fd",
+    "order": 1,
+    "cat": ""
+   },
+   {
+    "id": "a2a98a78-2eb3-4a0b-b715-37a7f7ff67fd",
+    "order": 2,
+    "attributes": {
+     "currentRecipeType": "CUSTOM",
+     "branches": [
+      {
+       "id": "7bde1363-1ada-404a-bef9-c9a2d36504b1",
+       "name": "Branch",
+       "segments": [
+        {
+         "__segmentId": "2164d5cb-47a2-4126-b699-a3fc9bef4495",
+         "operator": "and",
+         "conditions": [
+          {
+           "conditionType": "events",
+           "conditionSubType": "email_event",
+           "conditionOperator": "==",
+           "conditionValue": "opened",
+           "__conditionId": "d1015a23-e997-4fc5-817e-dc44bbf09882",
+           "ifElseNodeId": "",
+           "__customFieldType__": "standard",
+           "isWait": false,
+           "nestedDropdownTypes": [
+            "inboundWebhookRequest",
+            "sheet",
+            "datetime_formatter",
+            "custom_webhook",
+            "array_functions",
+            "ivr_gather",
+            "ivr_connect_call",
+            "custom_code",
+            "ai_agent"
+           ],
+           "allowIsOperatorTypes": [
+            "contact_reply",
+            "inboundWebhookRequest",
+            "custom_webhook",
+            "custom_code",
+            "ai_agent",
+            "contact_detail",
+            "array_functions",
+            "appointment",
+            "service_booking",
+            "rental_booking"
+           ]
+          }
+         ]
+        }
+       ],
+       "operator": "and",
+       "showErrors": false,
+       "branchNameError": "Branch name cannot be empty!"
+      }
+     ],
+     "operator": "and",
+     "if": true,
+     "conditionName": "Condition",
+     "version": 2,
+     "noneBranchName": "None"
+    },
+    "name": "yes",
+    "type": "if_else",
+    "cat": "conditions",
+    "next": [
+     "7bde1363-1ada-404a-bef9-c9a2d36504b1",
+     "892bd490-c8f6-48b6-ad68-fd00f3b8901f"
+    ],
+    "comments": [],
+    "nodeType": "condition-node",
+    "parentKey": "4c0aa9a5-a713-49a0-85d2-95f0474a1c13"
+   },
+   {
+    "id": "7bde1363-1ada-404a-bef9-c9a2d36504b1",
+    "parent": "a2a98a78-2eb3-4a0b-b715-37a7f7ff67fd",
+    "order": 3,
+    "attributes": {
+     "if": false,
+     "conditionName": "Condition",
+     "operator": "and",
+     "branches": []
+    },
+    "name": "Branch",
+    "type": "if_else",
+    "cat": "conditions",
+    "next": "8303da19-22a5-4daf-a0bb-ede2fe76fb6a",
+    "sibling": [
+     "892bd490-c8f6-48b6-ad68-fd00f3b8901f"
+    ],
+    "comments": [],
+    "nodeType": "branch-yes",
+    "parentKey": "a2a98a78-2eb3-4a0b-b715-37a7f7ff67fd"
+   },
+   {
+    "id": "8303da19-22a5-4daf-a0bb-ede2fe76fb6a",
+    "parent": "7bde1363-1ada-404a-bef9-c9a2d36504b1",
+    "order": 0,
+    "attributes": {
+     "tags": [
+      "abrio"
+     ]
+    },
+    "name": "Add Tag",
+    "type": "add_contact_tag",
+    "next": "695bed8c-1df1-4625-8984-6b067537bcf3",
+    "parentKey": "7bde1363-1ada-404a-bef9-c9a2d36504b1"
+   },
+   {
+    "next": "299b0bb2-85d1-4a99-b9b2-291ebb0b9577",
+    "attributes": {
+     "subject": "Seguimos aquí para ti, {{contact.name}}",
+     "html": "<p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Hola {{contact.name}},<br><br>Esperamos que este mensaje te encuentre bien. Queríamos recordarte que seguimos comprometidos en brindarte el mejor servicio y valor.<br><br>Si has tenido algún inconveniente o si hay algo específico que te gustaría que mejoráramos, no dudes en compartirlo con nosotros. Estamos para ayudarte y asegurarnos de que tu experiencia sea la mejor posible.<br><br>Te invitamos a explorar nuestras últimas novedades y ofertas exclusivas diseñadas pensando en ti.<br><br>Gracias por formar parte de nuestra comunidad.<br><br>Un saludo cordial,<br><br>{{user.name}}<br>{{user.email_signature}}</p>",
+     "trackingOptions": {
+      "hasTrackingLinks": true,
+      "hasUtmTracking": true,
+      "hasTags": false,
+      "sourceId": "6d8e2c8e-1c7c-4bb0-b31f-e27ee06bc1f1:695bed8c-1df1-4625-8984-6b067537bcf3"
+     },
+     "conditions": [],
+     "attachments": []
+    },
+    "id": "695bed8c-1df1-4625-8984-6b067537bcf3",
+    "parentKey": "8303da19-22a5-4daf-a0bb-ede2fe76fb6a",
+    "name": "Send Value Email 2",
+    "type": "email",
+    "order": 1,
+    "parent": "7bde1363-1ada-404a-bef9-c9a2d36504b1"
+   },
+   {
+    "name": "Wait 7 Days after Email 2",
+    "type": "wait",
+    "id": "299b0bb2-85d1-4a99-b9b2-291ebb0b9577",
+    "parentKey": "695bed8c-1df1-4625-8984-6b067537bcf3",
+    "attributes": {
+     "isHybridAction": true,
+     "transitions": [],
+     "name": "Wait 7 Days after Email 2",
+     "hybridActionType": "wait",
+     "type": "email_event",
+     "convertToMultipath": false,
+     "startAfter": {
+      "type": "days",
+      "value": 0,
+      "when": "after"
+     },
+     "cat": "",
+     "emailEventSteps": [
+      "695bed8c-1df1-4625-8984-6b067537bcf3"
+     ],
+     "emailEventStepsLabel": [
+      "Send Value Email 2"
+     ],
+     "emailEventTypes": [
+      "opened"
+     ]
+    },
+    "next": "860c4622-b266-46b2-aa93-e919af649cd3",
+    "order": 2,
+    "parent": "7bde1363-1ada-404a-bef9-c9a2d36504b1",
+    "cat": ""
+   },
+   {
+    "id": "860c4622-b266-46b2-aa93-e919af649cd3",
+    "parent": "7bde1363-1ada-404a-bef9-c9a2d36504b1",
+    "order": 3,
+    "attributes": {
+     "currentRecipeType": "CUSTOM",
+     "branches": [
+      {
+       "id": "9059f915-7fe8-47cc-8383-fa56d4eaa688",
+       "name": "Branch",
+       "segments": [
+        {
+         "__segmentId": "2164d5cb-47a2-4126-b699-a3fc9bef4495",
+         "operator": "and",
+         "conditions": [
+          {
+           "conditionType": "events",
+           "conditionSubType": "email_event",
+           "conditionOperator": "==",
+           "conditionValue": "opened",
+           "__conditionId": "d1015a23-e997-4fc5-817e-dc44bbf09882",
+           "ifElseNodeId": "",
+           "__customFieldType__": "standard",
+           "isWait": false,
+           "nestedDropdownTypes": [
+            "inboundWebhookRequest",
+            "sheet",
+            "datetime_formatter",
+            "custom_webhook",
+            "array_functions",
+            "ivr_gather",
+            "ivr_connect_call",
+            "custom_code",
+            "ai_agent"
+           ],
+           "allowIsOperatorTypes": [
+            "contact_reply",
+            "inboundWebhookRequest",
+            "custom_webhook",
+            "custom_code",
+            "ai_agent",
+            "contact_detail",
+            "array_functions",
+            "appointment",
+            "service_booking",
+            "rental_booking"
+           ]
+          }
+         ]
+        }
+       ],
+       "operator": "and",
+       "showErrors": false,
+       "branchNameError": "Branch name cannot be empty!"
+      }
+     ],
+     "operator": "and",
+     "if": true,
+     "conditionName": "Condition",
+     "version": 2,
+     "noneBranchName": "None"
+    },
+    "name": "yes",
+    "type": "if_else",
+    "cat": "conditions",
+    "next": [
+     "9059f915-7fe8-47cc-8383-fa56d4eaa688",
+     "0e920741-7cd7-4adb-b1e2-acbc0a82ccfb"
+    ],
+    "comments": [],
+    "nodeType": "condition-node",
+    "parentKey": "299b0bb2-85d1-4a99-b9b2-291ebb0b9577"
+   },
+   {
+    "id": "9059f915-7fe8-47cc-8383-fa56d4eaa688",
+    "parent": "860c4622-b266-46b2-aa93-e919af649cd3",
+    "order": 4,
+    "attributes": {
+     "if": false,
+     "conditionName": "Condition",
+     "operator": "and",
+     "branches": []
+    },
+    "name": "Branch",
+    "type": "if_else",
+    "cat": "conditions",
+    "next": "e3499570-e749-44e1-a93b-d765ba1d2bc0",
+    "sibling": [
+     "0e920741-7cd7-4adb-b1e2-acbc0a82ccfb"
+    ],
+    "comments": [],
+    "nodeType": "branch-yes",
+    "parentKey": "860c4622-b266-46b2-aa93-e919af649cd3"
+   },
+   {
+    "id": "e3499570-e749-44e1-a93b-d765ba1d2bc0",
+    "parent": "9059f915-7fe8-47cc-8383-fa56d4eaa688",
+    "order": 0,
+    "attributes": {
+     "tags": [
+      "abrio"
+     ]
+    },
+    "name": "Add Tag",
+    "type": "add_contact_tag",
+    "next": "854321ad-32ca-405b-b832-64a66721e6d8",
+    "parentKey": "9059f915-7fe8-47cc-8383-fa56d4eaa688"
+   },
+   {
+    "type": "email",
+    "name": "Send Value Email 3",
+    "parentKey": "e3499570-e749-44e1-a93b-d765ba1d2bc0",
+    "id": "854321ad-32ca-405b-b832-64a66721e6d8",
+    "attributes": {
+     "subject": "Nos encantaría ayudarte a retomar el contacto",
+     "html": "<p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Hola {{contact.name}},<br><br>Esperamos que hayas estado bien. Queremos recordarte que estamos aquí para ofrecerte los mejores productos y servicios que se ajustan a tus necesidades.<br><br>Si en algún momento tienes dudas o necesitas asesoramiento personalizado, no dudes en contactarnos. Además, hemos preparado ofertas especiales exclusivas para ti que podrían interesarte.<br><br>Nos encantaría volver a tener noticias tuyas y ayudarte a encontrar justo lo que buscas.<br><br>Quedamos a tu disposición para cualquier consulta.<br><br>Un saludo cordial,<br><br>{{user.name}}<br>{{user.email_signature}}</p>",
+     "trackingOptions": {
+      "hasTrackingLinks": true,
+      "hasUtmTracking": true,
+      "hasTags": false,
+      "sourceId": "6d8e2c8e-1c7c-4bb0-b31f-e27ee06bc1f1:854321ad-32ca-405b-b832-64a66721e6d8"
+     },
+     "conditions": [],
+     "attachments": []
+    },
+    "next": "4e3f278c-f43a-4e4b-8719-064d935e9c88",
+    "order": 1,
+    "parent": "9059f915-7fe8-47cc-8383-fa56d4eaa688"
+   },
+   {
+    "id": "4e3f278c-f43a-4e4b-8719-064d935e9c88",
+    "convertToMultipath": true,
+    "cat": "",
+    "parentKey": "854321ad-32ca-405b-b832-64a66721e6d8",
+    "name": "Wait for Email Open (7 days)",
+    "type": "wait",
+    "attributes": {
+     "isHybridAction": true,
+     "convertToMultipath": false,
+     "name": "Wait for Email Open (7 days)",
+     "hybridActionType": "wait",
+     "emailEventStepsLabel": [
+      "Send Value Email 3"
+     ],
+     "transitions": [],
+     "cat": "",
+     "startAfter": {
+      "when": "after",
+      "value": 7,
+      "type": "days",
+      "action_in": 0
+     },
+     "type": "time"
+    },
+    "next": "92b24639-c473-41ab-8749-fd08e1bd2787",
+    "order": 2,
+    "parent": "9059f915-7fe8-47cc-8383-fa56d4eaa688"
+   },
+   {
+    "id": "92b24639-c473-41ab-8749-fd08e1bd2787",
+    "parent": "9059f915-7fe8-47cc-8383-fa56d4eaa688",
+    "order": 3,
+    "attributes": {
+     "currentRecipeType": "CUSTOM",
+     "branches": [
+      {
+       "id": "7d5c3db9-99c6-4a0e-ab1f-9e565c7eccc1",
+       "name": "Branch",
+       "segments": [
+        {
+         "__segmentId": "2164d5cb-47a2-4126-b699-a3fc9bef4495",
+         "operator": "and",
+         "conditions": [
+          {
+           "conditionType": "events",
+           "conditionSubType": "email_event",
+           "conditionOperator": "==",
+           "conditionValue": "opened",
+           "__conditionId": "d1015a23-e997-4fc5-817e-dc44bbf09882",
+           "ifElseNodeId": "",
+           "__customFieldType__": "standard",
+           "isWait": false,
+           "nestedDropdownTypes": [
+            "inboundWebhookRequest",
+            "sheet",
+            "datetime_formatter",
+            "custom_webhook",
+            "array_functions",
+            "ivr_gather",
+            "ivr_connect_call",
+            "custom_code",
+            "ai_agent"
+           ],
+           "allowIsOperatorTypes": [
+            "contact_reply",
+            "inboundWebhookRequest",
+            "custom_webhook",
+            "custom_code",
+            "ai_agent",
+            "contact_detail",
+            "array_functions",
+            "appointment",
+            "service_booking",
+            "rental_booking"
+           ]
+          }
+         ]
+        }
+       ],
+       "operator": "and",
+       "showErrors": false,
+       "branchNameError": "Branch name cannot be empty!"
+      }
+     ],
+     "operator": "and",
+     "if": true,
+     "conditionName": "Condition",
+     "version": 2,
+     "noneBranchName": "None"
+    },
+    "name": "yes",
+    "type": "if_else",
+    "cat": "conditions",
+    "next": [
+     "7d5c3db9-99c6-4a0e-ab1f-9e565c7eccc1",
+     "2c85219a-5eb4-40f6-9393-00cd6c3b312d"
+    ],
+    "comments": [],
+    "nodeType": "condition-node",
+    "parentKey": "4e3f278c-f43a-4e4b-8719-064d935e9c88"
+   },
+   {
+    "id": "7d5c3db9-99c6-4a0e-ab1f-9e565c7eccc1",
+    "parent": "92b24639-c473-41ab-8749-fd08e1bd2787",
+    "order": 4,
+    "attributes": {
+     "if": false,
+     "conditionName": "Condition",
+     "operator": "and",
+     "branches": []
+    },
+    "name": "Branch",
+    "type": "if_else",
+    "cat": "conditions",
+    "sibling": [
+     "2c85219a-5eb4-40f6-9393-00cd6c3b312d"
+    ],
+    "comments": [],
+    "nodeType": "branch-yes",
+    "parentKey": "92b24639-c473-41ab-8749-fd08e1bd2787"
+   },
+   {
+    "id": "2c85219a-5eb4-40f6-9393-00cd6c3b312d",
+    "parent": "92b24639-c473-41ab-8749-fd08e1bd2787",
+    "order": 4,
+    "attributes": {
+     "else": true
+    },
+    "name": "None",
+    "type": "if_else",
+    "cat": "conditions",
+    "sibling": [
+     "7d5c3db9-99c6-4a0e-ab1f-9e565c7eccc1"
+    ],
+    "comments": [],
+    "nodeType": "branch-no",
+    "parentKey": "92b24639-c473-41ab-8749-fd08e1bd2787"
+   },
+   {
+    "id": "0e920741-7cd7-4adb-b1e2-acbc0a82ccfb",
+    "parent": "860c4622-b266-46b2-aa93-e919af649cd3",
+    "order": 4,
+    "attributes": {
+     "else": true
+    },
+    "name": "None",
+    "type": "if_else",
+    "cat": "conditions",
+    "next": "4d8d4e90-f88f-45e9-b998-9d24a6bbe1f5",
+    "sibling": [
+     "9059f915-7fe8-47cc-8383-fa56d4eaa688"
+    ],
+    "comments": [],
+    "nodeType": "branch-no",
+    "parentKey": "860c4622-b266-46b2-aa93-e919af649cd3"
+   },
+   {
+    "id": "4d8d4e90-f88f-45e9-b998-9d24a6bbe1f5",
+    "parent": "0e920741-7cd7-4adb-b1e2-acbc0a82ccfb",
+    "order": 0,
+    "attributes": {
+     "targetNodeId": "854321ad-32ca-405b-b832-64a66721e6d8",
+     "type": "goto"
+    },
+    "name": "Go To",
+    "type": "goto",
+    "parentKey": "0e920741-7cd7-4adb-b1e2-acbc0a82ccfb"
+   },
+   {
+    "id": "892bd490-c8f6-48b6-ad68-fd00f3b8901f",
+    "parent": "a2a98a78-2eb3-4a0b-b715-37a7f7ff67fd",
+    "order": 3,
+    "attributes": {
+     "else": true
+    },
+    "name": "None",
+    "type": "if_else",
+    "cat": "conditions",
+    "next": "bb0a53cf-03d8-4c09-a83d-da040e1d8e6c",
+    "sibling": [
+     "7bde1363-1ada-404a-bef9-c9a2d36504b1"
+    ],
+    "comments": [],
+    "nodeType": "branch-no",
+    "parentKey": "a2a98a78-2eb3-4a0b-b715-37a7f7ff67fd"
+   },
+   {
+    "id": "bb0a53cf-03d8-4c09-a83d-da040e1d8e6c",
+    "parent": "892bd490-c8f6-48b6-ad68-fd00f3b8901f",
+    "order": 0,
+    "attributes": {
+     "targetNodeId": "695bed8c-1df1-4625-8984-6b067537bcf3",
+     "type": "goto"
+    },
+    "name": "Go To",
+    "type": "goto",
+    "parentKey": "892bd490-c8f6-48b6-ad68-fd00f3b8901f"
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

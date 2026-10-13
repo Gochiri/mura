@@ -8,11 +8,12 @@
   PREVISUALIZACION: Nos encantaría conocer cómo ha sido tu experiencia.
   CLASE: comercial  →  lleva enlace de baja
   DISPARADOR: 7-10 dias tras la entrega.
-  CTA: Compartir mi experiencia  →  AÑADIR ENLACE (pendiente)
+  CTA: Compartir mi experiencia  →  {{custom_values.url_feedback}} (pendiente)
 
-  NOTA: el enlace del formulario de feedback aun NO existe. Busca "AÑADIR ENLACE"
-  (aparece dos veces: en el boton VML de Outlook y en el <a> normal) y sustituyelo
-  por la URL del formulario cuando la tengas.
+  NOTA (13/8): el boton apunta al custom value "url feedback"
+  (id 2lydcv75rCemIdPUmcf7), creado vacio. En cuanto exista el formulario de
+  experiencia se rellena ese valor UNA vez y este email y el 06 quedan resueltos.
+  Mientras este vacio, el boton no lleva a ningun sitio: no enviar todavia.
 
   NOTA: en el tercer parrafo se anadio "que" -> "Nos encantaria QUE dedicaras un
   minuto". Faltaba en el original. Acordado con la clienta.
@@ -107,7 +108,7 @@
       <td class="aire-lat" align="center" style="padding:44px 48px 0 48px;">
         <!--[if mso]>
         <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"
-                     href="AÑADIR ENLACE" style="height:52px; v-text-anchor:middle; width:290px;"
+                     href="{{custom_values.url_feedback}}" style="height:52px; v-text-anchor:middle; width:290px;"
                      arcsize="0%" stroke="f" fillcolor="#1E1B1A">
           <w:anchorlock/>
           <center style="color:#F6F2EB; font-family:Georgia, 'Times New Roman', serif; font-size:12px; letter-spacing:2px;">
@@ -116,7 +117,7 @@
         </v:roundrect>
         <![endif]-->
         <!--[if !mso]><!-->
-        <a href="AÑADIR ENLACE"
+        <a href="{{custom_values.url_feedback}}"
            style="display:inline-block; background-color:#1E1B1A; color:#F6F2EB; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; text-decoration:none; padding:17px 42px; mso-hide:all;">
           Compartir mi experiencia
         </a>

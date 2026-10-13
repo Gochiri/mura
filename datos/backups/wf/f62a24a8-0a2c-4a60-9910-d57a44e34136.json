@@ -1,0 +1,234 @@
+{
+ "_id": "f62a24a8-0a2c-4a60-9910-d57a44e34136",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "name": "LS02 · Opt-in Newsletter Web",
+ "status": "draft",
+ "version": 2,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/f62a24a8-0a2c-4a60-9910-d57a44e34136/2",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2Ff62a24a8-0a2c-4a60-9910-d57a44e34136%2F2?alt=media&token=e8059fd3-f73d-42e1-8c63-d1fa95a6a3ed",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "originId": "db4c6519-5054-4270-8fa7-a8d1cefb3c7e",
+ "permission": 380,
+ "type": "workflow",
+ "meta": null,
+ "updatedBy": "snapshot",
+ "createdAt": "2026-03-25T21:17:15.504Z",
+ "updatedAt": "2026-03-25T21:17:20.041Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "snapshot",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "dataVersion": 7,
+ "eventStartDate": null,
+ "senderAddress": null,
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/f62a24a8-0a2c-4a60-9910-d57a44e34136/2",
+ "window": null,
+ "workflowNote": {
+  "content": "",
+  "createdBy": "snapshot",
+  "createdByName": "snapshot",
+  "createdAt": "2026-03-25T21:17:19.622Z",
+  "updatedBy": "snapshot",
+  "updatedByName": "snapshot",
+  "updatedAt": "2026-03-25T21:17:19.622Z"
+ },
+ "id": "f62a24a8-0a2c-4a60-9910-d57a44e34136",
+ "workflowData": {
+  "templates": [
+   {
+    "type": "create_update_contact",
+    "next": "8f567b51-34b1-4103-8845-106586e9b578",
+    "id": "4e706a01-ae37-4098-a649-09c27779d227",
+    "attributes": {
+     "fields": [
+      {
+       "field": "email",
+       "value": "test@example.com",
+       "title": "Email",
+       "type": "string",
+       "date": ""
+      }
+     ],
+     "type": "create_update_contact"
+    },
+    "name": "Crear o actualizar contacto con deduplicación",
+    "order": 0
+   },
+   {
+    "attributes": {
+     "html": "<p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Hola {{contact.name}},<br><br>Gracias por inscribirte en nuestra newsletter. Para completar tu suscripción y cumplir con la normativa de RGPD, por favor confirma tu dirección de correo electrónico haciendo clic en el siguiente enlace:<br><br><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"{{unique_confirmation_link}}\">Confirmar mi suscripción</a><br><br>Este enlace es único y válido por 48 horas. Si no confirmas dentro de este plazo, tu solicitud será cancelada y no recibirás más comunicaciones.<br><br>Si tienes alguna pregunta, no dudes en contactarnos.<br><br>Saludos cordiales,<br>{{user.email_signature}}</p>",
+     "subject": "Confirma tu suscripción a nuestra newsletter",
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "db4c6519-5054-4270-8fa7-a8d1cefb3c7e:8f567b51-34b1-4103-8845-106586e9b578"
+     },
+     "conditions": [],
+     "attachments": []
+    },
+    "next": "5888d011-0f8b-4a7f-882f-4e027d12d4f2",
+    "type": "email",
+    "id": "8f567b51-34b1-4103-8845-106586e9b578",
+    "name": "Enviar Email de Doble Opt-In",
+    "parentKey": "4e706a01-ae37-4098-a649-09c27779d227",
+    "order": 1,
+    "comments": [
+     {
+      "id": "24ab1ce9-9738-4f6e-b304-a7ff20da4bab",
+      "userId": "yQPBKqUCF8dwWNE0x5CA",
+      "timestamp": "2026-03-12T21:10:48Z",
+      "comment": "<p style=\"margin:0px; padding-left: 0px!important;\">Revisar si existe ese custom field o es uno de default</p>"
+     }
+    ]
+   },
+   {
+    "id": "5888d011-0f8b-4a7f-882f-4e027d12d4f2",
+    "parentKey": "8f567b51-34b1-4103-8845-106586e9b578",
+    "type": "wait",
+    "name": "wait",
+    "attributes": {
+     "type": "link_clicked",
+     "startAfter": {
+      "type": "hour",
+      "value": 48,
+      "when": "after"
+     },
+     "name": "Esperar Confirmación por Enlace o 48h",
+     "cat": "multi-path",
+     "link": [
+      "K2PitLvfhgpKPvX6GeF4"
+     ],
+     "linksLabel": [
+      "TL-LS02-CONFIRMAR-OPTIN"
+     ],
+     "isHybridAction": true,
+     "hybridActionType": "wait",
+     "convertToMultipath": true,
+     "transitions": [
+      {
+       "id": "4772350e-0ee2-4138-83e3-ad776b99fb35",
+       "name": "wait",
+       "condition": "primary",
+       "conditionType": "user-defined",
+       "isPrimaryBranch": true,
+       "description": "",
+       "attributes": {
+        "type": "wait_link_clicked",
+        "description": "What will happen after TL-LS02-CONFIRMAR-OPTIN trigger link is clicked"
+       }
+      },
+      {
+       "id": "77fa6a86-540f-46ba-b5ad-5918f2f76a7f",
+       "name": "timeout",
+       "condition": "timeout",
+       "conditionType": "user-defined",
+       "isPrimaryBranch": false,
+       "description": "",
+       "attributes": {
+        "type": "wait_timeout",
+        "description": "What will happen after 48 hour"
+       }
+      }
+     ]
+    },
+    "order": 2,
+    "cat": "multi-path",
+    "next": [
+     "4772350e-0ee2-4138-83e3-ad776b99fb35",
+     "77fa6a86-540f-46ba-b5ad-5918f2f76a7f"
+    ]
+   },
+   {
+    "id": "4772350e-0ee2-4138-83e3-ad776b99fb35",
+    "parentKey": "5888d011-0f8b-4a7f-882f-4e027d12d4f2",
+    "parent": "5888d011-0f8b-4a7f-882f-4e027d12d4f2",
+    "type": "transition",
+    "name": "wait",
+    "attributes": {
+     "type": "wait_link_clicked",
+     "description": "What will happen after TL-LS02-CONFIRMAR-OPTIN trigger link is clicked"
+    },
+    "order": 3,
+    "cat": "transition",
+    "next": "fd3c1eca-eed9-4570-9986-bf8872879e84"
+   },
+   {
+    "type": "email",
+    "id": "fd3c1eca-eed9-4570-9986-bf8872879e84",
+    "name": "Email: Bienvenida MURA",
+    "attributes": {
+     "subject": "Bienvenido a MURA: Descubre nuestra visión y colección exclusiva",
+     "html": "<p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Hola {{contact.name}},</p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">¡Nos complace darte la bienvenida a la comunidad MURA! Nuestra visión editorial se centra en celebrar la creatividad, la innovación y el estilo atemporal a través de contenido cuidadosamente seleccionado y colecciones únicas.</p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">En cada boletín, encontrarás historias inspiradoras, perspectivas de expertos y las últimas novedades sobre nuestras colecciones exclusivas, diseñadas especialmente para ti. Nuestro objetivo es mantenerte informado e inspirado en cada paso del camino.</p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Te invitamos a explorar nuestra colección actual, creada con pasión y precisión para realzar tu estilo. Haz clic en el enlace a continuación para descubrir las piezas que esperan formar parte de tu historia:</p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Explora la colección actual de MURA</p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">No dudes en contactarnos si tienes algún comentario o pregunta. Sara revisará y aprobará este correo electrónico y su diseño antes de enviarlo para garantizar que cumpla con tus expectativas.</p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Gracias por acompañarnos en este emocionante viaje.</p><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Atentamente,</p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">{{user.name}}</p><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">{{user.email_signature}}</p>",
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "db4c6519-5054-4270-8fa7-a8d1cefb3c7e:fd3c1eca-eed9-4570-9986-bf8872879e84"
+     },
+     "conditions": [],
+     "attachments": []
+    },
+    "parentKey": "4772350e-0ee2-4138-83e3-ad776b99fb35",
+    "next": "8e7976c6-0972-4d3c-9300-c5b010de6627",
+    "parent": "4772350e-0ee2-4138-83e3-ad776b99fb35",
+    "order": 0
+   },
+   {
+    "type": "add_contact_tag",
+    "id": "8e7976c6-0972-4d3c-9300-c5b010de6627",
+    "name": "Agregar tag newsletter-suscrita",
+    "attributes": {
+     "tags": [
+      "newsletter-suscrita"
+     ]
+    },
+    "parentKey": "fd3c1eca-eed9-4570-9986-bf8872879e84",
+    "parent": "4772350e-0ee2-4138-83e3-ad776b99fb35",
+    "order": 1,
+    "next": "0c17de46-1448-495c-b944-73140c9837ad"
+   },
+   {
+    "id": "0c17de46-1448-495c-b944-73140c9837ad",
+    "parent": "4772350e-0ee2-4138-83e3-ad776b99fb35",
+    "order": 2,
+    "attributes": {
+     "type": "create_opportunity",
+     "fields": [],
+     "pipeline_id": "Y47eLa4dAIZTKLu2UpuX",
+     "pipeline_stage_id": "a1fffbf6-a908-4ed5-8db7-8419db2d6ca7",
+     "opportunity_name": "{{contact.name}}",
+     "opportunity_source": "{{contact.source}}",
+     "monetary_value": "",
+     "allow_backward": true
+    },
+    "name": "Mover a etapa Suscrita Newsletter en Pipeline Leads",
+    "type": "create_opportunity",
+    "parentKey": "8e7976c6-0972-4d3c-9300-c5b010de6627"
+   },
+   {
+    "id": "77fa6a86-540f-46ba-b5ad-5918f2f76a7f",
+    "parentKey": "5888d011-0f8b-4a7f-882f-4e027d12d4f2",
+    "parent": "5888d011-0f8b-4a7f-882f-4e027d12d4f2",
+    "type": "transition",
+    "name": "timeout",
+    "attributes": {
+     "type": "wait_timeout",
+     "description": "What will happen after 48 hour"
+    },
+    "order": 3,
+    "cat": "transition"
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

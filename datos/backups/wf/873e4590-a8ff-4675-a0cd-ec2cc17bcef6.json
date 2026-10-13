@@ -1,0 +1,70 @@
+{
+ "_id": "873e4590-a8ff-4675-a0cd-ec2cc17bcef6",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "companyId": "5tNRocqWdcsz7Rii28bH",
+ "companyAge": 11,
+ "name": "04 Email pedido enviado",
+ "status": "published",
+ "version": 7,
+ "dataVersion": 7,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/873e4590-a8ff-4675-a0cd-ec2cc17bcef6/3",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F873e4590-a8ff-4675-a0cd-ec2cc17bcef6%2F3?alt=media&token=c5016229-7587-4cbd-87e0-d78dcecc5947",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "permission": 380,
+ "type": "workflow",
+ "parentId": null,
+ "updatedBy": "3ZpkTnB4mBZYuIOx0WzF",
+ "createdAt": "2026-07-29T11:39:31.380Z",
+ "updatedAt": "2026-07-29T20:16:28.141Z",
+ "deleted": false,
+ "allowMultipleOpportunity": true,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "user",
+ "__v": 0,
+ "eventStartDate": null,
+ "window": null,
+ "workflowNote": null,
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/873e4590-a8ff-4675-a0cd-ec2cc17bcef6/7",
+ "meta": null,
+ "id": "873e4590-a8ff-4675-a0cd-ec2cc17bcef6",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "889ec32a-66fd-4c8d-b111-4775304a45e0",
+    "order": 0,
+    "attributes": {
+     "fieldDefaults": {},
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "873e4590-a8ff-4675-a0cd-ec2cc17bcef6:889ec32a-66fd-4c8d-b111-4775304a45e0"
+     },
+     "conditions": [],
+     "from_name": "{{location.name}}",
+     "from_email": "{{location.email}}",
+     "subject": "Fresh Cuts. Clean Looks. Walk Out with Confidence 💈✂️",
+     "preHeader": "",
+     "template_id": "6a69e7dfe3d32f78af1796e8",
+     "templatesource": "email-builder",
+     "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F69962f2009f2424a822b4267%2Findex.html?alt=media&token=01433a26-63a5-4ad6-8dba-bc61ab9b5731",
+     "createdAt": "2026-02-18T21:29:05.556Z",
+     "updatedAt": "2026-02-18T21:29:07.182Z",
+     "templateCreationMode": "existing",
+     "attachments": []
+    },
+    "name": "Email",
+    "type": "email"
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

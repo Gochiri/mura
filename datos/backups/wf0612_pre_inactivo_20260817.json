@@ -1,0 +1,288 @@
+{
+ "_id": "cb923da8-dd56-4d75-b8e4-77abf25d4e07",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "companyId": "5tNRocqWdcsz7Rii28bH",
+ "companyAge": 11,
+ "name": "06-12 · Journey post-entrega",
+ "version": 13,
+ "dataVersion": 7,
+ "allowMultiple": false,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/cb923da8-dd56-4d75-b8e4-77abf25d4e07/13",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2Fcb923da8-dd56-4d75-b8e4-77abf25d4e07%2F13?alt=media&token=999233ed-5ebe-4338-89df-b471510d711a",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "permission": 380,
+ "type": "workflow",
+ "createdAt": "2026-08-07T15:40:00.544Z",
+ "updatedAt": "2026-08-16T18:20:54.440Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "user",
+ "__v": 0,
+ "allowMultipleOpportunity": false,
+ "eventStartDate": null,
+ "status": "published",
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/cb923da8-dd56-4d75-b8e4-77abf25d4e07/7",
+ "window": null,
+ "workflowNote": null,
+ "updatedBy": "eeuewX5uuHsscaW9uOFs",
+ "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+ "id": "cb923da8-dd56-4d75-b8e4-77abf25d4e07",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "8232391b-75be-40f5-8a8c-2edf84460ffc",
+    "name": "Esperar 3 dias tras entrega",
+    "type": "wait",
+    "attributes": {
+     "type": "time",
+     "startAfter": {
+      "type": "days",
+      "value": 3,
+      "when": "after"
+     },
+     "name": "Esperar 3 dias tras entrega",
+     "cat": "",
+     "timePeriodInputMode": "standard",
+     "unitInputMode": "standard",
+     "isHybridAction": true,
+     "hybridActionType": "wait",
+     "convertToMultipath": false,
+     "transitions": []
+    },
+    "order": 0,
+    "next": "952a08b9-b43d-42f5-9586-894c8c11907f"
+   },
+   {
+    "id": "952a08b9-b43d-42f5-9586-894c8c11907f",
+    "name": "Email 06 · experiencia",
+    "type": "email",
+    "attributes": {
+     "fieldDefaults": {},
+     "conditions": [],
+     "from_name": "{{business.name}}",
+     "from_email": "{{business.email}}",
+     "subject": "Nos encantará saber cómo ha sido tu experiencia.",
+     "preHeader": "Tu experiencia también forma parte de MÛRA.",
+     "template_id": "6a6aa2ef3fca8e1053eff501",
+     "templatesource": "email-builder",
+     "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a6aa2ef3fca8e1053eff501%2Findex.html?alt=media&token=eca75e21-1311-4160-b385-d2b6eb4d9393?cb=1786700442559",
+     "templateCreationMode": "existing",
+     "attachments": [],
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "cb923da8-dd56-4d75-b8e4-77abf25d4e07:952a08b9-b43d-42f5-9586-894c8c11907f"
+     },
+     "createdAt": "2026-07-30T01:03:44.026Z",
+     "syncEnabled": true
+    },
+    "order": 1,
+    "parentKey": "8232391b-75be-40f5-8a8c-2edf84460ffc",
+    "next": "0a7ed64a-2b7f-4ece-a40d-3e47ab13296f"
+   },
+   {
+    "id": "0a7ed64a-2b7f-4ece-a40d-3e47ab13296f",
+    "order": 2,
+    "attributes": {
+     "tags": [
+      "pedido-entregado"
+     ],
+     "type": "remove_contact_tag"
+    },
+    "name": "Remove Tag",
+    "type": "remove_contact_tag",
+    "next": "73e59a07-0efd-41c6-8828-36a2d2946b44",
+    "parentKey": "952a08b9-b43d-42f5-9586-894c8c11907f"
+   },
+   {
+    "id": "73e59a07-0efd-41c6-8828-36a2d2946b44",
+    "order": 3,
+    "attributes": {
+     "tags": [
+      "experiencia"
+     ]
+    },
+    "name": "Add Tag",
+    "type": "add_contact_tag",
+    "next": "6a9abba4-4c01-4cee-8cf3-58663242bfce",
+    "parentKey": "0a7ed64a-2b7f-4ece-a40d-3e47ab13296f"
+   },
+   {
+    "id": "6a9abba4-4c01-4cee-8cf3-58663242bfce",
+    "name": "Esperar 7 dias mas (dia 10)",
+    "type": "wait",
+    "attributes": {
+     "type": "time",
+     "startAfter": {
+      "type": "days",
+      "value": 7,
+      "when": "after"
+     },
+     "name": "Esperar 7 dias mas (dia 10)",
+     "cat": "",
+     "timePeriodInputMode": "standard",
+     "unitInputMode": "standard",
+     "isHybridAction": true,
+     "hybridActionType": "wait",
+     "convertToMultipath": false,
+     "transitions": []
+    },
+    "order": 4,
+    "parentKey": "73e59a07-0efd-41c6-8828-36a2d2946b44",
+    "next": "40b22a14-80f7-4ba0-8446-980694186772"
+   },
+   {
+    "id": "40b22a14-80f7-4ba0-8446-980694186772",
+    "name": "Email 07 · reseña",
+    "type": "email",
+    "attributes": {
+     "fieldDefaults": {
+      "subject": {
+       "contact.first_name:0": "Hola"
+      }
+     },
+     "conditions": [],
+     "from_name": "{{business.name}}",
+     "from_email": "{{business.email}}",
+     "subject": "{{contact.first_name}}, Tu opinión vale mucho para MÛRA",
+     "preHeader": "Nos encantaría que compartieses tu experiencia.",
+     "template_id": "6a75e5e973e37ca123637d76",
+     "templatesource": "email-builder",
+     "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a75e5e973e37ca123637d76%2Findex.html?alt=media&token=448a9e11-b851-4a3d-a0dc-5b11cb6412a3?cb=1786904356052",
+     "templateCreationMode": "existing",
+     "attachments": [],
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "cb923da8-dd56-4d75-b8e4-77abf25d4e07:40b22a14-80f7-4ba0-8446-980694186772"
+     },
+     "createdAt": "2026-08-07T14:04:26.399Z",
+     "syncEnabled": true
+    },
+    "order": 5,
+    "parentKey": "6a9abba4-4c01-4cee-8cf3-58663242bfce",
+    "next": "cdcc92da-e962-4754-8962-7b9dd93565b1"
+   },
+   {
+    "id": "cdcc92da-e962-4754-8962-7b9dd93565b1",
+    "order": 6,
+    "attributes": {
+     "tags": [
+      "experiencia"
+     ],
+     "type": "remove_contact_tag"
+    },
+    "name": "Remove Tag",
+    "type": "remove_contact_tag",
+    "next": "52877ecb-793e-4e74-abca-96d913ee23ac",
+    "parentKey": "40b22a14-80f7-4ba0-8446-980694186772"
+   },
+   {
+    "id": "52877ecb-793e-4e74-abca-96d913ee23ac",
+    "order": 7,
+    "attributes": {
+     "tags": [
+      "feedback"
+     ]
+    },
+    "name": "Add Tag",
+    "type": "add_contact_tag",
+    "next": "44e77ffb-6e88-45d5-b47f-b7f4e9827d39",
+    "parentKey": "cdcc92da-e962-4754-8962-7b9dd93565b1"
+   },
+   {
+    "id": "44e77ffb-6e88-45d5-b47f-b7f4e9827d39",
+    "name": "Esperar ~3 meses (dia 90)",
+    "type": "wait",
+    "attributes": {
+     "type": "time",
+     "startAfter": {
+      "type": "days",
+      "value": 80,
+      "when": "after"
+     },
+     "name": "Esperar ~3 meses (dia 90)",
+     "cat": "",
+     "timePeriodInputMode": "standard",
+     "unitInputMode": "standard",
+     "isHybridAction": true,
+     "hybridActionType": "wait",
+     "convertToMultipath": false,
+     "transitions": []
+    },
+    "order": 8,
+    "parentKey": "52877ecb-793e-4e74-abca-96d913ee23ac",
+    "next": "9fc667b9-8e18-4828-a68c-d31daaa66887"
+   },
+   {
+    "id": "9fc667b9-8e18-4828-a68c-d31daaa66887",
+    "order": 9,
+    "attributes": {
+     "tags": [
+      "inactivo"
+     ]
+    },
+    "name": "Add Tag",
+    "type": "add_contact_tag",
+    "next": "8ed9c776-9f1a-4abc-8746-c96a323b727b",
+    "parentKey": "44e77ffb-6e88-45d5-b47f-b7f4e9827d39"
+   },
+   {
+    "id": "8ed9c776-9f1a-4abc-8746-c96a323b727b",
+    "order": 10,
+    "attributes": {
+     "tags": [
+      "feedback"
+     ],
+     "type": "remove_contact_tag"
+    },
+    "name": "Remove Tag",
+    "type": "remove_contact_tag",
+    "next": "b5a679e5-bdf3-4237-b053-9ea103fc77e5",
+    "parentKey": "9fc667b9-8e18-4828-a68c-d31daaa66887"
+   },
+   {
+    "id": "b5a679e5-bdf3-4237-b053-9ea103fc77e5",
+    "name": "Email 12 · hace tiempo",
+    "type": "email",
+    "attributes": {
+     "fieldDefaults": {
+      "subject": {
+       "contact.first_name:0": "Hola"
+      }
+     },
+     "conditions": [],
+     "from_name": "{{business.name}}",
+     "from_email": "{{business.email}}",
+     "subject": "{{contact.first_name}}, Te echamos de menos",
+     "preHeader": "Queríamos volver a saludarte.",
+     "template_id": "6a6aa2fc61a2115039f003cf",
+     "templatesource": "email-builder",
+     "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a6aa2fc61a2115039f003cf%2Findex.html?alt=media&token=9a4937a1-35b4-42d7-abd0-3297a5405056?cb=1786700892401",
+     "templateCreationMode": "existing",
+     "attachments": [],
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "cb923da8-dd56-4d75-b8e4-77abf25d4e07:b5a679e5-bdf3-4237-b053-9ea103fc77e5"
+     },
+     "createdAt": "2026-07-30T01:03:56.803Z",
+     "syncEnabled": true
+    },
+    "order": 11,
+    "parentKey": "8ed9c776-9f1a-4abc-8746-c96a323b727b"
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

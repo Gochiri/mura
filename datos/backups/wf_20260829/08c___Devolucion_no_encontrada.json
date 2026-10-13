@@ -1,0 +1,79 @@
+{
+ "_id": "8b5fe6af-0d7d-4e62-8682-cbb045400f81",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "companyId": "5tNRocqWdcsz7Rii28bH",
+ "companyAge": 11,
+ "name": "08c · Devolucion no encontrada",
+ "version": 10,
+ "dataVersion": 7,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/8b5fe6af-0d7d-4e62-8682-cbb045400f81/10",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F8b5fe6af-0d7d-4e62-8682-cbb045400f81%2F10?alt=media&token=020aec77-d484-4a84-8b54-e6aafb24ba37",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "permission": 380,
+ "type": "workflow",
+ "createdAt": "2026-08-07T15:39:40.708Z",
+ "updatedAt": "2026-09-01T12:23:03.439Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "user",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "eventStartDate": null,
+ "status": "published",
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/8b5fe6af-0d7d-4e62-8682-cbb045400f81/6",
+ "window": null,
+ "workflowNote": null,
+ "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+ "updatedBy": "eeuewX5uuHsscaW9uOFs",
+ "id": "8b5fe6af-0d7d-4e62-8682-cbb045400f81",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "3f749b14-aa41-435d-81ec-140468eb7872",
+    "order": 0,
+    "attributes": {
+     "fieldDefaults": {
+      "from_name": {
+       "business.name:0": "MÛRA"
+      },
+      "from_email": {
+       "business.email:0": "hello@stylebymura.com"
+      },
+      "subject": {
+       "contact.first_name:0": "Hola"
+      }
+     },
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "8b5fe6af-0d7d-4e62-8682-cbb045400f81:3f749b14-aa41-435d-81ec-140468eb7872"
+     },
+     "conditions": [],
+     "subject": "{{contact.first_name}}, revisa los datos de tu devolución",
+     "from_name": "{{business.name}}",
+     "from_email": "{{business.email}}",
+     "preHeader": "",
+     "template_id": "6a96c3a55a23650e2956eda5",
+     "templatesource": "email-builder",
+     "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a75e5eb96dc697014d600f7%2Findex.html?alt=media&token=09cc1f94-9004-41bb-9ad8-d4817c663a2f",
+     "createdAt": "2026-08-07T14:04:28.114Z",
+     "updatedAt": "2026-09-01T10:47:57.127Z",
+     "templateCreationMode": "existing",
+     "attachments": []
+    },
+    "name": "Email 16 · datos de devolución no coinciden",
+    "type": "email"
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

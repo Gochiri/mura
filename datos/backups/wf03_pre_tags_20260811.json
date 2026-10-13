@@ -1,0 +1,63 @@
+{
+  "_id": "cc2c8b77-a5e3-4f00-85e0-bc6900b3eb4c",
+  "locationId": "NxPF5fOicowujokEk5Hm",
+  "companyId": "5tNRocqWdcsz7Rii28bH",
+  "companyAge": 11,
+  "name": "03 · Email preparacion",
+  "version": 7,
+  "dataVersion": 7,
+  "allowMultiple": false,
+  "timezone": "account",
+  "removeContactFromLastStep": true,
+  "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/cc2c8b77-a5e3-4f00-85e0-bc6900b3eb4c/5",
+  "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2Fcc2c8b77-a5e3-4f00-85e0-bc6900b3eb4c%2F5?alt=media&token=ebe60096-8748-4aab-8daf-6972a72e018c",
+  "stopOnResponse": false,
+  "autoMarkAsRead": false,
+  "permission": 380,
+  "type": "workflow",
+  "createdAt": "2026-08-07T15:39:42.411Z",
+  "updatedAt": "2026-08-08T13:53:01.857Z",
+  "deleted": false,
+  "creationSource": "builder",
+  "isTriggerBucketMigrated": true,
+  "originType": "user",
+  "__v": 0,
+  "allowMultipleOpportunity": false,
+  "eventStartDate": null,
+  "senderAddress": null,
+  "status": "published",
+  "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/cc2c8b77-a5e3-4f00-85e0-bc6900b3eb4c/7",
+  "window": null,
+  "workflowNote": null,
+  "meta": null,
+  "updatedBy": "k69NDKrTIXCwWc5k6pZf",
+  "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+  "id": "cc2c8b77-a5e3-4f00-85e0-bc6900b3eb4c",
+  "workflowData": {
+    "templates": [
+      {
+        "id": "2a1aaf17-a0d1-4b77-bfdf-ec1f69fdca09",
+        "name": "Email 03 · preparación",
+        "type": "email",
+        "attributes": {
+          "fieldDefaults": {},
+          "conditions": [],
+          "from_name": "{{location.name}}",
+          "from_email": "{{location.email}}",
+          "subject": "Estamos preparando tu pedido",
+          "preHeader": "",
+          "template_id": "6a6aa2e814830a62bce73c7a",
+          "templatesource": "email-builder",
+          "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a6aa2e814830a62bce73c7a%2Findex.html?alt=media&token=c465046c-fa11-4dcb-8104-599fb8e19f23",
+          "templateCreationMode": "existing",
+          "attachments": []
+        },
+        "order": 0
+      }
+    ]
+  },
+  "permissionMeta": {
+    "canRead": true,
+    "canWrite": true
+  }
+}

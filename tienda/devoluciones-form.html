@@ -1,0 +1,170 @@
+<!--
+  ============================================================
+  MÛRA · SOLICITUD DE DEVOLUCIÓN  (página /devolucion)
+  ============================================================
+  Va en /devolucion, en singular. Ojo con las tres páginas, que se
+  parecen y no son lo mismo:
+
+    /devoluciones        instrucciones — «Envíos y devoluciones»
+    /devolucion          ESTA: el formulario
+    /gracias-devolucion  la confirmación, después de enviarlo
+
+  /devolucion tenía hasta hoy el contenido de la página de gracias
+  —la hizo Sonia el 14/8 y se quedó con ese nombre—, y por eso
+  parecía que la de gracias había desaparecido. Se vacía y se pone
+  esto; el contenido de gracias se queda en /gracias-devolucion.
+
+  POR QUÉ HTML PROPIO Y NO EL FORMULARIO NATIVO DE GHL
+  Es el mismo criterio que la newsletter de /home y la encuesta de
+  /experiencia: el formulario lo servimos nosotros y las respuestas
+  van a n8n. El de GHL viaja dentro de un iframe de
+  leadconnectorhq.com, y nuestro CSS global no puede entrar ahí —se
+  vería un formulario de GHL dentro de una página de MÛRA—.
+
+  ⚠️ ESTO SUSTITUYE UNA CADENA QUE YA FUNCIONABA. Léelo antes de
+  publicar. Hasta hoy la devolución entraba por el formulario
+  nativo `Formulario Devolución v2` (HBK7tGDlcIFN0vaXoksg), cuyo
+  envío disparaba 08a con un trigger `form_submission`. Ese trigger
+  (EQfcssMWOwqEkHqAFxZj) sigue vivo y NO se toca hasta que n8n esté
+  desplegado: mientras tanto conviven las dos entradas y no se
+  pierde ninguna solicitud. Cuando la nueva funcione, se retira el
+  formulario viejo y su trigger.
+
+  CÓMO FUNCIONA
+
+    /devolucion
+      → POST JSON al webhook de n8n
+         → n8n busca el contacto por correo
+            · lo encuentra → lee su dirección de facturación, que
+              es la que dejó al comprar (aquí NO se le vuelve a
+              pedir: ya la dio y equivocarse al copiarla es un
+              recogida fallida de Nacex)
+            · no lo encuentra → responde `sin-pedido` y aquí se le
+              dice que revise el número, sin crear un contacto
+              fantasma
+         → escribe los dos campos de contacto que leen los correos:
+              n_de_pedido_lo_encuentras_en_tu_mail_de_confirmacin
+              motivo_de_devolucin__cambio
+         → quita y vuelve a poner el tag `solicitud-devolucion`
+         → ese tag dispara 08a · Devolución
+      → y aquí se redirige a /gracias-devolucion
+
+  ⚠️ EL remove ANTES DEL add, EN n8n. Un tag que ya está puesto NO
+  vuelve a disparar. Sin el remove, quien devuelva una segunda vez
+  no reentraría nunca. Es la trampa de la sección 17 del doc, la
+  misma que ya mordió en la newsletter.
+
+  ⚠️ LA URL TIENE QUE SER LA DE PRODUCCIÓN — `/webhook/…`.
+  La de pruebas `/webhook-test/…` solo escucha con el editor de n8n
+  abierto: en producción no llega nunca. Fue el bug del 06b.
+
+  A dónde llevan los correos: al custom value
+  `url_formulario_devolucion` (2S2b9lrVpft9p1adZxN5), que apunta a
+  esta página. Por eso no hay que tocar ninguna plantilla si algún
+  día cambia de sitio: se cambia el valor y ya.
+
+  Requiere el Tracking Code global pegado: las reglas .mura-nl-* y
+  .mura-dev-* viven ahí. Las .mura-nl-* son las primitivas de
+  formulario y las comparte con la newsletter de /home — llevan ese
+  nombre porque nacieron ahí, no porque sean suyas.
+  ============================================================
+-->
+<section class="mura-nl mura-dev" id="mdev">
+  <div class="mura-label">Devoluciones y cambios</div>
+  <h2 class="mura-serif" style="font-size:clamp(28px,3.4vw,44px);font-weight:400;margin-top:16px">¿Necesitas devolver una pieza?</h2>
+  <p style="margin-top:18px;font-size:14.5px;line-height:1.9;color:#55524B">Cuéntanos cuál y por qué.<br>Te enviamos la etiqueta de recogida por correo y nos ocupamos del resto.</p>
+
+  <form id="mdev-form" novalidate>
+    <div class="mura-nl-fila">
+      <div class="mura-nl-campo"><label for="mdev-nombre">Nombre</label><input id="mdev-nombre" name="first_name" type="text" autocomplete="given-name"></div>
+      <div class="mura-nl-campo"><label for="mdev-apellido">Apellidos</label><input id="mdev-apellido" name="last_name" type="text" autocomplete="family-name"></div>
+    </div>
+    <div class="mura-nl-fila">
+      <div class="mura-nl-campo"><label for="mdev-email">Correo electrónico *</label><input id="mdev-email" name="email" type="email" autocomplete="email" required></div>
+      <div class="mura-nl-campo"><label for="mdev-tel">Teléfono *</label><input id="mdev-tel" name="phone" type="tel" autocomplete="tel" required></div>
+    </div>
+
+    <div class="mura-nl-campo">
+      <label for="mdev-pedido">Número de pedido *</label>
+      <input id="mdev-pedido" name="numero_pedido" type="text" inputmode="text" autocomplete="off" placeholder="M100017">
+      <span class="mura-dev-ayuda">Lo tienes en el correo de confirmación de tu compra. Empieza por M.</span>
+    </div>
+
+    <div class="mura-nl-campo">
+      <label for="mdev-motivo">Motivo de la devolución o el cambio *</label>
+      <textarea id="mdev-motivo" name="motivo" rows="4" placeholder="La talla no me queda bien, prefiero cambiarla por una M."></textarea>
+    </div>
+
+    <label class="mura-nl-consent"><input id="mdev-rgpd" type="checkbox">
+      <span>He leído y acepto la <a href="/politica-privacidad">política de privacidad</a>. MÛRA usará estos datos solo para gestionar esta devolución.</span>
+    </label>
+
+    <button type="submit" class="mura-btn" id="mdev-btn">Solicitar devolución</button>
+    <div class="mura-nl-estado" id="mdev-estado" role="status" aria-live="polite"></div>
+  </form>
+</section>
+<script>(function(){
+/* URL de PRODUCCIÓN del webhook de n8n (`/webhook/…`, nunca `/webhook-test/…`). */
+var WEBHOOK='https://n8n.letsbebanana.com/webhook/devolucion-web';
+var GRACIAS='/gracias-devolucion';
+
+var form=document.getElementById('mdev-form');
+var estado=document.getElementById('mdev-estado');
+var btn=document.getElementById('mdev-btn');
+function msg(t,err){estado.textContent=t;estado.className='mura-nl-estado'+(err?' err':'');}
+function cerrar(){form.querySelectorAll('input,textarea,button').forEach(function(e){e.disabled=true;});form.style.opacity='.5';}
+function val(id){return document.getElementById(id).value.trim();}
+
+form.addEventListener('submit',function(ev){
+ ev.preventDefault();
+ var email=val('mdev-email');
+ var tel=val('mdev-tel');
+ var pedido=val('mdev-pedido');
+ var motivo=val('mdev-motivo');
+ if(!email||email.indexOf('@')<1){msg('Escribe el correo con el que hiciste la compra.',true);return;}
+ if(!tel){msg('Escribe tu teléfono: el transportista lo necesita para la recogida.',true);return;}
+ if(!pedido){msg('Escribe el número de pedido. Lo tienes en el correo de confirmación.',true);return;}
+ if(!motivo){msg('Cuéntanos brevemente el motivo.',true);return;}
+ if(!document.getElementById('mdev-rgpd').checked){msg('Para tramitar la devolución necesitamos que aceptes la política de privacidad.',true);return;}
+ if(WEBHOOK.indexOf('http')!==0){msg('El formulario aún no está conectado. Escríbenos a hello@stylebymura.com.',true);console.error('MURA devolucion: falta pegar la URL del webhook de n8n');return;}
+
+ var datos={
+  first_name:val('mdev-nombre'),
+  last_name:val('mdev-apellido'),
+  email:email,
+  phone:tel,
+  numero_pedido:pedido,
+  motivo:motivo,
+  consentimiento:'rgpd-aceptado',
+  origen:'devoluciones-web'
+ };
+
+ btn.disabled=true;btn.style.opacity='.55';msg('Un momento…');
+ fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)})
+  .then(function(r){
+   if(!r.ok){console.error('MURA devolucion: HTTP '+r.status);throw new Error('HTTP '+r.status);}
+   /* n8n responde {status:'ok'} o {status:'sin-pedido'}. Si algún día
+      dejara de responder JSON, se trata como solicitud normal y no se rompe. */
+   return r.json().catch(function(){return {status:'ok'};});
+  })
+  .then(function(res){
+   /* `sin-pedido` NO es un error de la clienta: casi siempre es un dígito
+      mal copiado. Se le dice qué revisar y se deja el formulario abierto
+      para que corrija, en vez de mandarla a la página de gracias con una
+      solicitud que nadie va a poder tramitar. */
+   if(res&&res.status==='sin-pedido'){
+    btn.disabled=false;btn.style.opacity='';
+    msg('No encontramos ningún pedido con ese número y ese correo. Revísalos en tu correo de confirmación, o escríbenos a hello@stylebymura.com y lo miramos contigo.',true);
+    return;
+   }
+   cerrar();
+   msg('Recibido. Te llevamos a la confirmación…');
+   location.assign(GRACIAS);
+  })
+  .catch(function(e){
+   console.error('MURA devolucion:',e);
+   btn.disabled=false;btn.style.opacity='';
+   msg('No hemos podido registrar tu solicitud. Inténtalo de nuevo en unos minutos o escríbenos a hello@stylebymura.com.',true);
+  });
+});
+})();</script>

@@ -1,0 +1,32 @@
+[
+ {
+  "id": "2KnDTc28J5bmF71cTXdG",
+  "date_added": "2026-03-25T21:17:19.564Z",
+  "date_updated": "2026-03-25T21:17:19.564Z",
+  "deleted": false,
+  "belongs_to": "workflow",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "origin_id": "8GwtN1c4fnBrEdhNIXqB",
+  "active": false,
+  "workflow_id": "603de6df-18af-48ff-8b07-508f0cb5ba87",
+  "masterType": "highlevel",
+  "name": "Tag 'nueva-capsula-ready' added",
+  "type": "contact_tag",
+  "conditions": [
+   {
+    "operator": "index-of-true",
+    "field": "tagsAdded",
+    "value": "nueva-capsula-ready",
+    "title": "Tag Added",
+    "type": "select",
+    "id": "tag-added"
+   }
+  ],
+  "actions": [
+   {
+    "workflow_id": "603de6df-18af-48ff-8b07-508f0cb5ba87",
+    "type": "add_to_workflow"
+   }
+  ]
+ }
+]

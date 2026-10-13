@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<!--
+  ============================================================
+  MÛRA · 03 · PREPARACION
+  ============================================================
+  ASUNTO: {{contact.first_name}}, estamos preparando tu MÛRA.
+  PREVISUALIZACION: Cada detalle cuenta.
+  CLASE: transaccional  →  sin enlace de baja
+  DISPARADOR: Estado "Preparando" (1 dia despues).
+  CTA: Ver mi pedido  →  {{contact.url_pedido}}
+
+  NOTA (28/8): el desglose es ahora el MISMO bloque que el correo 02 —una fila
+  por prenda con su foto a la derecha—, compuesto entero por n8n y guardado en
+  el campo custom de oportunidad resumen_pedido_html; la plantilla lo inserta
+  con triple llave, que en Handlebars significa "sin escapar el HTML".
+  Antes habia dos piezas sueltas: un <img> colgando de opportunity.imagen_pedido
+  y el campo de texto plano resumen_pedido debajo. imagen_pedido ya no existe
+  —era el apano de una sola foto por pedido, la de la primera prenda—, asi que
+  ese <img> habria salido roto. El campo resumen_pedido se sigue rellenando,
+  pero para la oportunidad y para Telegram, no para este correo.
+  En la vista previa del editor la triple llave se ve como texto literal; solo
+  resuelve en el correo enviado por el workflow con oportunidad en contexto.
+  ============================================================
+-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="x-apple-disable-message-reformatting" />
+<meta name="color-scheme" content="light" />
+<meta name="supported-color-schemes" content="light" />
+<title>MÛRA</title>
+<!--[if mso]>
+<noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
+<![endif]-->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&amp;display=swap" rel="stylesheet" />
+<style type="text/css">
+  body, table, td, a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+  table, td { mso-table-lspace:0pt; mso-table-rspace:0pt; }
+  img { -ms-interpolation-mode:bicubic; border:0; height:auto; line-height:100%; outline:none; text-decoration:none; display:block; }
+  body { margin:0 !important; padding:0 !important; width:100% !important; background-color:#D9D1C5; }
+  a { text-decoration:none; }
+
+  /* Movil */
+  @media screen and (max-width:600px) {
+    .lienzo   { width:100% !important; }
+    .marco    { padding:16px 10px !important; }
+    .aire-lat { padding-left:28px !important; padding-right:28px !important; }
+    .titulo   { font-size:26px !important; }
+    .aire-sup { padding-top:40px !important; }
+  }
+</style>
+<!-- outlook-fixes-applied --></head>
+<body style="margin:0; padding:0; background-color:#D9D1C5;">
+
+<div style="display:none; font-size:1px; color:#D9D1C5; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all;">
+  Cada detalle cuenta.
+</div>
+<!-- Relleno del preheader: evita que el cliente de correo arrastre texto del cuerpo -->
+<div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
+  &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+</div>
+
+<!-- FONDO exterior (arena). El lienzo blanco flota encima como una pagina. -->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#D9D1C5;">
+<tr>
+<td class="marco" align="center" style="padding:32px 12px;">
+
+  <!--[if mso]>
+  <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" width="600"><tr><td>
+  <![endif]-->
+
+  <!-- LIENZO — blanco, igual que el fondo del logo de cabecera, para que la imagen
+       funda con la pagina y no se lea como una tarjeta suelta dentro del email. -->
+  <table role="presentation" class="lienzo" cellpadding="0" cellspacing="0" border="0" width="600" style="width:600px; max-width:600px; background-color:#FFFFFF;">
+
+    <!-- CABECERA -->
+    <tr>
+      <td align="center" style="padding:0; font-size:0; line-height:0;">
+        <img src="https://res.cloudinary.com/dflvexboa/image/upload/w_1200,f_auto,q_auto/v1784140485/Fondo_emails_k522yn.png"
+             alt="MÛRA" width="600"
+             style="width:100%; max-width:600px; height:auto; display:block; border:0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:24px; letter-spacing:6px; color:#1E1B1A;" />
+      </td>
+    </tr>
+
+    <!-- TITULO -->
+    <tr>
+      <td class="aire-lat aire-sup" align="center" style="padding:0 48px 0 48px;">
+        <h1 class="titulo" style="margin:0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:30px; font-weight:400; line-height:1.35; letter-spacing:0.5px; color:#1E1B1A;">
+          Ya casi está listo.
+        </h1>
+      </td>
+    </tr>
+
+    <!-- TEXTO -->
+    <tr>
+      <td class="aire-lat" align="center" style="padding:28px 48px 0 48px;">
+        <p style="margin:0 0 18px 0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:17px; font-weight:400; line-height:1.9; color:#1E1B1A;">
+          Cada pieza pasa por nuestras manos antes de llegar a las tuyas.
+        </p>
+        <p style="margin:0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:17px; font-weight:400; line-height:1.9; color:#1E1B1A;">
+          Tu pedido {{opportunity.name}} muy pronto estará en camino.
+        </p>
+          <p style="margin:6px 0 0 0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:12px; font-weight:400; line-height:1.5; color:#8A7E71;">
+          Guárdalo por si necesitas gestionar una devolución.
+        </p>
+      </td>
+    </tr>
+
+        <!-- RESUMEN DEL PEDIDO — ver NOTA (28/8) de la cabecera. El mismo bloque
+     que el correo 02: una fila por prenda con su foto. -->
+        <tr>
+          <td class="aire-lat" align="center" style="padding:40px 48px 0 48px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-top:1px solid rgba(30,27,26,.14); border-bottom:1px solid rgba(30,27,26,.14);">
+              <tr>
+                <td style="padding:20px 0 22px 0;">
+                  <p style="margin:0 0 12px 0; font-family:Georgia, 'Times New Roman', serif; font-size:10px; font-weight:400; letter-spacing:2px; text-transform:uppercase; color:#8A7E71; text-align:left;">Tu selecci&oacute;n</p>
+                  {{{opportunity.resumen_pedido_html}}}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+    <!-- AIRE — 45 px entre el boton y el pie -->
+    <tr><td style="height:45px; line-height:45px; font-size:0;">&nbsp;</td></tr>
+
+    <!-- PIE -->
+    <tr>
+      <td class="aire-lat" style="padding:0 48px 56px 48px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+
+          <tr>
+            <td valign="middle" align="left" width="40%" style="padding:0;">
+              <div style="font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:19px; font-weight:400; letter-spacing:7px; color:#1E1B1A; padding-left:2px;">
+                MÛRA
+              </div>
+              <div style="font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:11px; font-weight:400; letter-spacing:2px; color:#8A7E71; padding-top:8px;">
+                Vestir con intención
+              </div>
+            </td>
+            <!-- Los simbolos llevan &#65038; (variation selector 15): fuerza presentacion de
+                 texto monocromo y evita que el cliente los pinte como emoji de color. -->
+            <td valign="middle" align="left" style="padding:0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:12px; font-weight:400; line-height:2; color:#8A7E71;">
+              <a href="mailto:hello@stylebymura.com" style="color:#8A7E71; text-decoration:none;; mso-style-textfill-fill-color: #8A7E71;"><!--[if mso]><font color="#8A7E71"><![endif]-->&#9993;&#65038;&nbsp;&nbsp;hello@stylebymura.com<!--[if mso]></font><![endif]--></a><br />
+              <a href="tel:+34637681234" style="color:#8A7E71; text-decoration:none;; mso-style-textfill-fill-color: #8A7E71;"><!--[if mso]><font color="#8A7E71"><![endif]-->&#9742;&#65038;&nbsp;&nbsp;Tel. 637 681 234<!--[if mso]></font><![endif]--></a><br />
+              <a href="{{custom_values.url_home}}" style="color:#8A7E71; text-decoration:none;; mso-style-textfill-fill-color: #8A7E71;"><!--[if mso]><font color="#8A7E71"><![endif]-->&#8599;&#65038;&nbsp;&nbsp;www.stylebymura.com<!--[if mso]></font><![endif]--></a>
+            </td>
+          </tr>
+
+          <tr><td colspan="2" style="height:28px; line-height:28px; font-size:0;">&nbsp;</td></tr>
+          <tr><td colspan="2" style="height:1px; line-height:1px; font-size:0; background-color:#D9D1C5;">&nbsp;</td></tr>
+          <tr><td colspan="2" style="height:20px; line-height:20px; font-size:0;">&nbsp;</td></tr>
+
+          <tr>
+            <td colspan="2" align="center" style="padding:0; text-align:center; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:11px; font-weight:400; line-height:1.9; color:#8A7E71;">
+              <a href="https://www.instagram.com/bymurastudio/" style="color:#8A7E71; text-decoration:underline;; mso-style-textfill-fill-color: #8A7E71;"><!--[if mso]><font color="#8A7E71"><![endif]-->Instagram<!--[if mso]></font><![endif]--></a>
+              &nbsp;·&nbsp;
+              <a href="{{custom_values.url_politica_privacidad}}" style="color:#8A7E71; text-decoration:underline;; mso-style-textfill-fill-color: #8A7E71;"><!--[if mso]><font color="#8A7E71"><![endif]-->Política de privacidad<!--[if mso]></font><![endif]--></a>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+
+  </table>
+
+  <!--[if mso]>
+  </td></tr></table>
+  <![endif]-->
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>

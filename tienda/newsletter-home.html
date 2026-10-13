@@ -1,0 +1,137 @@
+<!--
+  ============================================================
+  MÛRA · NEWSLETTER (sección para el final de /home)
+  ============================================================
+  Maqueta de dos columnas: a la izquierda las ventajas de formar
+  parte, a la derecha el formulario. Es la que Sonia dejó montada
+  en la home; aquí queda versionada para no perderla y para poder
+  tocarla sin pelearse con el editor.
+
+  CÓMO FUNCIONA (arquitectura del 17/8 · opción B, n8n dueño del alta)
+
+    sección de la home
+      → POST JSON al webhook de n8n
+         → n8n BUSCA el contacto por email
+            · si ya existe y ya tiene `nl` → responde ya-suscrita,
+              y aquí se le dice "ya estabas dentro" sin reenviarle
+              nada
+            · si no → upsert del contacto + remove/add del tag `nl`
+         → el tag `nl` dispara LS02 · Opt-in Newsletter Web
+            → correo de doble opt-in (trigger link
+              TL-LS02-CONFIRMAR-OPTIN)
+            → clic: bienvenida + tag `newsletter-suscrita`
+              + oportunidad en Leads/Comunidad,
+              y aterriza en /suscripcion-confirmada
+            → sin clic en 48h: fin.
+
+  POR QUÉ EL remove ANTES DEL add, EN n8n
+  Un tag que ya está puesto NO vuelve a disparar. Sin el remove,
+  quien se diera de baja y volviera no reentraría nunca. Es la
+  misma trampa de la sección 17 del doc.
+
+  ⚠️ LA URL TIENE QUE SER LA DE PRODUCCIÓN — `/webhook/…`.
+  La de pruebas `/webhook-test/…` solo escucha con el editor de n8n
+  abierto: en producción no llega nunca. Fue exactamente el bug del
+  06b (sección 22).
+
+  Por qué el mensaje de éxito pide REVISAR EL CORREO: con doble
+  opt-in, enviar el formulario no es estar dentro.
+
+  El checkbox RGPD es obligatorio (se valida aquí y otra vez en
+  n8n) y viaja como `consentimiento`, para que quede registro.
+
+  Requiere el Tracking Code global pegado: las reglas .mura-nl-*
+  viven ahí.
+  ============================================================
+-->
+<section class="mura-nl" id="mura-nl">
+  <h2 class="mura-serif" style="font-size:clamp(28px,3.4vw,44px);font-weight:400">Las cápsulas, antes que nadie.</h2>
+  <p style="margin-top:18px;font-size:14.5px;line-height:1.9;color:#55524B">Cada colección existe una sola vez.<br>Déjanos tu correo y te avisamos cuando una nueva cápsula esté a punto de salir.</p>
+
+  <div class="mura-nl-2col">
+    <div class="mura-nl-ventajas">
+      <div class="mura-label">Ser parte del universo MÛRA</div>
+      <div class="mura-nl-rule"></div>
+      <ul>
+        <li>10 % de descuento en tu primera compra.</li>
+        <li>Acceso anticipado a nuevas colecciones.</li>
+        <li>Preventa de cápsulas y lanzamientos especiales.</li>
+        <li>Aviso prioritario de reposiciones de stock.</li>
+        <li>Invitaciones a showrooms y experiencias privadas.</li>
+        <li>Inspiración editorial y contenido exclusivo.</li>
+        <li>Un detalle especial en tu cumpleaños.</li>
+        <li>Acceso a acciones exclusivas para la comunidad MÛRA.</li>
+        <li>Beneficios reservados para nuestros clientes más fieles.</li>
+      </ul>
+    </div>
+
+    <form id="mnl-form" novalidate>
+      <div class="mura-nl-fila">
+        <div class="mura-nl-campo"><label for="mnl-nombre">Nombre</label><input id="mnl-nombre" name="first_name" type="text" autocomplete="given-name"></div>
+        <div class="mura-nl-campo"><label for="mnl-apellido">Apellidos</label><input id="mnl-apellido" name="last_name" type="text" autocomplete="family-name"></div>
+      </div>
+      <div class="mura-nl-campo"><label for="mnl-email">Correo electrónico *</label><input id="mnl-email" name="email" type="email" autocomplete="email" required></div>
+      <div class="mura-nl-fila">
+        <div class="mura-nl-campo"><label for="mnl-tel">Teléfono *</label><input id="mnl-tel" name="phone" type="tel" autocomplete="tel" required></div>
+        <div class="mura-nl-campo"><label for="mnl-fecha">Fecha de nacimiento</label><input id="mnl-fecha" name="fecha_nacimiento" type="date"></div>
+      </div>
+      <label class="mura-nl-consent"><input id="mnl-rgpd" type="checkbox">
+        <span>He leído y acepto la <a href="/politica-privacidad">política de privacidad</a>. MÛRA usará estos datos solo para enviarme sus novedades; puedo darme de baja en cualquier momento.</span>
+      </label>
+      <button type="submit" class="mura-btn" id="mnl-btn">Formar parte</button>
+      <div class="mura-nl-estado" id="mnl-estado" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</section>
+<script>(function(){
+/* URL de PRODUCCIÓN del webhook de n8n (`/webhook/…`, nunca `/webhook-test/…`). */
+var WEBHOOK='https://n8n.letsbebanana.com/webhook/alta-newsletter';
+
+var form=document.getElementById('mnl-form');
+var estado=document.getElementById('mnl-estado');
+var btn=document.getElementById('mnl-btn');
+function msg(t,err){estado.textContent=t;estado.className='mura-nl-estado'+(err?' err':'');}
+function cerrar(){form.querySelectorAll('input,button').forEach(function(e){e.disabled=true;});form.style.opacity='.5';}
+
+form.addEventListener('submit',function(ev){
+ ev.preventDefault();
+ var email=document.getElementById('mnl-email').value.trim();
+ var tel=document.getElementById('mnl-tel').value.trim();
+ if(!email||email.indexOf('@')<1){msg('Escribe tu correo electrónico para poder avisarte.',true);return;}
+ if(!tel){msg('Escribe tu teléfono, por favor.',true);return;}
+ if(!document.getElementById('mnl-rgpd').checked){msg('Para suscribirte necesitamos que aceptes la política de privacidad.',true);return;}
+ if(WEBHOOK.indexOf('http')!==0){msg('El formulario aún no está conectado. Escríbenos a hello@stylebymura.com.',true);console.error('MURA newsletter: falta pegar la URL del webhook de n8n');return;}
+
+ var datos={
+  first_name:document.getElementById('mnl-nombre').value.trim(),
+  last_name:document.getElementById('mnl-apellido').value.trim(),
+  email:email,
+  phone:tel,
+  fecha_nacimiento:document.getElementById('mnl-fecha').value||'',
+  consentimiento:'rgpd-aceptado',
+  origen:'newsletter-home'
+ };
+
+ btn.disabled=true;btn.style.opacity='.55';msg('Un momento…');
+ fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)})
+  .then(function(r){
+   if(!r.ok){console.error('MURA newsletter: HTTP '+r.status);throw new Error('HTTP '+r.status);}
+   /* n8n responde {status:'ok'} o {status:'ya-suscrita'}. Si algún día
+      dejara de responder JSON, se trata como alta normal y no se rompe. */
+   return r.json().catch(function(){return {status:'ok'};});
+  })
+  .then(function(res){
+   cerrar();
+   if(res&&res.status==='ya-suscrita'){
+    msg('Ya estabas dentro con este correo, así que no hace falta que hagas nada. Te seguiremos avisando de cada cápsula.');
+   }else{
+    msg('Muchas gracias. Te hemos enviado un correo con un enlace para confirmar tu suscripción — revísalo (y mira en promociones o spam si no aparece).');
+   }
+  })
+  .catch(function(e){
+   console.error('MURA newsletter:',e);
+   btn.disabled=false;btn.style.opacity='';
+   msg('No hemos podido registrar tu suscripción. Inténtalo de nuevo en unos minutos o escríbenos a hello@stylebymura.com.',true);
+  });
+});
+})();</script>

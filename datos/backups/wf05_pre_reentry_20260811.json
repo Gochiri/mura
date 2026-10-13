@@ -1,0 +1,115 @@
+{
+  "_id": "8e6ccd5a-8c90-4d41-b567-9947e61ed627",
+  "locationId": "NxPF5fOicowujokEk5Hm",
+  "companyId": "5tNRocqWdcsz7Rii28bH",
+  "companyAge": 11,
+  "name": "05 · Entrega - mover + email",
+  "status": "published",
+  "version": 9,
+  "dataVersion": 7,
+  "allowMultiple": false,
+  "timezone": "account",
+  "removeContactFromLastStep": true,
+  "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/8e6ccd5a-8c90-4d41-b567-9947e61ed627/9",
+  "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F8e6ccd5a-8c90-4d41-b567-9947e61ed627%2F9?alt=media&token=75e94079-209f-4ea5-8e7d-3c424f415a36",
+  "stopOnResponse": false,
+  "autoMarkAsRead": false,
+  "permission": 380,
+  "type": "workflow",
+  "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+  "createdAt": "2026-07-29T11:14:28.522Z",
+  "updatedAt": "2026-08-11T20:21:50.373Z",
+  "deleted": false,
+  "allowMultipleOpportunity": false,
+  "creationSource": "builder",
+  "isTriggerBucketMigrated": true,
+  "originType": "user",
+  "__v": 0,
+  "eventStartDate": null,
+  "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/8e6ccd5a-8c90-4d41-b567-9947e61ed627/8",
+  "window": null,
+  "workflowNote": null,
+  "senderAddress": null,
+  "id": "8e6ccd5a-8c90-4d41-b567-9947e61ed627",
+  "workflowData": {
+    "templates": [
+      {
+        "id": "b90cf78d-5a59-4f8a-87a3-c00b1e08627b",
+        "name": "Mover a 05 Entregado",
+        "type": "internal_update_opportunity",
+        "attributes": {
+          "allowBackward": true,
+          "type": "internal_update_opportunity",
+          "__customInputFields__": [
+            {
+              "__customInputs__": {},
+              "filterField": "pipelineId",
+              "value": "X7wvJysuBVmdXXl1b8zx",
+              "valueFieldType": "select"
+            },
+            {
+              "__customInputs__": {},
+              "filterField": "pipelineStageId",
+              "value": "789b85f8-5a2b-468a-936c-d643308340c3",
+              "valueFieldType": "select"
+            }
+          ],
+          "__customInputs__": {}
+        },
+        "workflowsActionType": "INTERNAL",
+        "order": 0
+      },
+      {
+        "id": "b75109be-d199-41de-808e-f53ba0049d03",
+        "order": 1,
+        "attributes": {
+          "fieldDefaults": {},
+          "trackingOptions": {
+            "hasTrackingLinks": false,
+            "hasUtmTracking": false,
+            "hasTags": false,
+            "sourceId": "8e6ccd5a-8c90-4d41-b567-9947e61ed627:b75109be-d199-41de-808e-f53ba0049d03"
+          },
+          "conditions": [],
+          "from_name": "{{location.name}}",
+          "from_email": "{{location.email}}",
+          "subject": "Tu pedido ha llegado",
+          "preHeader": "",
+          "template_id": "6a6aa2ed3954360b6a94f117",
+          "templatesource": "email-builder",
+          "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a6aa2ed3954360b6a94f117%2Findex.html?alt=media&token=0349c63b-7c3d-4c14-8dd5-0b449eb537e4",
+          "createdAt": "2026-02-18T21:29:05.556Z",
+          "updatedAt": "2026-02-18T21:29:07.182Z",
+          "templateCreationMode": "existing",
+          "attachments": []
+        },
+        "name": "Email",
+        "type": "email"
+      },
+      {
+        "id": "b61fcb5a-314b-46be-82db-c1c66c565f9a",
+        "name": "Quitar tag pedido-enviado",
+        "type": "remove_contact_tag",
+        "order": 2,
+        "attributes": {
+          "tags": [
+            "pedido-enviado"
+          ]
+        }
+      },
+      {
+        "id": "d128cdce-bfab-46f5-8fe9-077b4c1c4521",
+        "name": "Sacar del 04a (watchdog)",
+        "type": "remove_from_workflow",
+        "order": 3,
+        "attributes": {
+          "workflowId": "6d73077b-c9ea-4c8d-b1d5-f3167ef2cc4f"
+        }
+      }
+    ]
+  },
+  "permissionMeta": {
+    "canRead": true,
+    "canWrite": true
+  }
+}

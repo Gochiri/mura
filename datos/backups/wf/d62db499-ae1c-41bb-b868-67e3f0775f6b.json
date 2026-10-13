@@ -1,0 +1,111 @@
+{
+ "_id": "d62db499-ae1c-41bb-b868-67e3f0775f6b",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "name": "SP04 · Gestión Devolución / Cambio",
+ "status": "draft",
+ "version": 2,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/d62db499-ae1c-41bb-b868-67e3f0775f6b/2",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2Fd62db499-ae1c-41bb-b868-67e3f0775f6b%2F2?alt=media&token=bf8d0d2a-7784-4052-99f1-60a244ba57e6",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "originId": "9fb95018-d978-44c4-ae32-0d3a6a1ccbb5",
+ "permission": 380,
+ "type": "workflow",
+ "meta": null,
+ "updatedBy": "snapshot",
+ "createdAt": "2026-03-25T21:17:17.164Z",
+ "updatedAt": "2026-03-25T21:17:20.077Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "snapshot",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "dataVersion": 7,
+ "eventStartDate": null,
+ "senderAddress": null,
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/d62db499-ae1c-41bb-b868-67e3f0775f6b/2",
+ "window": null,
+ "workflowNote": {
+  "content": "",
+  "createdBy": "snapshot",
+  "createdByName": "snapshot",
+  "createdAt": "2026-03-25T21:17:19.669Z",
+  "updatedBy": "snapshot",
+  "updatedByName": "snapshot",
+  "updatedAt": "2026-03-25T21:17:19.669Z"
+ },
+ "id": "d62db499-ae1c-41bb-b868-67e3f0775f6b",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "95e531c1-1958-462e-988b-65f1ba0a7b61",
+    "next": "37fffecb-21ae-4058-b4ef-a5665a35f5a2",
+    "attributes": {
+     "html": "Hola {{contact.name}},<br><br>Hemos recibido correctamente su solicitud de devolución o cambio. Nuestro equipo está revisando la información proporcionada y nos pondremos en contacto con usted a la mayor brevedad para darle seguimiento.<br><br>Si tiene alguna duda o desea agregar más información, no dude en responder a este correo.<br><br>Gracias por confiar en nosotros.<br><br>Un saludo cordial,<br>{{user.email_signature}}",
+     "subject": "Confirmación de recepción de su solicitud de devolución o cambio"
+    },
+    "type": "email",
+    "name": "Send Confirmation Email to Client",
+    "order": 0
+   },
+   {
+    "next": "dcc2b60d-492c-4750-a2d4-a46a7ca23ea4",
+    "id": "37fffecb-21ae-4058-b4ef-a5665a35f5a2",
+    "attributes": {
+     "email": {
+      "html": "",
+      "subject": ""
+     },
+     "sms": {
+      "body": ""
+     },
+     "notification": {
+      "redirectPage": "contact",
+      "title": "New Return/Exchange Request Submitted",
+      "userType": "user",
+      "body": "A new return or exchange form has been submitted.<br>Please review and take action.",
+      "selectedUser": ""
+     },
+     "userType": "user",
+     "type": "notification"
+    },
+    "type": "internal_notification",
+    "name": "Notify Sara of New Request",
+    "parentKey": "95e531c1-1958-462e-988b-65f1ba0a7b61",
+    "order": 1
+   },
+   {
+    "type": "internal_update_opportunity",
+    "name": "Update Opportunity to Devolucion o Cambio Stage",
+    "parentKey": "37fffecb-21ae-4058-b4ef-a5665a35f5a2",
+    "id": "dcc2b60d-492c-4750-a2d4-a46a7ca23ea4",
+    "workflowsActionType": "INTERNAL",
+    "next": "8c29e376-9375-4e0b-9307-4661b64ee9f4",
+    "attributes": {
+     "allowBackward": true
+    },
+    "order": 2
+   },
+   {
+    "name": "Tag Contact as Devolucion Activa",
+    "parentKey": "dcc2b60d-492c-4750-a2d4-a46a7ca23ea4",
+    "type": "add_contact_tag",
+    "attributes": {
+     "tags": [
+      "devolucion-activa"
+     ]
+    },
+    "id": "8c29e376-9375-4e0b-9307-4661b64ee9f4",
+    "order": 3
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

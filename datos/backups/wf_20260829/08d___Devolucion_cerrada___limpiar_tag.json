@@ -1,0 +1,57 @@
+{
+ "_id": "2197b479-93f6-4d95-bc83-917cca391b67",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "companyId": "5tNRocqWdcsz7Rii28bH",
+ "companyAge": 12,
+ "name": "08d · Devolucion cerrada - limpiar tag",
+ "status": "published",
+ "version": 4,
+ "dataVersion": 7,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/2197b479-93f6-4d95-bc83-917cca391b67/4",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F2197b479-93f6-4d95-bc83-917cca391b67%2F4?alt=media&token=0ebb9736-feff-4329-9504-fec53074e7b2",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "permission": 380,
+ "type": "workflow",
+ "createdAt": "2026-08-17T15:15:14.262Z",
+ "updatedAt": "2026-08-17T15:31:31.406Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "user",
+ "__v": 0,
+ "allowMultipleOpportunity": false,
+ "eventStartDate": null,
+ "senderAddress": null,
+ "window": null,
+ "workflowNote": null,
+ "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/2197b479-93f6-4d95-bc83-917cca391b67/3",
+ "updatedBy": "k69NDKrTIXCwWc5k6pZf",
+ "id": "2197b479-93f6-4d95-bc83-917cca391b67",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "28e72937-7446-41d7-bad9-c6c429cb43d6",
+    "parent": null,
+    "parentKey": null,
+    "order": 0,
+    "name": "Remove Tag devolucion-activa (devolución cerrada)",
+    "type": "remove_contact_tag",
+    "attributes": {
+     "tags": [
+      "devolucion-activa"
+     ]
+    },
+    "next": []
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

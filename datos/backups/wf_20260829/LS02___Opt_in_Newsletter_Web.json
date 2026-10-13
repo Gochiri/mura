@@ -1,0 +1,248 @@
+{
+ "_id": "f62a24a8-0a2c-4a60-9910-d57a44e34136",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "name": "LS02 · Opt-in Newsletter Web",
+ "status": "published",
+ "version": 20,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/f62a24a8-0a2c-4a60-9910-d57a44e34136/20",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2Ff62a24a8-0a2c-4a60-9910-d57a44e34136%2F20?alt=media&token=60372229-20f0-4b98-982b-487fff81b49b",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "originId": "db4c6519-5054-4270-8fa7-a8d1cefb3c7e",
+ "permission": 380,
+ "type": "workflow",
+ "createdAt": "2026-03-25T21:17:15.504Z",
+ "updatedAt": "2026-09-01T12:00:58.397Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "snapshot",
+ "__v": 0,
+ "allowMultipleOpportunity": false,
+ "dataVersion": 7,
+ "eventStartDate": null,
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/f62a24a8-0a2c-4a60-9910-d57a44e34136/14",
+ "window": null,
+ "workflowNote": null,
+ "parentId": "45bf759c-b8bd-4d20-99de-91b4d1609611",
+ "companyId": "5tNRocqWdcsz7Rii28bH",
+ "updatedBy": "eeuewX5uuHsscaW9uOFs",
+ "id": "f62a24a8-0a2c-4a60-9910-d57a44e34136",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "ab09bdf8-9411-4bee-aaf3-8c71baaf6495",
+    "order": 0,
+    "attributes": {
+     "fieldDefaults": {
+      "from_name": {
+       "business.name:0": "MÛRA"
+      },
+      "from_email": {
+       "business.email:0": "hello@stylebymura.com"
+      },
+      "subject": {
+       "contact.first_name:0": "Hola"
+      }
+     },
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "f62a24a8-0a2c-4a60-9910-d57a44e34136:ab09bdf8-9411-4bee-aaf3-8c71baaf6495"
+     },
+     "conditions": [],
+     "from_name": "{{business.name}}",
+     "from_email": "{{business.email}}",
+     "subject": "{{contact.first_name}}, Confirma tu suscripción.",
+     "preHeader": "Un último paso para completar tu suscripción.",
+     "template_id": "6a96aa4d4bc98e2414e2dc72",
+     "templatesource": "email-builder",
+     "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a832d2b49311439952464f9%2Findex.html?alt=media&token=97fe31e8-2ec5-4f11-8c14-fb35e8ea2a3a",
+     "createdAt": "2026-08-17T15:47:56.052Z",
+     "updatedAt": "2026-09-01T10:29:57.767Z",
+     "templateCreationMode": "existing",
+     "attachments": []
+    },
+    "name": "Enviar Email de Doble Opt-In",
+    "type": "email",
+    "next": "5888d011-0f8b-4a7f-882f-4e027d12d4f2"
+   },
+   {
+    "id": "5888d011-0f8b-4a7f-882f-4e027d12d4f2",
+    "parentKey": "ab09bdf8-9411-4bee-aaf3-8c71baaf6495",
+    "type": "wait",
+    "name": "wait",
+    "attributes": {
+     "type": "link_clicked",
+     "startAfter": {
+      "type": "hour",
+      "value": 48,
+      "when": "after"
+     },
+     "name": "Esperar Confirmación por Enlace o 48h",
+     "cat": "multi-path",
+     "link": [
+      "K2PitLvfhgpKPvX6GeF4"
+     ],
+     "linksLabel": [
+      "TL-LS02-CONFIRMAR-OPTIN"
+     ],
+     "isHybridAction": true,
+     "hybridActionType": "wait",
+     "convertToMultipath": true,
+     "transitions": [
+      {
+       "id": "4772350e-0ee2-4138-83e3-ad776b99fb35",
+       "name": "wait",
+       "condition": "primary",
+       "conditionType": "user-defined",
+       "isPrimaryBranch": true,
+       "description": "",
+       "attributes": {
+        "type": "wait_link_clicked",
+        "description": "What will happen after TL-LS02-CONFIRMAR-OPTIN trigger link is clicked"
+       }
+      },
+      {
+       "id": "77fa6a86-540f-46ba-b5ad-5918f2f76a7f",
+       "name": "timeout",
+       "condition": "timeout",
+       "conditionType": "user-defined",
+       "isPrimaryBranch": false,
+       "description": "",
+       "attributes": {
+        "type": "wait_timeout",
+        "description": "What will happen after 48 hour"
+       }
+      }
+     ]
+    },
+    "order": 1,
+    "cat": "multi-path",
+    "next": [
+     "4772350e-0ee2-4138-83e3-ad776b99fb35",
+     "77fa6a86-540f-46ba-b5ad-5918f2f76a7f"
+    ]
+   },
+   {
+    "id": "4772350e-0ee2-4138-83e3-ad776b99fb35",
+    "parentKey": "5888d011-0f8b-4a7f-882f-4e027d12d4f2",
+    "parent": "5888d011-0f8b-4a7f-882f-4e027d12d4f2",
+    "type": "transition",
+    "name": "wait",
+    "attributes": {
+     "type": "wait_link_clicked",
+     "description": "What will happen after TL-LS02-CONFIRMAR-OPTIN trigger link is clicked"
+    },
+    "order": 2,
+    "cat": "transition",
+    "next": "d729b23f-24ab-4651-89ea-f06f85d369a8"
+   },
+   {
+    "id": "d729b23f-24ab-4651-89ea-f06f85d369a8",
+    "parent": "4772350e-0ee2-4138-83e3-ad776b99fb35",
+    "order": 0,
+    "attributes": {
+     "fieldDefaults": {
+      "from_name": {
+       "business.name:0": "MÛRA"
+      },
+      "from_email": {
+       "business.email:0": "hello@stylebymura.com"
+      }
+     },
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "f62a24a8-0a2c-4a60-9910-d57a44e34136:d729b23f-24ab-4651-89ea-f06f85d369a8"
+     },
+     "conditions": [],
+     "from_name": "{{business.name}}",
+     "from_email": "{{business.email}}",
+     "subject": "Tu historia con MÛRA empieza hoy.",
+     "preHeader": "Bienvenido a MÛRA: Descubre nuestra visión y colección exclusiva",
+     "template_id": "6a96be790479f511dffbe887",
+     "templatesource": "email-builder",
+     "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a6aa2e4a1ebd230f8649167%2Findex.html?alt=media&token=b89d8d04-4981-488a-bca6-065e6f62d815",
+     "createdAt": "2026-07-30T01:03:32.912Z",
+     "updatedAt": "2026-09-01T10:36:40.158Z",
+     "templateCreationMode": "existing",
+     "attachments": []
+    },
+    "name": "Email: Bienvenida MURA",
+    "type": "email",
+    "next": "0a459fbc-b38d-40e5-afea-b99abf7cfa57",
+    "parentKey": "4772350e-0ee2-4138-83e3-ad776b99fb35"
+   },
+   {
+    "id": "0a459fbc-b38d-40e5-afea-b99abf7cfa57",
+    "parent": "4772350e-0ee2-4138-83e3-ad776b99fb35",
+    "order": 1,
+    "attributes": {
+     "tags": [
+      "nl"
+     ],
+     "type": "remove_contact_tag"
+    },
+    "name": "Remove Tag nl",
+    "type": "remove_contact_tag",
+    "next": "8e7976c6-0972-4d3c-9300-c5b010de6627",
+    "parentKey": "d729b23f-24ab-4651-89ea-f06f85d369a8"
+   },
+   {
+    "type": "add_contact_tag",
+    "id": "8e7976c6-0972-4d3c-9300-c5b010de6627",
+    "name": "Agregar tag newsletter-suscrita",
+    "attributes": {
+     "tags": [
+      "newsletter-suscrita"
+     ]
+    },
+    "parentKey": "0a459fbc-b38d-40e5-afea-b99abf7cfa57",
+    "parent": "4772350e-0ee2-4138-83e3-ad776b99fb35",
+    "order": 2,
+    "next": "0c17de46-1448-495c-b944-73140c9837ad"
+   },
+   {
+    "id": "0c17de46-1448-495c-b944-73140c9837ad",
+    "parent": "4772350e-0ee2-4138-83e3-ad776b99fb35",
+    "order": 3,
+    "attributes": {
+     "type": "create_opportunity",
+     "fields": [],
+     "pipeline_id": "Y47eLa4dAIZTKLu2UpuX",
+     "pipeline_stage_id": "a1fffbf6-a908-4ed5-8db7-8419db2d6ca7",
+     "opportunity_name": "{{contact.name}}",
+     "opportunity_source": "{{contact.source}}",
+     "monetary_value": "",
+     "allow_backward": true
+    },
+    "name": "Mover a etapa Suscrita Newsletter en Pipeline Leads",
+    "type": "create_opportunity",
+    "parentKey": "8e7976c6-0972-4d3c-9300-c5b010de6627"
+   },
+   {
+    "id": "77fa6a86-540f-46ba-b5ad-5918f2f76a7f",
+    "parentKey": "5888d011-0f8b-4a7f-882f-4e027d12d4f2",
+    "parent": "5888d011-0f8b-4a7f-882f-4e027d12d4f2",
+    "type": "transition",
+    "name": "timeout",
+    "attributes": {
+     "type": "wait_timeout",
+     "description": "What will happen after 48 hour"
+    },
+    "order": 2,
+    "cat": "transition"
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

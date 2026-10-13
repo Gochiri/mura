@@ -1,0 +1,275 @@
+{
+ "_id": "b5feddb8-3aac-4f9f-aff8-db0eb9e68270",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "companyId": "5tNRocqWdcsz7Rii28bH",
+ "companyAge": 11,
+ "name": "02 · Etiquetado compra 1-2",
+ "version": 11,
+ "dataVersion": 7,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/b5feddb8-3aac-4f9f-aff8-db0eb9e68270/11",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2Fb5feddb8-3aac-4f9f-aff8-db0eb9e68270%2F11?alt=media&token=2c63ce09-8f3a-4860-9cce-bf292bc1e004",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "permission": 380,
+ "type": "workflow",
+ "createdAt": "2026-08-07T15:39:58.619Z",
+ "updatedAt": "2026-08-18T13:32:40.605Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "user",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "eventStartDate": null,
+ "status": "published",
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/b5feddb8-3aac-4f9f-aff8-db0eb9e68270/7",
+ "window": null,
+ "workflowNote": null,
+ "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+ "updatedBy": "system_tag_edit",
+ "meta": null,
+ "id": "b5feddb8-3aac-4f9f-aff8-db0eb9e68270",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "63e5220c-4e63-4bf3-bd5e-3734d2ef71a2",
+    "parent": null,
+    "order": 0,
+    "name": "Remove Tag inactivo (la compra reactiva)",
+    "type": "remove_contact_tag",
+    "attributes": {
+     "tags": [
+      "inactivo"
+     ]
+    },
+    "next": [
+     "838c3912-9c61-49dc-b54d-b3b771b78afa"
+    ]
+   },
+   {
+    "id": "838c3912-9c61-49dc-b54d-b3b771b78afa",
+    "name": "yes",
+    "type": "if_else",
+    "order": 1,
+    "next": [
+     "6bcd44cb-ba8e-4dfd-8187-f97210d282dd",
+     "ed593a13-1152-420c-ae68-a77d784e3acf",
+     "ad1b42d5-ed2e-4300-b142-c920f596006f"
+    ],
+    "attributes": {
+     "currentRecipeType": "CUSTOM",
+     "branches": [
+      {
+       "id": "6bcd44cb-ba8e-4dfd-8187-f97210d282dd",
+       "name": "Ya es 3a compra o mas",
+       "segments": [
+        {
+         "__segmentId": "e2c0baf8-31e5-4bcd-80a2-9459fe7421ec",
+         "operator": "and",
+         "conditions": [
+          {
+           "conditionType": "contact_detail",
+           "conditionSubType": "tags",
+           "conditionOperator": "index-of-true",
+           "conditionValue": [
+            "compra-2"
+           ],
+           "__conditionId": "11790b2f-baaa-403b-9709-bf6adf39f7cc",
+           "__customFieldType__": "standard",
+           "ifElseNodeId": "",
+           "isWait": false,
+           "nestedDropdownTypes": [
+            "inboundWebhookRequest",
+            "sheet",
+            "datetime_formatter",
+            "custom_webhook",
+            "array_functions",
+            "ivr_gather",
+            "ivr_connect_call",
+            "custom_code",
+            "ai_agent"
+           ],
+           "allowIsOperatorTypes": [
+            "contact_reply",
+            "inboundWebhookRequest",
+            "custom_webhook",
+            "custom_code",
+            "ai_agent",
+            "contact_detail",
+            "array_functions",
+            "appointment",
+            "service_booking",
+            "rental_booking"
+           ]
+          }
+         ]
+        }
+       ],
+       "operator": "and",
+       "showErrors": false,
+       "branchNameError": "Branch name cannot be empty!"
+      },
+      {
+       "id": "ed593a13-1152-420c-ae68-a77d784e3acf",
+       "name": "Segunda compra",
+       "segments": [
+        {
+         "__segmentId": "b725493c-5a21-4122-94cb-5dcf67ae7854",
+         "operator": "and",
+         "conditions": [
+          {
+           "conditionType": "contact_detail",
+           "conditionSubType": "tags",
+           "conditionOperator": "index-of-true",
+           "conditionValue": [
+            "compra-1"
+           ],
+           "__conditionId": "d9654bc7-d459-44f7-ba38-d0487ba59a66",
+           "__customFieldType__": "standard",
+           "ifElseNodeId": "",
+           "isWait": false,
+           "nestedDropdownTypes": [
+            "inboundWebhookRequest",
+            "sheet",
+            "datetime_formatter",
+            "custom_webhook",
+            "array_functions",
+            "ivr_gather",
+            "ivr_connect_call",
+            "custom_code",
+            "ai_agent"
+           ],
+           "allowIsOperatorTypes": [
+            "contact_reply",
+            "inboundWebhookRequest",
+            "custom_webhook",
+            "custom_code",
+            "ai_agent",
+            "contact_detail",
+            "array_functions",
+            "appointment",
+            "service_booking",
+            "rental_booking"
+           ]
+          }
+         ]
+        }
+       ],
+       "operator": "and",
+       "showErrors": false,
+       "branchNameError": "Branch name cannot be empty!"
+      }
+     ],
+     "operator": "and",
+     "if": true,
+     "conditionName": "Cuantas compras lleva?",
+     "version": 2,
+     "noneBranchName": "None"
+    },
+    "parentKey": "63e5220c-4e63-4bf3-bd5e-3734d2ef71a2"
+   },
+   {
+    "id": "6bcd44cb-ba8e-4dfd-8187-f97210d282dd",
+    "name": "Ya es 3a compra o mas",
+    "type": "if_else",
+    "order": 1,
+    "parentKey": "838c3912-9c61-49dc-b54d-b3b771b78afa",
+    "attributes": {
+     "if": false,
+     "conditionName": "Cuantas compras lleva?",
+     "operator": "and",
+     "branches": []
+    }
+   },
+   {
+    "id": "ed593a13-1152-420c-ae68-a77d784e3acf",
+    "name": "Segunda compra",
+    "type": "if_else",
+    "order": 1,
+    "parentKey": "838c3912-9c61-49dc-b54d-b3b771b78afa",
+    "attributes": {
+     "if": false,
+     "conditionName": "Cuantas compras lleva?",
+     "operator": "and",
+     "branches": []
+    },
+    "next": "ed93c8d0-162e-4d02-bc01-03f4c84215bf"
+   },
+   {
+    "id": "ed93c8d0-162e-4d02-bc01-03f4c84215bf",
+    "name": "Tag compra-2",
+    "type": "add_contact_tag",
+    "attributes": {
+     "tags": [
+      "compra-2"
+     ]
+    },
+    "order": 0,
+    "next": "763b7777-a7a1-4512-b1c5-da5d2e1197e3",
+    "parentKey": "ed593a13-1152-420c-ae68-a77d784e3acf"
+   },
+   {
+    "id": "763b7777-a7a1-4512-b1c5-da5d2e1197e3",
+    "name": "Email 11 · segunda compra",
+    "type": "email",
+    "attributes": {
+     "fieldDefaults": {
+      "subject": {
+       "contact.first_name:0": "Hola"
+      }
+     },
+     "conditions": [],
+     "from_name": "{{business.name}}",
+     "from_email": "{{business.email}}",
+     "subject": "{{contact.first_name}}, Qué alegría verte de nuevo por aquí",
+     "preHeader": "",
+     "template_id": "6a6aa2fa8ea1ab2089eb119e",
+     "templatesource": "email-builder",
+     "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a6aa2fa8ea1ab2089eb119e%2Findex.html?alt=media&token=6fa7de41-c51c-45cb-8db6-371cb26ed0eb?cb=1786986160472",
+     "templateCreationMode": "existing",
+     "attachments": [],
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "b5feddb8-3aac-4f9f-aff8-db0eb9e68270:763b7777-a7a1-4512-b1c5-da5d2e1197e3"
+     },
+     "createdAt": "2026-07-30T01:03:54.715Z",
+     "syncEnabled": true
+    },
+    "order": 1,
+    "parentKey": "ed93c8d0-162e-4d02-bc01-03f4c84215bf"
+   },
+   {
+    "id": "ad1b42d5-ed2e-4300-b142-c920f596006f",
+    "name": "None",
+    "type": "if_else",
+    "order": 1,
+    "parentKey": "838c3912-9c61-49dc-b54d-b3b771b78afa",
+    "attributes": {
+     "else": true
+    },
+    "next": "4b6a4e0b-bfd1-4ddf-8380-4daf52965f97"
+   },
+   {
+    "id": "4b6a4e0b-bfd1-4ddf-8380-4daf52965f97",
+    "name": "Tag compra-1",
+    "type": "add_contact_tag",
+    "attributes": {
+     "tags": [
+      "compra-1"
+     ]
+    },
+    "order": 0,
+    "parentKey": "ad1b42d5-ed2e-4300-b142-c920f596006f"
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

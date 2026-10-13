@@ -1,0 +1,231 @@
+{
+ "_id": "ab8ade85-851b-47a3-b46f-62a7e9f80ccc",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "name": "LS01 · Lead Instagram / Redes",
+ "status": "draft",
+ "version": 2,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/ab8ade85-851b-47a3-b46f-62a7e9f80ccc/2",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2Fab8ade85-851b-47a3-b46f-62a7e9f80ccc%2F2?alt=media&token=39193a68-2a72-4b5f-8dc8-9604cbbf31f9",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "originId": "2feeeb9d-709f-4fed-918b-e852217ee0af",
+ "permission": 380,
+ "type": "workflow",
+ "meta": null,
+ "updatedBy": "snapshot",
+ "createdAt": "2026-03-25T21:17:15.280Z",
+ "updatedAt": "2026-03-25T21:17:20.065Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "snapshot",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "dataVersion": 7,
+ "eventStartDate": null,
+ "senderAddress": null,
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/ab8ade85-851b-47a3-b46f-62a7e9f80ccc/2",
+ "window": null,
+ "workflowNote": {
+  "content": "",
+  "createdBy": "snapshot",
+  "createdByName": "snapshot",
+  "createdAt": "2026-03-25T21:17:19.673Z",
+  "updatedBy": "snapshot",
+  "updatedByName": "snapshot",
+  "updatedAt": "2026-03-25T21:17:19.673Z"
+ },
+ "id": "ab8ade85-851b-47a3-b46f-62a7e9f80ccc",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "1debff31-7290-4223-b095-9f46f47a10d0",
+    "type": "if_else",
+    "branches": [
+     "branch_1"
+    ],
+    "cat": "conditions",
+    "nodeType": "condition-node",
+    "name": "Check if Contact Already Has 'lead-nuevo' Tag",
+    "next": [
+     "84a7a4f7-540c-4371-95b9-8bc75524a17a",
+     "1bfaf5a2-94a0-47d0-8274-3df8caab7fb9"
+    ],
+    "attributes": {
+     "conditionName": "Check if Contact Already Has 'lead-nuevo' Tag",
+     "currentRecipeType": "CUSTOM",
+     "version": 2,
+     "branches": [
+      {
+       "id": "84a7a4f7-540c-4371-95b9-8bc75524a17a",
+       "segments": [
+        {
+         "operator": "and",
+         "conditions": [
+          {
+           "conditionType": "contact_detail",
+           "conditionOperator": "index-of-true",
+           "conditionSubType": "tags",
+           "conditionValue": [
+            "lead-nuevo"
+           ]
+          }
+         ]
+        }
+       ],
+       "operator": "and",
+       "name": "Check if contact has 'lead-nuevo' tag"
+      }
+     ],
+     "operator": "and",
+     "if": true,
+     "noneBranchName": "None"
+    },
+    "order": 0
+   },
+   {
+    "next": "3ee1fcb2-94e6-4c5a-b6f7-1e295d1d3bb3",
+    "attributes": {
+     "if": false,
+     "branches": [],
+     "conditionName": "Condition",
+     "operator": "and"
+    },
+    "id": "84a7a4f7-540c-4371-95b9-8bc75524a17a",
+    "type": "if_else",
+    "sibling": [
+     "1bfaf5a2-94a0-47d0-8274-3df8caab7fb9"
+    ],
+    "cat": "conditions",
+    "parentKey": "1debff31-7290-4223-b095-9f46f47a10d0",
+    "nodeType": "branch-yes",
+    "name": "Contact has 'lead-nuevo' Tag",
+    "parent": "1debff31-7290-4223-b095-9f46f47a10d0",
+    "order": 1
+   },
+   {
+    "type": "update_contact_field",
+    "id": "3ee1fcb2-94e6-4c5a-b6f7-1e295d1d3bb3",
+    "name": "Update 'Canal origen' to Instagram",
+    "attributes": {
+     "actionType": "update_field_data",
+     "type": "update_contact_field",
+     "fields": []
+    },
+    "parentKey": "84a7a4f7-540c-4371-95b9-8bc75524a17a",
+    "parent": "84a7a4f7-540c-4371-95b9-8bc75524a17a",
+    "order": 0
+   },
+   {
+    "next": "bfa667c5-d106-4e4c-9bac-266a4a6409d8",
+    "attributes": {
+     "else": true
+    },
+    "type": "if_else",
+    "sibling": [
+     "84a7a4f7-540c-4371-95b9-8bc75524a17a"
+    ],
+    "cat": "conditions",
+    "id": "1bfaf5a2-94a0-47d0-8274-3df8caab7fb9",
+    "nodeType": "branch-no",
+    "name": "None",
+    "parentKey": "1debff31-7290-4223-b095-9f46f47a10d0",
+    "parent": "1debff31-7290-4223-b095-9f46f47a10d0",
+    "order": 1
+   },
+   {
+    "next": "49c3cfa5-1a79-4acd-8884-706ea0169914",
+    "id": "bfa667c5-d106-4e4c-9bac-266a4a6409d8",
+    "type": "add_contact_tag",
+    "parentKey": "1bfaf5a2-94a0-47d0-8274-3df8caab7fb9",
+    "attributes": {
+     "tags": [
+      "lead-nuevo"
+     ]
+    },
+    "name": "Add 'lead-nuevo' Tag",
+    "parent": "1bfaf5a2-94a0-47d0-8274-3df8caab7fb9",
+    "order": 0
+   },
+   {
+    "type": "add_contact_tag",
+    "id": "49c3cfa5-1a79-4acd-8884-706ea0169914",
+    "next": "c146c658-0f75-46ed-9112-cdb2dda6ce11",
+    "name": "Add 'instagram-lead' Tag",
+    "attributes": {
+     "tags": [
+      "instagram-lead"
+     ]
+    },
+    "parentKey": "bfa667c5-d106-4e4c-9bac-266a4a6409d8",
+    "parent": "1bfaf5a2-94a0-47d0-8274-3df8caab7fb9",
+    "order": 1
+   },
+   {
+    "parentKey": "49c3cfa5-1a79-4acd-8884-706ea0169914",
+    "name": "Update 'Canal origen' to Instagram",
+    "next": "cf553eea-94f3-4eb7-9473-b89b8389b6d4",
+    "id": "c146c658-0f75-46ed-9112-cdb2dda6ce11",
+    "type": "update_contact_field",
+    "parent": "1bfaf5a2-94a0-47d0-8274-3df8caab7fb9",
+    "order": 2
+   },
+   {
+    "type": "create_update_contact",
+    "id": "cf553eea-94f3-4eb7-9473-b89b8389b6d4",
+    "next": "2d05d898-74ef-4f60-8d10-f7784ae091f0",
+    "name": "Create or Update Contact with Instagram Profile Details",
+    "attributes": {
+     "fields": [
+      {
+       "value": "test@example.com",
+       "type": "string",
+       "date": "",
+       "title": "Email",
+       "field": "email"
+      }
+     ]
+    },
+    "parentKey": "c146c658-0f75-46ed-9112-cdb2dda6ce11",
+    "parent": "1bfaf5a2-94a0-47d0-8274-3df8caab7fb9",
+    "order": 3
+   },
+   {
+    "type": "create_opportunity",
+    "next": "f1f8c810-c2f7-4f26-bb35-3503ee1c6765",
+    "id": "2d05d898-74ef-4f60-8d10-f7784ae091f0",
+    "attributes": {
+     "fields": [],
+     "type": "create_opportunity",
+     "pipeline_id": "Y47eLa4dAIZTKLu2UpuX",
+     "pipeline_stage_id": "7e15158e-c40d-4db4-9e0a-4e7f03f12db9",
+     "opportunity_name": "",
+     "opportunity_source": "",
+     "monetary_value": ""
+    },
+    "name": "Create Opportunity in Pipeline 2",
+    "parentKey": "cf553eea-94f3-4eb7-9473-b89b8389b6d4",
+    "parent": "1bfaf5a2-94a0-47d0-8274-3df8caab7fb9",
+    "order": 4
+   },
+   {
+    "parentKey": "2d05d898-74ef-4f60-8d10-f7784ae091f0",
+    "name": "Send DM Welcome Message",
+    "attributes": {
+     "body": ""
+    },
+    "id": "f1f8c810-c2f7-4f26-bb35-3503ee1c6765",
+    "type": "instagram-dm",
+    "parent": "1bfaf5a2-94a0-47d0-8274-3df8caab7fb9",
+    "order": 5
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

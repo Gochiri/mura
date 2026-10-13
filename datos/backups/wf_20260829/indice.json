@@ -1,0 +1,138 @@
+{
+ "leido": "2026-08-29",
+ "workflows": [
+  {
+   "nombre": "LS03 · Recuperación Carrito Abandonado",
+   "id": "1e240ed6-846d-42ad-8e34-e4eecc36f67f",
+   "status": "draft",
+   "pasos": 11,
+   "fichero": "LS03___Recuperación_Carrito_Abandonado.json"
+  },
+  {
+   "nombre": "08d · Devolucion cerrada - limpiar tag",
+   "id": "2197b479-93f6-4d95-bc83-917cca391b67",
+   "status": "published",
+   "pasos": 1,
+   "fichero": "08d___Devolucion_cerrada___limpiar_tag.json"
+  },
+  {
+   "nombre": "08b · Email etiqueta devolucion",
+   "id": "466bbb08-ae6a-448e-8cc1-9e49b77d3a84",
+   "status": "published",
+   "pasos": 7,
+   "fichero": "08b___Email_etiqueta_devolucion.json"
+  },
+  {
+   "nombre": "PS02 · Fidelización VIP / Recurrencia",
+   "id": "56f4c576-885b-4669-b70d-42ddff01fffd",
+   "status": "draft",
+   "pasos": 9,
+   "fichero": "PS02___Fidelización_VIP___Recurrencia.json"
+  },
+  {
+   "nombre": "AP02 · Lanzamiento Nueva Cápsula",
+   "id": "603de6df-18af-48ff-8b07-508f0cb5ba87",
+   "status": "draft",
+   "pasos": 27,
+   "fichero": "AP02___Lanzamiento_Nueva_Cápsula.json"
+  },
+  {
+   "nombre": "08a · Devolucion - webhook Nacex",
+   "id": "6b3064f7-e5e2-4b87-9863-21e6aeb1d1cf",
+   "status": "published",
+   "pasos": 2,
+   "fichero": "08a___Devolucion___webhook_Nacex.json"
+  },
+  {
+   "nombre": "04a · Envio - webhook Nacex + watchdog",
+   "id": "6d73077b-c9ea-4c8d-b1d5-f3167ef2cc4f",
+   "status": "draft",
+   "pasos": 23,
+   "fichero": "04a___Envio___webhook_Nacex___watchdog.json"
+  },
+  {
+   "nombre": "08c · Devolucion no encontrada",
+   "id": "8b5fe6af-0d7d-4e62-8682-cbb045400f81",
+   "status": "published",
+   "pasos": 1,
+   "fichero": "08c___Devolucion_no_encontrada.json"
+  },
+  {
+   "nombre": "05 · Entrega - mover + email",
+   "id": "8e6ccd5a-8c90-4d41-b567-9947e61ed627",
+   "status": "published",
+   "pasos": 3,
+   "fichero": "05___Entrega___mover___email.json"
+  },
+  {
+   "nombre": "06b · Encuesta post-compra completada",
+   "id": "94779fd6-15bb-4387-9af0-244409fcd671",
+   "status": "published",
+   "pasos": 3,
+   "fichero": "06b___Encuesta_post_compra_completada.json"
+  },
+  {
+   "nombre": "LS01 · Lead Instagram / Redes",
+   "id": "ab8ade85-851b-47a3-b46f-62a7e9f80ccc",
+   "status": "draft",
+   "pasos": 10,
+   "fichero": "LS01___Lead_Instagram___Redes.json"
+  },
+  {
+   "nombre": "02 · Etiquetado compra 1-2",
+   "id": "b5feddb8-3aac-4f9f-aff8-db0eb9e68270",
+   "status": "published",
+   "pasos": 8,
+   "fichero": "02___Etiquetado_compra_1_2.json"
+  },
+  {
+   "nombre": "01 · Compra confirmada (SP01)",
+   "id": "ba5d585c-8482-4810-b2f2-6983616b81a4",
+   "status": "published",
+   "pasos": 17,
+   "fichero": "01___Compra_confirmada__SP01_.json"
+  },
+  {
+   "nombre": "PS01 · Solicitud de Reseña / Review",
+   "id": "bd86a6cc-6eb3-46a2-8295-514c2e871f46",
+   "status": "draft",
+   "pasos": 7,
+   "fichero": "PS01___Solicitud_de_Reseña___Review.json"
+  },
+  {
+   "nombre": "AP01 · Control de Stock / Inventario Bajo",
+   "id": "c8487fc1-1a00-4b13-b512-9b41a2aa71f6",
+   "status": "draft",
+   "pasos": 5,
+   "fichero": "AP01___Control_de_Stock___Inventario_Baj.json"
+  },
+  {
+   "nombre": "06-12 · Journey post-entrega",
+   "id": "cb923da8-dd56-4d75-b8e4-77abf25d4e07",
+   "status": "published",
+   "pasos": 16,
+   "fichero": "06_12___Journey_post_entrega.json"
+  },
+  {
+   "nombre": "03 · Email preparacion",
+   "id": "cc2c8b77-a5e3-4f00-85e0-bc6900b3eb4c",
+   "status": "published",
+   "pasos": 6,
+   "fichero": "03___Email_preparacion.json"
+  },
+  {
+   "nombre": "SP05 · Reactivación Leads Fríos",
+   "id": "f07f8353-d6e8-4614-a64d-4390d7e305bb",
+   "status": "draft",
+   "pasos": 19,
+   "fichero": "SP05___Reactivación_Leads_Fríos.json"
+  },
+  {
+   "nombre": "LS02 · Opt-in Newsletter Web",
+   "id": "f62a24a8-0a2c-4a60-9910-d57a44e34136",
+   "status": "published",
+   "pasos": 8,
+   "fichero": "LS02___Opt_in_Newsletter_Web.json"
+  }
+ ]
+}

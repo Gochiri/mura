@@ -1,0 +1,55 @@
+<!--
+  ============================================================
+  MÛRA · SUSCRIPCIÓN CONFIRMADA (/suscripcion-confirmada)
+  ============================================================
+  Es la página a la que aterriza la clienta tras pulsar
+  "Confirmar mi suscripción" en el correo de doble opt-in del
+  newsletter. El trigger link TL-LS02-CONFIRMAR-OPTIN ya
+  redirige aquí (corregido por API el 17/8).
+
+  NO confundir con /gracias, que es la página de gracias de
+  COMPRA (decisión de German del 17/8: el checkout debe
+  redirigir a /gracias — se cambia en los ajustes del elemento
+  Checkout, acción tras el pago → URL).
+
+  CÓMO SE PEGA
+  1. Sites → sitio Mura → crear página nueva con URL
+     /suscripcion-confirmada.
+  2. Elemento de código personalizado → pegar esto entero.
+  3. Publicar.
+
+  ⚠️ SIN CSS PROPIO, A PROPÓSITO: el sistema .mura-* vive en el
+  Tracking Code global, que corre en todas las páginas del sitio.
+  ============================================================
+-->
+<div class="mura">
+<nav class="mura-nav"><div class="mura-nav-in">
+<a href="/" class="mura-logo">MÛRA</a>
+<div class="mura-links"><a href="/" class="">Inicio</a><a href="/colecciones" class=" hm">Colecciones</a><a href="/prendas" class="">Prendas</a><a href="/novedades" class=" hm">Novedades</a><a href="/mura" class=" hm">MÛRA</a><a href="/contacto" class=" hm">Contacto</a></div>
+<a href="/carrito" class="mura-cart">Carrito<span class="mura-cart-w" style="display:none"> (<span class="mura-cart-n">0</span>)</span></a>
+</div></nav>
+<script>(function(){try{var d=JSON.parse(localStorage.getItem('cart_details_rlc7iAyGF4U1nfwAJOJQ')||'{"products":[]}');var n=(d.products||[]).reduce(function(a,x){return a+(x.quantity||0)},0);document.querySelectorAll('.mura-cart-n').forEach(function(e){e.textContent=n});document.querySelectorAll('.mura-cart-w').forEach(function(e){e.style.display=n>0?'inline':'none'});}catch(e){}})();</script>
+
+<section style="max-width:640px;margin:0 auto;padding:clamp(80px,12vh,140px) clamp(20px,4vw,56px) clamp(90px,12vh,150px);text-align:center">
+<div class="mura-label" style="margin-bottom:14px">Newsletter</div>
+<h1 style="font-size:clamp(32px,4vw,52px);margin-bottom:26px">Suscripción confirmada.</h1>
+<p style="font-size:15px;line-height:1.9;color:#55524B">Gracias por querer estar cerca. A partir de ahora serás de las primeras en saber cuándo una nueva cápsula está a punto de salir.</p>
+<p style="font-size:15px;line-height:1.9;color:#55524B;margin-top:14px">Cada colección existe una sola vez; nosotras te avisamos a tiempo.</p>
+<a href="/prendas" class="mura-link-u" style="display:inline-block;margin-top:44px">Descubrir la colección</a>
+</section>
+
+<footer class="mura-foot"><div class="mura-foot-in">
+<div class="mura-foot-cols">
+<div><div class="mura-foot-h">Explorar</div><div class="mura-foot-c"><a href="/">Inicio</a><a href="/colecciones">Colecciones</a><a href="/prendas">Prendas</a><a href="/novedades">Novedades</a></div></div>
+<div><div class="mura-foot-h">MÛRA</div><div class="mura-foot-c"><a href="/mura">Nuestra esencia</a><a href="/contacto">Contacto</a></div></div>
+<div><div class="mura-foot-h">Información</div><div class="mura-foot-c"><a href="/devoluciones">Envíos y devoluciones</a><a href="/politica-privacidad">Política de privacidad</a><a href="/politica-cookies">Política de cookies</a><a href="/condiciones-contratacion">Condiciones de contratación</a><a href="/aviso-legal">Aviso legal</a></div></div>
+<div><div class="mura-foot-h">Redes</div><div class="mura-foot-c"><a href="https://www.instagram.com/bymurastudio/" target="_blank" rel="noopener">Instagram</a></div></div>
+</div>
+<div style="height:1px;background:rgba(29,27,24,.1);margin:clamp(60px,7vw,90px) 0 0"></div>
+<div style="text-align:center;padding:clamp(60px,7vw,90px) 0 28px;display:flex;flex-direction:column;gap:20px;align-items:center">
+<p class="mura-serif" style="font-size:clamp(22px,2.2vw,28px);font-style:italic">Vestir con intención.</p>
+<div class="mura-serif" style="font-size:20px;font-weight:500;letter-spacing:.32em">MÛRA</div>
+</div>
+<p style="text-align:center;font-size:10.5px;letter-spacing:.14em;color:#9B968C">© MÛRA 2026 · Todos los derechos reservados.</p>
+</div></footer>
+</div>

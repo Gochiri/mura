@@ -1,0 +1,33 @@
+[
+ {
+  "id": "HDPKet8mgApaacV1ufP4",
+  "date_added": "2026-03-25T21:17:19.552Z",
+  "date_updated": "2026-03-25T21:17:19.552Z",
+  "deleted": false,
+  "belongs_to": "workflow",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "origin_id": "eOO4lQICb98I7n0hxcHz",
+  "active": false,
+  "workflow_id": "56f4c576-885b-4669-b70d-42ddff01fffd",
+  "masterType": "highlevel",
+  "name": "Contact Field Updated: total_orders",
+  "type": "contact_changed",
+  "conditions": [
+   {
+    "operator": "==",
+    "field": "contact.a47cYvki8JPPTIdN3dCh",
+    "value": 2,
+    "title": "Nº total compras",
+    "type": "numerical",
+    "id": "a47cYvki8JPPTIdN3dCh"
+   }
+  ],
+  "actions": [
+   {
+    "workflow_id": "56f4c576-885b-4669-b70d-42ddff01fffd",
+    "type": "add_to_workflow"
+   }
+  ],
+  "schedule_config": {}
+ }
+]

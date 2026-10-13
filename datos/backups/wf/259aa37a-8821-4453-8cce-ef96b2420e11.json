@@ -1,0 +1,49 @@
+{
+ "_id": "259aa37a-8821-4453-8cce-ef96b2420e11",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "name": "PS02 · Fidelización VIP / Recurrencia",
+ "status": "draft",
+ "version": 2,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/259aa37a-8821-4453-8cce-ef96b2420e11/2",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F259aa37a-8821-4453-8cce-ef96b2420e11%2F2?alt=media&token=fdbfa683-280c-4eab-a872-51653d053ca7",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "originId": "71088e7a-1cfe-4153-85ad-810f47857ee7",
+ "permission": 380,
+ "type": "workflow",
+ "meta": null,
+ "updatedBy": "snapshot",
+ "createdAt": "2026-03-25T21:17:16.338Z",
+ "updatedAt": "2026-03-25T21:17:19.781Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "snapshot",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "dataVersion": 7,
+ "eventStartDate": null,
+ "senderAddress": null,
+ "triggersFilePath": null,
+ "window": null,
+ "workflowNote": {
+  "content": "",
+  "createdBy": "snapshot",
+  "createdByName": "snapshot",
+  "createdAt": "2026-03-25T21:17:19.520Z",
+  "updatedBy": "snapshot",
+  "updatedByName": "snapshot",
+  "updatedAt": "2026-03-25T21:17:19.520Z"
+ },
+ "id": "259aa37a-8821-4453-8cce-ef96b2420e11",
+ "workflowData": {
+  "templates": []
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

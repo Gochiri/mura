@@ -1,0 +1,111 @@
+{
+ "_id": "8e6ccd5a-8c90-4d41-b567-9947e61ed627",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "companyId": "5tNRocqWdcsz7Rii28bH",
+ "companyAge": 11,
+ "name": "05 · Entrega - mover + email",
+ "status": "published",
+ "version": 21,
+ "dataVersion": 7,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/8e6ccd5a-8c90-4d41-b567-9947e61ed627/21",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F8e6ccd5a-8c90-4d41-b567-9947e61ed627%2F21?alt=media&token=ec6707e4-7b9b-4e73-b754-8663321de030",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "permission": 380,
+ "type": "workflow",
+ "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+ "createdAt": "2026-07-29T11:14:28.522Z",
+ "updatedAt": "2026-09-01T12:19:09.757Z",
+ "deleted": false,
+ "allowMultipleOpportunity": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "user",
+ "__v": 0,
+ "eventStartDate": null,
+ "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/8e6ccd5a-8c90-4d41-b567-9947e61ed627/18",
+ "window": null,
+ "workflowNote": null,
+ "updatedBy": "eeuewX5uuHsscaW9uOFs",
+ "id": "8e6ccd5a-8c90-4d41-b567-9947e61ed627",
+ "workflowData": {
+  "templates": [
+   {
+    "id": "2a0946a8-846e-429e-b592-8d1230c5693e",
+    "name": "Tag pedido-entregado",
+    "type": "add_contact_tag",
+    "attributes": {
+     "tags": [
+      "pedido-entregado"
+     ]
+    },
+    "order": 0,
+    "next": "61a7b8c5-0130-41a9-b2f7-8341910374e5"
+   },
+   {
+    "id": "61a7b8c5-0130-41a9-b2f7-8341910374e5",
+    "order": 1,
+    "attributes": {
+     "fieldDefaults": {
+      "from_name": {
+       "business.name:0": "MÛRA"
+      },
+      "from_email": {
+       "business.email:0": "hello@stylebymura.com"
+      },
+      "subject": {
+       "contact.first_name:0": "Hola"
+      }
+     },
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "8e6ccd5a-8c90-4d41-b567-9947e61ed627:61a7b8c5-0130-41a9-b2f7-8341910374e5"
+     },
+     "conditions": [],
+     "from_name": "{{business.name}}",
+     "from_email": "{{business.email}}",
+     "subject": "{{contact.first_name}}, ya está contigo.",
+     "preHeader": "Esperamos que la disfrutes durante mucho tiempo.",
+     "template_id": "6a96c24dc605ac336575db08",
+     "templatesource": "email-builder",
+     "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a6aa2ed3954360b6a94f117%2Findex.html?alt=media&token=87b38cc6-7dd6-4450-bb11-f03ea738565c",
+     "createdAt": "2026-07-30T01:03:41.436Z",
+     "updatedAt": "2026-09-01T10:52:15.955Z",
+     "templateCreationMode": "existing",
+     "attachments": []
+    },
+    "name": "Email 05 Entrega",
+    "type": "email",
+    "next": "2ece8fa7-e9ba-4716-9cb9-b6bb2d55afe5",
+    "parentKey": "2a0946a8-846e-429e-b592-8d1230c5693e"
+   },
+   {
+    "id": "2ece8fa7-e9ba-4716-9cb9-b6bb2d55afe5",
+    "order": 2,
+    "attributes": {
+     "method": "POST",
+     "url": "https://n8n.letsbebanana.com/webhook/avisos-sara",
+     "customData": [
+      {
+       "key": "mensaje",
+       "value": "Sara el pedido {{opportunity.name}} de {{contact.first_name}} se ha entregado."
+      }
+     ],
+     "headers": []
+    },
+    "name": "Webhook Telegram",
+    "type": "webhook",
+    "parentKey": "61a7b8c5-0130-41a9-b2f7-8341910374e5"
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

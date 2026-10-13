@@ -1,0 +1,38 @@
+[
+ {
+  "id": "QRNUKuz68WUixwZJdpPZ",
+  "date_added": "2026-07-29T11:15:06.601Z",
+  "deleted": false,
+  "actions": [
+   {
+    "workflow_id": "8e6ccd5a-8c90-4d41-b567-9947e61ed627",
+    "type": "add_to_workflow"
+   }
+  ],
+  "conditions": [
+   {
+    "operator": "==",
+    "field": "opportunity.pipelineId",
+    "value": "X7wvJysuBVmdXXl1b8zx",
+    "title": "In pipeline",
+    "type": "select"
+   },
+   {
+    "operator": "==",
+    "field": "opportunity.pipelineStageId",
+    "value": "789b85f8-5a2b-468a-936c-d643308340c3",
+    "title": "Pipeline stage",
+    "type": "select"
+   }
+  ],
+  "type": "pipeline_stage_updated",
+  "masterType": "highlevel",
+  "workflow_id": "8e6ccd5a-8c90-4d41-b567-9947e61ed627",
+  "location_id": "NxPF5fOicowujokEk5Hm",
+  "name": "Pipeline Stage Changed",
+  "belongs_to": "workflow",
+  "schedule_config": {},
+  "date_updated": "2026-07-29T11:20:12.798Z",
+  "active": true
+ }
+]

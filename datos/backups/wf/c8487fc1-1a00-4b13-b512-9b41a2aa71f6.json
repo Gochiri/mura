@@ -1,0 +1,165 @@
+{
+ "_id": "c8487fc1-1a00-4b13-b512-9b41a2aa71f6",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "name": "AP02 · Control de Stock / Inventario Bajo",
+ "status": "draft",
+ "version": 2,
+ "allowMultiple": true,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/c8487fc1-1a00-4b13-b512-9b41a2aa71f6/2",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2Fc8487fc1-1a00-4b13-b512-9b41a2aa71f6%2F2?alt=media&token=26b1f9dd-77f0-4f91-ba90-7def79cc6116",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "originId": "372f9f56-12a5-4656-91a8-2b2b9f164afc",
+ "permission": 380,
+ "type": "workflow",
+ "meta": null,
+ "updatedBy": "snapshot",
+ "createdAt": "2026-03-25T21:17:14.885Z",
+ "updatedAt": "2026-03-25T21:17:19.745Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "snapshot",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "dataVersion": 7,
+ "eventStartDate": null,
+ "senderAddress": null,
+ "triggersFilePath": null,
+ "window": null,
+ "workflowNote": {
+  "content": "",
+  "createdBy": "snapshot",
+  "createdByName": "snapshot",
+  "createdAt": "2026-03-25T21:17:19.499Z",
+  "updatedBy": "snapshot",
+  "updatedByName": "snapshot",
+  "updatedAt": "2026-03-25T21:17:19.499Z"
+ },
+ "id": "c8487fc1-1a00-4b13-b512-9b41a2aa71f6",
+ "workflowData": {
+  "templates": [
+   {
+    "name": "Internal Notification to Sara (Low Stock)",
+    "next": "0643e1cf-5d30-46bd-96ea-5774bc4d18fb",
+    "type": "internal_notification",
+    "id": "10bba59b-be3c-4317-8ec4-200f17a8a7a2",
+    "attributes": {
+     "sms": {
+      "body": "Low stock alert for product variant."
+     },
+     "type": "notification",
+     "notification": {
+      "body": "Product variant {{product.name}} (SKU: {{product.sku}}) stock is {{product.stock}} units or less.<br>Take action to replenish.",
+      "title": "Low Stock Alert",
+      "userType": "all",
+      "redirectPage": "contact"
+     },
+     "email": {
+      "subject": "Low Stock Alert",
+      "html": "Product variant stock is low."
+     },
+     "userType": "all"
+    },
+    "order": 0
+   },
+   {
+    "attributes": {
+     "subject": "Alerta: Stock Bajo para Variante de Producto",
+     "html": "Hola Sara,<br><br>Te informamos que uno de los productos tiene un stock bajo (2 unidades o menos).<br><br>Detalles del producto:<br>- Nombre del producto: {{product.name}}<br>- Variante: {{product.variant}}<br>- SKU: {{product.sku}}<br>- Cantidad actual en stock: {{product.current_quantity}}<br><br>Recomendaciones para los próximos pasos:<br>1. Verificar el inventario físicamente para confirmar la cantidad.<br>2. Preparar un pedido de reposición para evitar la falta de stock.<br>3. Considerar promocionar otras variantes o productos similares si este producto está en alta demanda.<br><br>Quedamos atentos a cualquier actualización.<br><br>Saludos cordiales,<br>{{user.name}}<br>{{user.email_signature}}"
+    },
+    "parentKey": "10bba59b-be3c-4317-8ec4-200f17a8a7a2",
+    "type": "email",
+    "id": "0643e1cf-5d30-46bd-96ea-5774bc4d18fb",
+    "next": "f30c6e98-b523-41c6-9551-6d4c67b0c1f9",
+    "name": "Email to Sara (Low Stock Alert)",
+    "order": 1
+   },
+   {
+    "name": "Inventory Zero Check",
+    "next": [
+     "c46696d7-5491-4ea8-b262-e1e6c6d6d832",
+     "d714b95f-54ce-40db-a019-3b6e3eafdf32"
+    ],
+    "parentKey": "0643e1cf-5d30-46bd-96ea-5774bc4d18fb",
+    "id": "f30c6e98-b523-41c6-9551-6d4c67b0c1f9",
+    "cat": "conditions",
+    "type": "if_else",
+    "branches": [
+     "branch_1"
+    ],
+    "attributes": {
+     "operator": "and",
+     "version": 2,
+     "if": true,
+     "currentRecipeType": "CUSTOM",
+     "noneBranchName": "None",
+     "conditionName": "Inventory Zero Check",
+     "branches": [
+      {
+       "operator": "and",
+       "segments": [
+        {
+         "conditions": [
+          {
+           "conditionType": "shopify",
+           "conditionSubType": "item.id",
+           "conditionOperator": "==",
+           "conditionValue": "0"
+          }
+         ],
+         "operator": "and"
+        }
+       ],
+       "name": "Check if product variant inventory is zero",
+       "id": "c46696d7-5491-4ea8-b262-e1e6c6d6d832"
+      }
+     ]
+    },
+    "nodeType": "condition-node",
+    "order": 2
+   },
+   {
+    "attributes": {
+     "operator": "and",
+     "branches": [],
+     "if": false,
+     "conditionName": "Condition"
+    },
+    "nodeType": "branch-yes",
+    "type": "if_else",
+    "id": "c46696d7-5491-4ea8-b262-e1e6c6d6d832",
+    "parentKey": "f30c6e98-b523-41c6-9551-6d4c67b0c1f9",
+    "name": "Inventory is Zero",
+    "cat": "conditions",
+    "sibling": [
+     "d714b95f-54ce-40db-a019-3b6e3eafdf32"
+    ],
+    "parent": "f30c6e98-b523-41c6-9551-6d4c67b0c1f9",
+    "order": 3
+   },
+   {
+    "sibling": [
+     "c46696d7-5491-4ea8-b262-e1e6c6d6d832"
+    ],
+    "name": "None",
+    "cat": "conditions",
+    "parentKey": "f30c6e98-b523-41c6-9551-6d4c67b0c1f9",
+    "type": "if_else",
+    "id": "d714b95f-54ce-40db-a019-3b6e3eafdf32",
+    "nodeType": "branch-no",
+    "attributes": {
+     "else": true
+    },
+    "parent": "f30c6e98-b523-41c6-9551-6d4c67b0c1f9",
+    "order": 3
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

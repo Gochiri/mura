@@ -1,0 +1,63 @@
+{
+  "_id": "466bbb08-ae6a-448e-8cc1-9e49b77d3a84",
+  "locationId": "NxPF5fOicowujokEk5Hm",
+  "companyId": "5tNRocqWdcsz7Rii28bH",
+  "companyAge": 11,
+  "name": "08b · Email etiqueta devolucion",
+  "version": 6,
+  "dataVersion": 7,
+  "allowMultiple": false,
+  "timezone": "account",
+  "removeContactFromLastStep": true,
+  "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/466bbb08-ae6a-448e-8cc1-9e49b77d3a84/5",
+  "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F466bbb08-ae6a-448e-8cc1-9e49b77d3a84%2F5?alt=media&token=5329060c-9a63-479e-bdb1-13cf0756ac3c",
+  "stopOnResponse": false,
+  "autoMarkAsRead": false,
+  "permission": 380,
+  "type": "workflow",
+  "createdAt": "2026-08-07T15:39:37.992Z",
+  "updatedAt": "2026-08-08T13:53:01.857Z",
+  "deleted": false,
+  "creationSource": "builder",
+  "isTriggerBucketMigrated": true,
+  "originType": "user",
+  "__v": 0,
+  "allowMultipleOpportunity": false,
+  "eventStartDate": null,
+  "senderAddress": null,
+  "status": "published",
+  "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/466bbb08-ae6a-448e-8cc1-9e49b77d3a84/6",
+  "window": null,
+  "workflowNote": null,
+  "meta": null,
+  "updatedBy": "k69NDKrTIXCwWc5k6pZf",
+  "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+  "id": "466bbb08-ae6a-448e-8cc1-9e49b77d3a84",
+  "workflowData": {
+    "templates": [
+      {
+        "id": "9c56e5ef-7327-44ed-b2b9-0db710b08c7a",
+        "name": "Email 08 · solicitud devolución",
+        "type": "email",
+        "attributes": {
+          "fieldDefaults": {},
+          "conditions": [],
+          "from_name": "{{location.name}}",
+          "from_email": "{{location.email}}",
+          "subject": "Tu etiqueta de devolución está lista",
+          "preHeader": "",
+          "template_id": "6a6aa2f161a2115039f0034f",
+          "templatesource": "email-builder",
+          "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FNxPF5fOicowujokEk5Hm%2Femails%2F6a6aa2f161a2115039f0034f%2Findex.html?alt=media&token=b66cdd8b-7bf4-4444-9afa-e4ec2a42d959",
+          "templateCreationMode": "existing",
+          "attachments": []
+        },
+        "order": 0
+      }
+    ]
+  },
+  "permissionMeta": {
+    "canRead": true,
+    "canWrite": true
+  }
+}

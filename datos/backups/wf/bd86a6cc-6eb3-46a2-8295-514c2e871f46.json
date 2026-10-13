@@ -1,0 +1,216 @@
+{
+ "_id": "bd86a6cc-6eb3-46a2-8295-514c2e871f46",
+ "locationId": "NxPF5fOicowujokEk5Hm",
+ "name": "PS01 · Solicitud de Reseña / Review",
+ "status": "draft",
+ "version": 2,
+ "allowMultiple": false,
+ "timezone": "account",
+ "removeContactFromLastStep": true,
+ "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/bd86a6cc-6eb3-46a2-8295-514c2e871f46/2",
+ "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2Fbd86a6cc-6eb3-46a2-8295-514c2e871f46%2F2?alt=media&token=d9ed266c-ca55-4d28-aef9-160be817033e",
+ "stopOnResponse": false,
+ "autoMarkAsRead": false,
+ "originId": "31e3668e-e56d-4f6c-b200-1f1f1c05effe",
+ "permission": 380,
+ "type": "workflow",
+ "meta": null,
+ "updatedBy": "snapshot",
+ "createdAt": "2026-03-25T21:17:15.921Z",
+ "updatedAt": "2026-03-25T21:17:19.766Z",
+ "deleted": false,
+ "creationSource": "builder",
+ "isTriggerBucketMigrated": true,
+ "originType": "snapshot",
+ "__v": 0,
+ "allowMultipleOpportunity": true,
+ "dataVersion": 7,
+ "eventStartDate": null,
+ "senderAddress": null,
+ "triggersFilePath": null,
+ "window": null,
+ "workflowNote": {
+  "content": "",
+  "createdBy": "snapshot",
+  "createdByName": "snapshot",
+  "createdAt": "2026-03-25T21:17:19.504Z",
+  "updatedBy": "snapshot",
+  "updatedByName": "snapshot",
+  "updatedAt": "2026-03-25T21:17:19.504Z"
+ },
+ "id": "bd86a6cc-6eb3-46a2-8295-514c2e871f46",
+ "workflowData": {
+  "templates": [
+   {
+    "name": "Wait 1 Day (Europe/Madrid)",
+    "attributes": {
+     "type": "time",
+     "transitions": [],
+     "convertToMultipath": false,
+     "isHybridAction": true,
+     "startAfter": {
+      "when": "after",
+      "action_in": 1,
+      "type": "days",
+      "value": 1
+     },
+     "name": "Wait 1 Day (Europe/Madrid)",
+     "cat": "action",
+     "hybridActionType": "wait"
+    },
+    "next": "5e19df4d-f068-4952-a393-f70c140dfcdd",
+    "id": "25227b81-92e4-4584-a3e8-c613e104419d",
+    "type": "wait",
+    "order": 0
+   },
+   {
+    "attributes": {
+     "subject": "¡Nos encantaría recibir tus comentarios sobre MURA!",
+     "html": "<p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Hola {{contact.name}},</p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">¡Esperamos que hayas tenido una excelente experiencia con MURA! Tus comentarios son muy importantes para nosotros y ayudan a otros a descubrir nuestros servicios.</p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Si pudieras dedicar un momento a dejarnos una reseña en nuestra página de Google Business, te lo agradeceríamos mucho. </p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Es rápido y sencillo: solo haz clic en el botón de abajo:</p><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\"><br><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"{{google_review_url_from_Sara}}\" title=\"Dejar una reseña\">Dejar una reseña</a></p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">¡Muchas gracias por tu apoyo!</p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Atentamente,</p><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">{{user.name}}</p><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">{{user.email_signature}}</p>",
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "31e3668e-e56d-4f6c-b200-1f1f1c05effe:5e19df4d-f068-4952-a393-f70c140dfcdd"
+     },
+     "conditions": [],
+     "attachments": []
+    },
+    "name": "Send Initial Review Request Email",
+    "id": "5e19df4d-f068-4952-a393-f70c140dfcdd",
+    "next": "1e0120fb-634f-42d9-bb1a-8839447d4652",
+    "type": "email",
+    "parentKey": "25227b81-92e4-4584-a3e8-c613e104419d",
+    "order": 1
+   },
+   {
+    "parentKey": "5e19df4d-f068-4952-a393-f70c140dfcdd",
+    "type": "wait",
+    "convertToMultipath": true,
+    "cat": "multi-path",
+    "id": "1e0120fb-634f-42d9-bb1a-8839447d4652",
+    "next": [
+     "4fa245a5-d803-461d-824f-59cd70d53919",
+     "af1f4b2d-d0bb-478c-a49a-50dc22a81b83"
+    ],
+    "attributes": {
+     "cat": "multi-path",
+     "startAfter": {
+      "action_in": 0,
+      "when": "after",
+      "type": "days",
+      "value": 3
+     },
+     "name": "Check Review Link Clicked",
+     "type": "link_clicked",
+     "linksLabel": [
+      "TL-SP03-EXPERIENCIA-POSITIVA"
+     ],
+     "link": [
+      "9C634Z92jluRfJtddgIZ"
+     ],
+     "hybridActionType": "wait",
+     "isHybridAction": true,
+     "transitions": [
+      {
+       "attributes": {
+        "type": "wait_link_clicked",
+        "description": "What will happen after TL-SP03-EXPERIENCIA-POSITIVA trigger link is clicked"
+       },
+       "name": "wait",
+       "condition": "primary",
+       "id": "4fa245a5-d803-461d-824f-59cd70d53919",
+       "isPrimaryBranch": true,
+       "conditionType": "user-defined"
+      },
+      {
+       "conditionType": "user-defined",
+       "isPrimaryBranch": false,
+       "id": "af1f4b2d-d0bb-478c-a49a-50dc22a81b83",
+       "condition": "timeout",
+       "name": "timeout",
+       "attributes": {
+        "type": "wait_timeout",
+        "description": "What will happen after 3 days"
+       }
+      }
+     ],
+     "convertToMultipath": true
+    },
+    "name": "Check Review Link Clicked",
+    "order": 2
+   },
+   {
+    "isPrimaryBranch": true,
+    "type": "transition",
+    "parentKey": "1e0120fb-634f-42d9-bb1a-8839447d4652",
+    "name": "wait",
+    "condition": "primary",
+    "cat": "transition",
+    "id": "4fa245a5-d803-461d-824f-59cd70d53919",
+    "conditionType": "user-defined",
+    "attributes": {
+     "type": "wait_link_clicked",
+     "description": "What will happen after TL-SP03-EXPERIENCIA-POSITIVA trigger link is clicked"
+    },
+    "parent": "1e0120fb-634f-42d9-bb1a-8839447d4652",
+    "order": 3,
+    "next": "556e41fb-b512-4a37-9b99-8799c05fec62"
+   },
+   {
+    "id": "556e41fb-b512-4a37-9b99-8799c05fec62",
+    "parent": "4fa245a5-d803-461d-824f-59cd70d53919",
+    "order": 0,
+    "attributes": {
+     "tags": [
+      "encuesta-completada"
+     ]
+    },
+    "name": "Encuesta Contestada",
+    "type": "add_contact_tag",
+    "next": "1f9295e8-725a-4409-b94c-16c5a2ca42e9",
+    "parentKey": "4fa245a5-d803-461d-824f-59cd70d53919"
+   },
+   {
+    "type": "email",
+    "id": "1f9295e8-725a-4409-b94c-16c5a2ca42e9",
+    "name": "Thank You for Review Email",
+    "attributes": {
+     "subject": "¡Gracias por tu reseña!",
+     "html": "<p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Hola {{contact.name}},<br><br>Queremos agradecerte sinceramente por tomarte el tiempo de dejarnos tu reseña. Tus comentarios son muy valiosos para nosotros y nos ayudan a mejorar continuamente nuestros servicios.<br><br>Nos alegra saber que tu experiencia fue positiva y esperamos seguir contando con tu confianza en el futuro.<br><br>Gracias nuevamente por tu apoyo.<br><br>Saludos cordiales,<br>{{user.name}}</p>",
+     "trackingOptions": {
+      "hasTrackingLinks": false,
+      "hasUtmTracking": false,
+      "hasTags": false,
+      "sourceId": "31e3668e-e56d-4f6c-b200-1f1f1c05effe:1f9295e8-725a-4409-b94c-16c5a2ca42e9"
+     },
+     "conditions": [],
+     "attachments": []
+    },
+    "parentKey": "556e41fb-b512-4a37-9b99-8799c05fec62",
+    "parent": "4fa245a5-d803-461d-824f-59cd70d53919",
+    "order": 1
+   },
+   {
+    "isPrimaryBranch": false,
+    "type": "transition",
+    "parentKey": "1e0120fb-634f-42d9-bb1a-8839447d4652",
+    "name": "timeout",
+    "condition": "timeout",
+    "cat": "transition",
+    "id": "af1f4b2d-d0bb-478c-a49a-50dc22a81b83",
+    "conditionType": "user-defined",
+    "attributes": {
+     "type": "wait_timeout",
+     "description": "What will happen after 3 days"
+    },
+    "parent": "1e0120fb-634f-42d9-bb1a-8839447d4652",
+    "order": 3
+   }
+  ]
+ },
+ "permissionMeta": {
+  "canRead": true,
+  "canWrite": true
+ }
+}

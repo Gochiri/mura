@@ -1,0 +1,95 @@
+{
+  "_id": "6b3064f7-e5e2-4b87-9863-21e6aeb1d1cf",
+  "locationId": "NxPF5fOicowujokEk5Hm",
+  "companyId": "5tNRocqWdcsz7Rii28bH",
+  "companyAge": 11,
+  "name": "08a · Devolucion - webhook Nacex",
+  "version": 7,
+  "dataVersion": 7,
+  "allowMultiple": false,
+  "timezone": "account",
+  "removeContactFromLastStep": true,
+  "filePath": "location/NxPF5fOicowujokEk5Hm/workflows/6b3064f7-e5e2-4b87-9863-21e6aeb1d1cf/7",
+  "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FNxPF5fOicowujokEk5Hm%2Fworkflows%2F6b3064f7-e5e2-4b87-9863-21e6aeb1d1cf%2F7?alt=media&token=62b5b1af-9276-4fe7-8823-890f79b51242",
+  "stopOnResponse": false,
+  "autoMarkAsRead": false,
+  "permission": 380,
+  "type": "workflow",
+  "parentId": "a2e76d80-e26f-4b9d-83c1-f7f9238c943a",
+  "createdAt": "2026-07-29T14:30:22.285Z",
+  "updatedAt": "2026-08-08T13:53:01.857Z",
+  "deleted": false,
+  "allowMultipleOpportunity": false,
+  "creationSource": "builder",
+  "isTriggerBucketMigrated": true,
+  "originType": "user",
+  "__v": 0,
+  "eventStartDate": null,
+  "window": null,
+  "workflowNote": null,
+  "triggersFilePath": "location/NxPF5fOicowujokEk5Hm/workflow-triggers/6b3064f7-e5e2-4b87-9863-21e6aeb1d1cf/6",
+  "senderAddress": null,
+  "status": "published",
+  "id": "6b3064f7-e5e2-4b87-9863-21e6aeb1d1cf",
+  "workflowData": {
+    "templates": [
+      {
+        "id": "5f874261-8820-498a-9cad-8fce5e472626",
+        "order": 0,
+        "attributes": {
+          "method": "POST",
+          "url": "https://n8n.letsbebanana.com/webhook/solicitud-devolucion",
+          "customData": [
+            {
+              "key": "opportunityId",
+              "value": "{{contact.n_de_pedido_lo_encuentras_en_tu_mail_de_confirmacin}}"
+            },
+            {
+              "key": "contactId",
+              "value": "{{contact.id}}"
+            },
+            {
+              "key": "email",
+              "value": "{{contact.email}}"
+            },
+            {
+              "key": "nombre",
+              "value": "{{contact.name}}"
+            },
+            {
+              "key": "direccion",
+              "value": "{{contact.std_billing_address_address1}}"
+            },
+            {
+              "key": "cp",
+              "value": "{{contact.std_billing_address_postal_code}}"
+            },
+            {
+              "key": "poblacion",
+              "value": "{{contact.std_billing_address_city}}"
+            },
+            {
+              "key": "telefono",
+              "value": "{{contact.phone}}"
+            },
+            {
+              "key": "motivo",
+              "value": "{{contact.motivo_de_devolucin__cambio}}"
+            },
+            {
+              "key": "numero_pedido",
+              "value": "{{contact.n_de_pedido_lo_encuentras_en_tu_mail_de_confirmacin}}"
+            }
+          ],
+          "headers": []
+        },
+        "name": "Webhook",
+        "type": "webhook"
+      }
+    ]
+  },
+  "permissionMeta": {
+    "canRead": true,
+    "canWrite": true
+  }
+}
