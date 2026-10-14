@@ -85,7 +85,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 | `docs/campanas-meta.md` | Plan de campañas, datos de referencia y briefing de creatividades. |
 | `docs/2026-10-09-reunion-sara.md` | Acuerdos con Sara y lo que queda abierto. |
 | `docs/cobros-sara.md` | Cómo se le cobra a Sara (productos y links en la subcuenta de Profit) y estado de cada link. |
-| `docs/meta-api.md` | Meta por API dentro del portafolio de MÛRA: usuario del sistema `ads-cli-mura`, app, token, `.env`, comprobaciones con `curl` y reglas de uso. |
+| `docs/meta-api.md` | Meta por API dentro del portafolio de MÛRA: usuario del sistema y app existentes, token, `.env`, comprobaciones con `curl` y reglas de uso. |
 | `docs/para-sonia-*.md` | Lo entregado a Sonia: aviso de pedido, formulario de devolución, estado antes de Meta (22/9). |
 | `docs/2026-07-29-llamada-sonia-henry.md` | Llamada técnica de julio: número de pedido, Nacex, tags. |
 | `tienda/` | Código de la web. Fuente única: `codigo-global-tienda.js` → `build.sh` genera `tracking-code-head.html`, `tracking-code-body.html` y `css-paginas-tienda.css`. Qué se pega y dónde, en `tienda/README.md`. |
@@ -105,7 +105,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
   `grep -rE 'AMf-|pit-|EAA'` tiene que salir vacío (`EAA` es el prefijo de los
   tokens de Meta).
 - **Meta por API:** todo dentro del portafolio de MÛRA (ID `1650663796846832`):
-  usuario del sistema `ads-cli-mura`, app `MURA Ads` y su token. No se usa el
+  usuario del sistema `Conversions API System User` (creado por Meta con el píxel, ya con todos los activos), app `Conversions API Application` y su token. No se usa el
   portafolio de Profit. Todo en un `.env` local
   (`META_ACCESS_TOKEN`, `META_CAPI_TOKEN`, `META_AD_ACCOUNT_ID`…; lista completa en
   `docs/meta-api.md`). Se llama a la Graph API con `curl`. Activar campañas o
@@ -157,7 +157,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 |---|---|
 | Propuesta de mantenimiento más barata (por incidencia u horas) | German + Sonia |
 | Cobro: productos y links de pago en la subcuenta de Profit (link A, 425 €), datos fiscales de Sara vía su gestor y factura de cada pago. Instrucciones y estado de los links en `docs/cobros-sara.md` | German + Henry |
-| Meta por API, todo en el portafolio de MÛRA (ID `1650663796846832`; Henry y Oliver son administradores como personas): cuenta publicitaria en EUR con la tarjeta de Sara (el píxel ya existe), usuario del sistema `ads-cli-mura`, app `MURA Ads` asignada a él y token de caducidad «Nunca» al `.env` local (`docs/meta-api.md`) | Henry u Oliver; la tarjeta, Sara |
+| Meta por API, todo en el portafolio de MÛRA (ID `1650663796846832`; Henry y Oliver son administradores como personas): cuenta publicitaria en EUR con la tarjeta de Sara (el píxel ya existe), usuario del sistema `Conversions API System User` ya con los activos; falta el token de caducidad «Nunca» al `.env` local (`docs/meta-api.md`) | Henry u Oliver; la tarjeta, Sara |
 | Banner de consentimiento + auditoría real de cookies | Sonia / Claude |
 | Clarity conectado al banner; píxel + CAPI con eventos propios | German instala, Claude el código |
 | Guiones sin diálogo y 6–8 creatividades de colección | German + Sara |

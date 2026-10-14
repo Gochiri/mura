@@ -1,8 +1,8 @@
 # Meta por API: app y token dentro del portafolio de MÛRA
 
-*Decisión de German (14/10): todo se crea **directamente en el portafolio de
-MÛRA** (ID `1650663796846832`). Usuario del sistema, app y token son de MÛRA y
-solo sirven para MÛRA. Henry y Oliver entran con su acceso personal al
+*Decisión de German (14/10): todo vive **en el portafolio de MÛRA** (ID
+`1650663796846832`). Usuario del sistema, app y token son de MÛRA y solo sirven
+para MÛRA. Henry y Oliver entran con su acceso personal al
 portafolio, que tiene que ser de **administrador** (control total). Las llamadas
 se hacen desde las sesiones de Claude con `curl` a la Graph API.*
 
@@ -24,41 +24,33 @@ se crea en el sitio equivocado.
 - **Píxel**: ya creado, ID **`1799475611078369`**. No se carga en la web hasta
   que esté el banner de consentimiento.
 
-## 2. Usuario del sistema
+## 2. Usuario del sistema y app: ya existen
 
-Configuración → Usuarios → **Usuarios del sistema** → Añadir.
+Al crear el píxel, Meta creó solos en el portafolio de MÛRA:
 
-- Nombre: `ads-cli-mura` (sin espacios).
-- Rol: **Administrador**.
-- **Asignar activos** con control total: la cuenta publicitaria, la página, la
-  cuenta de Instagram y el píxel.
+- **Usuario del sistema** `Conversions API System User` (ID `61595501576203`),
+  rol Empleado. Basta: gestiona campañas si tiene los activos asignados.
+- **App** `Conversions API Application`, ya asignada a ese usuario.
 
-Meta limita los usuarios del sistema en portafolios sin verificar (suele dejar
-uno administrador y uno normal). Si no deja crearlo, mirar si ya hay alguno de
-otra integración.
+Se reutilizan. No hace falta crear otros, y así se evita el aviso de Meta de que
+el administrador debe llevar 7 días en el portafolio para crear usuarios del
+sistema con rol Administrador.
 
-## 3. La app
+**Activos asignados** al usuario, todos con acceso total (comprobado el 14/10):
+página MÛRA, cuenta publicitaria Mura, la app, el píxel Mura Pixel e Instagram
+@bymurastudio.
 
-[developers.facebook.com/apps](https://developers.facebook.com/apps) → Crear app.
+## 3. Comprobación de la app
 
-- Nombre: `MURA Ads` (la Û no la admite). Correo de contacto: uno que se lea.
-- Caso de uso: **Otro → Negocio**.
-- Portafolio comercial: **el de MÛRA**. Si se elige otro, el token da
-  `(#200) Provide valid app ID`.
-- Casos de uso: «Crear y administrar anuncios con la API de marketing».
-- Se queda en modo desarrollo: para tocar solo activos del propio portafolio no
-  hace falta revisión de app.
-
-Después, **asignar la app al usuario del sistema**: portafolio de MÛRA →
-Configuración → Cuentas → Apps → `MURA Ads` → Asignar acceso → `ads-cli-mura` →
-control total. Es el paso que se salta todo el mundo, y el error que da después
-no lo menciona.
+Configuración → Cuentas → Apps → `Conversions API Application`: anotar su ID
+para `META_APP_ID`. Si el token diera `(#200) Provide valid app ID`, revisar que
+la app siga asignada al usuario del sistema.
 
 ## 4. El token
 
-Usuarios del sistema → `ads-cli-mura` → **Generar token**.
+Usuarios del sistema → `Conversions API System User` → **Generar token**.
 
-- App: `MURA Ads`.
+- App: `Conversions API Application`.
 - Caducidad: **Nunca**. Después, comprobar que de verdad pone «Nunca» y anotar
   la fecha: hubo un token que figuraba así y venció a los 60 días.
 - Permisos:
@@ -85,7 +77,7 @@ artefacto ni pegadas en el chat.
 ```
 META_APP_ID=
 META_BUSINESS_ID=1650663796846832
-META_ACCESS_TOKEN=          # token de ads-cli-mura
+META_ACCESS_TOKEN=          # token de Conversions API System User
 META_AD_ACCOUNT_ID=act_     # con el prefijo act_, obligatorio
 META_PAGE_ID=
 META_IG_USER_ID=
@@ -125,8 +117,8 @@ un `instagram_business_account.id`; el evento con `events_received: 1`.
 
 | Error | Qué falta |
 |---|---|
-| `(#200) Provide valid app ID` | La app no está asignada a `ads-cli-mura`, o se creó en otro portafolio |
-| `act_… not found` o lista vacía | `ads-cli-mura` no tiene la cuenta publicitaria asignada |
+| `(#200) Provide valid app ID` | La app no está asignada al usuario del sistema |
+| `act_… not found` o lista vacía | El usuario del sistema no tiene la cuenta publicitaria asignada |
 | `(#190) Invalid OAuth access token` | Token revocado o vencido: regenerar y revisar la caducidad |
 | Error 100 al listar campañas | Faltan permisos: regenerar con la lista completa |
 | Instagram vacío o `(#10)` | Falta `instagram_basic` o la cuenta de Instagram no está asignada |
