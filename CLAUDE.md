@@ -84,7 +84,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 | `docs/campanas-meta.md` | Plan de campañas, datos de referencia y briefing de creatividades. |
 | `docs/2026-10-09-reunion-sara.md` | Acuerdos con Sara y lo que queda abierto. |
 | `docs/cobros-sara.md` | Cómo se le cobra a Sara (productos y links en la subcuenta de Profit) y estado de cada link. |
-| `docs/meta-api.md` | App de Meta, token de usuario del sistema, variables de `.env` y reglas para operar los anuncios por API. |
+| `docs/meta-api.md` | Meta por API en modelo de agencia: `ads-cli`, app y token en Profit, activos compartidos por cada cliente, `.env`, comprobaciones con `curl` y reglas de uso. |
 | `docs/para-sonia-*.md` | Lo entregado a Sonia: aviso de pedido, formulario de devolución, estado antes de Meta (22/9). |
 | `docs/2026-07-29-llamada-sonia-henry.md` | Llamada técnica de julio: número de pedido, Nacex, tags. |
 | `tienda/` | Código de la web. Fuente única: `codigo-global-tienda.js` → `build.sh` genera `tracking-code-head.html`, `tracking-code-body.html` y `css-paginas-tienda.css`. Qué se pega y dónde, en `tienda/README.md`. |
@@ -103,9 +103,11 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
   escriben en el repo ni en un artefacto. Antes de cada commit o publicación,
   `grep -rE 'AMf-|pit-|EAA'` tiene que salir vacío (`EAA` es el prefijo de los
   tokens de Meta).
-- **Meta por API:** las credenciales van en un `.env` local (`META_ACCESS_TOKEN`,
-  `META_CAPI_TOKEN`, `META_AD_ACCOUNT_ID`…; lista completa en `docs/meta-api.md`).
-  Activar campañas o cambiar presupuestos, solo con confirmación de German.
+- **Meta por API:** un solo token, el del usuario del sistema `ads-cli` del
+  portafolio de Profit; por cliente cambian los ids. Todo en un `.env` local
+  (`META_ACCESS_TOKEN`, `META_CAPI_TOKEN`, `META_AD_ACCOUNT_ID`…; lista completa en
+  `docs/meta-api.md`). Se llama a la Graph API con `curl`. Activar campañas o
+  cambiar presupuestos, solo con confirmación de German.
 - **Copia antes de tocar:** antes de cualquier cambio por API, guarda una copia en
   `datos/backups/`.
 - **Tags:** un tag que ya está puesto no vuelve a disparar. Siempre se quita antes
@@ -153,7 +155,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 |---|---|
 | Propuesta de mantenimiento más barata (por incidencia u horas) | German + Sonia |
 | Cobro: productos y links de pago en la subcuenta de Profit (link A, 425 €), datos fiscales de Sara vía su gestor y factura de cada pago. Instrucciones y estado de los links en `docs/cobros-sara.md` | German + Henry |
-| Portafolio comercial de Meta, cuenta publicitaria con la tarjeta de MÛRA, Profit como socio, app `MURA Ads` y token de usuario del sistema (`docs/meta-api.md`) | German + Sara |
+| Meta por API, modelo de agencia: en el portafolio de Profit el usuario del sistema `ads-cli`, la app y el token; en el de MÛRA (donde Profit ya es admin) la cuenta publicitaria en EUR con la tarjeta de Sara, el píxel y compartir los activos con Profit como socio (`docs/meta-api.md`) | German; la tarjeta, Sara |
 | Banner de consentimiento + auditoría real de cookies | Sonia / Claude |
 | Clarity conectado al banner; píxel + CAPI con eventos propios | German instala, Claude el código |
 | Guiones sin diálogo y 6–8 creatividades de colección | German + Sara |

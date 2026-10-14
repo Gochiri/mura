@@ -1,122 +1,147 @@
-# Meta: app y token para operar los anuncios de MÛRA por API
+# Meta por API: el modelo de agencia
 
-*Para que Claude (o cualquier script) pueda crear campañas, leer resultados y
-subir creatividades desde fuera del Administrador de anuncios. La app se crea en
-el **portafolio comercial de MÛRA**, que es de Sara; Profit entra como socio.*
+*Un usuario del sistema, una app y un token en el **portafolio comercial de
+Profit Technology**, válidos para todos los clientes. Cada cliente comparte sus
+activos con Profit como socio. MÛRA es el primero que entra así. Las llamadas se
+hacen desde las sesiones de Claude con `curl` a la Graph API; no hay CLI.*
 
-**Una sola app sirve para anuncios e Instagram.** No hace falta crear dos: en el
-paso «Casos de uso» se marcan los dos. Dos apps significan dos tokens, dos
-revisiones y dos sitios donde se rompe lo mismo.
+Por qué así y no una app por cliente: con una app dentro del portafolio del
+cliente hay un usuario del sistema, una app y un token por cada uno, y hace falta
+que cada cliente nos haga administrador. Con el modelo de agencia el token es
+siempre el mismo y lo único que cambia entre clientes son los ids.
 
-## 0. Antes de la app: el Business Manager de MÛRA
+## 1. Una sola vez, en el portafolio de Profit
 
-Todo esto en [business.facebook.com](https://business.facebook.com), con la
-cuenta de Sara o con la de German si ya es administrador.
+En [business.facebook.com](https://business.facebook.com) con el portafolio de
+Profit Technology seleccionado.
 
-1. **Portafolio comercial** de MÛRA creado, con la **página de Facebook** y la
-   cuenta de **Instagram @bymurastudio** vinculadas (Configuración → Cuentas).
-2. **Cuenta publicitaria** nueva dentro del portafolio, en EUR, con la **tarjeta
-   de Sara** como método de pago. Es lo acordado: la inversión no pasa por Profit.
-3. **Píxel**: Configuración → Orígenes de datos → Conjuntos de datos → crear uno
-   («MÛRA web»). Anotar su id.
-4. **Profit como socio**: Configuración → Socios → Añadir socio → id del
-   portafolio de Profit Technology. Darle **administrador** en la cuenta
-   publicitaria, la página, el conjunto de datos y la cuenta de Instagram.
+1. **ID del portafolio:** Configuración del negocio → Información del negocio.
+   Es el que se les da a los clientes para que nos añadan como socio.
+   Hoy: `[ID_PORTAFOLIO_PROFIT]`.
+2. **Usuario del sistema:** Usuarios → Usuarios del sistema → Añadir. Nombre
+   `ads-cli` (sin espacios: con espacios falla después), rol **Administrador**.
+   Uno solo para toda la agencia.
+3. **La app:** [developers.facebook.com/apps](https://developers.facebook.com/apps)
+   → Crear app.
+   - Caso de uso: **Otro → Negocio**.
+   - Portafolio comercial: **el de Profit**. Si se elige otro, el token da
+     `(#200) Provide valid app ID`.
+   - Casos de uso: solo «Crear y administrar anuncios con la API de marketing».
+   - Nombre: `Profit Ads`. Correo de contacto: uno de Profit que se lea.
+4. **Asignar la app al usuario del sistema.** Business Suite → Configuración →
+   Cuentas → Apps → la app → Asignar acceso → `ads-cli` → control total. **Es el
+   paso que se salta todo el mundo**, y el error que da después no lo menciona.
+5. **Generar el token:** Usuarios del sistema → `ads-cli` → Generar token.
+   - App: `Profit Ads`.
+   - Caducidad: **Nunca**. Después de generarlo, comprobar que de verdad pone
+     «Nunca» y anotar la fecha: hubo un token que figuraba así y venció a los
+     60 días.
+   - Permisos:
+     - `business_management`
+     - `ads_management`
+     - `ads_read`
+     - `pages_show_list`
+     - `pages_read_engagement`
+     - `pages_manage_ads`
+     - `instagram_basic` (sin él no se listan publicaciones de Instagram, y
+       promocionar reels ya publicados es lo que mejor ha funcionado en otros
+       clientes)
+     - `instagram_manage_insights`
+     - `leads_retrieval` (por si hay formularios instantáneos)
+   - Se muestra una sola vez. Al apartado 3 directamente.
 
-Sin el paso 4, German trabaja con el usuario de Sara, y eso es lo que queremos
-evitar.
+## 2. Por cada cliente: MÛRA
 
-## 1. Crear la app (developers.facebook.com → Mis aplicaciones → Crear)
+Profit ya es administrador del portafolio de MÛRA, así que esto lo hace German
+sin pedirle nada a Sara, salvo la tarjeta.
 
-| Paso | Qué poner |
-|---|---|
-| Detalles | Nombre: `MURA Ads` (la Û no la admite). Correo de contacto: uno de MÛRA o de Profit que se lea; no un correo personal. |
-| Casos de uso | Marcar **«Gestionar anuncios»** (activa la Marketing API) y **«Gestionar todo en Instagram»** (activa la API de Instagram). |
-| Empresa | Elegir el **portafolio de MÛRA**. |
-| Requisitos | Aceptar lo que pida (normalmente solo las condiciones). |
-| Información general | Revisar y crear. |
+1. **Si no existen todavía, en el portafolio de MÛRA:**
+   - cuenta publicitaria en **EUR** y zona horaria **Madrid**, con la tarjeta de
+     Sara. Moneda y zona horaria no se pueden cambiar después, y la cuenta no se
+     puede sacar del portafolio;
+   - conjunto de datos (el píxel), «MÛRA web», en Orígenes de datos.
+2. **Compartir con Profit:** portafolio de MÛRA → Configuración → Socios →
+   Añadir socio → ID de Profit → compartir:
+   - cuenta publicitaria → administrar campañas;
+   - página de Facebook → acceso total (sin esto no se crean anuncios ni
+     formularios; es lo que más se olvida);
+   - cuenta de Instagram @bymurastudio;
+   - conjunto de datos / píxel.
+3. **En el portafolio de Profit:** Cuentas publicitarias → la cuenta de MÛRA →
+   Asignar acceso → `ads-cli` → administrar campañas. Lo mismo con la página, el
+   Instagram y el conjunto de datos.
+4. **No se genera token nuevo.** Con el mismo token, la cuenta de MÛRA tiene que
+   aparecer en `me/adaccounts` (apartado 4). Si aparece, el acceso quedó bien.
 
-Después, en la app:
-
-- **Configuración → Básica**: rellenar política de privacidad
-  (`https://www.stylebymura.com/politica-privacidad`) y categoría «Compras». Sin
-  esto la app no puede pasar a modo activo, aunque de momento no hace falta.
-- **Modo de desarrollo es suficiente** mientras la app solo toque activos del
-  propio portafolio (su cuenta publicitaria, su página, su Instagram). No hace
-  falta revisión de app ni acceso avanzado para eso.
-
-## 2. El token: usuario del sistema, no usuario personal
-
-Un token de persona caduca y muere si esa persona pierde el acceso. El de un
-usuario del sistema no.
-
-1. Business Manager → Configuración → **Usuarios → Usuarios del sistema → Añadir**.
-   Nombre `claude-ads`, rol **Administrador**.
-2. **Asignar activos**: la cuenta publicitaria, la página, el conjunto de datos y
-   la cuenta de Instagram, todos con control total.
-3. **Generar token** → elegir la app `MURA Ads` → caducidad **Nunca** → permisos:
-   - `ads_management`
-   - `ads_read`
-   - `business_management`
-   - `pages_read_engagement`
-   - `pages_show_list`
-   - `instagram_basic`
-   - `instagram_manage_insights`
-4. Copiar el token **una sola vez** y guardarlo donde dice el apartado 3. Meta no
-   lo vuelve a enseñar.
-
-Para la **API de Conversiones** hace falta otro token distinto: Events Manager →
-el conjunto de datos → Configuración → «Generar token de acceso». Ese va en
-`META_CAPI_TOKEN`.
-
-## 3. Dónde viven las credenciales
+## 3. Credenciales
 
 En un `.env` **local**, que `.gitignore` ya excluye. Nunca en el repo, en un
-artefacto ni pegado en el chat.
+artefacto ni pegadas en el chat. El token es uno; por cliente cambian los ids.
 
 ```
 META_APP_ID=
-META_APP_SECRET=
-META_ACCESS_TOKEN=        # token del usuario del sistema
-META_CAPI_TOKEN=          # token del conjunto de datos (Events Manager)
-META_AD_ACCOUNT_ID=act_   # con el prefijo act_
-META_PIXEL_ID=
+META_BUSINESS_ID_PROFIT=
+META_ACCESS_TOKEN=          # token de ads-cli, el de la agencia
+# ids de MÛRA
+META_AD_ACCOUNT_ID=act_     # con el prefijo act_, obligatorio
 META_PAGE_ID=
 META_IG_USER_ID=
+META_PIXEL_ID=
+META_CAPI_TOKEN=            # token del conjunto de datos: Events Manager → el conjunto → Configuración → Generar token
 ```
 
 Antes de cada commit: `grep -rE 'AMf-|pit-|EAA' .` tiene que salir vacío. Los
 tokens de Meta empiezan por `EAA`.
 
-## 4. Comprobar que funciona
+## 4. Comprobar
 
 Con las variables cargadas (`set -a; source .env; set +a`):
 
 ```bash
-# ¿El token ve la cuenta publicitaria?
-curl -s "https://graph.facebook.com/v21.0/me/adaccounts?fields=name,account_status,currency&access_token=$META_ACCESS_TOKEN"
+# 1. Cuentas a las que llega el token: la de MÛRA tiene que estar
+curl -s "https://graph.facebook.com/v21.0/me/adaccounts?fields=name,account_status,currency,timezone_name&access_token=$META_ACCESS_TOKEN"
 
-# ¿Puede leer campañas? (vacío si aún no hay)
+# 2. Campañas de MÛRA (vacío si aún no hay)
 curl -s "https://graph.facebook.com/v21.0/$META_AD_ACCOUNT_ID/campaigns?fields=name,status&access_token=$META_ACCESS_TOKEN"
 
-# ¿Llega a la cuenta de Instagram?
-curl -s "https://graph.facebook.com/v21.0/$META_PAGE_ID?fields=instagram_business_account&access_token=$META_ACCESS_TOKEN"
+# 3. Página e Instagram
+curl -s "https://graph.facebook.com/v21.0/$META_PAGE_ID?fields=name,instagram_business_account&access_token=$META_ACCESS_TOKEN"
 
-# ¿El píxel recibe eventos de prueba? (Events Manager → Probar eventos da el código)
+# 4. Publicaciones de Instagram (prueba de instagram_basic)
+curl -s "https://graph.facebook.com/v21.0/$META_IG_USER_ID/media?fields=id,media_type,permalink&limit=3&access_token=$META_ACCESS_TOKEN"
+
+# 5. Evento de prueba al píxel (el código sale de Events Manager → Probar eventos)
 curl -s -X POST "https://graph.facebook.com/v21.0/$META_PIXEL_ID/events" \
   -d "access_token=$META_CAPI_TOKEN" \
   -d 'data=[{"event_name":"PageView","event_time":'"$(date +%s)"',"action_source":"website","event_source_url":"https://www.stylebymura.com/","user_data":{"client_user_agent":"test"}}]' \
   -d "test_event_code=TESTXXXX"
 ```
 
-Lo esperado: la cuenta con `currency: EUR` y `account_status: 1`; el Instagram
-con un `id`; el evento de prueba con `events_received: 1`.
+Lo esperado: la cuenta con `currency: EUR` y `account_status: 1`; la página con
+un `instagram_business_account.id`; el evento con `events_received: 1`.
+
+| Error | Qué falta |
+|---|---|
+| `(#200) Provide valid app ID` | La app no está asignada a `ads-cli` (paso 1.4) |
+| `act_… not found` o no aparece en `me/adaccounts` | `ads-cli` no tiene la cuenta asignada en Profit (paso 2.3), o MÛRA no la compartió (2.2) |
+| `(#190) Invalid OAuth access token` | Token revocado o vencido: regenerar y revisar la caducidad |
+| Error 100 al listar campañas | Faltan permisos: regenerar con la lista completa |
+| Instagram vacío o `(#10)` | Falta `instagram_basic` o la cuenta de Instagram no está compartida |
 
 ## 5. Reglas de uso desde Claude
 
-- Crear campañas, conjuntos y anuncios **en pausa**; leer insights; subir
-  creatividades; pausar o retirar: sin pedir permiso.
-- **Activar** una campaña, **cambiar un presupuesto** o un método de pago:
-  siempre con confirmación expresa de German en el chat.
-- Las campañas siguen el plan de `campanas-meta.md`: una campaña de Ventas, un
-  conjunto, creatividades por colección.
+- Sin pedir permiso: crear campañas, conjuntos y anuncios **en pausa**, leer
+  insights, subir creatividades, pausar o retirar.
+- **Solo con confirmación expresa de German:** activar una campaña, cambiar un
+  presupuesto o un método de pago.
+- Las campañas siguen `campanas-meta.md`: una campaña de Ventas, un conjunto,
+  creatividades por colección.
+
+## 6. Más adelante
+
+- **Acceso avanzado.** La app arranca en modo desarrollo, con límites de
+  llamadas bajos. Para uno o dos clientes basta; cuando haya varios y se tiren
+  informes seguidos, pedir acceso avanzado a `ads_management` desde el panel de
+  la app. No hace falta ahora; se sabe cuando aparecen errores de límite.
+- **Otros clientes** entran con el mismo apartado 2: compartir activos, asignar
+  `ads-cli`, cambiar los ids del `.env`.
