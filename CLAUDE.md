@@ -83,6 +83,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 | `docs/2026-08-07-implementacion-ghl.md` | Registro técnico de todo lo hecho en GHL, por secciones (§1–§42). Es la fuente de verdad: búscalo antes de tocar un flujo. |
 | `docs/campanas-meta.md` | Plan de campañas, datos de referencia y briefing de creatividades. |
 | `docs/2026-10-09-reunion-sara.md` | Acuerdos con Sara y lo que queda abierto. |
+| `docs/cobros-sara.md` | Cómo se le cobra a Sara (productos y links en la subcuenta de Profit) y estado de cada link. |
 | `docs/para-sonia-*.md` | Lo entregado a Sonia: aviso de pedido, formulario de devolución, estado antes de Meta (22/9). |
 | `docs/2026-07-29-llamada-sonia-henry.md` | Llamada técnica de julio: número de pedido, Nacex, tags. |
 | `tienda/` | Código de la web. Fuente única: `codigo-global-tienda.js` → `build.sh` genera `tracking-code-head.html`, `tracking-code-body.html` y `css-paginas-tienda.css`. Qué se pega y dónde, en `tienda/README.md`. |
@@ -146,7 +147,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 | Pendiente | Quién |
 |---|---|
 | Propuesta de mantenimiento más barata (por incidencia u horas) | German + Sonia |
-| Datos fiscales de Sara (vía su gestor) y factura del 50 % de la implementación | Henry |
+| Cobro: productos y links de pago en la subcuenta de Profit (link A, 425 €), datos fiscales de Sara vía su gestor y factura de cada pago. Instrucciones y estado de los links en `docs/cobros-sara.md` | German + Henry |
 | Portafolio comercial de Meta, cuenta publicitaria con la tarjeta de MÛRA, accesos de administración | German + Sara |
 | Banner de consentimiento + auditoría real de cookies | Sonia / Claude |
 | Clarity conectado al banner; píxel + CAPI con eventos propios | German instala, Claude el código |
