@@ -52,8 +52,16 @@ Profit Technology seleccionado.
 
 ## 2. Por cada cliente: MÛRA
 
-Profit ya es administrador del portafolio de MÛRA, así que esto lo hace German
-sin pedirle nada a Sara, salvo la tarjeta.
+Profit **no** está como empresa en el portafolio de MÛRA: Sara dio acceso a
+Henry y a Oliver **como personas**. Eso basta, siempre que uno de los dos tenga
+**control total** (administrador) del portafolio de MÛRA. Desde ahí, esa persona
+añade a Profit como socio (punto 2) sin pedirle nada a Sara, salvo la tarjeta.
+Si solo tienen acceso parcial, Sara tiene que subirles el rol o compartir ella
+los activos.
+
+Por qué no basta con el acceso personal: el usuario del sistema `ads-cli` vive
+en el portafolio de Profit, y solo ve activos que estén compartidos **con el
+portafolio de Profit**, no con personas sueltas.
 
 1. **Si no existen todavía, en el portafolio de MÛRA:**
    - cuenta publicitaria en **EUR** y zona horaria **Madrid**, con la tarjeta de
