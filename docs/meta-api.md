@@ -67,7 +67,8 @@ portafolio de Profit**, no con personas sueltas.
    - cuenta publicitaria en **EUR** y zona horaria **Madrid**, con la tarjeta de
      Sara. Moneda y zona horaria no se pueden cambiar después, y la cuenta no se
      puede sacar del portafolio;
-   - conjunto de datos (el píxel), «MÛRA web», en Orígenes de datos.
+   - conjunto de datos (el píxel): **ya creado, ID `1799475611078369`**.
+     No se carga en la web hasta que esté el banner de consentimiento.
 2. **Que Profit tenga los activos.** ID del portafolio de MÛRA:
    **`1650663796846832`**. Dos vías:
    - **Vía A (recomendada): Profit los pide.** Portafolio de Profit →
@@ -106,7 +107,7 @@ META_BUSINESS_ID_MURA=1650663796846832
 META_AD_ACCOUNT_ID=act_     # con el prefijo act_, obligatorio
 META_PAGE_ID=
 META_IG_USER_ID=
-META_PIXEL_ID=
+META_PIXEL_ID=1799475611078369
 META_CAPI_TOKEN=            # token del conjunto de datos: Events Manager → el conjunto → Configuración → Generar token
 ```
 

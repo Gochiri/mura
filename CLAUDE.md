@@ -61,6 +61,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 - **Eventos:** la ficha y el carrito son código nuestro, así que `ViewContent` y
   `AddToCart` los emite `tienda/codigo-global-tienda.js`. `InitiateCheckout` y
   `Purchase` pasan por el checkout nativo: comprobar que la integración los manda.
+  Píxel de MÛRA: `1799475611078369` (creado; no se carga hasta tener el banner).
 - **Pruebas siempre en modo test.** Los pedidos de prueba del 20/9 (M100014,
   M100015) se hicieron en live y acabaron en el pipeline real; con el píxel serían
   compras falsas.
@@ -155,7 +156,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 |---|---|
 | Propuesta de mantenimiento más barata (por incidencia u horas) | German + Sonia |
 | Cobro: productos y links de pago en la subcuenta de Profit (link A, 425 €), datos fiscales de Sara vía su gestor y factura de cada pago. Instrucciones y estado de los links en `docs/cobros-sara.md` | German + Henry |
-| Meta por API, modelo de agencia: en el portafolio de Profit el usuario del sistema `ads-cli`, la app y el token; en el de MÛRA (ID `1650663796846832`; Henry y Oliver tienen acceso como personas; Profit aún no es socio) la cuenta publicitaria en EUR con la tarjeta de Sara y el píxel; después Profit pide los activos con ese ID y los aprueba alguien con control total en MÛRA (`docs/meta-api.md`) | German; la tarjeta, Sara |
+| Meta por API, modelo de agencia: en el portafolio de Profit el usuario del sistema `ads-cli`, la app y el token; en el de MÛRA (ID `1650663796846832`; Henry y Oliver tienen acceso como personas; Profit aún no es socio) la cuenta publicitaria en EUR con la tarjeta de Sara (el píxel ya está creado); después Profit pide los activos con ese ID y los aprueba alguien con control total en MÛRA (`docs/meta-api.md`) | German; la tarjeta, Sara |
 | Banner de consentimiento + auditoría real de cookies | Sonia / Claude |
 | Clarity conectado al banner; píxel + CAPI con eventos propios | German instala, Claude el código |
 | Guiones sin diálogo y 6–8 creatividades de colección | German + Sara |
