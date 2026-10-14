@@ -157,7 +157,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 |---|---|
 | Propuesta de mantenimiento más barata (por incidencia u horas) | German + Sonia |
 | Cobro: productos y links de pago en la subcuenta de Profit (link A, 425 €), datos fiscales de Sara vía su gestor y factura de cada pago. Instrucciones y estado de los links en `docs/cobros-sara.md` | German + Henry |
-| Meta por API, todo en el portafolio de MÛRA (ID `1650663796846832`; Henry y Oliver son administradores como personas): cuenta publicitaria en EUR con la tarjeta de Sara (el píxel ya existe), usuario del sistema `Conversions API System User` ya con los activos; falta el token de caducidad «Nunca» al `.env` local (`docs/meta-api.md`) | Henry u Oliver; la tarjeta, Sara |
+| Meta por API, todo en el portafolio de MÛRA (ID `1650663796846832`; Henry y Oliver son administradores como personas): cuenta publicitaria en EUR con la tarjeta de Sara (el píxel ya existe), usuario del sistema `Conversions API System User` con los activos y la app `MURA Ads` (`1139141968627775`); token con 6 permisos al `.env`; falta añadir el caso de uso de Instagram y regenerar; ID de portafolio por confirmar (1650663796846832 o 1239463275926698) (`docs/meta-api.md`) | Henry u Oliver; la tarjeta, Sara |
 | Banner de consentimiento + auditoría real de cookies | Sonia / Claude |
 | Clarity conectado al banner; píxel + CAPI con eventos propios | German instala, Claude el código |
 | Guiones sin diálogo y 6–8 creatividades de colección | German + Sara |

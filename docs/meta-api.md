@@ -1,7 +1,7 @@
 # Meta por API: app y token dentro del portafolio de MÛRA
 
-*Decisión de German (14/10): todo vive **en el portafolio de MÛRA** (ID
-`1650663796846832`). Usuario del sistema, app y token son de MÛRA y solo sirven
+*Decisión de German (14/10): todo vive **en el portafolio de MÛRA** (ID `1650663796846832` según German; la URL del Business Manager muestra
+`1239463275926698`: confirmar en Información del negocio). Usuario del sistema, app y token son de MÛRA y solo sirven
 para MÛRA. Henry y Oliver entran con su acceso personal al
 portafolio, que tiene que ser de **administrador** (control total). Las llamadas
 se hacen desde las sesiones de Claude con `curl` a la Graph API.*
@@ -40,11 +40,18 @@ sistema con rol Administrador.
 página MÛRA, cuenta publicitaria Mura, la app, el píxel Mura Pixel e Instagram
 @bymurastudio.
 
-## 3. Comprobación de la app
+## 3. La app: `MURA Ads`
 
-Configuración → Cuentas → Apps → `Conversions API Application`: anotar su ID
-para `META_APP_ID`. Si el token diera `(#200) Provide valid app ID`, revisar que
-la app siga asignada al usuario del sistema.
+Creada el 14/10 en developers.facebook.com, propiedad de MÛRA, ID
+**`1139141968627775`**, y asignada al usuario del sistema con acceso total. La
+`Conversions API Application` que Meta crea con el píxel **no sirve** para
+generar tokens (el botón sale gris con «una app debe formar parte de este
+portfolio»).
+
+Caso de uso de la app hoy: solo «Crear y administrar anuncios con la API de
+marketing». Por eso el token solo ofrece seis permisos. Para los de Instagram
+hay que añadir en developers.facebook.com → `MURA Ads` → Casos de uso →
+«Gestionar todo en Instagram», y regenerar el token.
 
 ## 4. El token
 
@@ -53,17 +60,12 @@ Usuarios del sistema → `Conversions API System User` → **Generar token**.
 - App: `Conversions API Application`.
 - Caducidad: **Nunca**. Después, comprobar que de verdad pone «Nunca» y anotar
   la fecha: hubo un token que figuraba así y venció a los 60 días.
-- Permisos:
-  - `business_management`
-  - `ads_management`
-  - `ads_read`
-  - `pages_show_list`
-  - `pages_read_engagement`
-  - `pages_manage_ads`
-  - `instagram_basic` (sin él no se listan las publicaciones de Instagram ni se
-    promocionan reels ya publicados)
-  - `instagram_manage_insights`
-  - `leads_retrieval` (por si hay formularios instantáneos)
+- Permisos disponibles con el caso de uso actual (los seis marcados el 14/10):
+  `ads_management`, `ads_read`, `business_management`, `pages_manage_ads`,
+  `pages_read_engagement`, `pages_show_list`.
+- Pendientes, cuando se añada el caso de uso de Instagram: `instagram_basic`
+  (sin él no se listan publicaciones ni se promocionan reels ya publicados),
+  `instagram_manage_insights`, `leads_retrieval`.
 - Se muestra una sola vez.
 
 Para la **API de Conversiones** hace falta otro token: Events Manager → el
@@ -75,8 +77,8 @@ En un `.env` **local**, que `.gitignore` ya excluye. Nunca en el repo, en un
 artefacto ni pegadas en el chat.
 
 ```
-META_APP_ID=
-META_BUSINESS_ID=1650663796846832
+META_APP_ID=1139141968627775
+META_BUSINESS_ID=1650663796846832   # a confirmar: la URL del Business Manager muestra 1239463275926698
 META_ACCESS_TOKEN=          # token de Conversions API System User
 META_AD_ACCOUNT_ID=act_     # con el prefijo act_, obligatorio
 META_PAGE_ID=
