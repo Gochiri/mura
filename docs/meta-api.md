@@ -68,13 +68,24 @@ portafolio de Profit**, no con personas sueltas.
      Sara. Moneda y zona horaria no se pueden cambiar después, y la cuenta no se
      puede sacar del portafolio;
    - conjunto de datos (el píxel), «MÛRA web», en Orígenes de datos.
-2. **Compartir con Profit:** portafolio de MÛRA → Configuración → Socios →
-   Añadir socio → ID de Profit → compartir:
+2. **Que Profit tenga los activos.** ID del portafolio de MÛRA:
+   **`1650663796846832`**. Dos vías:
+   - **Vía A (recomendada): Profit los pide.** Portafolio de Profit →
+     Configuración → Socios → «Solicitar acceso a activos de un socio» → pegar
+     `1650663796846832` → marcar los activos de abajo → enviar. La aprueba
+     quien tenga control total en MÛRA (Sara, o Henry u Oliver si son
+     administradores) desde el portafolio de MÛRA → Solicitudes.
+   - **Vía B: MÛRA los da.** Portafolio de MÛRA → Configuración → Socios →
+     Añadir socio → ID de Profit.
+
+   Activos y permiso:
    - cuenta publicitaria → administrar campañas;
    - página de Facebook → acceso total (sin esto no se crean anuncios ni
      formularios; es lo que más se olvida);
    - cuenta de Instagram @bymurastudio;
    - conjunto de datos / píxel.
+
+   Lo que no exista todavía (punto 1) no se puede pedir: primero se crea.
 3. **En el portafolio de Profit:** Cuentas publicitarias → la cuenta de MÛRA →
    Asignar acceso → `ads-cli` → administrar campañas. Lo mismo con la página, el
    Instagram y el conjunto de datos.
@@ -91,6 +102,7 @@ META_APP_ID=
 META_BUSINESS_ID_PROFIT=
 META_ACCESS_TOKEN=          # token de ads-cli, el de la agencia
 # ids de MÛRA
+META_BUSINESS_ID_MURA=1650663796846832
 META_AD_ACCOUNT_ID=act_     # con el prefijo act_, obligatorio
 META_PAGE_ID=
 META_IG_USER_ID=
