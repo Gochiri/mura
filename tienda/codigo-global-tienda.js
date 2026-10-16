@@ -52,6 +52,8 @@
        7. Cabecera inyectada + idioma   → rutas de tienda
       10. Banner de cookies y API       → todas las páginas
           de consentimiento
+      11. Clarity tras el consentimiento → todas menos checkout
+          (vacío hasta poner el ID)
 
    El redirect de /cart va lo primero y en las dos partes: cuanto
    antes salte, menos se ve el carrito viejo.
@@ -1061,6 +1063,56 @@
   }
 
   /* ============================================================
+     11 · MICROSOFT CLARITY — mapa de calor, tras el consentimiento
+     ============================================================
+     Clarity solo se carga si la clienta ha aceptado la categoría de
+     Análisis del banner (sección 10). Antes, ni se descarga el script
+     ni se instala ninguna de sus cookies. Si rechaza, o no ha elegido,
+     no hay petición a clarity.ms.
+
+     Mientras `CLARITY_ID` esté vacío este bloque no hace nada. Se
+     rellena con el ID del proyecto (Clarity → proyecto → Configuración
+     → Resumen → «ID del proyecto») y se regenera con `./build.sh`.
+
+     NO se carga en las rutas de EXCLUIR: checkout, post-compra y
+     devoluciones muestran datos personales (nombre, dirección,
+     número de pedido). Clarity enmascara los campos de formulario por
+     defecto, pero lo que se pinta en pantalla (el resumen del pedido,
+     por ejemplo) no tiene por qué estar enmascarado. Quitar una ruta
+     de la lista es decisión de German y de Sara, y exige revisar el
+     enmascarado en el panel de Clarity antes.
+
+     Si la clienta retira el permiso con Clarity ya cargado, la sección
+     10 borra `_clck` y `_clsk` y avisa a Clarity (`consentv2`), pero el
+     script sigue en memoria hasta que cambie de página. */
+
+  var CLARITY_ID = '';
+  var CLARITY_EXCLUIR = ['/checkout', '/thank-you', '/gracias', '/devoluciones'];
+
+  function cargarClarity() {
+    if (window.__muraClarity) return;
+    window.__muraClarity = true;
+    window.clarity = window.clarity || function () {
+      (window.clarity.q = window.clarity.q || []).push(arguments);
+    };
+    var e = window.muraConsent.estado();
+    window.clarity('consentv2', {
+      ad_Storage: e.marketing ? 'granted' : 'denied',
+      analytics_Storage: 'granted'
+    });
+    var t = document.createElement('script');
+    t.async = true;
+    t.src = 'https://www.clarity.ms/tag/' + CLARITY_ID;
+    (document.head || document.documentElement).appendChild(t);
+  }
+
+  function montarClarity() {
+    if (!CLARITY_ID || CLARITY_EXCLUIR.indexOf(path) !== -1) return;
+    if (!window.muraConsent) return;
+    window.muraConsent.alCambiar(function (e) { if (e.analitica) cargarClarity(); });
+  }
+
+  /* ============================================================
      A PARTIR DE AQUÍ, SOLO LO QUE NECESITA EL DOM
      ============================================================
      Todo lo anterior era CSS y puede correr en el <head>, antes de
@@ -1079,6 +1131,7 @@
   else arranqueConsent();
   setTimeout(arranqueConsent, 1200);
   setTimeout(enlazarPie, 3500);
+  montarClarity();
 
   if (esRejilla) montarBuscador();
   if (!esTienda) return;

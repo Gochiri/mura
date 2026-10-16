@@ -50,6 +50,31 @@ que no hay nada nuevo que pegar: basta regenerar y volver a pegar los dos
   auditoría real (ver `legal/README.md`). El texto del banner promete lo que
   esa política tiene que confirmar.
 
+## Clarity (16/10)
+
+Sección 11 del global. **Preparado y sin ID: no hace nada todavía.**
+
+Cuando German cree el proyecto en clarity.microsoft.com (dominio
+`stylebymura.com`):
+
+1. Copiar el **ID del proyecto** (Configuración → Resumen).
+2. Pegarlo en `tienda/codigo-global-tienda.js`, línea `var CLARITY_ID = '';`
+   (nos lo pasa a Claude y lo hace Claude, o se edita a mano y se ejecuta
+   `./build.sh`).
+3. Volver a pegar `tracking-code-head.html` y `tracking-code-body.html` en GHL.
+
+Se carga **solo si la clienta acepta Análisis** en el banner: antes no hay
+descarga ni cookies de Clarity. No se carga en `/checkout`, `/gracias`,
+`/thank-you` ni `/devoluciones` (datos personales en pantalla); quitar una de
+esas rutas exige revisar antes el enmascarado en el panel de Clarity.
+
+Probado en Chromium con un ID de prueba y la petición interceptada (14
+comprobaciones): sin decidir, rechazo y «solo Publicidad» no cargan; «Aceptar
+todas» y «solo Análisis» sí; la decisión guardada carga al recargar; las rutas
+excluidas no cargan; sin ID nunca carga. **Sin probar contra clarity.ms real**:
+al instalarlo, comprobar que llegan sesiones y que las cookies `_clck` y `_clsk`
+solo aparecen tras aceptar.
+
 ## Por qué además hay un CSS suelto (22/8)
 
 **GHL no sirve el Tracking Code del Head dentro del `<head>`.** Lo deja en
