@@ -26,8 +26,9 @@ Antes de pulsar nada en el banner había, en cookies:
 | `__cf_bm` | leadconnectorhq.com, filesafe.space | 30 min | Sí |
 | `msgsndr_id` | stylebymura.com | 12 meses | Sí, como técnica |
 
-En el almacenamiento local (comprobado **después** de aceptar; falta repetirlo
-antes, ver 4.1):
+En el almacenamiento local (las cuatro claves de GoHighLevel están **antes de
+aceptar**, comprobado por German el 16/10 en una ventana nueva sin tocar el
+banner; `mura_consent`, el carrito y el catálogo salen después):
 
 | Clave | Quién | Qué guarda | ¿Está en la política? |
 |---|---|---|---|
@@ -51,7 +52,8 @@ dice que lo que hay en el almacenamiento local «no identifica a la persona ni
 sale del navegador con ese fin» y que `msgsndr_id` «no mide audiencias». Con
 estas claves a la vista, esas frases hay que **verificarlas con GoHighLevel**
 (qué se hace con esos datos y si salen del navegador) antes de mantenerlas.
-**[DECIDE EL REVISOR]** si hay que clasificarlas como no técnicas.
+Ya consta que se instalan **antes** del consentimiento. **[DECIDE EL REVISOR]** si
+hay que clasificarlas como no técnicas.
 
 **3.2 `msgsndr_id` como técnica.** El argumento de la política es que sirve para
 enlazar un formulario o un pedido con la ficha de contacto. Ese enlace ocurre al
@@ -63,8 +65,10 @@ GoHighLevel permite desactivarla o retrasarla (pregunta abierta a Henry u Oliver
 
 ## 4. Qué hay que comprobar o responder
 
-1. **Almacenamiento local antes de aceptar.** Ventana de incógnito nueva, sin
-   pulsar el banner, y mirar Local storage: ¿existen ya `v2_` y `v3_`?
+1. ~~Almacenamiento local antes de aceptar.~~ **Hecho el 16/10:** `v2_contact_session`,
+   `v2_history`, `v2_session_history` y `v3_first_session_event` ya existen antes de
+   aceptar. Guardan un identificador de sesión y, en el historial, origen, referente,
+   palabras clave, `adSource`, parámetros de la URL y página de entrada.
 2. **GoHighLevel:** ¿se puede desactivar el seguimiento de atribución del sitio,
    o cargarlo solo tras el consentimiento? ¿Qué hace exactamente `msgsndr_id`?
 3. **¿Está publicada `/politica-cookies`?** Si el pie ya la abre, estos cambios
