@@ -79,6 +79,9 @@ Sección 12 del global + dos llamadas en `producto.html`. **Pixel ID
 1. `tracking-code-head.html` → Tracking Code → Head
 2. `tracking-code-body.html` → Tracking Code → Body
 3. `producto.html` → página `producto` → elemento `custom-code-oM1HT_mKKm`
+   (el archivo del repo estaba **desfasado** respecto a lo publicado; el 16/10 se
+   rehízo a partir del código que había en GHL, con buscador, colores, «Completa tu
+   look» y caché del catálogo, más las dos llamadas a Meta)
 
 Qué hace:
 - `PageView` en todas las páginas, tras aceptar.
@@ -96,7 +99,7 @@ Qué hace:
   GHL puede mandar eventos de la API de Conversiones por su cuenta; antes de
   añadir nada hay que ver qué manda, para no contar dos veces.
 
-Probado en Chromium con `fbevents.js` simulado (20 comprobaciones): sin decidir y
+Probado en Chromium con `fbevents.js` simulado (23 comprobaciones, con la ficha real: colores, look y título siguen funcionando): sin decidir y
 tras rechazar no se descarga nada; «solo Análisis» no activa Meta; con permiso
 llegan PageView, ViewContent y AddToCart con valor, moneda e id; el AddToCart
 hecho antes de aceptar no se envía; retirar el permiso corta los eventos y avisa

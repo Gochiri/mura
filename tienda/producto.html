@@ -2,40 +2,111 @@
   ============================================================
   MÛRA · FICHA DE PRODUCTO (/producto)
   ============================================================
-  Sustituye el contenido del elemento de código personalizado
-  `custom-code-oM1HT_mKKm` de la página "producto"
-  (cmPhl3N0IF3smLo8Oy8x). Se pega entero, tal cual.
+  Sustituye el contenido ENTERO del elemento de código
+  personalizado `custom-code-oM1HT_mKKm` de la página "producto"
+  (cmPhl3N0IF3smLo8Oy8x). Se pega tal cual.
 
-  ⚠️ YA NO LLEVA CSS, Y ESO ES A PROPÓSITO.
-  El sistema de diseño `.mura-*` vive en el Tracking Code global
-  (`tienda/codigo-global-tienda.js`) desde el 15/8. Aquí queda
-  solo el HTML y la lógica de la ficha. El global tiene que estar
-  pegado antes que esto.
+  16/10: sincronizado con lo que había publicado en GHL (buscador,
+  colores de la misma prenda, «Completa tu look», caché del
+  catálogo) más las dos llamadas a Meta (ViewContent y AddToCart).
+  Antes de esta fecha el archivo del repo estaba desfasado.
 
-  CAMBIO DEL 25/8 — desplegable «Talla y ajuste»:
-  Nuevo acordeón entre «Descripción» y «Composición y cuidados».
-  Su contenido depende de las tallas que devuelve el worker:
-  - Si alguna talla contiene «única» → versión talla única, sin
-    tabla (diseñada para adaptarse aprox. a tallas S–L).
-  - Si no → versión S–XL con la tabla de medidas corporales.
-  En ambas: medidas de la modelo (1,65 m · 87 · 61 · 94) y enlace
-  de dudas por WhatsApp (wa.me/34637681234, mensaje prerrellenado).
-  Todo lo demás queda byte a byte como estaba.
-
-  CAMBIO DEL 15/8:
-  El enlace "Ver carrito" del aviso "Esta pieza ya forma parte de
-  tu selección" iba a /checkout: saltaba directo al formulario de
-  pago sin pasar por la revisión del carrito. Ahora va a /carrito.
-
-  CÓMO FUNCIONA (para quien llegue después):
-  - Los productos vienen de un worker de Cloudflare:
-    https://mura-productos.germanborrello-d78.workers.dev/products
-    y la pieza se elige con ?id=… en la URL.
-  - "Añadir a mi selección" escribe en el almacén del carrito de
-    la tienda de GHL (localStorage cart_details_…), el mismo que
-    leen /carrito y el checkout.
+  Lleva su propia copia del CSS entre las marcas mura:css; el
+  global también lo trae, así que están duplicados pero son
+  idénticos.
   ============================================================
 -->
+<!-- mura:css:inicio -->
+<style data-mura="sistema">
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Jost:wght@200;300;400&display=swap');
+
+/* ---- bloque `sistema` del código global ---- */
+.mura, .mura *, .mura *::before, .mura *::after { box-sizing: border-box; }
+.mura { background: #F0EEE8; color: #1D1B18; font-family: 'Jost', sans-serif; font-weight: 300; margin: 0; -webkit-font-smoothing: antialiased; }
+.mura h1, .mura h2, .mura h3, .mura .mura-serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; margin: 0; }
+.mura p { margin: 0; }
+.mura a { color: #1D1B18; text-decoration: none; transition: color .2s ease; }
+.mura a:hover { color: #6E6A61; }
+.mura { width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); overflow-x: clip; }
+.mura-nav { position: sticky; top: 0; z-index: 50; background: rgba(240,238,232,.92); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(29,27,24,.08); }
+.mura-nav, .mura-nav * { box-sizing: border-box; }
+.mura-nav a { text-decoration: none !important; color: #1D1B18; transition: color .2s ease; }
+.mura-nav a:hover { color: #6E6A61; }
+.mura-nav { font-family: 'Jost', sans-serif; font-weight: 300; }
+.mura-nav-in { max-width: 1440px; margin: 0 auto; padding: 0 clamp(20px,4vw,56px); height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.mura-logo { font-family: 'Cormorant Garamond', serif !important; font-size: 26px; font-weight: 500; letter-spacing: .32em; color: #1D1B18 !important; }
+.mura-links { display: flex; align-items: center; gap: clamp(16px,2.6vw,38px); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; }
+.mura-links a { color: #55524B; }
+.mura-links a.on { color: #1D1B18; }
+.mura-cart { font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: #1D1B18 !important; white-space: nowrap; }
+@media (max-width: 719px) { .mura-links a.hm { display: none; } }
+@media (max-width: 440px) { .mura-nav-in { padding: 0 16px; gap: 12px; } .mura-logo { font-size: 21px; letter-spacing: .24em; } .mura-links { gap: 14px; font-size: 10.5px; } .mura-cart { font-size: 10.5px; letter-spacing: .12em; } }
+.mura-label { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: #8A857B; }
+.mura-btn { display: flex; align-items: center; justify-content: center; height: 56px; border: none; background: #1D1B18; color: #F0EEE8 !important; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .24em; text-transform: uppercase; font-weight: 300; transition: background .2s ease; width: 100%; }
+.mura-btn:hover { background: #38352F; }
+.mura-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px,100%),1fr)); gap: clamp(28px,3vw,44px) clamp(14px,1.6vw,22px); }
+.mura-card { display: flex; flex-direction: column; gap: 16px; color: #1D1B18 !important; }
+.mura-card-img { position: relative; aspect-ratio: 3/4; background: #E3DFD6; overflow: hidden; }
+.mura-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mura-card-name { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 500; text-align: center; }
+.mura-card-price { font-size: 12px; letter-spacing: .14em; color: #55524B; text-align: center; }
+.mura-filtros { display: flex; justify-content: center; gap: clamp(18px,3vw,36px); flex-wrap: wrap; padding: 0 20px clamp(36px,4vw,56px); }
+.mura-filtros button { border: none; background: transparent; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase; font-weight: 300; color: #8A857B; padding: 10px 2px 8px; border-bottom: 1px solid transparent; }
+.mura-filtros button.on { color: #1D1B18; border-bottom-color: #1D1B18; }
+.mura-talla { min-width: 52px; height: 48px; padding: 0 14px; border: 1px solid rgba(29,27,24,.25); background: transparent; color: #1D1B18; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .14em; font-weight: 300; }
+.mura-talla.on { border-color: #1D1B18; background: #1D1B18; color: #F0EEE8; }
+.mura-talla:disabled { color: #B9B4A9; text-decoration: line-through; cursor: default; }
+.mura-acc { border-bottom: 1px solid rgba(29,27,24,.14); }
+.mura-acc > button { width: 100%; display: flex; justify-content: space-between; align-items: center; border: none; background: transparent; cursor: pointer; padding: 20px 2px; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; font-weight: 300; color: #1D1B18; }
+.mura-acc > div { display: none; padding: 0 2px 24px; font-size: 13.5px; line-height: 2; color: #55524B; white-space: pre-line; }
+.mura-acc.open > div { display: block; }
+.mura-colores { margin: -10px 0 34px; }
+.mura-colores-fila { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.mura-color-thumb { display: block; width: 56px; height: 72px; overflow: hidden; background: #E3DFD6; border: 1px solid #D8D4CC; padding: 0; transition: border-color .2s ease; }
+.mura-color-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+a.mura-color-thumb:hover, a.mura-color-thumb:focus-visible { border-color: #8A857B; outline: none; }
+.mura-color-thumb.on { border-color: #1D1B18; }
+.mura-look { margin-top: 0; }
+.mura-look.mura-look-col { margin-top: clamp(30px,3vw,42px); }
+.mura-look > .mura-label { display: block; margin-bottom: clamp(18px,2vw,26px); color: #1D1B18; }
+.mura-look-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px clamp(10px,1.4vw,18px); }
+.mura-look .mura-card { gap: 12px; }
+.mura-look .mura-card-name { font-size: 16px; }
+.mura-look .mura-card-price { font-size: 11px; }
+@media (max-width: 560px) { .mura-look-grid { grid-template-columns: 1fr 1fr; gap: 28px 12px; } }
+.mura-foot { background: #F0EEE8; color: #1D1B18; font-family: 'Jost', sans-serif; font-weight: 300; -webkit-font-smoothing: antialiased; }
+.mura-foot, .mura-foot * { box-sizing: border-box; }
+.mura-foot p { margin: 0; }
+.mura-foot a { color: #1D1B18; text-decoration: none; transition: color .2s ease; }
+.mura-foot a:hover { color: #6E6A61; }
+.mura-foot .mura-serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; margin: 0; }
+.mura-foot { border-top: 1px solid rgba(29,27,24,.12); }
+.mura-foot-in { max-width: 1440px; margin: 0 auto; padding: clamp(70px,8vw,110px) clamp(20px,4vw,56px) 30px; }
+.mura-foot-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: clamp(36px,5vw,72px); }
+.mura-foot-h { font-size: 11px; letter-spacing: .28em; text-transform: uppercase; font-weight: 400; margin-bottom: 18px; }
+.mura-foot-c { display: flex; flex-direction: column; gap: 12px; font-size: 13px; }
+.mura-foot-c a { color: #55524B; }
+.mura-foot-c a:hover { color: #1D1B18; }
+</style>
+<!-- mura:css:fin -->
+<!-- CSS propio de la página -->
+<style>
+
+.mura-busql { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.mura-busql-lupa { border: none; background: transparent; cursor: pointer; padding: 0; display: inline-flex; align-items: center; color: #8A857B; line-height: 0; }
+.mura-busql-lupa svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.4; }
+.mura-busql-lupa:hover, .mura-busql.open .mura-busql-lupa { color: #1D1B18; }
+.mura-busql-caja { display: none; align-items: center; gap: 12px; width: 220px; max-width: 100%; margin: 0; border-bottom: 1px solid rgba(29,27,24,.25); padding-bottom: 6px; transition: border-color .2s ease; }
+.mura-busql.open .mura-busql-caja { display: flex; }
+.mura-busql-caja:focus-within { border-bottom-color: #1D1B18; }
+.mura-busql-caja input { flex: 1 1 auto; min-width: 0; border: none; background: transparent; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 300; letter-spacing: .1em; text-transform: none; padding: 0; outline: none; }
+.mura-busql-caja input::placeholder { color: #9B968C; letter-spacing: .16em; text-transform: uppercase; font-size: 11px; }
+.mura-busql-caja input::-webkit-search-cancel-button, .mura-busql-caja input::-webkit-search-decoration { -webkit-appearance: none; appearance: none; display: none; }
+.mura-busql-x { border: none; background: transparent; cursor: pointer; color: #1D1B18; padding: 0 2px; display: inline-flex; align-items: center; line-height: 0; }
+.mura-busql-x svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.4; }
+.mura-busql-x:hover { color: #6E6A61; }
+</style>
 <div class="mura">
 <nav class="mura-nav"><div class="mura-nav-in">
 <a href="/" class="mura-logo">MÛRA</a>
@@ -43,18 +114,34 @@
 <a href="/carrito" class="mura-cart">Carrito<span class="mura-cart-w" style="display:none"> (<span class="mura-cart-n">0</span>)</span></a>
 </div></nav>
 <script>(function(){try{var d=JSON.parse(localStorage.getItem('cart_details_rlc7iAyGF4U1nfwAJOJQ')||'{"products":[]}');var n=(d.products||[]).reduce(function(a,x){return a+(x.quantity||0)},0);document.querySelectorAll('.mura-cart-n').forEach(function(e){e.textContent=n});document.querySelectorAll('.mura-cart-w').forEach(function(e){e.style.display=n>0?'inline':'none'});}catch(e){}})();</script>
-<div style="max-width:1440px;margin:0 auto;padding:clamp(20px,3vw,40px) clamp(20px,4vw,56px) 0;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8A857B;display:flex;gap:10px">
+<div style="max-width:1440px;margin:0 auto;padding:clamp(20px,3vw,40px) clamp(20px,4vw,56px) 0;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8A857B;display:flex;align-items:center;flex-wrap:wrap;gap:10px">
 <a href="/prendas" style="color:#8A857B">Prendas</a><span>/</span><span style="color:#55524B" id="md-migas"></span>
+<div class="mura-busql" id="md-busql">
+<button type="button" class="mura-busql-lupa" aria-label="Buscar prendas" aria-expanded="false"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6"></circle><line x1="13.5" y1="13.5" x2="18" y2="18"></line></svg></button>
+<form class="mura-busql-caja" action="/prendas" method="get">
+<input type="search" name="q" placeholder="Buscar" aria-label="Buscar prendas" autocomplete="off">
+<button type="button" class="mura-busql-x" aria-label="Cerrar la búsqueda"><svg viewBox="0 0 20 20" aria-hidden="true"><line x1="4" y1="4" x2="16" y2="16"></line><line x1="16" y1="4" x2="4" y2="16"></line></svg></button>
+</form>
 </div>
-<section style="max-width:1440px;margin:0 auto;padding:clamp(24px,3vw,48px) clamp(20px,4vw,56px) clamp(80px,10vw,130px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:clamp(36px,5vw,80px);align-items:start">
-<div style="display:flex;flex-direction:column;gap:14px">
+</div>
+<script>(function(){
+var w=document.getElementById('md-busql'),inp=w.querySelector('input'),lupa=w.querySelector('.mura-busql-lupa');
+function abrir(a){w.classList.toggle('open',a);lupa.setAttribute('aria-expanded',a?'true':'false');if(a)inp.focus();else inp.value='';}
+lupa.onclick=function(){abrir(!w.classList.contains('open'))};
+w.querySelector('.mura-busql-x').onclick=function(){abrir(false)};
+inp.addEventListener('keydown',function(e){if(e.key==='Escape')abrir(false)});
+w.querySelector('form').addEventListener('submit',function(e){if(!inp.value.trim()){e.preventDefault();inp.focus();}});
+})();</script>
+<section id="md-ficha" style="max-width:1440px;margin:0 auto;padding:clamp(24px,3vw,48px) clamp(20px,4vw,56px) clamp(80px,10vw,130px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:clamp(36px,5vw,80px);align-items:start">
+<div id="md-fotos" style="display:flex;flex-direction:column;gap:14px">
 <div style="position:relative;aspect-ratio:3/4;background:#E3DFD6;overflow:hidden"><img id="md-img" src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none"></div>
 <div id="md-thumbs" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px"></div>
 </div>
-<div style="display:flex;flex-direction:column;max-width:520px">
+<div id="md-info" style="display:flex;flex-direction:column;max-width:520px">
 <div class="mura-label" style="letter-spacing:.28em;margin-bottom:18px">Cápsula 01 · Colección limitada</div>
 <h1 style="font-size:clamp(32px,3.6vw,46px);margin-bottom:14px" id="md-nombre"></h1>
 <div style="font-size:17px;letter-spacing:.08em;margin-bottom:36px" id="md-precio"></div>
+<div id="md-colores" class="mura-colores" style="display:none"></div>
 <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#55524B;margin-bottom:14px">Elegir talla</div>
 <div id="md-tallas" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px"></div>
 <div id="md-ultimas" style="display:none;font-size:11.5px;color:#8A857B;margin-bottom:8px">Últimas piezas disponibles.</div>
@@ -69,6 +156,10 @@
 <div style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;margin-bottom:14px">Colección limitada</div>
 <p class="mura-serif" style="font-size:18px;font-style:italic;line-height:1.7;color:#38352F">Esta pieza forma parte de una cápsula de producción limitada. Una vez agotada, no volverá a producirse.<br>En MÛRA cada colección existe una sola vez.</p>
 </div>
+</div>
+<div id="md-look" class="mura-look" style="display:none" aria-labelledby="md-look-t">
+<div class="mura-label" id="md-look-t">Completa tu look</div>
+<div class="mura-look-grid" id="md-look-grid"></div>
 </div>
 </section>
 <footer class="mura-foot"><div class="mura-foot-in">
@@ -86,16 +177,103 @@
 <p style="text-align:center;font-size:10.5px;letter-spacing:.14em;color:#9B968C">© MÛRA 2026 · Todos los derechos reservados.</p>
 </div></footer>
 <script>(function(){
-/* Eventos de Meta: se piden al global (tracking code). Si el global aún no ha
-   cargado, la llamada queda en cola y él la recoge. Se consulta
-   window.muraMeta en cada llamada, no una vez: el global lo sustituye al cargarse. Sin permiso de Publicidad
-   no se envía nada: lo decide el global, no esta página. */
+/* Eventos de Meta (16/10): se piden al global (tracking code). Si el global aún no
+   ha cargado, la llamada queda en cola y él la recoge. Se consulta window.muraMeta
+   en cada llamada, no una vez: el global lo sustituye al cargarse. Sin permiso de
+   Publicidad no se envía nada: lo decide el global, no esta página. */
 window.muraMeta=window.muraMeta||{q:[],track:function(){this.q.push(arguments)}};
 function meta(n,d){return window.muraMeta.track(n,d)}
 var API='https://mura-productos.germanborrello-d78.workers.dev';
 var id=new URLSearchParams(location.search).get('id');
-var pieza=null,talla=null,img=0;
+var pieza=null,talla=null,img=0,piezas=[],modelo='';
 function dec(s){var t=document.createElement('textarea');t.innerHTML=s||'';return t.value;}
+function llano(s){s=(s||'').toLowerCase().normalize('NFD');var r='';for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);if(c<768||c>879)r+=s.charAt(i);}return r.replace(/\s+/g,' ').trim();}
+function campo(html,k){var txt=(html||'').replace(/<[^>]*>/g,'\n');var m=txt.match(new RegExp(k+':\\s*([^·\\n]+)','i'));return m?m[1].trim():'';}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+var cacheDesc={};
+function descDe(p){if(cacheDesc[p.id]===undefined)cacheDesc[p.id]=dec(p.descripcion);return cacheDesc[p.id];}
+function modeloDe(p){return campo(descDe(p),'Modelo');}
+function colorDe(p){return campo(descDe(p),'Color')||p.nombre;}
+function tituloDe(p){return modeloDe(p)||p.nombre;}
+function sinModelo(html){return html.replace(/Modelo:\s*[^·<\n]+?\s*(?:·\s*|(?=<|\n|$))/i,'').replace(/\s*·\s*(<\/|\n|$)/,'$1');}
+function sacarLook(html){
+ var mk=/(<(?:h[1-6]|p)[^>]*>(?:\s*<(?:strong|b|em)[^>]*>)*\s*)?Completa tu look\s*:?(?:\s*<\/(?:strong|b|em)>)*/i,m=html.match(mk);
+ if(!m)return {nombres:[],html:html};
+ var ini=m.index,fin=ini+m[0].length,rest=html.slice(fin),nombres=[],corte=0;
+ var tok=/<\/?([a-z0-9]+)[^>]*>|\n|[^<\n]+/gi,t;
+ while((t=tok.exec(rest))){
+  if(t[0].charAt(0)==='<'){
+   if(/^h[1-6]$/i.test(t[1])&&t[0].charAt(1)!=='/')break;
+   continue;
+  }
+  var s=t[0].replace(/ /g,' ').replace(/^[\s·•\-–—*]+/,'').trim();
+  if(!s)continue;
+  if(s.length>60||/\.$/.test(s)||nombres.length>=12)break;
+  nombres.push(s);corte=t.index+t[0].length;
+ }
+ if(!nombres.length)return {nombres:[],html:html};
+ return {nombres:nombres,html:html.slice(0,ini)+rest.slice(corte)};
+}
+function buscarPieza(nombre){
+ var n=llano(nombre);if(!n)return null;
+ var i,p;
+ for(i=0;i<piezas.length;i++){p=piezas[i];if(llano(p.nombre)===n)return p;}
+ for(i=0;i<piezas.length;i++){p=piezas[i];if(p.id!==pieza.id&&llano(modeloDe(p))===n)return p;}
+ return null;
+}
+function precioMin(p){return Math.min.apply(null,(p.tallas||[]).map(function(t){return t.precio}));}
+
+var CAT_KEY='mura_catalogo_v1',CAT_TTL=5*60*1000;
+function catalogo(){
+ try{var c=JSON.parse(sessionStorage.getItem(CAT_KEY)||'null');
+  if(c&&c.t&&Date.now()-c.t<CAT_TTL&&c.piezas&&c.piezas.length)return Promise.resolve(c.piezas);}catch(e){}
+ return fetch(API+'/products').then(function(r){return r.json()}).then(function(d){
+  var ps=d.piezas||[];
+  try{if(ps.length)sessionStorage.setItem(CAT_KEY,JSON.stringify({t:Date.now(),piezas:ps}));}catch(e){}
+  return ps;
+ });
+}
+function pintarColores(){
+ var box=document.getElementById('md-colores');
+ try{
+  if(!modelo){box.style.display='none';return;}
+  var mm=llano(modelo),hermanos=piezas.filter(function(p){return llano(modeloDe(p))===mm});
+  if(hermanos.length<2){box.style.display='none';return;}
+  var h='<div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#55524B">Color — <span style="color:#1D1B18">'+esc(colorDe(pieza))+'</span></div><div class="mura-colores-fila">';
+  hermanos.forEach(function(p){
+   var src=(p.imagenes||[]).filter(Boolean)[0]||'',lbl=esc(modelo+' en '+colorDe(p));
+   if(p.id===pieza.id)h+='<span class="mura-color-thumb on" aria-current="true"><img src="'+src+'" alt="'+lbl+'"></span>';
+   else h+='<a class="mura-color-thumb" href="/producto?id='+encodeURIComponent(p.id)+'" aria-label="'+lbl+'"><img src="'+src+'" alt=""></a>';
+  });
+  box.innerHTML=h+'</div>';box.style.display='block';
+ }catch(e){box.style.display='none';}
+}
+
+function colocarLook(){
+ try{
+  var look=document.getElementById('md-look'),sec=document.getElementById('md-ficha'),fotos=document.getElementById('md-fotos');
+  var cols=(getComputedStyle(sec).gridTemplateColumns||'').trim().split(/\s+/).length;
+  var dest=cols>1?fotos:sec;
+  look.classList.toggle('mura-look-col',cols>1);
+  if(look.parentNode!==dest)dest.appendChild(look);
+ }catch(e){}
+}
+function pintarLook(nombres){
+ var look=document.getElementById('md-look');
+ try{
+  var vistos={},sel=[];
+  (nombres||[]).forEach(function(n){var p=buscarPieza(n);if(p&&p.id!==pieza.id&&!vistos[p.id]&&sel.length<4){vistos[p.id]=1;sel.push(p);}});
+  if(!sel.length){look.style.display='none';return;}
+  var g=document.getElementById('md-look-grid');g.innerHTML='';
+  sel.forEach(function(p){
+   var sold=p.estado==='agotado',src=(p.imagenes||[]).filter(Boolean)[0];
+   var im=src?'<img src="'+src+'" alt="'+p.nombre+'" loading="lazy" style="opacity:'+(sold?'.45':'1')+'">':'';
+   g.insertAdjacentHTML('beforeend','<a class="mura-card" href="/producto?id='+encodeURIComponent(p.id)+'"><div class="mura-card-img">'+im+'</div><div class="mura-card-name">'+p.nombre+'</div><div class="mura-card-price">'+(sold?'—':precioMin(p)+' €')+'</div></a>');
+  });
+  colocarLook();look.style.display='block';
+  window.addEventListener('resize',colocarLook);
+ }catch(e){look.style.display='none';}
+}
 function toText(html){var d=document.createElement('div');d.innerHTML=html;
  d.querySelectorAll('li').forEach(function(li){li.textContent='· '+li.textContent+'\n'});
  d.querySelectorAll('p,h3').forEach(function(p){p.textContent=p.textContent+'\n\n'});
@@ -115,12 +293,13 @@ function tallaAjuste(p){
   +'<p style="margin:0;font-size:12.5px;color:#55524B;line-height:1.8">La modelo mide 1,65 m y lleva la talla S.</p>'
   +modelo+tabla
   +'<p style="margin:16px 0 0;font-size:12.5px;color:#8A857B;line-height:1.8">Las medidas indicadas en esta tabla corresponden al cuerpo y no a las medidas de la prenda. El ajuste puede variar ligeramente según el diseño, el tejido y el patrón de cada pieza.</p>'
+  +'<p style="margin:10px 0 0;font-size:12.5px;color:#8A857B;line-height:1.8">Os recordamos que alguna de nuestras piezas son de corte amplio, revisad bien esta tabla para poder confirmar qué talla se ajusta mejor a vuestro cuerpo.</p>'
   +dudas+'</div>';
 }
 function render(){
  var p=pieza,imgs=(p.imagenes||[]).filter(Boolean),sold=p.estado==='agotado';
- document.getElementById('md-migas').textContent=p.nombre;
- document.getElementById('md-nombre').textContent=p.nombre;
+ document.getElementById('md-migas').textContent=tituloDe(p);
+ document.getElementById('md-nombre').textContent=tituloDe(p);
  var sel=null;p.tallas.forEach(function(t){if(t.talla===talla)sel=t});
  var min=Math.min.apply(null,p.tallas.map(function(t){return t.precio}));
  document.getElementById('md-precio').textContent=(sel?sel.precio:min)+' €';
@@ -165,11 +344,13 @@ document.getElementById('md-add').onclick=function(){
  document.getElementById('md-added').style.display='block';
 };
 fetch(API+'/products?id='+encodeURIComponent(id||'')).then(function(r){return r.json()}).then(function(d){
- var ps=d.piezas||[];pieza=null;
+ var ps=d.piezas||[];pieza=null;piezas=ps;
  ps.forEach(function(p){if(p.id===id)pieza=p});
  if(!pieza)pieza=ps[0];
  if(!pieza)return;
- var html=dec(pieza.descripcion),ix=html.search(/<h3[^>]*>\s*(Composición|Cuidados)/i);
+ var html=dec(pieza.descripcion),look={nombres:[],html:html};
+ try{modelo=modeloDe(pieza);look=sacarLook(html);html=sinModelo(look.html);}catch(e){modelo='';}
+ var ix=html.search(/<h3[^>]*>\s*(Composición|Cuidados)/i);
  var desc=ix>-1?toText(html.slice(0,ix)):toText(html),comp=ix>-1?toText(html.slice(ix)):'';
  var a=document.getElementById('md-accs');
  a.innerHTML=acc('Descripción',desc||'')+acc('Talla y ajuste',tallaAjuste(pieza))+(comp?acc('Composición y cuidados',comp):'')+acc('Entrega y devoluciones','Cada pedido se prepara cuidadosamente desde nuestro estudio en 1-2 días laborables. Dispones de 15 días desde la recepción para solicitar una devolución.');
@@ -178,8 +359,11 @@ fetch(API+'/products?id='+encodeURIComponent(id||'')).then(function(r){return r.
   b.querySelector('span').textContent=open?'−':'+';
  }});
  render();
- var min=Math.min.apply(null,pieza.tallas.map(function(t){return t.precio}));
- meta('ViewContent',{content_ids:[pieza.id],content_type:'product',content_name:pieza.nombre,value:min,currency:'EUR'});
+ meta('ViewContent',{content_ids:[pieza.id],content_type:'product',content_name:pieza.nombre,value:precioMin(pieza),currency:'EUR'});
+
+ if(modelo||look.nombres.length){
+  catalogo().then(function(ps){if(ps&&ps.length)piezas=ps;pintarColores();pintarLook(look.nombres);}).catch(function(){});
+ }
 });
 })();</script>
 </div>
