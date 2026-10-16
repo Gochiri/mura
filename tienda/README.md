@@ -66,7 +66,7 @@ esas rutas exige revisar antes el enmascarado en el panel de Clarity.
 Probado en Chromium con un ID de prueba y la petición interceptada (14
 comprobaciones): sin decidir, rechazo y «solo Publicidad» no cargan; «Aceptar
 todas» y «solo Análisis» sí; la decisión guardada carga al recargar; las rutas
-excluidas no cargan; sin ID nunca carga. **Sin probar contra clarity.ms real**:
+excluidas no cargan; sin ID nunca carga. **En producción (16/10, German, móvil):** tras aceptar se descarga `scripts.clarity.ms/…/clarity.js` desde stylebymura.com con un 200. **Falta confirmar** que antes de aceptar no hay ninguna petición ni cookies `_clck`/`_clsk`, y que la sesión llega al panel. **Sin probar del todo contra clarity.ms real**:
 al instalarlo, comprobar que llegan sesiones y que las cookies `_clck` y `_clsk`
 solo aparecen tras aceptar.
 
