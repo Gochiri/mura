@@ -111,7 +111,7 @@ píxel `1799475611078369`, sin ningún parámetro `ud[...]` (sin datos personale
 `_fbp` solo tras aceptar. Con un bloqueador de rastreo (Edge «Prevención de
 seguimiento» o extensiones) `fbevents.js` sale con `ERR_BLOCKED_BY_CLIENT` y no se
 envía nada: es lo esperado y justifica el paso 2 (servidor).
-**Falta ver los tres eventos en Events Manager.** Para hacerlo desde → Probar eventos →
+**Vistos en Events Manager → Probar eventos el 16/10:** `PageView`, `Ver contenido` y `Agregar al carrito`, Procesados, origen Navegador. Pendiente de aclarar: `PageView` sale marcado «Evento personalizado» y hay un triángulo de aviso en la cabecera. Para repetir la prueba desde → Probar eventos →
 «Probar eventos del navegador» con la URL de la web, aceptando Publicidad. Ojo:
 los eventos de esa herramienta cuentan como reales en el píxel aunque salgan en
 la pestaña de pruebas; antes de campañas es inocuo, pero no conviene hacer
