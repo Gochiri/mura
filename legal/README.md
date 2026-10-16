@@ -23,6 +23,11 @@ misma calidad que las otras tres.
 página no existe.** Hoy es un enlace roto en producción, en las cinco páginas que
 llevan pie. Es el único de los cinco enlaces legales que no abre nada.
 
+> **Nota del 16/10:** la versión del Drive con fecha 4/9 ya lleva una comprobación
+> real de cookies (lo de abajo sobre la tabla «de comportamiento habitual» es
+> anterior). Tras el banner hay cambios pendientes y dos puntos por decidir:
+> `legal/politica-cookies-cambios-2026-10-16.md`.
+
 ### Antes de publicarla hay dos cosas que hacer, y una no es opcional
 
 1. **Auditar las cookies reales.** El propio documento lo dice en un aviso
