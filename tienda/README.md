@@ -104,7 +104,14 @@ tras rechazar no se descarga nada; «solo Análisis» no activa Meta; con permis
 llegan PageView, ViewContent y AddToCart con valor, moneda e id; el AddToCart
 hecho antes de aceptar no se envía; retirar el permiso corta los eventos y avisa
 a Meta; funciona tanto si la página corre antes como después del global.
-**Sin probar contra Meta real:** hacerlo desde Events Manager → Probar eventos →
+**Comprobado en producción el 16/10 (German, pestaña Network, sin bloqueador):**
+`PageView` desde la portada, `ViewContent` desde una ficha (99 €, EUR, `content_ids`,
+`eid` propio) y `AddToCart` (99 €, `contents` con cantidad 1, `eid` propio), todos al
+píxel `1799475611078369`, sin ningún parámetro `ud[...]` (sin datos personales) y con
+`_fbp` solo tras aceptar. Con un bloqueador de rastreo (Edge «Prevención de
+seguimiento» o extensiones) `fbevents.js` sale con `ERR_BLOCKED_BY_CLIENT` y no se
+envía nada: es lo esperado y justifica el paso 2 (servidor).
+**Falta ver los tres eventos en Events Manager.** Para hacerlo desde → Probar eventos →
 «Probar eventos del navegador» con la URL de la web, aceptando Publicidad. Ojo:
 los eventos de esa herramienta cuentan como reales en el píxel aunque salgan en
 la pestaña de pruebas; antes de campañas es inocuo, pero no conviene hacer
