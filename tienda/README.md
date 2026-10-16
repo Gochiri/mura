@@ -25,6 +25,29 @@ activarlo y copiar la URL de **producción** — la `/webhook/…`. La de
 pruebas, `/webhook-test/…`, solo escucha con el editor de n8n abierto:
 en producción no llega nunca. Ese fue el bug del 06b.
 
+## Banner de cookies (16/10)
+
+Va **dentro del mismo global** (sección 10 de `codigo-global-tienda.js`), así
+que no hay nada nuevo que pegar: basta regenerar y volver a pegar los dos
+`tracking-code-*.html` y el `css-paginas-tienda.css` en `/checkout`.
+
+- Sale en todas las páginas, abajo, sin bloquear. «Rechazar todas» y «Aceptar
+  todas» son idénticos; «Configurar» abre análisis y publicidad, apagados de
+  entrada. Caduca a los 12 meses.
+- Añade solo «Configurar cookies» junto a «Política de cookies» en cada pie.
+- **No instala Clarity ni el píxel.** Solo guarda la decisión. Quien los cargue
+  tiene que preguntar antes con `window.muraConsent.permite('analitica')` o
+  `.permite('marketing')`, o suscribirse con `.alCambiar(fn)`.
+- Probado el 16/10 en Chromium: 22 comprobaciones (primera visita, rechazo,
+  selección, reapertura desde el pie, borrado de `_fbp` al retirar el permiso,
+  caducidad, móvil de 390 px, sin errores de JS).
+- **Sin probar en producción:** el aviso a Clarity (`consentv2`) y a Meta
+  (`fbq('consent')`) está escrito pero no hay nada cargado que lo reciba;
+  comprobarlo al instalar cada uno.
+- **Antes de dar el banner por bueno:** publicar `/politica-cookies` tras la
+  auditoría real (ver `legal/README.md`). El texto del banner promete lo que
+  esa política tiene que confirmar.
+
 ## Por qué además hay un CSS suelto (22/8)
 
 **GHL no sirve el Tracking Code del Head dentro del `<head>`.** Lo deja en

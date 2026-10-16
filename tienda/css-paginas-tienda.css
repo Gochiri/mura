@@ -172,3 +172,27 @@
 .hl_page-preview--content .empty-cart-heading { font-size: 22px !important; padding-top: 0 !important; }
 .hl_page-preview--content .empty-cart-description { font-size: 13.5px !important; line-height: 1.9 !important; color: #55524B !important; max-width: 320px; margin: 12px auto 0 !important; padding: 0 !important; }
 @media (max-width: 719px) { .hl_page-preview--content .hl-cart-summary-container { margin-top: 28px; } }
+
+/* ---------- bloque: consentimiento ---------- */
+.mura-ck { position: fixed; left: 0; right: 0; bottom: 0; z-index: 9999; background: #F0EEE8; color: #1D1B18; border-top: 1px solid rgba(29,27,24,.16); box-shadow: 0 -8px 30px rgba(29,27,24,.08); font-family: "Jost", sans-serif; font-weight: 300; -webkit-font-smoothing: antialiased; }
+.mura-ck, .mura-ck *, .mura-ck *::before, .mura-ck *::after { box-sizing: border-box; }
+.mura-ck[hidden] { display: none; }
+.mura-ck-in { max-width: 1100px; margin: 0 auto; padding: 22px clamp(20px,4vw,40px); max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; }
+.mura-ck-h { font-family: "Cormorant Garamond", Georgia, serif; font-size: 22px; font-weight: 500; letter-spacing: .04em; margin: 0 0 6px; }
+.mura-ck-p { font-size: 13.5px; line-height: 1.75; color: #55524B; margin: 0; max-width: 760px; }
+.mura-ck-p a { color: #1D1B18; border-bottom: 1px solid rgba(29,27,24,.35); text-decoration: none; }
+.mura-ck-det { display: none; flex-direction: column; gap: 14px; border-top: 1px solid rgba(29,27,24,.12); padding-top: 16px; }
+.mura-ck.det .mura-ck-det { display: flex; }
+.mura-ck-op { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; line-height: 1.65; color: #55524B; cursor: pointer; }
+.mura-ck-op input { accent-color: #1D1B18; width: 16px; height: 16px; margin: 3px 0 0; flex: 0 0 auto; }
+.mura-ck-op strong { display: block; color: #1D1B18; font-weight: 400; letter-spacing: .04em; }
+.mura-ck-op.fija { cursor: default; }
+.mura-ck-b { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.mura-ck-btn { flex: 0 0 auto; min-width: 180px; height: 48px; padding: 0 22px; border: 1px solid #1D1B18; background: #1D1B18; color: #F0EEE8; cursor: pointer; font-family: "Jost", sans-serif; font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase; font-weight: 300; border-radius: 0; transition: background .2s ease; }
+.mura-ck-btn:hover { background: #38352F; }
+.mura-ck-btn:focus-visible, .mura-ck-cfg:focus-visible, .mura-ck-op input:focus-visible { outline: 2px solid #1D1B18; outline-offset: 3px; }
+.mura-ck-cfg { border: none; background: transparent; cursor: pointer; font-family: "Jost", sans-serif; font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase; font-weight: 300; color: #1D1B18; padding: 8px 2px; border-bottom: 1px solid #1D1B18; border-radius: 0; margin-left: 6px; }
+.mura-ck.det .mura-ck-cfg { display: none; }
+.mura-ck-gs { display: none; }
+.mura-ck.det .mura-ck-gs { display: block; }
+@media (max-width: 560px) { .mura-ck-in { padding: 18px 18px 20px; gap: 14px; } .mura-ck-btn { flex: 1 1 100%; min-width: 0; } .mura-ck-cfg { margin-left: 0; } }

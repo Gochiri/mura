@@ -44,11 +44,14 @@
        2. CSS de la encuesta            → solo /experiencia
        3. CSS del buscador              → rutas de rejilla
        4. CSS que pisa la tienda de GHL → rutas de tienda
+      10. CSS del banner de cookies     → todas las páginas
 
      BODY (necesita el DOM)
        5. Contador del carrito          → todas las páginas
        6. Buscador de la rejilla        → rutas de rejilla
        7. Cabecera inyectada + idioma   → rutas de tienda
+      10. Banner de cookies y API       → todas las páginas
+          de consentimiento
 
    El redirect de /cart va lo primero y en las dos partes: cuanto
    antes salte, menos se ve el carrito viejo.
@@ -821,6 +824,243 @@
   }
 
   /* ============================================================
+     10 · CONSENTIMIENTO DE COOKIES — todas las páginas
+     ============================================================
+     Art. 22.2 LSSI: nada que no sea técnico se instala antes de que
+     la clienta lo acepte, y rechazar tiene que costar lo mismo que
+     aceptar. De ahí:
+
+       · «Rechazar todas» y «Aceptar todas» son dos botones iguales,
+         mismo tamaño, mismo color, uno al lado del otro.
+       · Sin consentimiento por seguir navegando, por hacer scroll o
+         por cerrar: si no elige, no hay permiso.
+       · Dos categorías opcionales, apagadas de entrada:
+           analitica → mapa de calor y estadísticas (Clarity)
+           marketing → medir los anuncios (píxel y API de Meta)
+       · No bloquea la página (no hay muro de cookies): es una barra
+         abajo, y el enlace a la política sigue funcionando.
+       · Se puede cambiar cuando quiera desde «Configurar cookies»,
+         que se añade solo al pie, junto a «Política de cookies».
+       · La elección caduca a los 12 meses y se vuelve a preguntar.
+
+     ESTE BLOQUE NO INSTALA NINGÚN PÍXEL NI CLARITY. Solo guarda la
+     decisión y la anuncia. Quien cargue un script de terceros tiene
+     que preguntar ANTES a la API:
+
+         window.muraConsent.permite('marketing')  → true / false
+         window.muraConsent.alCambiar(function (estado) { … })
+           (se llama al momento si ya hay decisión, y en cada cambio)
+         window.addEventListener('mura:consent', …)   // lo mismo
+
+     y no cargar nada mientras sea false. Si la clienta retira el
+     permiso, aquí se borran las cookies conocidas (_clck, _clsk,
+     _fbp, _fbc); el script ya cargado habrá que descargarlo con una
+     recarga, que es lo que hace quien lo cargó.
+
+     Se guarda en localStorage (`mura_consent`), no en una cookie: es
+     el registro de la elección, no hace falta mandarlo al servidor.
+     Si el navegador no deja escribir, la elección vale solo para esa
+     página y el banner volverá a salir: mejor eso que dar por buena
+     una elección que no se guardó.
+
+     La API la define el primero de los dos pegables que corra
+     (el HEAD, normalmente); el otro la reutiliza. */
+
+  var CONSENT_KEY = 'mura_consent';
+  var CONSENT_DIAS = 365;
+  var COOKIES_TERCEROS = {
+    analitica: ['_clck', '_clsk'],
+    marketing: ['_fbp', '_fbc']
+  };
+
+  function definirConsent() {
+    var memoria = null;       // por si localStorage no deja escribir
+    var oyentes = [];
+
+    function leer() {
+      var c = null;
+      try { c = JSON.parse(localStorage.getItem(CONSENT_KEY) || 'null'); } catch (e) { c = null; }
+      if (!c) c = memoria;
+      if (!c || c.v !== 1) return null;
+      if (Date.now() - c.ts > CONSENT_DIAS * 864e5) return null;
+      return c;
+    }
+
+    function estado() {
+      var c = leer();
+      return { decidido: !!c, analitica: !!(c && c.analitica), marketing: !!(c && c.marketing) };
+    }
+
+    function borrarCookie(nombre) {
+      var host = location.hostname;
+      var padre = host.replace(/^www\./, '');
+      var caduca = 'expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      [null, host, '.' + padre].forEach(function (d) {
+        document.cookie = nombre + '=; ' + caduca + (d ? '; domain=' + d : '');
+      });
+    }
+
+    /* A los scripts de terceros, si ya están cargados, se les dice lo
+       que se ha decidido. Clarity y Meta tienen su propia API de
+       consentimiento: se usa en cuanto el script exista. */
+    function avisarTerceros(e) {
+      try {
+        if (typeof window.clarity === 'function') {
+          window.clarity('consentv2', {
+            ad_Storage: e.marketing ? 'granted' : 'denied',
+            analytics_Storage: e.analitica ? 'granted' : 'denied'
+          });
+        }
+      } catch (x) {}
+      try {
+        if (typeof window.fbq === 'function') window.fbq('consent', e.marketing ? 'grant' : 'revoke');
+      } catch (x) {}
+    }
+
+    function guardar(analitica, marketing) {
+      var antes = estado();
+      var c = { v: 1, ts: Date.now(), analitica: !!analitica, marketing: !!marketing };
+      memoria = c;
+      try { localStorage.setItem(CONSENT_KEY, JSON.stringify(c)); } catch (e) {}
+      var ahora = estado();
+      ['analitica', 'marketing'].forEach(function (cat) {
+        if (antes[cat] && !ahora[cat]) COOKIES_TERCEROS[cat].forEach(borrarCookie);
+      });
+      avisarTerceros(ahora);
+      oyentes.slice().forEach(function (fn) { try { fn(ahora); } catch (e) {} });
+      try { window.dispatchEvent(new CustomEvent('mura:consent', { detail: ahora })); } catch (e) {}
+    }
+
+    return {
+      estado: estado,
+      permite: function (cat) { return !!estado()[cat]; },
+      guardar: guardar,
+      alCambiar: function (fn) {
+        oyentes.push(fn);
+        if (estado().decidido) { try { fn(estado()); } catch (e) {} }
+      },
+      /* El banner (parte BODY) se engancha aquí al montarse. */
+      abrir: function () { if (window.muraConsent._abrir) window.muraConsent._abrir(); }
+    };
+  }
+
+  if ((HAY_CSS || HAY_DOM) && typeof window !== 'undefined' && !window.muraConsent) {
+    window.muraConsent = definirConsent();
+  }
+
+  var consentCss = [
+    '.mura-ck { position: fixed; left: 0; right: 0; bottom: 0; z-index: 9999; background: #F0EEE8; color: #1D1B18; border-top: 1px solid rgba(29,27,24,.16); box-shadow: 0 -8px 30px rgba(29,27,24,.08); font-family: "Jost", sans-serif; font-weight: 300; -webkit-font-smoothing: antialiased; }',
+    '.mura-ck, .mura-ck *, .mura-ck *::before, .mura-ck *::after { box-sizing: border-box; }',
+    '.mura-ck[hidden] { display: none; }',
+    '.mura-ck-in { max-width: 1100px; margin: 0 auto; padding: 22px clamp(20px,4vw,40px); max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; }',
+    '.mura-ck-h { font-family: "Cormorant Garamond", Georgia, serif; font-size: 22px; font-weight: 500; letter-spacing: .04em; margin: 0 0 6px; }',
+    '.mura-ck-p { font-size: 13.5px; line-height: 1.75; color: #55524B; margin: 0; max-width: 760px; }',
+    '.mura-ck-p a { color: #1D1B18; border-bottom: 1px solid rgba(29,27,24,.35); text-decoration: none; }',
+    '.mura-ck-det { display: none; flex-direction: column; gap: 14px; border-top: 1px solid rgba(29,27,24,.12); padding-top: 16px; }',
+    '.mura-ck.det .mura-ck-det { display: flex; }',
+    '.mura-ck-op { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; line-height: 1.65; color: #55524B; cursor: pointer; }',
+    '.mura-ck-op input { accent-color: #1D1B18; width: 16px; height: 16px; margin: 3px 0 0; flex: 0 0 auto; }',
+    '.mura-ck-op strong { display: block; color: #1D1B18; font-weight: 400; letter-spacing: .04em; }',
+    '.mura-ck-op.fija { cursor: default; }',
+    '.mura-ck-b { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }',
+    '.mura-ck-btn { flex: 0 0 auto; min-width: 180px; height: 48px; padding: 0 22px; border: 1px solid #1D1B18; background: #1D1B18; color: #F0EEE8; cursor: pointer; font-family: "Jost", sans-serif; font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase; font-weight: 300; border-radius: 0; transition: background .2s ease; }',
+    '.mura-ck-btn:hover { background: #38352F; }',
+    '.mura-ck-btn:focus-visible, .mura-ck-cfg:focus-visible, .mura-ck-op input:focus-visible { outline: 2px solid #1D1B18; outline-offset: 3px; }',
+    '.mura-ck-cfg { border: none; background: transparent; cursor: pointer; font-family: "Jost", sans-serif; font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase; font-weight: 300; color: #1D1B18; padding: 8px 2px; border-bottom: 1px solid #1D1B18; border-radius: 0; margin-left: 6px; }',
+    '.mura-ck.det .mura-ck-cfg { display: none; }',
+    '.mura-ck-gs { display: none; }',
+    '.mura-ck.det .mura-ck-gs { display: block; }',
+    '@media (max-width: 560px) { .mura-ck-in { padding: 18px 18px 20px; gap: 14px; } .mura-ck-btn { flex: 1 1 100%; min-width: 0; } .mura-ck-cfg { margin-left: 0; } }'
+  ].join('\n');
+
+  if (HAY_CSS) estilo('consentimiento', consentCss);
+
+  /* El banner en sí: solo en la parte BODY, que es la que tiene DOM.
+     Se monta una vez, aunque el script corra varias veces o el tema
+     repinte el body. */
+  function montarConsent() {
+    var api = window.muraConsent;
+    if (!api || document.querySelector('.mura-ck')) return;
+
+    var caja = document.createElement('div');
+    caja.className = 'mura-ck';
+    caja.setAttribute('role', 'dialog');
+    caja.setAttribute('aria-label', 'Preferencias de cookies');
+    caja.hidden = true;
+    caja.innerHTML =
+      '<div class="mura-ck-in">' +
+        '<div>' +
+          '<p class="mura-ck-h">Cookies</p>' +
+          '<p class="mura-ck-p">Usamos cookies propias para que la tienda funcione, y, solo si tú nos lo permites, otras para saber cómo se usa la web y para medir nuestros anuncios en Instagram y Facebook. Puedes cambiarlo cuando quieras. Más información en la <a href="/politica-cookies">política de cookies</a>.</p>' +
+        '</div>' +
+        '<div class="mura-ck-det">' +
+          '<label class="mura-ck-op fija"><input type="checkbox" checked disabled><span><strong>Necesarias</strong>Para que funcione el carrito, el pedido y recordar tu elección. Siempre activas.</span></label>' +
+          '<label class="mura-ck-op"><input type="checkbox" data-cat="analitica"><span><strong>Análisis</strong>Nos ayudan a ver qué páginas se usan y dónde se atascan las visitas (mapas de calor y estadísticas con Microsoft Clarity).</span></label>' +
+          '<label class="mura-ck-op"><input type="checkbox" data-cat="marketing"><span><strong>Publicidad</strong>Nos permiten medir si un anuncio de Instagram o Facebook ha llevado a una compra (Meta).</span></label>' +
+        '</div>' +
+        '<div class="mura-ck-b">' +
+          '<button type="button" class="mura-ck-btn" data-ck="no">Rechazar todas</button>' +
+          '<button type="button" class="mura-ck-btn" data-ck="si">Aceptar todas</button>' +
+          '<button type="button" class="mura-ck-btn mura-ck-gs" data-ck="sel">Guardar mi selección</button>' +
+          '<button type="button" class="mura-ck-cfg" data-ck="cfg">Configurar</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(caja);
+
+    var cAna = caja.querySelector('[data-cat="analitica"]');
+    var cMkt = caja.querySelector('[data-cat="marketing"]');
+
+    function cerrar() { caja.hidden = true; caja.classList.remove('det'); }
+
+    function abrir(conDetalle) {
+      var e = api.estado();
+      cAna.checked = e.analitica;
+      cMkt.checked = e.marketing;
+      caja.classList.toggle('det', !!conDetalle);
+      caja.hidden = false;
+      if (conDetalle) cAna.focus();
+    }
+
+    caja.addEventListener('click', function (ev) {
+      var b = ev.target.closest ? ev.target.closest('[data-ck]') : null;
+      if (!b) return;
+      var acc = b.getAttribute('data-ck');
+      if (acc === 'cfg') { abrir(true); return; }
+      if (acc === 'si') api.guardar(true, true);
+      else if (acc === 'no') api.guardar(false, false);
+      else api.guardar(cAna.checked, cMkt.checked);
+      cerrar();
+    });
+
+    api._abrir = function () { abrir(true); };
+
+    /* Cualquier elemento con `data-mura-cookies` reabre el panel. */
+    document.addEventListener('click', function (ev) {
+      var a = ev.target.closest ? ev.target.closest('[data-mura-cookies]') : null;
+      if (!a) return;
+      ev.preventDefault();
+      abrir(true);
+    });
+
+    if (!api.estado().decidido) abrir(false);
+  }
+
+  /* «Configurar cookies» junto a «Política de cookies» en el pie. Los
+     pies están en el HTML de cada página, así que se añade desde
+     aquí y no hay que tocar ninguno. */
+  function enlazarPie() {
+    document.querySelectorAll('a[href="/politica-cookies"]').forEach(function (a) {
+      if (a.closest('.mura-ck')) return; // el del propio banner, no
+      if (!a.parentNode || a.parentNode.querySelector('[data-mura-cookies]')) return;
+      var c = document.createElement('a');
+      c.href = '#cookies';
+      c.setAttribute('data-mura-cookies', '');
+      c.textContent = 'Configurar cookies';
+      a.parentNode.insertBefore(c, a.nextSibling);
+    });
+  }
+
+  /* ============================================================
      A PARTIR DE AQUÍ, SOLO LO QUE NECESITA EL DOM
      ============================================================
      Todo lo anterior era CSS y puede correr en el <head>, antes de
@@ -830,6 +1070,16 @@
   if (!HAY_DOM) return;
 
   pintarContador();
+
+  /* El banner va antes del `return` de las rutas no-tienda: sale en
+     TODAS las páginas. El pie se enlaza en dos pasadas porque el tema
+     pinta tarde, igual que la cabecera. */
+  function arranqueConsent() { montarConsent(); enlazarPie(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arranqueConsent);
+  else arranqueConsent();
+  setTimeout(arranqueConsent, 1200);
+  setTimeout(enlazarPie, 3500);
+
   if (esRejilla) montarBuscador();
   if (!esTienda) return;
 
