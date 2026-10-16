@@ -71,6 +71,16 @@ GoHighLevel permite desactivarla o retrasarla (pregunta abierta a Henry u Oliver
    palabras clave, `adSource`, parámetros de la URL y página de entrada.
 2. **GoHighLevel:** ¿se puede desactivar el seguimiento de atribución del sitio,
    o cargarlo solo tras el consentimiento? ¿Qué hace exactamente `msgsndr_id`?
+   **Respuesta del asistente de GHL (16/10), no oficial ni de una persona:** en su
+   documentación no hay instrucciones para desactivar o gestionar el seguimiento
+   nativo; no describe `msgsndr_id` ni las claves `v2_`/`v3_`; confirma que existe un
+   banner de cookies de GHL para Websites pero no si permite rechazar igual de fácil
+   ni si se controla por script. Lo que sí se controla es el código que añadimos
+   nosotros. Falta una respuesta por escrito de una persona de GHL (ticket).
+   Además, dos comprobaciones propias: (a) pestaña Network sin pulsar el banner,
+   filtrando por `leadconnectorhq` y `msgsndr`, para ver si los datos de la visita
+   salen del navegador; (b) activar el banner de GHL en una página de prueba y ver si
+   frena esas claves antes de aceptar.
 3. **¿Está publicada `/politica-cookies`?** Si el pie ya la abre, estos cambios
    se aplican sobre la versión publicada.
 
