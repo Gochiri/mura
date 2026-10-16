@@ -1,7 +1,6 @@
 # Meta por API: app y token dentro del portafolio de MÛRA
 
-*Decisión de German (14/10): todo vive **en el portafolio de MÛRA** (ID `1650663796846832` según German; la URL del Business Manager muestra
-`1239463275926698`: confirmar en Información del negocio). Usuario del sistema, app y token son de MÛRA y solo sirven
+*Decisión de German (14/10): todo vive **en el portafolio de MÛRA** (ID `1239463275926698`, confirmado el 16/10 en Información del negocio; `1650663796846832` es el ID de la cuenta publicitaria, no el del portafolio). Usuario del sistema, app y token son de MÛRA y solo sirven
 para MÛRA. Henry y Oliver entran con su acceso personal al
 portafolio, que tiene que ser de **administrador** (control total). Las llamadas
 se hacen desde las sesiones de Claude con `curl` a la Graph API.*
@@ -20,7 +19,7 @@ se crea en el sitio equivocado.
 - **Página de Facebook** e **Instagram @bymurastudio** en Configuración →
   Cuentas.
 - **Cuenta publicitaria** en **EUR** y zona horaria **Madrid**, con la tarjeta
-  de Sara. Moneda y zona horaria no se cambian después. ID: `[act_…]`.
+  de Sara. Moneda y zona horaria no se cambian después. ID: `act_1650663796846832` (comprobado el 16/10: «Mura», EUR, activa).
 - **Píxel**: ya creado, ID **`1799475611078369`**. No se carga en la web hasta
   que esté el banner de consentimiento.
 
@@ -49,9 +48,9 @@ generar tokens (el botón sale gris con «una app debe formar parte de este
 portfolio»).
 
 Caso de uso de la app hoy: solo «Crear y administrar anuncios con la API de
-marketing». Por eso el token solo ofrece seis permisos. Para los de Instagram
-hay que añadir en developers.facebook.com → `MURA Ads` → Casos de uso →
-«Gestionar todo en Instagram», y regenerar el token.
+marketing». Por eso el token solo ofrece seis permisos. Se añadió después el de
+Instagram (developers.facebook.com → `MURA Ads` → Casos de uso) y el token se
+regeneró el 16/10; ver los permisos en el apartado 4.
 
 ## 4. El token
 
@@ -63,9 +62,10 @@ Usuarios del sistema → `Conversions API System User` → **Generar token**.
 - Permisos disponibles con el caso de uso actual (los seis marcados el 14/10):
   `ads_management`, `ads_read`, `business_management`, `pages_manage_ads`,
   `pages_read_engagement`, `pages_show_list`.
-- Pendientes, cuando se añada el caso de uso de Instagram: `instagram_basic`
-  (sin él no se listan publicaciones ni se promocionan reels ya publicados),
-  `instagram_manage_insights`, `leads_retrieval`.
+- Con el caso de uso de Instagram (token regenerado el 16/10) se añadieron
+  `instagram_basic`, `instagram_manage_insights` y otros de Instagram
+  (publicar, comentarios, mensajes). Sigue sin `leads_retrieval`: solo hace
+  falta si hay anuncios de formulario.
 - Se muestra una sola vez.
 
 Para la **API de Conversiones** hace falta otro token: Events Manager → el
@@ -78,11 +78,11 @@ artefacto ni pegadas en el chat.
 
 ```
 META_APP_ID=1139141968627775
-META_BUSINESS_ID=1650663796846832   # a confirmar: la URL del Business Manager muestra 1239463275926698
+META_BUSINESS_ID=1239463275926698
 META_ACCESS_TOKEN=          # token de Conversions API System User
-META_AD_ACCOUNT_ID=act_     # con el prefijo act_, obligatorio
+META_AD_ACCOUNT_ID=act_1650663796846832     # con el prefijo act_, obligatorio
 META_PAGE_ID=
-META_IG_USER_ID=
+META_IG_USER_ID=17841410968485139   # @bymurastudio
 META_PIXEL_ID=1799475611078369
 META_CAPI_TOKEN=            # token del píxel (Events Manager)
 ```

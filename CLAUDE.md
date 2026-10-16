@@ -104,7 +104,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
   escriben en el repo ni en un artefacto. Antes de cada commit o publicación,
   `grep -rE 'AMf-|pit-|EAA'` tiene que salir vacío (`EAA` es el prefijo de los
   tokens de Meta).
-- **Meta por API:** todo dentro del portafolio de MÛRA (ID `1650663796846832`):
+- **Meta por API:** todo dentro del portafolio de MÛRA (ID `1239463275926698`):
   usuario del sistema `Conversions API System User` (creado por Meta con el píxel, ya con todos los activos), app `Conversions API Application` y su token. No se usa el
   portafolio de Profit. Todo en un `.env` local
   (`META_ACCESS_TOKEN`, `META_CAPI_TOKEN`, `META_AD_ACCOUNT_ID`…; lista completa en
@@ -157,7 +157,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 |---|---|
 | Propuesta de mantenimiento más barata (por incidencia u horas) | German + Sonia |
 | Cobro: productos y links de pago en la subcuenta de Profit (link A, 425 €), datos fiscales de Sara vía su gestor y factura de cada pago. Instrucciones y estado de los links en `docs/cobros-sara.md` | German + Henry |
-| Meta por API, todo en el portafolio de MÛRA (ID `1650663796846832`; Henry y Oliver son administradores como personas): cuenta publicitaria en EUR con la tarjeta de Sara (el píxel ya existe), usuario del sistema `Conversions API System User` con los activos y la app `MURA Ads` (`1139141968627775`); token con 6 permisos al `.env`; falta añadir el caso de uso de Instagram y regenerar; ID de portafolio por confirmar (1650663796846832 o 1239463275926698) (`docs/meta-api.md`) | Henry u Oliver; la tarjeta, Sara |
+| Meta por API, todo en el portafolio de MÛRA (ID `1239463275926698`; Henry y Oliver son administradores como personas): cuenta publicitaria en EUR con la tarjeta de Sara (el píxel ya existe), usuario del sistema `Conversions API System User` con los activos y la app `MURA Ads` (`1139141968627775`); token con caso de uso de Instagram ya regenerado (16/10) y comprobaciones 1–5 de `docs/meta-api.md` superadas; falta comprobar que la caducidad pone «Nunca» (`docs/meta-api.md`) | Henry u Oliver; la tarjeta, Sara |
 | Banner de consentimiento + auditoría real de cookies | Sonia / Claude |
 | Clarity conectado al banner; píxel + CAPI con eventos propios | German instala, Claude el código |
 | Guiones sin diálogo y 6–8 creatividades de colección | German + Sara |
