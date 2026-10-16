@@ -155,3 +155,17 @@ permiso.
 
 Tras publicar los cambios: «Última actualización · [fecha]», y en el apartado 02
 la fecha de la nueva comprobación (16 de octubre de 2026).
+
+## 6. API de Conversiones desde GoHighLevel (propuesta del 16/10)
+
+Se plantea mandar el `Purchase` a Meta desde un workflow de GHL (`docs/capi-purchase-ghl.md`).
+Esa acción envía el importe y los datos de contacto cifrados **sin comprobar el
+consentimiento de Publicidad**, y usa el `fbclid` que guarda el seguimiento de
+atribución de GHL (las claves `v2_`/`v3_` y `msgsndr_id`). Dos preguntas para el
+revisor **[DECIDE EL REVISOR]**:
+
+1. ¿Hace falta consentimiento previo para ese envío, o basta con informarlo en la
+   política de privacidad? Si hace falta, ¿cómo se guarda junto al pedido?
+2. Si el seguimiento de GHL alimenta la publicidad (esto es una inferencia a partir
+   del campo «FBCLID» de la acción, no un dato comprobado), ¿sigue siendo defendible
+   como cookie técnica?
