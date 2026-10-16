@@ -52,16 +52,11 @@ que no hay nada nuevo que pegar: basta regenerar y volver a pegar los dos
 
 ## Clarity (16/10)
 
-Sección 11 del global. **Preparado y sin ID: no hace nada todavía.**
+Sección 11 del global. **ID `yyrkyipd10` puesto el 16/10** (proyecto creado por German); falta pegarlo en GHL.
 
-Cuando German cree el proyecto en clarity.microsoft.com (dominio
-`stylebymura.com`):
-
-1. Copiar el **ID del proyecto** (Configuración → Resumen).
-2. Pegarlo en `tienda/codigo-global-tienda.js`, línea `var CLARITY_ID = '';`
-   (nos lo pasa a Claude y lo hace Claude, o se edita a mano y se ejecuta
-   `./build.sh`).
-3. Volver a pegar `tracking-code-head.html` y `tracking-code-body.html` en GHL.
+Para cambiar de proyecto: editar `var CLARITY_ID` en `tienda/codigo-global-tienda.js`,
+ejecutar `./build.sh` y volver a pegar `tracking-code-head.html` y
+`tracking-code-body.html` en GHL. Vacío = no hace nada.
 
 Se carga **solo si la clienta acepta Análisis** en el banner: antes no hay
 descarga ni cookies de Clarity. No se carga en `/checkout`, `/gracias`,
