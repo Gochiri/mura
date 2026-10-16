@@ -7,53 +7,63 @@ siendo solo del navegador (`tienda/README.md`).
 
 **Estado:** pendiente de montar. Esta guía es para Henry u Oliver.
 
-## Lo que se sabe de la acción (captura del 16/10)
+## Lo que se sabe de la acción (capturas del 16/10)
 
-Acción «Meta conversion API» del workflow. Campos: tipo de conexión (Integration o
-Ad Manager), tipo de evento (Funnel Event), Dataset ID, nombre del evento de
-Facebook, valor, moneda y «mapeo personalizado» (solo `fbclid`, ID de lead de
-Facebook e `igsid`).
+Acción «Meta conversion API» del workflow, con dos modos de conexión:
 
-- **No tiene `test_event_code`:** todo envío es un Purchase **real**. Nada de pedidos
-  falsos en vivo ni del botón de probar el workflow.
-- **No tiene `content_ids`, `eventID` ni `fbp`.**
-- La **moneda viene en USD**: hay que poner EUR.
-- El nombre del evento viene en **Lead**: hay que cambiarlo a Purchase.
+- **Integration** (el que usamos): pide **token de acceso**, **ID del conjunto de
+  datos**, nombre del evento, valor, moneda, **código de prueba** y un «mapeo
+  personalizado» con el campo `FBCLID`. No depende de la sesión de ninguna persona.
+- **Ad Manager**: usa la cuenta de Facebook conectada en GHL (depende de que esa
+  persona conserve el acceso). No lo usamos.
+
+Valores por defecto que hay que cambiar: el nombre del evento viene en **Lead** y la
+moneda en **USD**.
+
+No tiene campos para `content_ids`, `eventID` ni `fbp`. Para `Purchase` no hace falta
+el `eventID` (es la única fuente); sí se pierde algo de calidad de coincidencia.
 
 ## Antes de montarlo
 
-1. **Conexión con Meta.** Quien conecte Facebook en GHL debe tener acceso al
-   portafolio de **MÛRA** (ID `1239463275926698`) y al píxel `1799475611078369`. No el
-   portafolio de Profit. Si esa persona pierde el acceso, el envío se rompe.
+1. **Token y conjunto de datos.** El conjunto de datos es el píxel de MÛRA,
+   `1799475611078369`. El token es el de la API de Conversiones de ese píxel
+   (Events Manager → el píxel → Configuración → «Generar token de acceso», o el que ya
+   se generó). Se pega **directamente en el campo de GHL**, nunca en el repo ni en un
+   chat. Quien pueda editar el workflow puede verlo.
 2. **Que no haya otro píxel cargado por GHL.** Comprobado el 16/10: antes de aceptar
-   el banner no hay ninguna petición a Facebook, así que GHL no carga el suyo. Si
-   alguien lo configura en los ajustes del sitio, saltaría sin consentimiento.
-3. **Disparador.** Usar el de compra completada de la tienda y comprobar que salta
-   con un pedido pagado, no con un intento de pago.
+   el banner no hay ninguna petición a Facebook. Si alguien configura un píxel en los
+   ajustes del sitio, saltaría sin consentimiento.
+3. **Disparador.** Usar el de compra completada de la tienda y comprobar que salta con
+   un pedido pagado, no con un intento de pago.
 
 ## El workflow
 
 - Nombre: `Meta · Purchase (API de Conversiones)`.
 - **Filtro de pruebas** antes de la acción: continuar solo si el contacto **no** tiene
-  la etiqueta `prueba`. Los pedidos de prueba se hacen con esa etiqueta puesta.
-- Acción «Meta conversion API»:
-  - Connection type: Ad Manager (o Integration, según cómo esté conectada la cuenta).
-  - Event type: Funnel Event.
-  - **Dataset ID: el píxel de MÛRA `1799475611078369`.** Comprobar que no elige otro.
-  - Facebook event name: **Purchase** (no Lead).
-  - Value: el **total pagado por la clienta**, con el selector de variables del
-    campo. Comprobar con un pedido real que el importe es el correcto y decidir
-    si incluye envío; anotar el criterio aquí.
-  - Currency: **EUR**.
-  - Custom mapping: apagado, salvo que se decida otra cosa.
+  la etiqueta `prueba`.
+- Acción «Meta conversion API», conexión **Integration**:
+  - Token de acceso: el del píxel.
+  - ID del conjunto de datos: `1799475611078369`.
+  - Nombre del evento: **Purchase** (no Lead).
+  - Valor: el **total pagado por la clienta**, con el selector de variables del campo.
+    Comprobar que el importe es el correcto y decidir si incluye el envío; anotar aquí
+    el criterio.
+  - Moneda: **EUR**.
+  - Mapeo personalizado / FBCLID: dejar vacío salvo que se decida otra cosa.
+  - **Código de prueba: vacío en producción.**
 
-## Cómo comprobarlo sin ensuciar el píxel
+## Cómo probarlo y dejarlo en producción
 
-Como no hay código de prueba, **la primera compra real es la prueba**. Cuando
-llegue, en Events Manager → el píxel → Resumen (puede tardar unos minutos) debe
-verse un `Purchase` desde el servidor, con valor y moneda EUR. Si se prefiere
-probar antes, hacerlo una sola vez, con un importe pequeño y anotado, sabiendo que
-quedará registrado como compra.
+1. En Events Manager → el píxel → **Probar eventos**, copiar el código de prueba (empieza
+   por `TEST`; caduca si se cierra la sesión).
+2. Pegarlo en el campo **Código de prueba** de la acción y guardar.
+3. Lanzar el workflow con un contacto de prueba. El evento debe aparecer en **Probar
+   eventos** como `Purchase`, origen **Servidor**, con valor y EUR. Con el código puesto,
+   no cuenta como compra real.
+4. **Borrar el código de prueba y volver a guardar la acción.** Si se deja puesto, todas
+   las compras reales irán solo a la pestaña de pruebas y Meta no las usará para anuncios.
+5. Publicar el workflow y comprobar la primera compra real en Resumen (puede tardar unos
+   minutos).
 
 ## Preguntas abiertas
 
