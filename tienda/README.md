@@ -27,6 +27,8 @@ en producción no llega nunca. Ese fue el bug del 06b.
 
 ## Banner de cookies (16/10)
 
+*Pegado en GHL y comprobado en producción por German el 16/10.*
+
 Va **dentro del mismo global** (sección 10 de `codigo-global-tienda.js`), así
 que no hay nada nuevo que pegar: basta regenerar y volver a pegar los dos
 `tracking-code-*.html` y el `css-paginas-tienda.css` en `/checkout`.
