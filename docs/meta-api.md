@@ -59,6 +59,7 @@ Usuarios del sistema → `Conversions API System User` → **Generar token**.
 - App: `Conversions API Application`.
 - Caducidad: **Nunca**. Después, comprobar que de verdad pone «Nunca» y anotar
   la fecha: hubo un token que figuraba así y venció a los 60 días.
+  Comprobado el 16/10 en el token regenerado: sin caducidad.
 - Permisos disponibles con el caso de uso actual (los seis marcados el 14/10):
   `ads_management`, `ads_read`, `business_management`, `pages_manage_ads`,
   `pages_read_engagement`, `pages_show_list`.
