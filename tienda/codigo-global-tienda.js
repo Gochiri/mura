@@ -54,6 +54,9 @@
           de consentimiento
       11. Clarity tras el consentimiento → todas menos checkout
           (vacío hasta poner el ID)
+      12. Píxel de Meta tras aceptar     → todas las páginas
+          Publicidad (ViewContent y
+          AddToCart desde la ficha)
 
    El redirect de /cart va lo primero y en las dos partes: cuanto
    antes salte, menos se ve el carrito viejo.
@@ -1113,6 +1116,112 @@
   }
 
   /* ============================================================
+     12 · PÍXEL DE META — solo tras aceptar «Publicidad»
+     ============================================================
+     Paso 1 de 2: el píxel en el navegador. El paso 2 es la API de
+     Conversiones (servidor), que repetirá estos mismos eventos con
+     el mismo `eventID` para que Meta los cuente una sola vez.
+
+     · No se descarga `fbevents.js` ni se instala `_fbp` hasta que
+       la clienta acepte Publicidad en el banner (sección 10).
+     · Los eventos propios (ViewContent, AddToCart) los emite la
+       ficha llamando a `window.muraMeta.track(nombre, datos)`. Si
+       no hay permiso, `track` NO envía nada y no guarda nada.
+       Única excepción: el último ViewContent de la página abierta se
+       guarda en memoria (no en el navegador) y se envía si la
+       clienta acepta sin salir de esa página, porque aceptar en la
+       ficha no debería hacer que esa visita se pierda.
+     · `autoConfig` va desactivado: sin él el píxel hace por su cuenta
+       «eventos automáticos» (clics en botones, microdatos de la
+       página) y puede mandar a Meta campos de formularios. Aquí solo
+       viaja lo que se pide explícitamente.
+     · `track` devuelve el `eventID` generado, y se deja en
+       `window.muraMeta.ultimo[nombre]` para que el paso 2 reutilice
+       el mismo.
+     · InitiateCheckout y Purchase NO están aquí: pasan por el
+       checkout nativo de GHL. Pendiente de comprobar qué manda GHL
+       antes de añadir nada, para no contar dos veces.
+
+     La página que llame a `muraMeta` puede correr ANTES que este
+     bloque: por eso `track` existe como cola desde el principio y
+     este bloque la vacía al cargarse. */
+
+  var META_PIXEL_ID = '1799475611078369';
+
+  function definirMeta() {
+    var previo = window.muraMeta;
+    var cola = (previo && previo._cola) || [];
+    var ultimoVC = null;       // último ViewContent, para el caso de aceptar en la ficha
+
+    function nuevoId(nombre) {
+      return nombre + '_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
+    }
+
+    function enviar(nombre, datos, id) {
+      window.fbq('track', nombre, datos || {}, { eventID: id });
+    }
+
+    var api = {
+      _cola: cola,
+      ultimo: (previo && previo.ultimo) || {},
+      track: function (nombre, datos) {
+        var id = nuevoId(nombre);
+        api.ultimo[nombre] = id;
+        var ok = window.muraConsent && window.muraConsent.permite('marketing');
+        if (!ok) {
+          if (nombre === 'ViewContent') ultimoVC = { nombre: nombre, datos: datos, id: id };
+          return id;
+        }
+        if (typeof window.fbq !== 'function') { cola.push([nombre, datos, id]); return id; }
+        enviar(nombre, datos, id);
+        return id;
+      },
+      _vaciar: function () {
+        var c = cola.splice(0, cola.length);
+        c.forEach(function (x) { enviar(x[0], x[1], x[2]); });
+        if (ultimoVC) { var v = ultimoVC; ultimoVC = null; enviar(v.nombre, v.datos, v.id); }
+      }
+    };
+
+    /* Lo que la página ya haya encolado antes de que existiera esto. */
+    var pendientes = (previo && previo.q) || [];
+    window.muraMeta = api;
+    pendientes.forEach(function (a) { api.track.apply(api, a); });
+    return api;
+  }
+
+  if ((HAY_CSS || HAY_DOM) && typeof window !== 'undefined' &&
+      (!window.muraMeta || !window.muraMeta.track || window.muraMeta.q)) {
+    definirMeta();
+  }
+
+  function cargarMeta() {
+    if (window.__muraMeta) return;
+    window.__muraMeta = true;
+    if (typeof window.fbq !== 'function') {
+      var n = window.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!window._fbq) window._fbq = n;
+      n.push = n; n.loaded = true; n.version = '2.0'; n.queue = [];
+      var t = document.createElement('script');
+      t.async = true;
+      t.src = 'https://connect.facebook.net/en_US/fbevents.js';
+      (document.head || document.documentElement).appendChild(t);
+    }
+    window.fbq('set', 'autoConfig', false, META_PIXEL_ID);
+    window.fbq('consent', 'grant');
+    window.fbq('init', META_PIXEL_ID);
+    window.fbq('track', 'PageView');
+    window.muraMeta._vaciar();
+  }
+
+  function montarMeta() {
+    if (!window.muraConsent || !window.muraMeta) return;
+    window.muraConsent.alCambiar(function (e) { if (e.marketing) cargarMeta(); });
+  }
+
+  /* ============================================================
      A PARTIR DE AQUÍ, SOLO LO QUE NECESITA EL DOM
      ============================================================
      Todo lo anterior era CSS y puede correr en el <head>, antes de
@@ -1132,6 +1241,7 @@
   setTimeout(arranqueConsent, 1200);
   setTimeout(enlazarPie, 3500);
   montarClarity();
+  montarMeta();
 
   if (esRejilla) montarBuscador();
   if (!esTienda) return;

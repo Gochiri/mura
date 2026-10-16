@@ -70,6 +70,43 @@ excluidas no cargan; sin ID nunca carga. **En producción (16/10, German, móvil
 al instalarlo, comprobar que llegan sesiones y que las cookies `_clck` y `_clsk`
 solo aparecen tras aceptar.
 
+## Píxel de Meta, paso 1 de 2 (16/10)
+
+Sección 12 del global + dos llamadas en `producto.html`. **Pixel ID
+`1799475611078369`.** Solo carga si la clienta acepta **Publicidad** en el banner.
+
+**Qué hay que volver a pegar en GHL** (los tres cambian):
+1. `tracking-code-head.html` → Tracking Code → Head
+2. `tracking-code-body.html` → Tracking Code → Body
+3. `producto.html` → página `producto` → elemento `custom-code-oM1HT_mKKm`
+
+Qué hace:
+- `PageView` en todas las páginas, tras aceptar.
+- `ViewContent` al cargar la ficha (valor = precio más bajo de las tallas).
+- `AddToCart` al pulsar «Añadir» (valor = precio de la talla elegida).
+- La ficha llama a `window.muraMeta.track(nombre, datos)`; sin permiso no se envía
+  ni se guarda nada. Única excepción: si la clienta acepta estando en la ficha,
+  se envía el `ViewContent` de esa visita (en memoria, no en el navegador).
+- Cada evento lleva `eventID`, también en `muraMeta.ultimo[nombre]`, para que el
+  paso 2 (API de Conversiones) lo repita y Meta cuente uno solo.
+- `autoConfig` desactivado: sin eventos automáticos de Meta (clics, microdatos).
+- `content_ids` = id del producto en GHL. **Si algún día se contrata el catálogo
+  de Meta, esos ids tienen que coincidir con los del catálogo.**
+- `InitiateCheckout` y `Purchase` **no están**: pasan por el checkout nativo.
+  GHL puede mandar eventos de la API de Conversiones por su cuenta; antes de
+  añadir nada hay que ver qué manda, para no contar dos veces.
+
+Probado en Chromium con `fbevents.js` simulado (20 comprobaciones): sin decidir y
+tras rechazar no se descarga nada; «solo Análisis» no activa Meta; con permiso
+llegan PageView, ViewContent y AddToCart con valor, moneda e id; el AddToCart
+hecho antes de aceptar no se envía; retirar el permiso corta los eventos y avisa
+a Meta; funciona tanto si la página corre antes como después del global.
+**Sin probar contra Meta real:** hacerlo desde Events Manager → Probar eventos →
+«Probar eventos del navegador» con la URL de la web, aceptando Publicidad. Ojo:
+los eventos de esa herramienta cuentan como reales en el píxel aunque salgan en
+la pestaña de pruebas; antes de campañas es inocuo, pero no conviene hacer
+compras de prueba en live (ver `CLAUDE.md`).
+
 ## Por qué además hay un CSS suelto (22/8)
 
 **GHL no sirve el Tracking Code del Head dentro del `<head>`.** Lo deja en

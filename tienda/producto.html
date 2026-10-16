@@ -86,6 +86,12 @@
 <p style="text-align:center;font-size:10.5px;letter-spacing:.14em;color:#9B968C">© MÛRA 2026 · Todos los derechos reservados.</p>
 </div></footer>
 <script>(function(){
+/* Eventos de Meta: se piden al global (tracking code). Si el global aún no ha
+   cargado, la llamada queda en cola y él la recoge. Se consulta
+   window.muraMeta en cada llamada, no una vez: el global lo sustituye al cargarse. Sin permiso de Publicidad
+   no se envía nada: lo decide el global, no esta página. */
+window.muraMeta=window.muraMeta||{q:[],track:function(){this.q.push(arguments)}};
+function meta(n,d){return window.muraMeta.track(n,d)}
 var API='https://mura-productos.germanborrello-d78.workers.dev';
 var id=new URLSearchParams(location.search).get('id');
 var pieza=null,talla=null,img=0;
@@ -154,6 +160,7 @@ document.getElementById('md-add').onclick=function(){
   quantity:1,buyNowQuantity:1,showName:true
  });
  localStorage.setItem(GHL_CART_KEY,JSON.stringify(cart));
+ meta('AddToCart',{content_ids:[pieza.id],content_type:'product',content_name:pieza.nombre,contents:[{id:pieza.id,quantity:1,item_price:t.precio}],value:t.precio,currency:'EUR'});
  ghlCount();
  document.getElementById('md-added').style.display='block';
 };
@@ -171,6 +178,8 @@ fetch(API+'/products?id='+encodeURIComponent(id||'')).then(function(r){return r.
   b.querySelector('span').textContent=open?'−':'+';
  }});
  render();
+ var min=Math.min.apply(null,pieza.tallas.map(function(t){return t.precio}));
+ meta('ViewContent',{content_ids:[pieza.id],content_type:'product',content_name:pieza.nombre,value:min,currency:'EUR'});
 });
 })();</script>
 </div>
