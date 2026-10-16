@@ -110,7 +110,7 @@ curl -s "https://graph.facebook.com/v21.0/$META_IG_USER_ID/media?fields=id,media
 # 5. Evento de prueba al píxel (el código sale de Events Manager → Probar eventos)
 curl -s -X POST "https://graph.facebook.com/v21.0/$META_PIXEL_ID/events" \
   -d "access_token=$META_CAPI_TOKEN" \
-  -d 'data=[{"event_name":"PageView","event_time":'"$(date +%s)"',"action_source":"website","event_source_url":"https://www.stylebymura.com/","user_data":{"client_user_agent":"test"}}]' \
+  -d 'data=[{"event_name":"PageView","event_time":'"$(date +%s)"',"action_source":"website","event_source_url":"https://www.stylebymura.com/","user_data":{"client_user_agent":"Mozilla/5.0 (test)","client_ip_address":"203.0.113.10"}}]' \
   -d "test_event_code=TESTXXXX"
 ```
 
@@ -123,6 +123,8 @@ un `instagram_business_account.id`; el evento con `events_received: 1`.
 | `act_… not found` o lista vacía | El usuario del sistema no tiene la cuenta publicitaria asignada |
 | `(#190) Invalid OAuth access token` | Token revocado o vencido: regenerar y revisar la caducidad |
 | Error 100 al listar campañas | Faltan permisos: regenerar con la lista completa |
+| Error 100, subcódigo `2804050` al enviar un evento | Faltan datos del cliente: `user_data` necesita `client_user_agent` y `client_ip_address` |
+| El evento da `events_received: 1` pero no sale en «Probar eventos» | El código de test no es el de una sesión activa: dejar la pestaña abierta y copiar el código que muestra. El evento se ha registrado como real |
 | Instagram vacío o `(#10)` | Falta `instagram_basic` o la cuenta de Instagram no está asignada |
 
 ## 7. Reglas de uso desde Claude
