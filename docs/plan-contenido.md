@@ -70,8 +70,10 @@ De la competencia:
 
 Todas: vertical 9:16, 12–15 segundos, sin diálogo, texto en pantalla corto, CTA
 «Comprar». El destino es siempre una colección o `/prendas`, nunca una prenda
-suelta. Stock comprobado el 23/9: ninguna prenda citada tiene menos de 3
-unidades.
+suelta. El número entre paréntesis tras cada prenda es su **stock total a 23/9**,
+sumando tallas; ninguna baja de 3 unidades. Es un dato interno (no va en el
+documento de Sara) y hay que refrescarlo antes de cada grabación: las de talla
+única se agotan antes.
 
 ### 1 · Tres formas de llevarla — Blazer Arquitectónica
 
