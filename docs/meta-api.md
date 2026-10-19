@@ -128,6 +128,23 @@ un `instagram_business_account.id`; el evento con `events_received: 1`.
 | El evento da `events_received: 1` pero no sale en «Probar eventos» | El código de test no es el de una sesión activa: dejar la pestaña abierta y copiar el código que muestra. El evento se ha registrado como real |
 | Instagram vacío o `(#10)` | Falta `instagram_basic` o la cuenta de Instagram no está asignada |
 
+## 6 bis. Verificación del dominio `stylebymura.com`
+
+Estado (19/10): **no verificado**. Meta → Configuración del negocio → Seguridad de la
+marca → Dominios. Hace falta para configurar los eventos prioritarios de los anuncios
+y para anunciar enlaces a la web sin limitaciones.
+
+- **La metaetiqueta no sirve pegada en el Tracking Code del Head de GHL:** GHL no lo
+  sirve dentro del `<head>`, lo sube por JavaScript, y Meta lee el HTML sin ejecutarlo
+  (la propia pantalla de Meta lo avisa). Mismo motivo que el CSS en `tienda/README.md`.
+- **Camino recomendado: registro TXT de DNS.** En el desplegable de Meta, elegir
+  «Agregar un registro TXT de DNS», copiar el valor que muestre y añadirlo en el DNS de
+  `stylebymura.com` (tipo TXT, host `@`). Después «Verificar dominio» (hasta 72 h).
+- **Plan B:** la metaetiqueta en el código de cabecera **de la página de inicio** (a
+  nivel de página). Solo vale si aparece dentro del `<head>` del código fuente
+  (`Ctrl+U` en `stylebymura.com`, buscar `facebook-domain-verification`).
+- Pendiente: saber **quién gestiona el DNS** (Sonia, Sara como titular, o el registrador).
+
 ## 7. Reglas de uso desde Claude
 
 - Sin pedir permiso: crear campañas, conjuntos y anuncios **en pausa**, leer
