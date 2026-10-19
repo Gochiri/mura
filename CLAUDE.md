@@ -72,7 +72,9 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 - **Creatividades:** a nivel de **colección o cápsula, nunca de prenda suelta**,
   porque hay unas 5,5 unidades por pieza. Contenido producido. Sara no habla a
   cámara: guiones sin diálogo con escenas de uso, o vídeos generados a partir de
-  las fotos.
+  las fotos. Las fichas están en `docs/plan-contenido.md`. En la gestión entra el
+  montaje de los anuncios (cortes, texto, música, formatos) y hasta 2 vídeos desde
+  fotos; no entran rodaje con fotógrafo, reels largos ni retoque.
 - **Dónde se gestionan:** desde el Administrador de anuncios de Meta, no desde
   GHL. Las métricas se ven también en GHL → Reportes → Meta Ads.
 - **No hacemos:** campañas de tráfico o interacción, públicos similares de
@@ -85,6 +87,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 | `docs/2026-08-07-implementacion-ghl.md` | Registro técnico de todo lo hecho en GHL, por secciones (§1–§42). Es la fuente de verdad: búscalo antes de tocar un flujo. |
 | `docs/campanas-meta.md` | Plan de campañas, datos de referencia y briefing de creatividades. |
 | `docs/2026-10-09-reunion-sara.md` | Acuerdos con Sara y lo que queda abierto. |
+| `docs/plan-contenido.md` | Las 8 fichas de anuncios (planos, textos, títulos), reglas de grabación para Sara, calendario y qué montaje entra en la gestión. |
 | `docs/cobros-sara.md` | Cómo se le cobra a Sara (productos y links en la subcuenta de Profit) y estado de cada link. |
 | `docs/meta-api.md` | Meta por API dentro del portafolio de MÛRA: usuario del sistema y app existentes, token, `.env`, comprobaciones con `curl` y reglas de uso. |
 | `docs/para-sonia-*.md` | Lo entregado a Sonia: aviso de pedido, formulario de devolución, estado antes de Meta (22/9). |
@@ -159,10 +162,11 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 | Propuesta de mantenimiento más barata (por incidencia u horas) | German + Sonia |
 | Cobro: productos y links de pago en la subcuenta de Profit (link A, 425 €), datos fiscales de Sara vía su gestor y factura de cada pago. Instrucciones y estado de los links en `docs/cobros-sara.md` | German + Henry |
 | Meta por API, todo en el portafolio de MÛRA (ID `1239463275926698`; Henry y Oliver son administradores como personas): cuenta publicitaria en EUR con la tarjeta de Sara (el píxel ya existe), usuario del sistema `Conversions API System User` con los activos y la app `MURA Ads` (`1139141968627775`); token con caso de uso de Instagram ya regenerado (16/10) y comprobaciones 1–5 de `docs/meta-api.md` superadas, token sin caducidad (16/10) (`docs/meta-api.md`) | Henry u Oliver; la tarjeta, Sara |
+| Verificar el dominio `stylebymura.com` en Meta por DNS (registro TXT; la metaetiqueta del Head de GHL no sirve), `docs/meta-api.md` | Quien gestione el DNS (Sonia o Sara) |
 | Banner de consentimiento: código hecho, probado y pegado en GHL (16/10, `tienda/README.md`). Comprobación de cookies hecha por German (16/10); falta corregir la política (`legal/politica-cookies-cambios-2026-10-16.md`), cerrar con GHL el seguimiento `msgsndr_id` y `v2_`/`v3_`, y confirmar que `/politica-cookies` está publicada | Sonia / Claude |
 | Píxel de Meta (paso 1, navegador): pegado en GHL y comprobado en producción (16/10, `tienda/README.md`): PageView, ViewContent y AddToCart llegan al píxel con valor y `eventID`; vistos en Events Manager → Probar eventos (Procesados, origen Navegador). Pendiente de aclarar: `PageView` sale como «Evento personalizado» y hay un aviso en la cabecera. Paso 2: `Purchase` a Meta desde un workflow de GHL, sin n8n (guía en `docs/capi-purchase-ghl.md`, pendiente de montar y de la duda de consentimiento) | German pega, Claude el código |
 | Clarity: código hecho y probado con el ID del proyecto puesto (16/10, `tienda/README.md`); pegado en GHL; tras aceptar carga bien y antes no carga (16/10). Falta comprobar que llegan sesiones al panel. Después, píxel + CAPI con eventos propios | German instala, Claude el código |
-| Guiones sin diálogo y 6–8 creatividades de colección | German + Sara |
+| Plan de contenido (`docs/plan-contenido.md`, lienzo https://claude.ai/artifact/V1XTYr6s5LSiWdJrhb1ddG): aprobar guiones con Sara la semana del 20/10, grabación 1 antes del 27/10, anuncios montados y campaña en pausa el 2/11, grabación 2 (fiestas) del 10 al 16/11 | German + Sara; montaje, Claude |
 | Las 10 fechas de los pendientes del presupuesto (página 3 de «Lo que tiene MÛRA», hoy `[FECHA]`) | Sonia + German |
 | Comprobar si el formulario de devolución valida pedido + correo, como dice el PDF de Sonia (el flujo que dejamos solo comprueba que el contacto existe) | Sonia |
 | Defectos del 22/9: `100vw` en `.mura` (8 px de scroll lateral), rejilla con agotados, correo de entrega duplicado, asunto del recibo («Aqui», «factura»), LS03 sin probar y sin cerrar su oportunidad al pagar | Claude |
