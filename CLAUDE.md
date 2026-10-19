@@ -98,6 +98,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 | `legal/` | Páginas legales; `legal/README.md` explica dónde está la política de cookies (Drive de Sonia). |
 | `correos/` | Plantillas HTML de correo (asunto y previsualización en el comentario de cabecera). |
 | `datos/` | Mapas de ids, stock y copias de seguridad (`datos/backups/`) antes de cada cambio por API. |
+| `plantillas/` | Material reutilizable para otros clientes: `plan-contenido/` (plantilla del plan, generador del lienzo A4 y prompt para la sesión del cliente nuevo). |
 
 ## Reglas técnicas que ya nos han mordido
 
