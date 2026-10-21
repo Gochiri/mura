@@ -89,6 +89,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 | `docs/2026-10-09-reunion-sara.md` | Acuerdos con Sara y lo que queda abierto. |
 | `docs/plan-contenido.md` | Las 8 fichas de anuncios (planos, textos, títulos), reglas de grabación para Sara, calendario y qué montaje entra en la gestión. |
 | `docs/cobros-sara.md` | Cómo se le cobra a Sara (productos y links en la subcuenta de Profit) y estado de cada link. |
+| `docs/meta-campana.md` | La campaña y el conjunto creados por API (ids, parámetros, qué falta para activar) y `tienda/meta-campana.sh`. |
 | `docs/meta-api.md` | Meta por API dentro del portafolio de MÛRA: usuario del sistema y app existentes, token, `.env`, comprobaciones con `curl` y reglas de uso. |
 | `docs/para-sonia-*.md` | Lo entregado a Sonia: aviso de pedido, formulario de devolución, estado antes de Meta (22/9). |
 | `docs/2026-07-29-llamada-sonia-henry.md` | Llamada técnica de julio: número de pedido, Nacex, tags. |
@@ -161,7 +162,8 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 
 | Pendiente | Quién |
 |---|---|
-| **URGENTE · Desplegar el Worker v2** (`tienda/worker-productos.js`, instrucciones en `tienda/README.md`): desde el 21/10 la web no muestra productos por el Error 1101. Comprobar después `/products` en el navegador | German |
+| Worker v2.1 desplegado el 21/10: la web vuelve a mostrar productos. Queda desplegar el arreglo de la foto de Accesorios | German |
+| **Campaña en Meta creada en pausa el 21/10** (`docs/meta-campana.md`): campaña `52549695358270` y conjunto `52549695445670`, 22 €/día, inicio 2/11. Para activarla faltan: tarjeta de Sara en la cuenta publicitaria (hoy no hay método de pago), los anuncios, Purchase por GHL y el dominio verificado | German + Sara |
 | **URGENTE · Rotar el PIT de GHL.** El 21/10 se encontró un token `pit-…` escrito en 5 archivos del repo (`datos/fix_stock.py`, `datos/fix_tpl.py` y 3 copias de workflows) desde agosto; se ha retirado de los archivos, pero sigue en el historial de git. Hay que generar uno nuevo en GHL, revocar el viejo y actualizarlo en el Worker (`GHL_TOKEN`), en n8n y donde se use | German + Sonia |
 | Propuesta de mantenimiento más barata (por incidencia u horas) | German + Sonia |
 | Cobro: productos y links de pago en la subcuenta de Profit (link A, 425 €), datos fiscales de Sara vía su gestor y factura de cada pago. Instrucciones y estado de los links en `docs/cobros-sara.md` | German + Henry |
