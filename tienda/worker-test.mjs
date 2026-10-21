@@ -19,7 +19,8 @@ globalThis.fetch = async (u) => {
   const url = new URL(u);
   if (modo === 'caido') return new Response('upstream down', { status: 503 });
   if (modo === 'explota') throw new Error('Too many subrequests');
-  if (url.pathname === '/products/') return Response.json({ products, total: [{ total: N }] });
+  if (url.pathname === '/products/collections') return Response.json({ data: [{ _id: 'c1', name: 'Con foto', image: 'col.jpg' }, { _id: 'c2', name: 'Sin foto' }] });
+  if (url.pathname === '/products/') return Response.json({ products: url.searchParams.get('collectionIds') ? products.slice(0, 2) : products, total: [{ total: N }] });
   if (url.pathname === '/products/inventory') {
     const off = Number(url.searchParams.get('offset') || 0);
     return Response.json({ inventory: inventory.slice(off, off + 100), total: [{ total: inventory.length }] });
@@ -79,6 +80,12 @@ console.log(`caliente: ${l} llamadas (listado + inventario), todas con precio`);
 // 4. Una pieza: 2 llamadas, con galería y precio
 ({ r, body, llamadas: l } = await pedir('/products?id=p3'));
 assert.equal(l, 4); assert.equal(body.piezas[0].imagenes.length, 2); assert.equal(body.piezas[0].tallas[0].precio, 79);
+
+// 4b. Colecciones: la que no tiene imagen usa la foto de su primera pieza
+({ body } = await pedir('/collections'));
+assert.equal(body.colecciones[0].imagen, 'col.jpg');
+assert.equal(body.colecciones[1].imagen, 'img0.jpg');
+assert.equal(body.colecciones[1].piezaIds.length, 2);
 
 // 5. GHL caído: JSON con error, no excepción
 store.clear(); modo = 'caido';
