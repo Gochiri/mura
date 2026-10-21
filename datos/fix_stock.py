@@ -10,7 +10,7 @@ Modo seco por defecto. Para aplicar: --aplicar
 """
 import json, subprocess, sys, unicodedata, re
 S='/tmp/claude-0/-home-user-mura/850d7451-a44a-54fd-98c5-35adaf625d82/scratchpad'
-API='https://services.leadconnectorhq.com'; PIT='pit-c16bafa6-438e-424d-8d49-7ea9f44590c1'
+API='https://services.leadconnectorhq.com'; PIT=__import__('os').environ['GHL_PIT']  # nunca en el repo: export GHL_PIT=… antes de ejecutar
 LID='NxPF5fOicowujokEk5Hm'
 H=['-H','Authorization: Bearer '+PIT,'-H','Version: 2021-07-28','-H','Content-Type: application/json']
 

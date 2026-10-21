@@ -63,7 +63,7 @@
           "headers": [
             {
               "key": "Authorization",
-              "value": "Bearer pit-c16bafa6-438e-424d-8d49-7ea9f44590c1"
+              "value": "Bearer PIT_RETIRADO_DEL_REPO"
             },
             {
               "key": "Version",

@@ -6,7 +6,7 @@ los comentarios de cabecera— se queda byte a byte como estaba.
 import json, re, os, urllib.request, urllib.error, sys
 
 LID='NxPF5fOicowujokEk5Hm'
-PIT='pit-c16bafa6-438e-424d-8d49-7ea9f44590c1'
+PIT=__import__('os').environ['GHL_PIT']  # nunca en el repo: export GHL_PIT=… antes de ejecutar
 API='https://services.leadconnectorhq.com'
 BK='datos/backups/plantillas_20260822'
 FEEDBACK='{{custom_values.url_feedback}}?cid={{contact.id}}'
