@@ -48,7 +48,13 @@ const API_VERSION = '2021-07-28';
 const CACHE_SECONDS = 60;            // la respuesta completa se refresca como máximo cada minuto
 const CACHE_PRECIO_SECONDS = 86400;  // el precio de cada variante, un día
 const LIMITE_SUBPETICIONES = 50;     // lo que corta el plan gratuito
-const PRESUPUESTO_SUBPETICIONES = 46; // margen de 4 sobre el límite
+// ⚠️ Las operaciones de la Cache API (match/put) TAMBIÉN cuentan como
+// subpeticiones. Por eso los precios van en UNA sola entrada de caché para
+// todo el catálogo, no una por producto: con 47 productos, 47 `match` ya
+// reventaban el límite (comprobado el 21/10, primer despliegue de la v2).
+const PRESUPUESTO_PRECIOS = 38;      // fetch de precios por petición en frío
+// Cuentas en frío: match respuesta (1) + listado (1) + inventario (1–2) +
+// match precios (1) + hasta 38 precios + put precios (1) + put respuesta (1) = 45.
 
 export default {
   async fetch(request, env, ctx) {
@@ -95,34 +101,20 @@ async function servir(url, env, ctx, cors, json, allowOrigin) {
     Accept: 'application/json',
   };
 
-  // Contador de subpeticiones: si nos acercamos al límite, dejamos de pedir
-  // en vez de reventar.
-  let usadas = 0;
+  // Contador de subpeticiones (fetch a GHL). La caché se cuenta aparte, a
+  // mano, porque sus operaciones también suman.
+  let usadas = 1; // el cache.match de la respuesta, arriba
   const ghl = async (path) => {
-    if (usadas >= LIMITE_SUBPETICIONES - 1) throw new Error(`presupuesto de subpeticiones agotado en ${path}`);
+    if (usadas >= LIMITE_SUBPETICIONES - 2) throw new Error(`presupuesto de subpeticiones agotado en ${path}`);
     usadas++;
     return fetch(`${GHL_API}${path}`, { headers });
   };
-  const quedan = () => PRESUPUESTO_SUBPETICIONES - usadas;
 
   // ---- Precios de una pieza (cada precio de GHL es una variante) ----
-  // Van a la caché de borde por producto, 24 h. Devuelve null si no hay
-  // presupuesto para pedirlos y no estaban en caché.
-  const preciosDe = async (idPieza, { forzar = false } = {}) => {
-    const k = new Request(`${url.origin}/__precio/${idPieza}`);
-    if (!forzar) {
-      const c = await cache.match(k);
-      if (c) return c.json();
-    }
-    if (!forzar && quedan() <= 0) return null;
+  const preciosDe = async (idPieza) => {
     const res = await ghl(`/products/${idPieza}/price?locationId=${env.GHL_LOCATION}&limit=100`);
     if (!res.ok) return null;
-    const data = await res.json();
-    const prices = data.prices || [];
-    ctx.waitUntil(cache.put(k, new Response(JSON.stringify(prices), {
-      headers: { 'Content-Type': 'application/json', 'Cache-Control': `public, max-age=${CACHE_PRECIO_SECONDS}` },
-    })));
-    return prices;
+    return (await res.json()).prices || [];
   };
 
   // Una variante en el formato que espera la web. `inv` es la fila del
@@ -163,7 +155,7 @@ async function servir(url, env, ctx, cors, json, allowOrigin) {
     };
   };
 
-  const guardar = (res) => { ctx.waitUntil(cache.put(cacheKey, res.clone())); return res; };
+  const guardar = (res) => { usadas++; ctx.waitUntil(cache.put(cacheKey, res.clone())); return res; };
 
   // ---- Colecciones ----
   if (url.pathname === '/collections') {
@@ -190,7 +182,7 @@ async function servir(url, env, ctx, cors, json, allowOrigin) {
   if (idPieza) {
     const [detRes, prices] = await Promise.all([
       ghl(`/products/${idPieza}?locationId=${env.GHL_LOCATION}`),
-      preciosDe(idPieza, { forzar: true }),
+      preciosDe(idPieza),
     ]);
     if (!detRes.ok) return json({ error: 'ghl_product', status: detRes.status }, detRes.status === 404 ? 404 : 502);
     const p = await detRes.json();
@@ -226,19 +218,26 @@ async function servir(url, env, ctx, cors, json, allowOrigin) {
     }
   } catch (e) { console.error('inventario', e && e.message || e); }
 
-  // 3. Precios: de caché; los que falten, de GHL hasta donde llegue el presupuesto.
-  //    Primero los que ya están en caché (gratis), después los que faltan.
-  const precios = new Map();
-  const faltan = [];
-  for (const p of products) {
-    const c = await cache.match(new Request(`${url.origin}/__precio/${p._id}`));
-    if (c) precios.set(p._id, await c.json()); else faltan.push(p._id);
-  }
-  // En paralelo por lotes, sin pasarnos: cada lote cabe en lo que queda.
-  while (faltan.length && quedan() > 0) {
-    const lote = faltan.splice(0, Math.min(faltan.length, quedan(), 15));
+  // 3. Precios: UNA entrada de caché con los de todo el catálogo (24 h).
+  //    Los que falten se piden a GHL hasta agotar el presupuesto y se
+  //    guardan con los demás en esa misma entrada.
+  const kPrecios = new Request(`${url.origin}/__precios`);
+  usadas++;
+  const cPrecios = await cache.match(kPrecios);
+  const precios = new Map(cPrecios ? Object.entries(await cPrecios.json()) : []);
+  const faltan = products.map((p) => p._id).filter((id) => !precios.has(id));
+  let pedidos = 0;
+  while (faltan.length && pedidos < PRESUPUESTO_PRECIOS) {
+    const lote = faltan.splice(0, Math.min(faltan.length, PRESUPUESTO_PRECIOS - pedidos, 15));
+    pedidos += lote.length;
     const res = await Promise.all(lote.map((id) => preciosDe(id).catch(() => null)));
     lote.forEach((id, i) => { if (res[i]) precios.set(id, res[i]); });
+  }
+  if (pedidos) {
+    usadas++;
+    ctx.waitUntil(cache.put(kPrecios, new Response(JSON.stringify(Object.fromEntries(precios)), {
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': `public, max-age=${CACHE_PRECIO_SECONDS}` },
+    })));
   }
   if (faltan.length) console.error(`sin presupuesto para los precios de ${faltan.length} piezas; saldrán en la siguiente petición`);
 

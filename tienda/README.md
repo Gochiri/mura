@@ -35,8 +35,10 @@ más, se pasó del límite y Cloudflare lo convierte en una excepción.
 
 `tienda/worker-productos.js` v2:
 - el catálogo sale de **2 llamadas** (listado + inventario con todo el stock); los
-  precios se guardan en la caché de borde 24 h por producto y se piden solo los que
-  falten, con presupuesto de 46;
+  precios se guardan 24 h en **una sola entrada** de la caché de borde y se piden
+  solo los que falten, con presupuesto de 38 por petición. Ojo: las operaciones de
+  la Cache API también cuentan como subpeticiones (el primer despliegue de la v2,
+  con una entrada por producto, volvió a pasarse del límite);
 - `try/catch` global: cualquier fallo devuelve JSON con `error` y queda en Logs,
   nunca un 1101;
 - mismo formato de salida: `producto.html` y la rejilla no cambian.
@@ -44,8 +46,9 @@ más, se pasó del límite y Cloudflare lo convierte en una excepción.
 **Desplegar:** Cloudflare → Workers → `mura-productos` → Edit code → pegar el
 archivo entero → Deploy. Las variables (`GHL_TOKEN`, `GHL_LOCATION`,
 `ALLOWED_ORIGIN`) se quedan. Después abrir `/products` en el navegador: tiene que
-salir JSON con `piezas` y, al final, `_subpeticiones` (en caliente, 2) y
-`_sinPrecio` (0). Si sale `error: ghl_products` con `status: 401`, el token del
+salir JSON con `piezas` y, al final, `_subpeticiones` (en caliente, 5) y
+`_sinPrecio` (0). La primera carga tras desplegar puede dejar unas piezas sin
+precio (`_sinPrecio` > 0); recargando a los 60 s se completan. Si sale `error: ghl_products` con `status: 401`, el token del
 Worker ya no vale: generar un PIT nuevo en GHL y ponerlo en `GHL_TOKEN`.
 
 Prueba local sin red: `node tienda/worker-test.mjs`.
