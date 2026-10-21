@@ -165,12 +165,18 @@ async function servir(url, env, ctx, cors, json, allowOrigin) {
     const rawCols = colData.data || colData.collections || [];
     const cols = await Promise.all(rawCols.map(async (c) => {
       const cid = c._id || c.id;
-      let piezaIds = [];
+      let piezaIds = [], primeraFoto = null;
       try {
         const inCol = await ghl(`/products/?locationId=${env.GHL_LOCATION}&limit=100&collectionIds=${cid}`);
-        if (inCol.ok) piezaIds = ((await inCol.json()).products || []).map((p) => p._id);
+        if (inCol.ok) {
+          const ps = (await inCol.json()).products || [];
+          piezaIds = ps.map((p) => p._id);
+          primeraFoto = (ps.find((p) => p.image) || {}).image || null;
+        }
       } catch (e) { /* colección sin piezas o sin presupuesto */ }
-      return { id: cid, nombre: c.name, slug: c.slug || null, imagen: c.image || null, piezaIds };
+      // Si la colección no tiene imagen en GHL (Accesorios, 21/10), se usa la
+      // foto de su primera pieza para que la tarjeta no salga en gris.
+      return { id: cid, nombre: c.name, slug: c.slug || null, imagen: c.image || primeraFoto, piezaIds };
     }));
     return guardar(json({ actualizado: new Date().toISOString(), colecciones: cols }));
   }
