@@ -25,6 +25,34 @@ activarlo y copiar la URL de **producción** — la `/webhook/…`. La de
 pruebas, `/webhook-test/…`, solo escucha con el editor de n8n abierto:
 en producción no llega nunca. Ese fue el bug del 06b.
 
+## El Worker de productos: Error 1101 y versión 2 (21/10)
+
+El 21/10 la web se quedó sin productos en todas las páginas: el Worker
+`mura-productos` devolvía **Error 1101, «Worker threw exception»**. Causa: `/products`
+hacía una llamada a GHL por producto para los precios, y el plan gratuito corta en
+50 subpeticiones por petición. Con 36 piezas eran 37; con 47, 48; al añadir alguna
+más, se pasó del límite y Cloudflare lo convierte en una excepción.
+
+`tienda/worker-productos.js` v2:
+- el catálogo sale de **2 llamadas** (listado + inventario con todo el stock); los
+  precios se guardan en la caché de borde 24 h por producto y se piden solo los que
+  falten, con presupuesto de 46;
+- `try/catch` global: cualquier fallo devuelve JSON con `error` y queda en Logs,
+  nunca un 1101;
+- mismo formato de salida: `producto.html` y la rejilla no cambian.
+
+**Desplegar:** Cloudflare → Workers → `mura-productos` → Edit code → pegar el
+archivo entero → Deploy. Las variables (`GHL_TOKEN`, `GHL_LOCATION`,
+`ALLOWED_ORIGIN`) se quedan. Después abrir `/products` en el navegador: tiene que
+salir JSON con `piezas` y, al final, `_subpeticiones` (en caliente, 2) y
+`_sinPrecio` (0). Si sale `error: ghl_products` con `status: 401`, el token del
+Worker ya no vale: generar un PIT nuevo en GHL y ponerlo en `GHL_TOKEN`.
+
+Prueba local sin red: `node tienda/worker-test.mjs`.
+
+**Límite que sigue existiendo:** `/collections` hace 1 llamada por colección.
+Con más de ~45 colecciones habría que paginar igual.
+
 ## Banner de cookies (16/10)
 
 *Pegado en GHL y comprobado en producción por German el 16/10.*

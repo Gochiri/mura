@@ -93,7 +93,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 | `docs/para-sonia-*.md` | Lo entregado a Sonia: aviso de pedido, formulario de devolución, estado antes de Meta (22/9). |
 | `docs/2026-07-29-llamada-sonia-henry.md` | Llamada técnica de julio: número de pedido, Nacex, tags. |
 | `tienda/` | Código de la web. Fuente única: `codigo-global-tienda.js` → `build.sh` genera `tracking-code-head.html`, `tracking-code-body.html` y `css-paginas-tienda.css`. Qué se pega y dónde, en `tienda/README.md`. |
-| `tienda/worker-productos.js` | Worker de Cloudflare que sirve el catálogo y el stock a la web (caché de 60 s). |
+| `tienda/worker-productos.js` | Worker de Cloudflare que sirve el catálogo y el stock a la web (caché de 60 s). v2 del 21/10: 2 llamadas a GHL por catálogo, nunca más de 46 (el plan gratuito corta en 50 y da «Error 1101»). Prueba: `node tienda/worker-test.mjs`. |
 | `tienda/n8n-*.json` | Nodos de n8n para pegar (newsletter, encuesta, devolución web, aviso de pedido). |
 | `legal/` | Páginas legales; `legal/README.md` explica dónde está la política de cookies (Drive de Sonia). |
 | `correos/` | Plantillas HTML de correo (asunto y previsualización en el comentario de cabecera). |
@@ -107,8 +107,9 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
   por Cloudflare.
 - **Secretos:** el PIT, los tokens de Firebase y cualquier credencial **nunca** se
   escriben en el repo ni en un artefacto. Antes de cada commit o publicación,
-  `grep -rE 'AMf-|pit-|EAA'` tiene que salir vacío (`EAA` es el prefijo de los
-  tokens de Meta).
+  `grep -rE 'AMf-|pit-[0-9a-f]|EAA[A-Za-z0-9]' . --exclude-dir=.git` tiene que salir
+  vacío (`EAA` es el prefijo de los tokens de Meta). Los scripts de `datos/` leen
+  el PIT de la variable de entorno `GHL_PIT`.
 - **Meta por API:** todo dentro del portafolio de MÛRA (ID `1239463275926698`):
   usuario del sistema `Conversions API System User` (creado por Meta con el píxel, ya con todos los activos), app `Conversions API Application` y su token. No se usa el
   portafolio de Profit. Todo en un `.env` local
@@ -160,6 +161,8 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 
 | Pendiente | Quién |
 |---|---|
+| **URGENTE · Desplegar el Worker v2** (`tienda/worker-productos.js`, instrucciones en `tienda/README.md`): desde el 21/10 la web no muestra productos por el Error 1101. Comprobar después `/products` en el navegador | German |
+| **URGENTE · Rotar el PIT de GHL.** El 21/10 se encontró un token `pit-…` escrito en 5 archivos del repo (`datos/fix_stock.py`, `datos/fix_tpl.py` y 3 copias de workflows) desde agosto; se ha retirado de los archivos, pero sigue en el historial de git. Hay que generar uno nuevo en GHL, revocar el viejo y actualizarlo en el Worker (`GHL_TOKEN`), en n8n y donde se use | German + Sonia |
 | Propuesta de mantenimiento más barata (por incidencia u horas) | German + Sonia |
 | Cobro: productos y links de pago en la subcuenta de Profit (link A, 425 €), datos fiscales de Sara vía su gestor y factura de cada pago. Instrucciones y estado de los links en `docs/cobros-sara.md` | German + Henry |
 | Meta por API, todo en el portafolio de MÛRA (ID `1239463275926698`; Henry y Oliver son administradores como personas): cuenta publicitaria en EUR con la tarjeta de Sara (el píxel ya existe), usuario del sistema `Conversions API System User` con los activos y la app `MURA Ads` (`1139141968627775`); token con caso de uso de Instagram ya regenerado (16/10) y comprobaciones 1–5 de `docs/meta-api.md` superadas, token sin caducidad (16/10) (`docs/meta-api.md`) | Henry u Oliver; la tarjeta, Sara |
