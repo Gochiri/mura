@@ -27,7 +27,7 @@ imagen. Si Sara lo quiere, se presupuesta aparte.
 
 | Semana | Qué pasa | Quién |
 |---|---|---|
-| 20–25/10 | Reunión de 30 min para aprobar los guiones. Grabación 1: ficha 9 (cinco prendas, 25/10), bruto de los reels existentes y rodaje de Sevilla con looks de día y de noche (fichas 1 a 3). El backstage (ficha 4) queda fuera. | Sara |
+| Hasta el 27/10 | Guiones aprobados con Sara (24/10). Grabación 1: ficha 9 (cinco prendas, 25/10), bruto de los reels existentes y rodaje de Sevilla con looks de día y de noche (fichas 1 a 3). El backstage (ficha 4) queda fuera. | Sara |
 | 26–31/10 | Bruto en Drive el 27/10. Montaje de los anuncios 1–6. `Purchase` por GHL montado y probado. | Nosotros |
 | 2/11 | Campaña creada en pausa con los anuncios. Revisión con German y activación. | Nosotros |
 | 3–21/11 | Fase de señal. Revisión semanal: qué se queda, qué se retira. | Todos |
@@ -69,6 +69,21 @@ Vistas de Instagram Insights a 24/10; no sustituyen una prueba con anuncios.
 | Opcional | 16/9 Camisa con detalle joya · 5/10 «La forma en la que vestimos» | 15.550 / 23.338 | 5 y 6 |
 
 Además, los planos sueltos de esos días que no entraran en el reel.
+
+### Looks para el rodaje de Sevilla
+
+Seis looks, 3 planos cada uno (entera en movimiento, plano medio, detalle a
+20 cm). Todas las prendas con 6 o más unidades en la hoja del 23/9: **revisar el
+stock en la web la víspera** y sustituir lo que se haya agotado.
+
+| Look | Prendas | Qué hace |
+|---|---|---|
+| D1 · día | Camisa Oliva (Drapeo) + Pantalón Palazzo Blanco | Andando por una calle ancha |
+| D2 · día | Camisa Estructurada verde lima + Pantalón Crop Raya Diplomática | Cruzando la calle; sentada en una terraza |
+| D3 · día | Blusón Paisley Azul + Pantalón Negro Detalle Bajo | Paseando y girándose |
+| N1 · noche | Sobrefalda Negra Bordado Lentejuelas + Top Negro Lazada Encaje + Pantalón Negro | Andando hacia cámara, lentejuelas a contraluz |
+| N2 · noche | Camisa Perlas Eclipse + Pantalón Encaje Eclipse | Entrando en un portal, mirando atrás |
+| N3 · noche | Vestido Asimetría Floral | En una terraza con una copa; andando |
 
 ## Lo que ya sabemos que funciona
 
