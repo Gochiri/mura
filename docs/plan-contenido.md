@@ -27,13 +27,63 @@ imagen. Si Sara lo quiere, se presupuesta aparte.
 
 | Semana | Qué pasa | Quién |
 |---|---|---|
-| 20–25/10 | Reunión de 30 min para aprobar los guiones. Grabación 1: fichas 1 a 5 (día, oficina, evento, backstage, detalle). | Sara |
+| Hasta el 27/10 | Guiones aprobados con Sara (24/10). Grabación 1: ficha 9 (cinco prendas, 25/10), bruto de los reels existentes y rodaje de Sevilla con looks de día y de noche (fichas 1 a 3). El backstage (ficha 4) queda fuera. | Sara |
 | 26–31/10 | Bruto en Drive el 27/10. Montaje de los anuncios 1–6. `Purchase` por GHL montado y probado. | Nosotros |
 | 2/11 | Campaña creada en pausa con los anuncios. Revisión con German y activación. | Nosotros |
 | 3–21/11 | Fase de señal. Revisión semanal: qué se queda, qué se retira. | Todos |
 | 10–16/11 | Grabación 2: fichas 7 y 8 (fiestas y regalo). | Sara |
 | 24/11 | Entran los anuncios de Black Friday y Navidad. | Nosotros |
 | 26/12 | Entra el anuncio de Reyes. | Nosotros |
+
+## Cambios del 24/10 (tras hablar con Sara)
+
+Sara pidió el cambio al ver el plan: lo que le falta a MÛRA es **la prenda en la
+calle, en el momento en que se lleva** (outfits de día y de noche). El backstage
+«es más de lo mismo»: tuvo likes e interacción, pero no vende. Lo que cambia:
+
+- **Backstage (ficha 4) sale del primer lote.** Queda para stories o para más
+  adelante.
+- **Prioridad a los looks de calle** (fichas 1, 2 y 3): día y noche, en movimiento.
+  Sara graba en Sevilla; lista cerrada de looks aparte, con prendas de stock.
+- **Ficha 9 nueva: «Cinco prendas para tu armario cápsula».** Idea de Sara; la graba
+  el 25/10. Sin hablar, texto en pantalla.
+- **Material que ya existe: se pide el bruto, no se repite el reel.** Tabla abajo.
+- **La web se revisa con datos**, no antes: Clarity y el píxel casi no tienen
+  tráfico. Con los primeros 7–10 días de anuncios se ve dónde cae la gente
+  (ficha → carrito → compra) y se toca solo eso. La home «muy seria» sigue en
+  pendientes (CLAUDE.md).
+
+### Vídeos en bruto que pedimos a Sara
+
+Originales del móvil, **sin música ni texto**, una carpeta de Drive por vídeo.
+Vistas de Instagram Insights a 24/10; no sustituyen una prueba con anuncios.
+
+| Prioridad | Reel (fecha) | Vistas | Para qué ficha |
+|---|---|---|---|
+| 1 | 13/9 «Una misma base. Tres formas de llevarlo» | 27.401 | 1 |
+| 2 | 21/9 «Un buen pantalón no pertenece a un solo momento» | 16.617 | 2 |
+| 3 | 7/10 «Una blazer, tres formas de llevarla» | 5.384 | 1 |
+| 4 | 10/9 Bomber de encaje + pantalón de sastrería | 23.145 | 3 |
+| 5 | 9/10 Pantalón de sastrería, bolso y sobrefalda | 5.178 | 2 y 3 |
+| 6 | Traje verde en movimiento (28/9 y 22/10) | 6.760 / 4.364 | looks de día |
+| Opcional | 16/9 Camisa con detalle joya · 5/10 «La forma en la que vestimos» | 15.550 / 23.338 | 5 y 6 |
+
+Además, los planos sueltos de esos días que no entraran en el reel.
+
+### Looks para el rodaje de Sevilla
+
+Seis looks, 3 planos cada uno (entera en movimiento, plano medio, detalle a
+20 cm). Todas las prendas con 6 o más unidades en la hoja del 23/9: **revisar el
+stock en la web la víspera** y sustituir lo que se haya agotado.
+
+| Look | Prendas | Qué hace |
+|---|---|---|
+| D1 · día | Camisa Oliva (Drapeo) + Pantalón Palazzo Blanco | Andando por una calle ancha |
+| D2 · día | Camisa Estructurada verde lima + Pantalón Crop Raya Diplomática | Cruzando la calle; sentada en una terraza |
+| D3 · día | Blusón Paisley Azul + Pantalón Negro Detalle Bajo | Paseando y girándose |
+| N1 · noche | Sobrefalda Negra Bordado Lentejuelas + Top Negro Lazada Encaje + Pantalón Negro | Andando hacia cámara, lentejuelas a contraluz |
+| N2 · noche | Camisa Perlas Eclipse + Pantalón Encaje Eclipse | Entrando en un portal, mirando atrás |
+| N3 · noche | Vestido Asimetría Floral | En una terraza con una copa; andando |
 
 ## Lo que ya sabemos que funciona
 
@@ -161,6 +211,9 @@ documento de Sara) y hay que refrescarlo antes de cada grabación: las de talla
 
 ### 4 · Backstage — existe una sola vez
 
+> **Fuera del primer lote (24/10):** Sara lo ve agotado y sin ventas. Se recupera
+> más adelante o para stories.
+
 - **Objetivo:** el formato que mejor ha funcionado en orgánico, con el mensaje
   de edición limitada.
 - **Prendas:** las que haya en el taller o el almacén; mejor con etiqueta MÛRA
@@ -285,6 +338,39 @@ documento de Sara) y hay que refrescarlo antes de cada grabación: las de talla
   más».
 - **Destino:** `/prendas` filtrado por Accesorios.
 - **Nota:** para Reyes, cambiar «Navidad» por «Reyes» y la fecha límite.
+
+### 9 · Cinco prendas para tu armario cápsula (idea de Sara, grabación 25/10)
+
+- **Objetivo:** vídeo comercial de colección; una cápsula con pocas piezas y
+  muchos looks.
+- **Prendas:** Pantalón Negro Detalle Bajo (16), Camisa Blanca Cuello Lazo (9),
+  Blazer Blanca Arquitectónica (6), Body Lencero Essential negro (6), Pantalón
+  Crop Raya Diplomática (9). Cada prenda sale en dos de los cuatro looks.
+  Si Sara prefiere no usar la blazer blanca: Camisa Oliva (Drapeo) (6).
+- **Lugar y luz:** calle para el día, interior luminoso para la oficina, interior
+  con luz cálida para la noche. Sara pone sus zapatos y bolso, nunca otra prenda
+  de MÛRA.
+- **Planos:** 4 looks, cada uno en 3 planos de 3–4 s (entera en movimiento, plano
+  medio, detalle a 20 cm).
+  1. Día: camisa blanca + pantalón negro, andando por la calle.
+  2. Oficina: camisa blanca + blazer blanca + pantalón de raya, sentada con un café.
+  3. Noche: body negro + blazer blanca + pantalón negro, girando.
+  4. Relajado: body negro + pantalón de raya, de pie y andando.
+- **Texto en pantalla:** «5 prendas» → el nombre de cada prenda → «Y salen 4
+  looks» → «MÛRA · Cápsula 01».
+- **Texto del anuncio:**
+  - «Cinco prendas, cuatro looks. Una cápsula pequeña que resuelve el día, la
+    oficina y la noche. Cápsula 01, producción limitada.»
+  - «Un armario cápsula no necesita mucho: necesita las piezas correctas. Estas
+    cinco combinan entre sí.»
+  - «Vestir con intención empieza por elegir menos y combinar más. Descubre la
+    Cápsula 01 de MÛRA.»
+- **Títulos del enlace (se rotan):** «Tu armario cápsula» · «Cinco prendas, cuatro
+  looks» · «Descubre la Cápsula 01» · «Vestir con intención» · «Colección
+  limitada MÛRA» · «Descubre más».
+- **Destino:** `/prendas`.
+- **Nota:** el stock es el de la hoja del 23/9; refrescarlo antes de grabar (la
+  blazer y el body se agotan antes).
 
 ## Cómo se usan en la campaña
 
