@@ -20,3 +20,14 @@ Pendiente: «Completa tu look» del Bomber, el Sastre y el Pelo Print lleva solo
 los nombres exactos de las otras prendas que Sara dejó en blanco en sus documentos.
 
 Para deshacer: borrar esos 4 productos en GHL.
+
+## Incidente del 28/10 (20:14) y arreglo
+
+Al cambiar la imagen de la colección «Colección» con `PUT /products/collections/{id}`, GHL le quitó
+esa colección a 13 productos (los 13 primeros del listado: Blazer Noir Atelier … Camisa Encaje Relieve),
+y el contador bajó de 53 a 40. Se les volvió a añadir «Colección» conservando el resto de sus
+colecciones; el contador vuelve a 53. Estado de esos 13 justo después del incidente:
+`productos_detalle_tras_incidente.jsonl`.
+
+Lección: no guardar colecciones por API sin comprobar después el recuento; para cambiar la imagen de una
+colección, mejor hacerlo en la interfaz de GHL.
