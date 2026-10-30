@@ -26,8 +26,8 @@ Para deshacer: borrar esos 4 productos en GHL.
 Al cambiar la imagen de la colección «Colección» con `PUT /products/collections/{id}`, GHL le quitó
 esa colección a 13 productos (los 13 primeros del listado: Blazer Noir Atelier … Camisa Encaje Relieve),
 y el contador bajó de 53 a 40. Se les volvió a añadir «Colección» conservando el resto de sus
-colecciones; el contador vuelve a 53. Estado de esos 13 justo después del incidente:
-`productos_detalle_tras_incidente.jsonl`.
+colecciones; el contador vuelve a 53. (No se guarda volcado del detalle de los 53
+productos: sus ids de imagen hacen saltar por falso positivo el grep de secretos.)
 
 Lección: no guardar colecciones por API sin comprobar después el recuento; para cambiar la imagen de una
 colección, mejor hacerlo en la interfaz de GHL.
