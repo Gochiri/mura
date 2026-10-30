@@ -1,25 +1,25 @@
 # La campaña en Meta (creada el 21/10, en pausa)
 
-> **30/10: ya no existe.** La cuenta `act_1650663796846832` se borró (moneda
-> equivocada) y con ella la campaña y el conjunto de abajo. Hay que recrearlos con
-> `tienda/meta-campana.sh` en la cuenta nueva, que cuelga del portafolio de Profit
-> (`docs/meta-api.md`), en pausa y con los mismos parámetros. Los ID de abajo son
-> solo históricos.
-
-Creada por API con `tienda/meta-campana.sh` desde la sesión con las variables
-`META_*`. Está **en pausa** y sin anuncios: se activa el 2/11 cuando estén
-montados los anuncios de `plan-contenido.md` y Sara haya puesto la tarjeta.
+> **30/10: recreada en la cuenta nueva.** La cuenta anterior (`act_1650663796846832`) se
+> borró y con ella la campaña del 21/10. Hoy, con `tienda/meta-campana.sh` y el token de
+> `muraescli` (portafolio de Profit, `docs/meta-api.md`), se crearon **en pausa** en
+> `act_1141864065246239` («Mura - ES»): campaña `52585971203356` y conjunto
+> `52585971218156`, mismos parámetros que abajo, pero optimizando al píxel nuevo
+> **`1577201230843977`** («mura es pixel», de Profit). Quedan sin activar, sin anuncios,
+> y sin tarjeta en la cuenta. **Aviso:** el código de la web (`tienda/`) aún carga el
+> píxel viejo `1799475611078369`; hay que cambiarlo (con el visto bueno de German) antes de
+> activar, o el conjunto optimizaría a un píxel que no recibe nada.
 
 | Qué | Nombre | ID |
 |---|---|---|
-| Campaña | MÛRA · Ventas · Cápsula 01 | `52549695358270` |
-| Conjunto | Mujeres 28–48 · España · Advantage+ | `52549695445670` |
+| Campaña | MÛRA · Ventas · Cápsula 01 | `52585971203356` (la del 21/10, `52549695358270`, se perdió) |
+| Conjunto | Mujeres 28–48 · España · Advantage+ | `52585971218156` (el del 21/10, `52549695445670`, se perdió) |
 
 **Campaña:** objetivo Ventas (`OUTCOME_SALES`), subasta, presupuesto en el
 conjunto (no CBO), sin categorías especiales.
 
 **Conjunto:** 22 €/día, optimiza a **Añadir al carrito** del píxel
-`1799475611078369`, puja de menor coste, destino web, inicio **2/11/2026 a las
+`1577201230843977` (era `1799475611078369`), puja de menor coste, destino web, inicio **2/11/2026 a las
 9:00** (hora de Madrid), ubicaciones automáticas. Público: audiencia Advantage+
 con los controles que la API admite (mujeres, España, 25–65). El **28–48 del
 plan se pone como sugerencia** en el Administrador de anuncios → conjunto →
@@ -27,7 +27,7 @@ Audiencia → «Sugerencia de edad»; la API no lo admite como control. Anuncian
 pagador (Ley de Servicios Digitales): MÛRA.
 
 **Dónde verla:** business.facebook.com → Administrador de anuncios → cuenta
-«Mura» (`act_1650663796846832`). `./tienda/meta-campana.sh --ver` la lista por
+«Mura - ES» (`act_1141864065246239`). `./tienda/meta-campana.sh --ver` la lista por
 API.
 
 ## Lo que falta para poder activarla
