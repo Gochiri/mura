@@ -104,7 +104,7 @@ solo aparecen tras aceptar.
 ## Píxel de Meta, paso 1 de 2 (16/10)
 
 Sección 12 del global + dos llamadas en `producto.html`. **Pixel ID
-`1577201230843977`.** Solo carga si la clienta acepta **Publicidad** en el banner.
+`1799475611078369`.** Solo carga si la clienta acepta **Publicidad** en el banner.
 
 **Qué hay que volver a pegar en GHL** (los tres cambian):
 1. `tracking-code-head.html` → Tracking Code → Head
@@ -138,7 +138,7 @@ a Meta; funciona tanto si la página corre antes como después del global.
 **Comprobado en producción el 16/10 (German, pestaña Network, sin bloqueador):**
 `PageView` desde la portada, `ViewContent` desde una ficha (99 €, EUR, `content_ids`,
 `eid` propio) y `AddToCart` (99 €, `contents` con cantidad 1, `eid` propio), todos al
-píxel `1577201230843977`, sin ningún parámetro `ud[...]` (sin datos personales) y con
+píxel `1799475611078369`, sin ningún parámetro `ud[...]` (sin datos personales) y con
 `_fbp` solo tras aceptar. Con un bloqueador de rastreo (Edge «Prevención de
 seguimiento» o extensiones) `fbevents.js` sale con `ERR_BLOCKED_BY_CLIENT` y no se
 envía nada: es lo esperado y justifica el paso 2 (servidor).

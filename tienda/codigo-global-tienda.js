@@ -1146,7 +1146,7 @@
      bloque: por eso `track` existe como cola desde el principio y
      este bloque la vacía al cargarse. */
 
-  var META_PIXEL_ID = '1577201230843977';
+  var META_PIXEL_ID = '1799475611078369';
 
   function definirMeta() {
     var previo = window.muraMeta;

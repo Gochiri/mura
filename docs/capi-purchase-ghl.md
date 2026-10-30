@@ -26,7 +26,7 @@ el `eventID` (es la única fuente); sí se pierde algo de calidad de coincidenci
 ## Antes de montarlo
 
 1. **Token y conjunto de datos.** El conjunto de datos es el píxel de MÛRA,
-   `1577201230843977`. El token es el de la API de Conversiones de ese píxel
+   `1799475611078369`. El token es el de la API de Conversiones de ese píxel
    (Events Manager → el píxel → Configuración → «Generar token de acceso», o el que ya
    se generó). Se pega **directamente en el campo de GHL**, nunca en el repo ni en un
    chat. Quien pueda editar el workflow puede verlo.
@@ -43,7 +43,7 @@ el `eventID` (es la única fuente); sí se pierde algo de calidad de coincidenci
   la etiqueta `prueba`.
 - Acción «Meta conversion API», conexión **Integration**:
   - Token de acceso: el del píxel.
-  - ID del conjunto de datos: `1577201230843977`.
+  - ID del conjunto de datos: `1799475611078369`.
   - Nombre del evento: **Purchase** (no Lead).
   - Valor: el **total pagado por la clienta**, con el selector de variables del campo.
     Comprobar que el importe es el correcto y decidir si incluye el envío; anotar aquí

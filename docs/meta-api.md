@@ -20,7 +20,7 @@ se crea en el sitio equivocado.
   Cuentas.
 - **Cuenta publicitaria** en **EUR** y zona horaria **Madrid**, con la tarjeta
   de Sara. Moneda y zona horaria no se cambian después. ID: `act_1650663796846832` (comprobado el 16/10: «Mura», EUR, activa).
-- **Píxel**: ya creado, ID **`1577201230843977`**. No se carga en la web hasta
+- **Píxel**: ya creado, ID **`1799475611078369`**. No se carga en la web hasta
   que esté el banner de consentimiento.
 
 ## 2. Usuario del sistema y app: ya existen
@@ -84,7 +84,7 @@ META_ACCESS_TOKEN=          # token de Conversions API System User
 META_AD_ACCOUNT_ID=act_1650663796846832     # con el prefijo act_, obligatorio
 META_PAGE_ID=
 META_IG_USER_ID=17841410968485139   # @bymurastudio
-META_PIXEL_ID=1577201230843977
+META_PIXEL_ID=1799475611078369
 META_CAPI_TOKEN=            # token del píxel (Events Manager)
 ```
 
