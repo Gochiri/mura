@@ -90,7 +90,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 | `docs/plan-contenido.md` | Las 8 fichas de anuncios (planos, textos, títulos), reglas de grabación para Sara, calendario y qué montaje entra en la gestión. |
 | `docs/cobros-sara.md` | Cómo se le cobra a Sara (productos y links en la subcuenta de Profit) y estado de cada link. |
 | `docs/meta-campana.md` | La campaña y el conjunto creados por API (ids, parámetros, qué falta para activar) y `tienda/meta-campana.sh`. |
-| `docs/meta-api.md` | Meta por API dentro del portafolio de MÛRA: usuario del sistema y app existentes, token, `.env`, comprobaciones con `curl` y reglas de uso. |
+| `docs/meta-api.md` | Meta por API: cuenta publicitaria en el portafolio de Profit y activos de MÛRA compartidos con él (desde el 30/10), token, `.env`, comprobaciones con `curl` y reglas de uso. |
 | `docs/para-sonia-*.md` | Lo entregado a Sonia: aviso de pedido, formulario de devolución, estado antes de Meta (22/9). |
 | `docs/2026-07-29-llamada-sonia-henry.md` | Llamada técnica de julio: número de pedido, Nacex, tags. |
 | `tienda/` | Código de la web. Fuente única: `codigo-global-tienda.js` → `build.sh` genera `tracking-code-head.html`, `tracking-code-body.html` y `css-paginas-tienda.css`. Qué se pega y dónde, en `tienda/README.md`. |
@@ -111,9 +111,12 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
   `grep -rE 'AMf-|pit-[0-9a-f]|EAA[A-Za-z0-9]' . --exclude-dir=.git` tiene que salir
   vacío (`EAA` es el prefijo de los tokens de Meta). Los scripts de `datos/` leen
   el PIT de la variable de entorno `GHL_PIT`.
-- **Meta por API:** todo dentro del portafolio de MÛRA (ID `1239463275926698`):
-  usuario del sistema `Conversions API System User` (creado por Meta con el píxel, ya con todos los activos), app `Conversions API Application` y su token. No se usa el
-  portafolio de Profit. Todo en un `.env` local
+- **Meta por API (esquema del 30/10):** la **cuenta publicitaria** es del portafolio
+  de Profit (ID `885279100130262`), porque la de MÛRA se creó con la moneda
+  equivocada, hubo que borrarla y Meta no deja crear otra en su portafolio. La
+  **página, Instagram @bymurastudio y el píxel** siguen siendo de MÛRA (ID
+  `1239463275926698`) y se comparten con Profit como socio. El usuario del sistema,
+  la app y el token salen del portafolio de Profit. Todo en un `.env` local
   (`META_ACCESS_TOKEN`, `META_CAPI_TOKEN`, `META_AD_ACCOUNT_ID`…; lista completa en
   `docs/meta-api.md`). Se llama a la Graph API con `curl`. Activar campañas o
   cambiar presupuestos, solo con confirmación de German.
@@ -163,11 +166,11 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 | Pendiente | Quién |
 |---|---|
 | Worker v2.1 desplegado el 21/10: la web vuelve a mostrar productos. Queda desplegar el arreglo de la foto de Accesorios | German |
-| **Campaña en Meta creada en pausa el 21/10** (`docs/meta-campana.md`): campaña `52549695358270` y conjunto `52549695445670`, 22 €/día, inicio 2/11. Para activarla faltan: tarjeta de Sara en la cuenta publicitaria (hoy no hay método de pago), los anuncios, Purchase por GHL y el dominio verificado | German + Sara |
+| **Campaña en Meta creada en pausa el 21/10** (`docs/meta-campana.md`): campaña `52549695358270` y conjunto `52549695445670`, 22 €/día, inicio 2/11. **La cuenta publicitaria `act_1650663796846832` se borró (30/10): la campaña y el conjunto se perdieron y hay que recrearlos con `tienda/meta-campana.sh` en la cuenta nueva.** Para activarla faltan: cuenta nueva con tarjeta de Sara, los anuncios, Purchase por GHL y el dominio verificado | German + Sara |
 | **URGENTE · Rotar el PIT de GHL.** El 21/10 se encontró un token `pit-…` escrito en 5 archivos del repo (`datos/fix_stock.py`, `datos/fix_tpl.py` y 3 copias de workflows) desde agosto; se ha retirado de los archivos, pero sigue en el historial de git. Hay que generar uno nuevo en GHL, revocar el viejo y actualizarlo en el Worker (`GHL_TOKEN`), en n8n y donde se use | German + Sonia |
 | Propuesta de mantenimiento más barata (por incidencia u horas) | German + Sonia |
 | Cobro: productos y links de pago en la subcuenta de Profit (link A, 425 €), datos fiscales de Sara vía su gestor y factura de cada pago. Instrucciones y estado de los links en `docs/cobros-sara.md` | German + Henry |
-| Meta por API, todo en el portafolio de MÛRA (ID `1239463275926698`; Henry y Oliver son administradores como personas): cuenta publicitaria en EUR con la tarjeta de Sara (el píxel ya existe), usuario del sistema `Conversions API System User` con los activos y la app `MURA Ads` (`1139141968627775`); token con caso de uso de Instagram ya regenerado (16/10) y comprobaciones 1–5 de `docs/meta-api.md` superadas, token sin caducidad (16/10) (`docs/meta-api.md`) | Henry u Oliver; la tarjeta, Sara |
+| **Meta por API, esquema del 30/10** (`docs/meta-api.md`): crear la cuenta publicitaria en EUR y Madrid en el portafolio de Profit, asignarle la página, Instagram y el píxel (ya compartidos por MÛRA), usuario del sistema con esos activos, app y token sin caducidad (guardado como secreto del entorno, nunca en el chat) y la tarjeta de Sara. Decidir con Sara quién figura como titular del pago. El token y las comprobaciones 1–5 del 16/10 eran del portafolio de MÛRA y hay que rehacerlos | Henry u Oliver; la tarjeta, Sara |
 | Verificar el dominio `stylebymura.com` en Meta por DNS (registro TXT; la metaetiqueta del Head de GHL no sirve), `docs/meta-api.md` | Quien gestione el DNS (Sonia o Sara) |
 | Banner de consentimiento: código hecho, probado y pegado en GHL (16/10, `tienda/README.md`). Comprobación de cookies hecha por German (16/10); falta corregir la política (`legal/politica-cookies-cambios-2026-10-16.md`), cerrar con GHL el seguimiento `msgsndr_id` y `v2_`/`v3_`, y confirmar que `/politica-cookies` está publicada | Sonia / Claude |
 | Píxel de Meta (paso 1, navegador): pegado en GHL y comprobado en producción (16/10, `tienda/README.md`): PageView, ViewContent y AddToCart llegan al píxel con valor y `eventID`; vistos en Events Manager → Probar eventos (Procesados, origen Navegador). Pendiente de aclarar: `PageView` sale como «Evento personalizado» y hay un aviso en la cabecera. Paso 2: `Purchase` a Meta desde un workflow de GHL, sin n8n (guía en `docs/capi-purchase-ghl.md`, pendiente de montar y de la duda de consentimiento) | German pega, Claude el código |

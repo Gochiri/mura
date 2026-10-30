@@ -1,5 +1,11 @@
 # La campaña en Meta (creada el 21/10, en pausa)
 
+> **30/10: ya no existe.** La cuenta `act_1650663796846832` se borró (moneda
+> equivocada) y con ella la campaña y el conjunto de abajo. Hay que recrearlos con
+> `tienda/meta-campana.sh` en la cuenta nueva, que cuelga del portafolio de Profit
+> (`docs/meta-api.md`), en pausa y con los mismos parámetros. Los ID de abajo son
+> solo históricos.
+
 Creada por API con `tienda/meta-campana.sh` desde la sesión con las variables
 `META_*`. Está **en pausa** y sin anuncios: se activa el 2/11 cuando estén
 montados los anuncios de `plan-contenido.md` y Sara haya puesto la tarjeta.

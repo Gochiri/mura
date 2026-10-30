@@ -1,4 +1,31 @@
-# Meta por API: app y token dentro del portafolio de MÛRA
+# Meta por API: cuenta publicitaria en Profit, activos de MÛRA compartidos
+
+> **Cambio del 30/10 (sustituye a lo de abajo donde se contradiga).** La cuenta
+> publicitaria de MÛRA se creó con una moneda equivocada: no se pueden cambiar ni
+> moneda ni método de pago, hubo que borrarla, y el portafolio de MÛRA no deja crear
+> otra (límite de una). Meta recomendó crearla desde otro portafolio. Esquema nuevo:
+>
+> | Qué | Dónde | ID |
+> |---|---|---|
+> | Cuenta publicitaria (EUR, Madrid) | portafolio de **Profit** | `act_…` (por crear) |
+> | Portafolio de Profit | Profit | `885279100130262` |
+> | Página, Instagram @bymurastudio, píxel `1799475611078369` | portafolio de **MÛRA**, compartidos con Profit como socio (acceso total) | `1239463275926698` |
+> | Usuario del sistema, app y token | portafolio de Profit | app `951855971008495` (si es la que se usa) |
+>
+> - El **píxel se queda en MÛRA** (es el dato de la clienta, está ya en el código de la
+>   web y sobrevive a un cambio de agencia). Se comparte, no se recrea. Si se hubiera
+>   borrado, se crea en MÛRA y se cambia el ID en `tienda/`.
+> - La cuenta es de Profit, no de Sara: decidir con ella quién figura como titular del
+>   pago antes de poner su tarjeta, y fijar un límite de gasto.
+> - El usuario del sistema, la app `MURA Ads` y el token de MÛRA ya no sirven para
+>   anunciar. `act_1650663796846832` está borrada y con ella la campaña y el conjunto
+>   del 21/10 (`docs/meta-campana.md`).
+> - **La verificación del dominio** sigue siendo del portafolio de MÛRA (DNS) y se comparte
+>   con Profit en Seguridad de la marca → Dominios.
+> - Pendiente: ID de la cuenta nueva, usuario del sistema, token como secreto del
+>   entorno y permitir `graph.facebook.com` en la red del entorno.
+>
+> Lo que sigue es el texto anterior, válido solo en lo que no choque con esto.
 
 *Decisión de German (14/10): todo vive **en el portafolio de MÛRA** (ID `1239463275926698`, confirmado el 16/10 en Información del negocio; `1650663796846832` es el ID de la cuenta publicitaria, no el del portafolio). Usuario del sistema, app y token son de MÛRA y solo sirven
 para MÛRA. Henry y Oliver entran con su acceso personal al
