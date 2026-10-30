@@ -7,7 +7,7 @@
 >
 > | Qué | Dónde | ID |
 > |---|---|---|
-> | Cuenta publicitaria (EUR, Madrid) | portafolio de **Profit** | `act_52585955559756` (creada; ID sacado de la URL de Meta el 30/10, sin comprobar por API) |
+> | Cuenta publicitaria (EUR, Madrid) | portafolio de **Profit** | `act_1141864065246239` («Mura - ES», EUR, Madrid; ID leído en Meta el 30/10, sin comprobar por API) |
 > | Portafolio de Profit | Profit | `885279100130262` |
 > | Página, Instagram @bymurastudio, píxel `1799475611078369` | portafolio de **MÛRA**, compartidos con Profit como socio (acceso total) | `1239463275926698` |
 > | Usuario del sistema, app y token | portafolio de Profit | app `951855971008495` (si es la que se usa) |
@@ -108,7 +108,7 @@ artefacto ni pegadas en el chat.
 META_APP_ID=1139141968627775
 META_BUSINESS_ID=885279100130262   # portafolio de Profit (el de MÛRA es 1239463275926698)
 META_ACCESS_TOKEN=          # token de Conversions API System User
-META_AD_ACCOUNT_ID=act_52585955559756     # cuenta nueva en Profit (30/10); con el prefijo act_, obligatorio
+META_AD_ACCOUNT_ID=act_1141864065246239     # cuenta nueva en Profit (30/10); con el prefijo act_, obligatorio
 META_PAGE_ID=
 META_IG_USER_ID=17841410968485139   # @bymurastudio
 META_PIXEL_ID=1799475611078369
