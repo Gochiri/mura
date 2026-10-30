@@ -13,7 +13,7 @@ montados los anuncios de `plan-contenido.md` y Sara haya puesto la tarjeta.
 conjunto (no CBO), sin categorías especiales.
 
 **Conjunto:** 22 €/día, optimiza a **Añadir al carrito** del píxel
-`1799475611078369`, puja de menor coste, destino web, inicio **2/11/2026 a las
+`1577201230843977`, puja de menor coste, destino web, inicio **2/11/2026 a las
 9:00** (hora de Madrid), ubicaciones automáticas. Público: audiencia Advantage+
 con los controles que la API admite (mujeres, España, 25–65). El **28–48 del
 plan se pone como sugerencia** en el Administrador de anuncios → conjunto →

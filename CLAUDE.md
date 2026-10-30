@@ -62,7 +62,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
   `AddToCart` los pide `tienda/producto.html` y los envía `tienda/codigo-global-tienda.js`
   (sección 12) solo tras aceptar Publicidad. `InitiateCheckout` y
   `Purchase` pasan por el checkout nativo: comprobar que la integración los manda.
-  Píxel de MÛRA: `1799475611078369` (creado; no se carga hasta tener el banner).
+  Píxel de MÛRA: `1577201230843977` (creado; no se carga hasta tener el banner).
 - **Pruebas siempre en modo test.** Los pedidos de prueba del 20/9 (M100014,
   M100015) se hicieron en live y acabaron en el pipeline real; con el píxel serían
   compras falsas.
