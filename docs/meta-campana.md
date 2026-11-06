@@ -47,3 +47,23 @@ Activar la campaña o cambiar su presupuesto, solo con el visto bueno de German.
 - Los valores con `+` (el nombre, la zona horaria de `start_time`) van con
   `--data-urlencode`, o curl los convierte en espacios. `start_time` no se puede
   editar después: hubo que borrar y recrear el conjunto.
+
+
+## Estado a 6/11/2026 (comprobado por API, solo lectura)
+
+Los IDs de arriba son de la primera creación. Hoy lo que hay en Meta es:
+
+| Qué | ID |
+|---|---|
+| Cuenta publicitaria «Mura - ES» (EUR, Madrid, activa) | `act_1141864065246239` |
+| Campaña «MÛRA · Ventas · Cápsula 01» (en pausa) | `52585971203356` |
+| Conjunto «Mujeres 28–48 · España · Advantage+» (en pausa, 22 €/día) | `52585971218156` |
+
+- El conjunto optimiza a Añadir al carrito del píxel **nuevo** `1577201230843977`.
+- La cuenta ya tiene método de pago (Mastercard terminada en 4000).
+- No hay anuncios todavía. Copia del estado en `datos/backups/meta_estado_20261106.json`.
+- **Bloqueo para crear anuncios por API:** la app `MURA Ads` está en modo desarrollo y Meta rechaza el creativo
+  (error 100, subcódigo 1885183: «Debe estar en modo público para crear este anuncio»). Hay que pasarla a modo
+  público en developers.facebook.com → la app → Configuración básica (pide URL de política de privacidad).
+- Subidos a la biblioteca de vídeos de la cuenta, sin anunciar: A `1084761704387445`, B `1126270353704094`,
+  C `3468335396670995`, D `1623330019530949` (borradores 9:16).
