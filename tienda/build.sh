@@ -36,7 +36,7 @@ generar() {
 generar head tracking-code-head.html HEAD \
   'el CSS: sistema de diseno, encuesta, buscador y tienda'
 generar body tracking-code-body.html BODY \
-  'lo que necesita el DOM: contador, buscador, cabecera e idioma'
+  'lo que necesita el DOM: contador, buscador, bocadillo, aviso del 10 %, cabecera, pie e idioma'
 
 # Y el CSS suelto para el Custom CSS de cada pagina de tienda, que es el
 # unico sitio que GHL sirve dentro del <head>. Sale del mismo fuente.

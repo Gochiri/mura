@@ -55,19 +55,19 @@ window.MURA_PARTE = 'head';
        2. CSS de la encuesta            → solo /experiencia
        3. CSS del buscador              → rutas de rejilla
        4. CSS que pisa la tienda de GHL → rutas de tienda
-      10. CSS del banner de cookies     → todas las páginas
 
      BODY (necesita el DOM)
        5. Contador del carrito          → todas las páginas
        6. Buscador de la rejilla        → rutas de rejilla
-       7. Cabecera inyectada + idioma   → rutas de tienda
-      10. Banner de cookies y API       → todas las páginas
-          de consentimiento
-      11. Clarity tras el consentimiento → todas menos checkout
-          (vacío hasta poner el ID)
-      12. Píxel de Meta tras aceptar     → todas las páginas
-          Publicidad (ViewContent y
-          AddToCart desde la ficha)
+       8. Bocadillo móvil               → donde haya cabecera .mura-nav
+       7. Cabecera y pie inyectados + idioma → rutas de tienda
+      10. El checkout señala qué campo falta → solo /checkout
+      11. El EDITAR del checkout salta /cart → solo /checkout
+      15. Aviso del 10 % de la newsletter  → todas menos las de servicio
+      16. Banner de cookies y API de consentimiento → todas las páginas
+      17. Clarity tras aceptar «Análisis» → todas menos checkout y post-compra
+      18. Píxel de Meta tras aceptar «Publicidad» → todas las páginas
+          (ViewContent y AddToCart desde la ficha)
 
    El redirect de /cart va lo primero y en las dos partes: cuanto
    antes salte, menos se ve el carrito viejo.
@@ -200,6 +200,11 @@ window.MURA_PARTE = 'head';
     '.mura-nav, .mura-nav * { box-sizing: border-box; }',
     '.mura-nav a { text-decoration: none !important; color: #1D1B18; transition: color .2s ease; }',
     '.mura-nav a:hover { color: #6E6A61; }',
+    /* La TIPOGRAFÍA también se repite sin depender de `.mura` (1/9): en las
+       rutas de tienda la cabecera hereda del body del tema y el menú salía
+       en Times New Roman. El logo no lo necesita: `.mura-logo` ya trae su
+       Cormorant con !important. */
+    ".mura-nav { font-family: 'Jost', sans-serif; font-weight: 300; }",
     '.mura-nav-in { max-width: 1440px; margin: 0 auto; padding: 0 clamp(20px,4vw,56px); height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }',
     ".mura-logo { font-family: 'Cormorant Garamond', serif !important; font-size: 26px; font-weight: 500; letter-spacing: .32em; color: #1D1B18 !important; }",
     '.mura-links { display: flex; align-items: center; gap: clamp(16px,2.6vw,38px); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; }',
@@ -238,6 +243,33 @@ window.MURA_PARTE = 'head';
     '.mura-acc > div { display: none; padding: 0 2px 24px; font-size: 13.5px; line-height: 2; color: #55524B; white-space: pre-line; }',
     '.mura-acc.open > div { display: block; }',
 
+    /* ---- Ficha: otros colores del mismo modelo (10/9) ----
+       Cada color es un producto distinto en GHL. La ficha los enlaza por la
+       línea «Modelo: …» de la descripción y pinta aquí una miniatura por
+       color, la actual marcada. Va entre el precio y «Elegir talla». */
+    '.mura-colores { margin: -10px 0 34px; }',
+    '.mura-colores-fila { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }',
+    '.mura-color-thumb { display: block; width: 56px; height: 72px; overflow: hidden; background: #E3DFD6; border: 1px solid #D8D4CC; padding: 0; transition: border-color .2s ease; }',
+    '.mura-color-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }',
+    'a.mura-color-thumb:hover, a.mura-color-thumb:focus-visible { border-color: #8A857B; outline: none; }',
+    '.mura-color-thumb.on { border-color: #1D1B18; }',
+
+    /* ---- Ficha: «Completa tu look» (10/9) ----
+       Hasta cuatro prendas elegidas a mano en la descripción del producto
+       (Título 3 «Completa tu look» + lista de nombres). En dos columnas va
+       bajo las fotos; cuando la ficha se apila (iPad, móvil) va a todo el
+       ancho, después del texto. La página lo mueve por JavaScript.
+       En móvil, dos tarjetas por fila: cada foto siempre más pequeña que
+       la principal. */
+    '.mura-look { margin-top: 0; }',
+    '.mura-look.mura-look-col { margin-top: clamp(30px,3vw,42px); }',
+    '.mura-look > .mura-label { display: block; margin-bottom: clamp(18px,2vw,26px); color: #1D1B18; }',
+    '.mura-look-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px clamp(10px,1.4vw,18px); }',
+    '.mura-look .mura-card { gap: 12px; }',
+    '.mura-look .mura-card-name { font-size: 16px; }',
+    '.mura-look .mura-card-price { font-size: 11px; }',
+    '@media (max-width: 560px) { .mura-look-grid { grid-template-columns: 1fr 1fr; gap: 28px 12px; } }',
+
     /* ---- Líneas del carrito ---- */
     '.mura-qty { display: flex; align-items: center; border: 1px solid rgba(29,27,24,.25); height: 40px; }',
     ".mura-qty button { width: 38px; height: 100%; border: none; background: transparent; cursor: pointer; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 300; line-height: 1; transition: background .2s ease; }",
@@ -249,11 +281,12 @@ window.MURA_PARTE = 'head';
     '.mura-linea-acc { display: flex; align-items: center; gap: clamp(14px,2vw,26px); }',
     '@media (max-width: 560px) { .mura-linea { flex-wrap: wrap; } .mura-linea-acc { width: 100%; justify-content: space-between; padding-left: 88px; } }',
 
-    /* ---- Formularios: newsletter (/home) y devolución (/devoluciones) ----
+    /* ---- Formulario de la newsletter (/home) ----
        Las clases .mura-nl-fila / -campo / -consent / -estado son las
-       primitivas de formulario y las comparten /home y /devolucion. Llevan el
-       nombre de la newsletter porque nacieron ahí, no porque sean suyas;
-       no se renombran para no tener que repegar la home. */
+       primitivas de formulario. Hoy solo las usa la newsletter de /home:
+       /devolucion lleva su CSS dentro de la página (prefijo .mura-dev-*).
+       Desde el 1/9 son campos de línea —sin caja, solo la línea de abajo—,
+       el mismo idioma que /devolucion, /cancelar_suscripcion y el checkout. */
     '.mura-nl { max-width: 1120px; margin: 0 auto; padding: clamp(70px,9vw,120px) clamp(20px,4vw,56px); text-align: center; }',
     '.mura-nl form { text-align: left; margin-top: clamp(32px,4vw,44px); }',
 
@@ -267,22 +300,21 @@ window.MURA_PARTE = 'head';
     '.mura-nl-ventajas ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }',
     '.mura-nl-ventajas li { position: relative; padding-left: 28px; font-size: 13.5px; line-height: 1.7; color: #55524B; }',
     ".mura-nl-ventajas li::before { content: '\\2713'; position: absolute; left: 0; top: 0; color: #8A857B; font-size: 12px; }",
-    '.mura-nl-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }',
+    '.mura-nl-fila { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px,3vw,28px); }',
     '@media (max-width: 560px) { .mura-nl-fila { grid-template-columns: 1fr; } }',
-    '.mura-nl-campo { margin-bottom: 18px; }',
-    '.mura-nl-campo label { display: block; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: #55524B; padding-bottom: 8px; }',
-    ".mura-nl-campo input { width: 100%; height: 50px; padding: 0 14px; border: 1px solid rgba(29,27,24,.25); background: transparent; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 300; border-radius: 0; -webkit-appearance: none; appearance: none; }",
-    ".mura-nl-campo textarea { width: 100%; min-height: 108px; padding: 13px 14px; border: 1px solid rgba(29,27,24,.25); background: transparent; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 300; line-height: 1.7; border-radius: 0; -webkit-appearance: none; appearance: none; resize: vertical; display: block; }",
-    '.mura-nl-campo input:focus, .mura-nl-campo textarea:focus { outline: none; border-color: #1D1B18; }',
-    '.mura-nl-campo textarea::placeholder { color: rgba(29,27,24,.4); }',
-    '.mura-nl-campo input::placeholder { color: rgba(29,27,24,.4); }',
+    '.mura-nl-campo { margin-bottom: 26px; }',
+    '.mura-nl-campo label { display: block; font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: #55524B; padding-bottom: 8px; }',
+    ".mura-nl-campo input { width: 100%; border: none; border-bottom: 1px solid rgba(29,27,24,.3); background: transparent; padding: 10px 2px; font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 300; color: #1D1B18; outline: none; border-radius: 0; -webkit-appearance: none; appearance: none; transition: border-color .2s ease; }",
+    ".mura-nl-campo textarea { width: 100%; min-height: 96px; border: none; border-bottom: 1px solid rgba(29,27,24,.3); background: transparent; padding: 10px 2px; font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 300; line-height: 1.9; color: #1D1B18; outline: none; border-radius: 0; -webkit-appearance: none; appearance: none; resize: vertical; display: block; }",
+    '.mura-nl-campo input:focus, .mura-nl-campo textarea:focus { outline: none; border-bottom-color: #1D1B18; }',
+    '.mura-nl-campo input::placeholder, .mura-nl-campo textarea::placeholder { color: #9B968C; opacity: 1; }',
     /* el icono nativo del date picker, en tinta y no en azul del sistema */
     '.mura-nl-campo input[type=date] { color-scheme: light; }',
-    '.mura-nl-consent { display: flex; gap: 12px; align-items: flex-start; margin: 6px 0 26px 0; font-size: 12.5px; line-height: 1.7; color: #55524B; }',
-    '.mura-nl-consent input { accent-color: #1D1B18; width: 15px; height: 15px; margin-top: 3px; flex: 0 0 auto; }',
-    '.mura-nl-consent a { color: #55524B; border-bottom: 1px solid rgba(29,27,24,.3); }',
-    '.mura-nl-estado { margin-top: 18px; font-size: 13.5px; line-height: 1.7; }',
-    '.mura-nl-estado.err { color: #7A2E2E; }',
+    '.mura-nl-consent { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; margin: 6px 0 26px 0; font-size: 12.5px; line-height: 1.8; color: #55524B; }',
+    '.mura-nl-consent input { accent-color: #1D1B18; width: 15px; height: 15px; margin: 4px 0 0; flex: none; }',
+    '.mura-nl-consent a { text-decoration: underline; text-underline-offset: 3px; }',
+    '.mura-nl-estado { margin-top: 18px; min-height: 24px; font-size: 12.5px; letter-spacing: .06em; line-height: 1.8; color: #55524B; text-align: center; }',
+    '.mura-nl-estado.err { color: #7A4A3A; }',
 
     /* ---- Solicitud de devolución (página /devolucion) ----
        Una sola columna y estrecha: aquí no hay lista de ventajas al lado
@@ -301,7 +333,17 @@ window.MURA_PARTE = 'head';
     '.mura-dev .mura-btn { width: auto; padding: 0 clamp(32px,4vw,54px); }',
     '@media (max-width: 480px) { .mura-dev .mura-btn { width: 100%; padding: 0; } }',
 
-    /* ---- Pie ---- */
+    /* ---- Pie ----
+       Como en la cabecera, la base se repite sin depender de `.mura` (1/9):
+       la sección 7 inyecta el pie suelto en el body de las rutas de tienda,
+       fuera del envoltorio. En las páginas propias estas reglas no cambian
+       nada: valen lo mismo que lo que ya heredaban de `.mura`. */
+    ".mura-foot { background: #F0EEE8; color: #1D1B18; font-family: 'Jost', sans-serif; font-weight: 300; -webkit-font-smoothing: antialiased; }",
+    '.mura-foot, .mura-foot * { box-sizing: border-box; }',
+    '.mura-foot p { margin: 0; }',
+    '.mura-foot a { color: #1D1B18; text-decoration: none; transition: color .2s ease; }',
+    '.mura-foot a:hover { color: #6E6A61; }',
+    ".mura-foot .mura-serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; margin: 0; }",
     '.mura-foot { border-top: 1px solid rgba(29,27,24,.12); }',
     '.mura-foot-in { max-width: 1440px; margin: 0 auto; padding: clamp(70px,8vw,110px) clamp(20px,4vw,56px) 30px; }',
     '.mura-foot-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: clamp(36px,5vw,72px); }',
@@ -322,6 +364,31 @@ window.MURA_PARTE = 'head';
 
     estilo('sistema', sistema);
   }
+
+  /* ---- Bocadillo móvil (sección 8) ----
+     Su CSS se define aquí arriba y se inyecta ya en la parte HEAD, con
+     el del sistema: el botón que monta la sección 8 tiene que encontrar
+     sus reglas puestas. Las páginas de web/ no lo necesitan: su
+     cabecera (web/global/cabecera.html) trae el suyo. */
+  var bocadilloCss = [
+    '.mura-nav .mura-burger { display: none; background: none; border: none; padding: 0; cursor: pointer; }',
+    '.mura-nav .mura-mnav { display: none; }',
+    '@media (max-width: 719px) {',
+    '  .mura-nav .mura-nav-in { justify-content: flex-start; }',
+    '  .mura-nav .mura-logo { margin-right: auto; }',
+    '  .mura-nav .mura-links { display: none; }',
+    '  .mura-nav .mura-burger { display: flex; flex-direction: column; justify-content: center; align-items: flex-end; gap: 9px; width: 44px; height: 44px; }',
+    '  .mura-nav .mura-burger span { display: block; width: 34px; height: 1px; background: #1D1B18; transition: transform .25s ease; }',
+    '  .mura-nav .mura-burger.open span:first-child { transform: translateY(5px) rotate(45deg); }',
+    '  .mura-nav .mura-burger.open span:last-child { transform: translateY(-5px) rotate(-45deg); }',
+    '  .mura-nav .mura-mnav.open { display: block; border-top: 1px solid rgba(29,27,24,.08); }',
+    '  .mura-nav .mura-mnav a { display: block; padding: 17px clamp(20px,4vw,56px); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #55524B; border-bottom: 1px solid rgba(29,27,24,.06); }',
+    '  .mura-nav .mura-mnav a:last-child { border-bottom: none; }',
+    '  .mura-nav .mura-mnav a.on { color: #1D1B18; }',
+    '}'
+  ].join('\n');
+
+  if (HAY_CSS) estilo('bocadillo', bocadilloCss);
 
   /* ============================================================
      5 · CONTADOR DEL CARRITO — todas las páginas
@@ -471,7 +538,7 @@ window.MURA_PARTE = 'head';
     /* Sin tildes y en minúsculas: quien busca "cardigan" tiene que encontrar
        "Cárdigan", y quien busca "MURA" tiene que encontrar "MÛRA". */
     function llano(s) {
-      return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
     }
 
     function arrancar() {
@@ -597,8 +664,14 @@ window.MURA_PARTE = 'head';
     'p, span, div, a, li, td { color: #1D1B18; }',
     'img { border-radius: 0 !important; }',
     'svg { color: #55524B; }',
-    'input, select, textarea { border: 1px solid rgba(29,27,24,.25) !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }',
-    'input:focus, select:focus, textarea:focus { outline: none !important; border-color: #1D1B18 !important; }',
+    /* Campos de línea (1/9): sin caja, solo la línea de abajo — el mismo
+       idioma que la newsletter de /home, /devolucion y /cancelar_suscripcion.
+       Los checkbox/radio se excluyen: son nativos y no llevan línea. */
+    'input, select, textarea { border: none !important; border-bottom: 1px solid rgba(29,27,24,.3) !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }',
+    'input:focus, select:focus, textarea:focus { outline: none !important; border-bottom-color: #1D1B18 !important; }',
+    /* El accent-color va aquí y no solo en el checkbox de facturación:
+       el radio de la forma de envío (Nacex) salía en el azul del tema. */
+    'input[type=checkbox], input[type=radio] { border: none !important; accent-color: #1D1B18 !important; }',
 
     /* ---------- Botón de pago ----------
        El `:not(.checkout-breadcrumb-item)` NO es decorativo. Las migas del
@@ -610,7 +683,11 @@ window.MURA_PARTE = 'head';
        div y sin el `*` hereda el color del body. */
     "button[class*='checkout']:not(.checkout-breadcrumb-item), a[class*='checkout'], button[type=submit] { background: #1D1B18 !important; border: none !important; border-radius: 0 !important; min-height: 54px !important; width: 100%; box-shadow: none !important; margin-top: 28px; }",
     "button[class*='checkout']:not(.checkout-breadcrumb-item), button[class*='checkout']:not(.checkout-breadcrumb-item) *, a[class*='checkout'], a[class*='checkout'] *, button[type=submit], button[type=submit] * { color: #F0EEE8 !important; font-size: 12px !important; letter-spacing: .22em !important; text-transform: uppercase !important; font-weight: 300 !important; }",
-    "button[class*='checkout']:not(.checkout-breadcrumb-item):disabled { background: rgba(29,27,24,.35) !important; cursor: not-allowed; }",
+    /* `pointer-events: none` no es estético: un botón disabled se traga
+       el clic sin que se dispare ningún evento, y con esto el clic
+       aterriza en el envoltorio, donde lo pesca la sección 10 para
+       señalar qué campo falta. */
+    "button[class*='checkout']:not(.checkout-breadcrumb-item):disabled { background: rgba(29,27,24,.35) !important; pointer-events: none; }",
 
     /* ---------- Checkout ----------
        Clases leídas del DOM real el 15/8. Antes esta página no recibía ni
@@ -625,13 +702,15 @@ window.MURA_PARTE = 'head';
     '.checkout-heading { font-size: clamp(22px,2.4vw,28px) !important; margin: clamp(28px,3vw,40px) 0 20px 0; }',
     '.checkout-heading:first-child { margin-top: 0; }',
 
-    '.input-label { font-size: 10.5px !important; letter-spacing: .18em; text-transform: uppercase; color: #55524B !important; padding-bottom: 8px; }',
+    '.input-label { font-size: 10.5px !important; letter-spacing: .22em; text-transform: uppercase; color: #55524B !important; padding-bottom: 8px; }',
     '.input-label span { color: #55524B !important; }',
     '.required-field { color: #55524B !important; }',
-    '.hl-checkout-input { min-height: 50px !important; padding: 0 14px !important; font-size: 14px !important; }',
-    '.hl-checkout-input::placeholder { color: rgba(29,27,24,.4) !important; }',
-    '.checkout-form > div, .email-field, .phone-input { margin-bottom: 18px; }',
-    '.hl-input-col-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }',
+    /* Métricas de campo de /devolucion: padding 10px 2px, cuerpo 15. El
+       min-height 0 anula el alto de caja que trae GHL. */
+    '.hl-checkout-input { min-height: 0 !important; padding: 10px 2px !important; font-size: 15px !important; }',
+    '.hl-checkout-input::placeholder { color: #9B968C !important; opacity: 1; }',
+    '.checkout-form > div, .email-field, .phone-input { margin-bottom: 26px; }',
+    '.hl-input-col-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px,3vw,28px); }',
     'label.flex input[type=checkbox] { accent-color: #1D1B18; width: 15px; height: 15px; }',
 
     /* OJO: es type="button" con clase .payment-btn, así que la regla de
@@ -639,8 +718,68 @@ window.MURA_PARTE = 'head';
     '.form-btn.payment-btn, .payment-btn { background: #1D1B18 !important; border: none !important; border-radius: 0 !important; min-height: 54px !important; width: 100%; margin-top: 28px !important; }',
     '.payment-btn, .payment-btn * { color: #F0EEE8 !important; font-size: 12px !important; letter-spacing: .22em !important; text-transform: uppercase !important; font-weight: 300 !important; }',
     '.payment-btn .cart-icon { display: none !important; }',
+    /* Va DESPUÉS de la regla de .form-btn.payment-btn: a igual
+       especificidad gana la última, y antes el botón de pago apagado
+       se quedaba en negro pleno, indistinguible del activo. */
+    '.payment-btn:disabled { background: rgba(29,27,24,.35) !important; pointer-events: none; }',
 
     '.alert-danger { border: 1px solid rgba(29,27,24,.25) !important; background: transparent !important; border-radius: 0 !important; padding: 12px 14px; font-size: 13px; }',
+
+    /* ---------- Campos sin rellenar (los pinta la sección 10) ----------
+       El error habla el idioma de la marca: no hay rojo en la paleta,
+       así que la falta se dice con la línea a doble grosor en tinta y
+       un velo del mismo tono. El icono rojo del aviso de GHL se oculta
+       por lo mismo: el texto en su caja ya lo dice todo (y el texto en
+       sí lo reescribe la sección 9, que trataba de usted). */
+    '.mura-falta { border-bottom: 2px solid #1D1B18 !important; background: rgba(29,27,24,.05) !important; }',
+    '.alert-danger svg, .alert-danger img, .alert-danger i { display: none !important; }',
+
+    /* ---------- Envío de cortesía: el precio perdonado, tachado (sección 12) ---------- */
+    '.mura-tachado { text-decoration: line-through; opacity: .55; font-weight: 300; margin-right: .35em; }',
+
+    /* ---------- Dirección por código postal (sección 13) ----------
+       GHL pinta País + Provincia y debajo Ciudad + Código postal; aquí
+       el CP va PRIMERO, porque de él salen la provincia y la ciudad.
+       Se reordena con `order` —`.checkout-form` es un grid, y cada
+       pareja `.hl-input-col-2` también— y no moviendo nodos, que son
+       de Vue. Las filas de antes del país se quedan en 0; la del CP
+       pasa a 1, la del país a 2 y todo lo que viene detrás a 3. El
+       orden de estas tres reglas importa: empatan en especificidad y
+       la fila del CP también es «hermana posterior» de la del país.
+       Un navegador sin `:has()` ignora las reglas y ve el orden de
+       GHL: todo lo demás funciona igual. El tabulador lo acompasa la
+       sección 13. */
+    '.checkout-form > div:has([name=country]) ~ * { order: 3; }',
+    '.checkout-form > div:has([name=country]) { order: 2; }',
+    '.checkout-form > div:has([name=zipcode]) { order: 1; }',
+    '.hl-input-col-2 > div:has([name=zipcode]) { order: -1; }',
+    /* El selector de «las demás poblaciones» bajo Ciudad: una nota al
+       pie del campo, no un campo más — sin línea y en gris. */
+    /* El «consúltanos» de fuera de España: la misma caja que el aviso de GHL. */
+    '.mura-cp-fuera { margin: 28px 0 0 0; padding: 14px 16px; border: 1px solid rgba(29,27,24,.25); font-size: 13.5px; line-height: 1.8; color: #1D1B18; }',
+    '.mura-cp-fuera a { text-decoration: none !important; border-bottom: 1px solid #1D1B18; color: #1D1B18 !important; white-space: nowrap; }',
+    '.mura-cp-otras { display: block; width: 100%; margin-top: 10px; padding: 4px 0 !important; font-size: 12px !important; letter-spacing: .04em; color: #55524B !important; border-bottom: none !important; cursor: pointer; }',
+
+    /* ---------- Panel de puntos NACEX.shop (sección 14) ----------
+       Va dentro de .shipping-container, debajo de la lista de tarifas.
+       Misma gramática que el resto del checkout: líneas finas, sin
+       cajas ni radios, botones de contorno. */
+    /* La lista de tarifas en columna flex: así `order` (sección 14) manda la recogida
+       en punto al final sin mover nodos de Vue. */
+    '.shipping-options-wrapper { display: flex; flex-direction: column; }',
+    '.mura-puntos { margin: 18px 0 0 0; padding: 18px 0 0 0; border-top: 1px solid rgba(29,27,24,.15); }',
+    '.mura-puntos-titulo { margin: 0 0 12px 0; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #1D1B18; }',
+    '.mura-puntos-busca { display: flex; gap: 14px; align-items: flex-end; margin: 0 0 6px 0; }',
+    '.mura-puntos-cp { width: 120px !important; flex: 0 0 auto; padding: 6px 0 !important; }',
+    '.mura-puntos-buscar, .mura-punto-elegir { flex: 0 0 auto; background: transparent !important; border: 1px solid #1D1B18 !important; border-radius: 0 !important; color: #1D1B18 !important; padding: 8px 14px !important; font-size: 11px !important; letter-spacing: .18em; text-transform: uppercase; line-height: 1.4; cursor: pointer; }',
+    '.mura-puntos-cargando, .mura-puntos-pie { margin: 12px 0 0 0; font-size: 12.5px; color: #55524B; }',
+    '.mura-punto { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(29,27,24,.12); font-size: 13.5px; line-height: 1.7; }',
+    '.mura-punto-nombre { font-weight: 400; }',
+    '.mura-punto-hoy { color: #55524B; font-size: 12.5px; }',
+    '.mura-punto-mapa, .mura-punto-cambiar, .mura-puntos-reintentar { text-decoration: none !important; border-bottom: 1px solid rgba(29,27,24,.5); color: #1D1B18 !important; cursor: pointer; font-size: 12.5px; margin-left: 10px; }',
+    '.mura-puntos-aviso { margin: 12px 0 0 0; padding: 14px 16px; border: 1px solid rgba(29,27,24,.25); font-size: 13.5px; line-height: 1.8; color: #1D1B18; }',
+    '.mura-punto-elegido { padding: 10px 0 0 0; font-size: 13.5px; line-height: 1.8; }',
+    '@media (max-width:600px) { .mura-punto { flex-direction: column; align-items: flex-start; gap: 8px; } }',
 
     /* ---------- Resumen del pedido, columna derecha ----------
        ⚠️ EL `!important` DE ESTE BLOQUE NO ES CAUTELA, ES NECESARIO.
@@ -675,7 +814,10 @@ window.MURA_PARTE = 'head';
     '.hl-cart-checkout-product-price { font-size: 13px !important; }',
     '.coupon-text-container { display: flex; gap: 0; }',
     '.coupon-input { min-height: 44px !important; flex: 1; font-size: 13px !important; }',
-    '.apply-coupon-btn { background: transparent !important; border: 1px solid rgba(29,27,24,.25) !important; border-left: none !important; border-radius: 0 !important; padding: 0 18px !important; font-size: 11px !important; letter-spacing: .16em; text-transform: uppercase; color: #1D1B18 !important; }',
+    /* El botón de aplicar iba pegado a la caja del cupón (borde sin lado
+       izquierdo). Con campos de línea, comparte la línea de abajo con el
+       input: las dos forman un solo trazo continuo. */
+    '.apply-coupon-btn { background: transparent !important; border: none !important; border-bottom: 1px solid rgba(29,27,24,.3) !important; border-radius: 0 !important; padding: 0 18px !important; font-size: 11px !important; letter-spacing: .16em; text-transform: uppercase; color: #1D1B18 !important; }',
     '.apply-coupon-btn:disabled { color: rgba(29,27,24,.35) !important; }',
     /* GHL le pone `border-bottom` a `.hl-divider`; si solo cambiamos el
        border-top salen las dos líneas. */
@@ -781,7 +923,10 @@ window.MURA_PARTE = 'head';
        dejaría la regla muda sin que nadie se entere. */
     var patrones = [
       [/^Las plantas rodadoras/i, 'Aún no has seleccionado ninguna pieza.'],
-      [/^Add notes about your order/i, 'Indicaciones para la entrega']
+      [/^Add notes about your order/i, 'Indicaciones para la entrega'],
+      /* El aviso de validación del checkout: trata de usted y no dice
+         cuál es el campo — de señalarlo se encarga la sección 10. */
+      [/^Cerci[oó]rese de que ha rellenado/i, 'Falta algún dato por completar: revisa los campos marcados.']
     ];
 
     function traduccion(t) {
@@ -840,7 +985,7 @@ window.MURA_PARTE = 'head';
   }
 
   /* ============================================================
-     10 · CONSENTIMIENTO DE COOKIES — todas las páginas
+     16 · CONSENTIMIENTO DE COOKIES — todas las páginas
      ============================================================
      Art. 22.2 LSSI: nada que no sea técnico se instala antes de que
      la clienta lo acepte, y rechazar tiene que costar lo mismo que
@@ -989,14 +1134,17 @@ window.MURA_PARTE = 'head';
     '@media (max-width: 560px) { .mura-ck-in { padding: 18px 18px 20px; gap: 14px; } .mura-ck-btn { flex: 1 1 100%; min-width: 0; } .mura-ck-cfg { margin-left: 0; } }'
   ].join('\n');
 
-  if (HAY_CSS) estilo('consentimiento', consentCss);
-
   /* El banner en sí: solo en la parte BODY, que es la que tiene DOM.
      Se monta una vez, aunque el script corra varias veces o el tema
-     repinte el body. */
+     repinte el body.
+     Su CSS se inyecta aquí, al montar, y no con el HEAD (23/10): GHL
+     carga el HEAD tarde y el banner podía salir un instante sin
+     estilo. Así, además, el build no lo incrusta en las páginas de
+     web/ y no hay que repegarlas por él (igual que el aviso del 10 %). */
   function montarConsent() {
     var api = window.muraConsent;
     if (!api || document.querySelector('.mura-ck')) return;
+    estilo('consentimiento', consentCss);
 
     var caja = document.createElement('div');
     caja.className = 'mura-ck';
@@ -1061,9 +1209,10 @@ window.MURA_PARTE = 'head';
     if (!api.estado().decidido) abrir(false);
   }
 
-  /* «Configurar cookies» junto a «Política de cookies» en el pie. Los
-     pies están en el HTML de cada página, así que se añade desde
-     aquí y no hay que tocar ninguno. */
+  /* «Configurar cookies» junto a «Política de cookies» en el pie. Se
+     añade desde aquí y no en el HTML: así vale igual para el pie
+     universal de GHL (web/global/pie.html), para el que la sección 7
+     monta en las rutas de tienda y para el cierre de las legales. */
   function enlazarPie() {
     document.querySelectorAll('a[href="/politica-cookies"]').forEach(function (a) {
       if (a.closest('.mura-ck')) return; // el del propio banner, no
@@ -1077,10 +1226,10 @@ window.MURA_PARTE = 'head';
   }
 
   /* ============================================================
-     11 · MICROSOFT CLARITY — mapa de calor, tras el consentimiento
+     17 · MICROSOFT CLARITY — mapa de calor, tras el consentimiento
      ============================================================
      Clarity solo se carga si la clienta ha aceptado la categoría de
-     Análisis del banner (sección 10). Antes, ni se descarga el script
+     Análisis del banner (sección 16). Antes, ni se descarga el script
      ni se instala ninguna de sus cookies. Si rechaza, o no ha elegido,
      no hay petición a clarity.ms.
 
@@ -1097,7 +1246,7 @@ window.MURA_PARTE = 'head';
      enmascarado en el panel de Clarity antes.
 
      Si la clienta retira el permiso con Clarity ya cargado, la sección
-     10 borra `_clck` y `_clsk` y avisa a Clarity (`consentv2`), pero el
+     16 borra `_clck` y `_clsk` y avisa a Clarity (`consentv2`), pero el
      script sigue en memoria hasta que cambie de página. */
 
   var CLARITY_ID = 'yyrkyipd10';
@@ -1127,14 +1276,14 @@ window.MURA_PARTE = 'head';
   }
 
   /* ============================================================
-     12 · PÍXEL DE META — solo tras aceptar «Publicidad»
+     18 · PÍXEL DE META — solo tras aceptar «Publicidad»
      ============================================================
      Paso 1 de 2: el píxel en el navegador. El paso 2 es la API de
      Conversiones (servidor), que repetirá estos mismos eventos con
      el mismo `eventID` para que Meta los cuente una sola vez.
 
      · No se descarga `fbevents.js` ni se instala `_fbp` hasta que
-       la clienta acepte Publicidad en el banner (sección 10).
+       la clienta acepte Publicidad en el banner (sección 16).
      · Los eventos propios (ViewContent, AddToCart) los emite la
        ficha llamando a `window.muraMeta.track(nombre, datos)`. Si
        no hay permiso, `track` NO envía nada y no guarda nada.
@@ -1242,10 +1391,16 @@ window.MURA_PARTE = 'head';
   if (!HAY_DOM) return;
 
   pintarContador();
+  if (esRejilla) montarBuscador();
+  if (path === '/checkout') vigilarCheckout();
+  if (path === '/checkout') desviarEditar();
+  if (path === '/checkout') tacharEnvio();
+  if (path === '/checkout') direccionPorCP();
+  if (path === '/checkout') puntosNacexShop();
 
   /* El banner va antes del `return` de las rutas no-tienda: sale en
      TODAS las páginas. El pie se enlaza en dos pasadas porque el tema
-     pinta tarde, igual que la cabecera. */
+     pinta tarde, igual que la cabecera. (Secciones 16 a 18.) */
   function arranqueConsent() { montarConsent(); enlazarPie(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arranqueConsent);
   else arranqueConsent();
@@ -1254,11 +1409,1317 @@ window.MURA_PARTE = 'head';
   montarClarity();
   montarMeta();
 
-  if (esRejilla) montarBuscador();
+  /* ============================================================
+     12 · El envío de cortesía se ve «3,00 € tachado · Gratis» (18/9)
+     ============================================================
+     Decisión de Sara: desde 99,99 € (total tras cupón) el envío
+     estándar a domicilio es gratis, y tiene que VERSE que es un
+     regalo —el precio tachado—, no un «Gratis» a secas.
+
+     En GHL son dos tarifas con el MISMO nombre («Envío a tu puerta
+     (Nacex)» desde el 19/9; antes «Envío estándar…»): una de 3 € hasta 99,98 € y otra de 0 €
+     desde 99,99 €; el checkout enseña solo la que toca. La recogida
+     en punto Nacex Shop también es gratis, pero SIEMPRE: esa no se
+     tacha, porque no hay ningún precio que se esté perdonando.
+
+     Regla: un «Gratis» cuya fila nombra el envío estándar lleva
+     delante el precio tachado. Vale igual para el resumen del pedido
+     (.shipping-name-label + .free-shipping-label, clases reales de
+     GHL) que para la lista de tarifas, cuyo componente GHL carga
+     aparte y cuyas clases no conocemos: por eso se busca por TEXTO y
+     se sube hasta la fila, sin depender de ninguna clase.
+
+     Si se cambia el precio del envío en GHL, cambiar PRECIO aquí.
+     Pruebas: tienda/pruebas/tachado-envio.test.js */
+
+  function tacharEnvio() {
+    /* Cómo se llama en GHL el envío a domicilio. Se compara sin tildes
+       ni mayúsculas, así da igual cómo lo escriba Sonia en la tarifa.
+       'envio a tu puerta' es el nombre desde el 19/9; 'envio estandar',
+       el anterior, se queda por si se vuelve atrás. Si se rebautiza la
+       tarifa, añadir aquí el arranque del nombre nuevo. */
+    var NOMBRES = ['envio a tu puerta', 'envio estandar'];
+    var PRECIO = '3,00 €';
+
+    function llano(s) {
+      return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    }
+    function esDomicilio(texto) {
+      var t = llano(texto);
+      for (var i = 0; i < NOMBRES.length; i++) if (t.indexOf(NOMBRES[i]) !== -1) return true;
+      return false;
+    }
+    var GRATIS = { 'Gratis': 1, 'GRATIS': 1, 'Gratuito': 1, 'Free': 1, 'FREE': 1 };
+
+    /* La fila es el primer antepasado que dice algo más que «Gratis»:
+       ahí están juntos el nombre de la tarifa y su precio. */
+    function fila(el) {
+      var propio = el.textContent.trim();
+      var a = el.parentElement;
+      for (var i = 0; a && i < 6; i++, a = a.parentElement) {
+        if (a.textContent.trim() !== propio) return a;
+      }
+      return null;
+    }
+
+    function pasada() {
+      var raiz = document.querySelector('.hl-store-checkout-container') || document.body;
+      if (!raiz) return;
+      var w = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT), n, gratis = [];
+      while ((n = w.nextNode())) if (GRATIS[n.textContent.trim()]) gratis.push(n);
+
+      for (var i = 0; i < gratis.length; i++) {
+        var caja = gratis[i].parentElement;
+        if (!caja || caja.querySelector('.mura-tachado')) continue;
+        var f = fila(caja);
+        if (!f || !esDomicilio(f.textContent)) continue;
+        var s = document.createElement('s');
+        s.className = 'mura-tachado';
+        s.textContent = PRECIO;
+        caja.insertBefore(s, gratis[i]);
+        caja.insertBefore(document.createTextNode(' '), gratis[i]);
+      }
+    }
+
+    pasada();
+    new MutationObserver(pasada).observe(document.body, { childList: true, subtree: true });
+  }
+
+  /* ============================================================
+     10 · El checkout señala qué campo falta (3/9)
+     ============================================================
+     Dos problemas del checkout de GHL, vistos por Sonia:
+
+       · Al intentar avanzar con el formulario incompleto, GHL suelta
+         su aviso genérico —el «Cerciórese de que ha rellenado todos
+         los datos», retextado en la sección 9— pero NO señala qué
+         campo falta: la clienta tiene que adivinarlo.
+       · Si el navegador autorrellena un campo (o lo rellena el
+         buscador de direcciones), el valor SE VE pero el framework
+         de GHL no recibe el evento `input` y para su validación el
+         campo sigue vacío — el «puse la ciudad y no se activaba».
+
+     ⚠️ El primer intento de esto esperaba un botón con el atributo
+     `disabled`; en la prueba del 3/9 se vio que el clic SÍ llega a
+     GHL y sale su aviso, así que el enganche bueno es el aviso, no
+     el botón. El `pointer-events: none` de la sección 4 se queda por
+     si alguna versión sí lo deshabilita: ese clic se pesca aquí por
+     coordenadas.
+
+     Qué se hace, y cuándo:
+
+       · Al pulsar el botón de avanzar/pagar —en fase de captura,
+         antes de que GHL valide— se re-emite `input`/`change` en
+         cada campo CON valor: si el problema era el autorrelleno, la
+         validación ya lo ve relleno y pasa.
+       · Cuando GHL pinta su aviso (.alert-danger fuera del resumen;
+         el del cupón no cuenta) se marcan los campos obligatorios
+         vacíos (.mura-falta) y se lleva la vista al primero.
+
+     La marca se quita en cuanto se escribe en el campo. Si GHL
+     repinta el formulario y se la lleva por delante, no pasa nada:
+     el siguiente intento la vuelve a poner. */
+
+  function vigilarCheckout() {
+    var SEL_BOTON = "button[class*='checkout']:not(.checkout-breadcrumb-item), .payment-btn";
+
+    /* El buscador de dirección es una ayuda, no un dato del pedido;
+       las notas son <textarea> y quedan fuera del selector. El cupón
+       vive en el resumen, no en .checkout-form. */
+    function campos() {
+      return Array.prototype.slice.call(document.querySelectorAll(
+        '.checkout-form input, .checkout-form select, .email-field input, .phone-input input'
+      )).filter(function (c) {
+        if (c.type === 'checkbox' || c.type === 'radio' || c.type === 'hidden') return false;
+        if (/busca/i.test(c.getAttribute('placeholder') || '')) return false;
+        /* El selector de poblaciones de la sección 13 es una ayuda. */
+        if (c.classList.contains('mura-cp-otras')) return false;
+        return true;
+      });
+    }
+
+    function envoltorio(c) {
+      return c.closest('.checkout-form > div, .email-field, .phone-input') || c.parentElement;
+    }
+
+    /* El aviso de validación de GHL, si está pintado. El del cupón
+       también es .alert-danger pero vive en el resumen: no cuenta. */
+    function avisoGHL() {
+      var als = document.querySelectorAll('.alert-danger');
+      for (var i = 0; i < als.length; i++) {
+        if (!als[i].closest('.hl-cart-summary-container')) return als[i];
+      }
+      return null;
+    }
+
+    /* Un campo es obligatorio si su envoltorio lleva el asterisco
+       (.required-field); si esta versión del checkout no pintara
+       asteriscos, se toman todos. */
+    function senalar() {
+      var hayAsteriscos = !!document.querySelector(
+        '.checkout-form .required-field, .email-field .required-field, .phone-input .required-field'
+      );
+      var vacios = campos().filter(function (c) {
+        if (c.value && c.value.trim() !== '') return false;
+        var w = envoltorio(c);
+        return hayAsteriscos ? !!(w && w.querySelector('.required-field')) : true;
+      });
+      if (!vacios.length) return;
+      vacios.forEach(function (c) { c.classList.add('mura-falta'); });
+      vacios[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    document.addEventListener('click', function (e) {
+      var boton = e.target.closest ? e.target.closest(SEL_BOTON) : null;
+      var apagado = false;
+      if (!boton) {
+        /* Un botón disabled de verdad no recibe el clic: con el
+           pointer-events:none de la sección 4 cae en el envoltorio y
+           se localiza por coordenadas. */
+        document.querySelectorAll(SEL_BOTON).forEach(function (b) {
+          if (!b.disabled) return;
+          var r = b.getBoundingClientRect();
+          if (r.width && e.clientX >= r.left && e.clientX <= r.right &&
+              e.clientY >= r.top && e.clientY <= r.bottom) { boton = b; apagado = true; }
+        });
+      }
+      if (!boton) return;
+
+      /* Poner al día el estado de GHL con lo que ya está escrito.
+         Corre en captura: llega antes que el manejador que valida. */
+      campos().forEach(function (c) {
+        if (c.value && c.value.trim() !== '') {
+          c.dispatchEvent(new Event('input', { bubbles: true }));
+          c.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
+
+      if (apagado) senalar();
+      /* Si el aviso de GHL ya estaba pintado de un intento anterior,
+         reenseñarlo no muta el DOM y el observer de abajo no salta:
+         se repasa también aquí, un instante después de que valide. */
+      else setTimeout(function () { if (avisoGHL()) senalar(); }, 150);
+    }, true);
+
+    /* Cada vez que GHL pinta su aviso, se señalan los campos. */
+    new MutationObserver(function (ms) {
+      for (var i = 0; i < ms.length; i++) {
+        for (var j = 0; j < ms[i].addedNodes.length; j++) {
+          var n = ms[i].addedNodes[j];
+          if (n.nodeType !== 1) continue;
+          var al = (n.matches && n.matches('.alert-danger')) ? n
+                 : (n.querySelector ? n.querySelector('.alert-danger') : null);
+          if (al && !al.closest('.hl-cart-summary-container')) { senalar(); return; }
+        }
+      }
+    }).observe(document.body, { childList: true, subtree: true });
+
+    document.addEventListener('input', function (e) {
+      var c = e.target;
+      if (c && c.classList && c.classList.contains('mura-falta') && c.value.trim() !== '') {
+        c.classList.remove('mura-falta');
+      }
+    }, true);
+  }
+
+  /* ============================================================
+     11 · El EDITAR del resumen del checkout va directo a /carrito
+     ============================================================
+     El control .edit-cart de GHL navega a /cart, su página nativa
+     de carrito. La redirección /cart→/carrito de la sección 0 la
+     salva, pero solo cuando el Tracking Code de ESA página llega a
+     ejecutarse —GHL lo inyecta al final de la carga, el mismo
+     retraso del 2/9—, así que la clienta veía el carrito nativo de
+     GHL varios segundos antes del salto (visto por Sonia el 3/9).
+
+     Aquí, en cambio, el tiempo juega a favor: cuando la clienta
+     pulsa EDITAR, el global lleva rato cargado. Se le pesca el
+     clic en captura y se va directo a /carrito sin pisar /cart.
+     Con href y no replace: el "atrás" debe devolver al checkout.
+     La sección 0 se queda como red de seguridad, y
+     web/cart-redireccion.html (pegado dentro de la propia página
+     /cart) es el segundo cinturón para los enlaces que no pasen
+     por aquí.
+
+     No choca con el listener de clics de la sección 10: aquel solo
+     actúa cuando el clic cae en el botón de avanzar apagado. */
+
+  function desviarEditar() {
+    document.addEventListener('click', function (ev) {
+      var el = ev.target;
+      if (!el || !el.closest) return;
+      var editar = el.closest('.edit-cart, a[href="/cart"], a[href^="/cart?"]');
+      if (!editar) return;
+      ev.preventDefault();
+      if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+      else ev.stopPropagation();
+      location.href = '/carrito';
+    }, true);
+  }
+
+  /* ============================================================
+     13 · Dirección por código postal (19/9)
+     ============================================================
+     Pedido de Sonia: España ya elegida en País, el código postal
+     ANTES que ciudad y provincia, y que un CP español de 5 cifras
+     rellene las dos. Si el CP tiene varias poblaciones se pone la
+     primera y se ofrecen las demás. Todo sigue siendo editable, y
+     si algo falla —los datos no cargan, el CP no se conoce— el
+     formulario se rellena a mano como siempre: nada de lo que hace
+     GHL depende de esto.
+
+     El formulario real (capturado el 19/9, está en
+     tienda/pruebas/fixtures/): País y Provincia son <select>
+     NATIVOS —`country` con códigos ISO de país, `state` con los de
+     provincia: SE, H, M…—, y `state` solo existe cuando el país
+     elegido tiene provincias: Vue lo pinta un instante DESPUÉS de
+     elegir país, por eso la provincia se reintenta en cada pasada
+     del observer hasta que aparece.
+
+       · PROVINCIA: sale de las dos primeras cifras del CP, con la
+         tabla de abajo; no necesita datos de fuera. Se busca la
+         opción por su código y, si GHL los cambiara, por su nombre
+         (sin tildes ni mayúsculas, con los dos nombres de las que
+         tienen dos). Falla en un puñado de enclaves de frontera; el
+         campo queda editable.
+       · CIUDAD: de tienda/datos/cp-es.json (GeoNames, CC-BY 4.0),
+         alojado en la librería de medios de GHL —URL_CP— y pedido
+         una sola vez, al primer foco en el CP.
+       · VARIAS POBLACIONES: un <select class="mura-cp-otras"> bajo
+         el campo Ciudad. No es un <datalist>: en móvil el datalist
+         solo sugiere lo que casa con lo ya escrito, y con la primera
+         población puesta no ofrecería ninguna otra.
+
+     GHL (Vue) no se entera de un `.value =` a secas: cada valor se
+     pone con `input` + `change` + `blur`. El `blur` no es de
+     adorno: GHL recalcula las tarifas de envío en el blur de
+     ciudad y CP, y sin él «Forma de envío» no aparece (comprobado
+     en vivo el 19/9).
+
+     No pisar a la clienta: solo se actúa cuando CAMBIA el CP, y la
+     ciudad solo se escribe si está vacía o si la pusimos nosotros.
+     La provincia sí se pone siempre que cambia el CP: el prefijo
+     manda, y dejar la de un CP anterior sería un error en la
+     etiqueta.
+
+     FUERA DE ESPAÑA no se compra por la web (decisión de Sonia, 19/9):
+     el envío internacional se confirma antes por WhatsApp —lo dicen
+     las condiciones de contratación—, así que con otro país elegido
+     sale un «consúltanos» con el enlace encima del botón de avanzar y
+     el botón se apaga. Se apaga con `disabled` y, por si Vue se lo
+     quita al repintar, el clic se le corta también en captura. Solo
+     se vuelve a encender el botón que apagamos nosotros.
+
+     El orden visual lo cambia el CSS (bloque `tienda`, con `order`);
+     aquí se acompasa el tabulador, que si no seguiría el orden del
+     DOM: dirección → país → provincia → ciudad → CP.
+
+     Pruebas: tienda/pruebas/direccion-cp.test.js */
+
+  function direccionPorCP() {
+    var URL_CP = 'https://assets.cdn.filesafe.space/NxPF5fOicowujokEk5Hm/media/cd38d82d-beea-43d5-8939-873dae4b58b2.json';
+
+    /* Prefijo del CP → código de la opción en GHL + nombre(s). */
+    var PROV = {
+      '01': 'VI Álava/Araba', '02': 'AB Albacete', '03': 'A Alicante/Alacant',
+      '04': 'AL Almería', '05': 'AV Ávila', '06': 'BA Badajoz',
+      '07': 'PM Balears/Illes Balears/Baleares/Islas Baleares', '08': 'B Barcelona',
+      '09': 'BU Burgos', '10': 'CC Cáceres', '11': 'CA Cádiz',
+      '12': 'CS Castellón/Castelló', '13': 'CR Ciudad Real', '14': 'CO Córdoba',
+      '15': 'C A Coruña/La Coruña', '16': 'CU Cuenca', '17': 'GI Girona/Gerona',
+      '18': 'GR Granada', '19': 'GU Guadalajara', '20': 'SS Guipúzcoa/Gipuzkoa',
+      '21': 'H Huelva', '22': 'HU Huesca', '23': 'J Jaén', '24': 'LE León',
+      '25': 'L Lleida/Lérida', '26': 'LO La Rioja', '27': 'LU Lugo', '28': 'M Madrid',
+      '29': 'MA Málaga', '30': 'MU Murcia', '31': 'NA Navarra/Nafarroa',
+      '32': 'OR Ourense/Orense', '33': 'O Asturias', '34': 'P Palencia',
+      '35': 'GC Las Palmas', '36': 'PO Pontevedra', '37': 'SA Salamanca',
+      '38': 'TF Santa Cruz de Tenerife', '39': 'S Cantabria', '40': 'SG Segovia',
+      '41': 'SE Sevilla', '42': 'SO Soria', '43': 'T Tarragona', '44': 'TE Teruel',
+      '45': 'TO Toledo', '46': 'V Valencia/València', '47': 'VA Valladolid',
+      '48': 'BI Vizcaya/Bizkaia', '49': 'ZA Zamora', '50': 'Z Zaragoza',
+      '51': 'CE Ceuta', '52': 'ML Melilla'
+    };
+
+    var WHATSAPP = 'https://wa.me/34637681234?text=' +
+      encodeURIComponent('Hola MÛRA, me gustaría hacer un pedido con envío fuera de España');
+    var SEL_BOTON = '.payment-btn';
+
+    var datos = null, pidiendo = false, intentos = 0, cola = [];
+
+    function llano(s) {
+      return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+    }
+    function campo(form, nombre) { return form.querySelector('[name=' + nombre + ']'); }
+    function formDe(el) { return el && el.closest ? el.closest('.checkout-form') : null; }
+
+    /* Lo que se recuerda de cada formulario: el último CP aplicado,
+       la ciudad que pusimos, si la provincia ya está puesta, las
+       poblaciones del selector y el último país visto. Vive en el
+       nodo: si Vue lo recrea se pierde, y no pasa nada. */
+    function memoria(form) {
+      return form._muraCP || (form._muraCP = { cp: '', ciudad: null, provincia: true, lista: null, pais: null });
+    }
+
+    function poner(c, valor) {
+      c.value = valor;
+      c.dispatchEvent(new Event('input', { bubbles: true }));
+      c.dispatchEvent(new Event('change', { bubbles: true }));
+      c.dispatchEvent(new Event('blur'));
+    }
+
+    /* Dos intentos como mucho: si la red falla al primer foco, el
+       siguiente cambio de CP lo vuelve a probar, y ahí se queda. */
+    function pedirDatos(luego) {
+      if (datos) { if (luego) luego(); return; }
+      if (luego) cola.push(luego);
+      if (pidiendo || intentos >= 2 || !window.fetch) return;
+      pidiendo = true;
+      intentos++;
+      window.fetch(URL_CP).then(function (r) {
+        if (!r.ok) throw new Error('cp ' + r.status);
+        return r.json();
+      }).then(function (d) {
+        datos = d;
+        pidiendo = false;
+        var c = cola;
+        cola = [];
+        c.forEach(function (f) { f(); });
+      }).catch(function () { pidiendo = false; cola = []; });
+    }
+
+    function opcionProvincia(sel, ficha) {
+      var corte = ficha.indexOf(' ');
+      var codigo = ficha.slice(0, corte);
+      var nombres = ficha.slice(corte + 1).split('/').map(llano);
+      var i, o;
+      for (i = 0; i < sel.options.length; i++) if (sel.options[i].value === codigo) return sel.options[i];
+      for (i = 0; i < sel.options.length; i++) {
+        o = sel.options[i];
+        if (o.value && nombres.indexOf(llano(o.textContent)) !== -1) return o;
+      }
+      return null;
+    }
+
+    function provincia(form) {
+      var m = memoria(form);
+      if (m.provincia) return;
+      var pais = campo(form, 'country'), sel = campo(form, 'state');
+      if (!pais || pais.value !== 'ES' || !sel || !sel.options) return;
+      var o = opcionProvincia(sel, PROV[m.cp.slice(0, 2)]);
+      if (!o) return;                       /* aún con las opciones de otro país */
+      m.provincia = true;
+      if (sel.value !== o.value) poner(sel, o.value);
+    }
+
+    function quitarOtras(form) {
+      memoria(form).lista = null;
+      var s = form.querySelector('.mura-cp-otras');
+      if (s && s.parentElement) s.parentElement.removeChild(s);
+    }
+
+    function pintarOtras(form) {
+      var lista = memoria(form).lista, city = campo(form, 'city');
+      if (!lista || !city || !city.parentElement || form.querySelector('.mura-cp-otras')) return;
+      var s = document.createElement('select');
+      s.className = 'mura-cp-otras';
+      s.setAttribute('aria-label', 'Otras poblaciones con este código postal');
+      var o = document.createElement('option');
+      o.value = '';
+      o.disabled = true;
+      o.selected = true;
+      o.textContent = 'Ver las ' + lista.length + ' poblaciones';
+      s.appendChild(o);
+      lista.forEach(function (nombre) {
+        var op = document.createElement('option');
+        op.value = nombre;
+        op.textContent = nombre;
+        s.appendChild(op);
+      });
+      city.parentElement.appendChild(s);
+    }
+
+    function ciudad(form, cp) {
+      var m = memoria(form);
+      if (m.cp !== cp) return;              /* el CP cambió mientras llegaban los datos */
+      var city = campo(form, 'city');
+      if (!city) return;
+      var lista = datos[cp];
+      var nuestra = m.ciudad !== null && city.value === m.ciudad;
+      if (!lista || !lista.length) {
+        /* CP desconocido: la ciudad del CP anterior ya no vale. */
+        if (nuestra && city.value !== '') poner(city, '');
+        m.ciudad = null;
+        return;
+      }
+      if (city.value.trim() === '' || nuestra) {
+        m.ciudad = lista[0];
+        if (city.value !== lista[0]) poner(city, lista[0]);
+      }
+      if (lista.length > 1) {
+        m.lista = lista;
+        pintarOtras(form);
+      }
+    }
+
+    function aplicar(form) {
+      var pais = campo(form, 'country'), zip = campo(form, 'zipcode');
+      if (!pais || !zip || pais.value !== 'ES') return;
+      var cp = zip.value.trim(), m = memoria(form);
+      if (cp === m.cp || !/^\d{5}$/.test(cp) || !PROV[cp.slice(0, 2)]) return;
+      m.cp = cp;
+      m.provincia = false;
+      quitarOtras(form);
+      provincia(form);
+      pedirDatos(function () { ciudad(form, cp); });
+    }
+
+    function cambioDePais(form, pais) {
+      var m = memoria(form), antes = m.pais;
+      m.pais = pais.value;
+      bloqueo();
+      if (pais.value === 'ES') {
+        m.cp = '';
+        aplicar(form);
+        return;
+      }
+      m.cp = '';
+      m.provincia = true;
+      quitarOtras(form);
+      if (antes !== 'ES') return;           /* de Portugal a Francia no se borra lo escrito */
+      var city = campo(form, 'city'), sel = campo(form, 'state');
+      if (city && city.value !== '') poner(city, '');
+      if (sel && sel.value !== '') poner(sel, '');
+      m.ciudad = null;
+    }
+
+    /* ---------- Fuera de España: consúltanos ---------- */
+
+    function paisFuera() {
+      var pais = document.querySelector('.checkout-form [name=country]');
+      return !!pais && pais.value !== '' && pais.value !== 'ES';
+    }
+
+    function bloqueo() {
+      var fuera = paisFuera();
+      var botones = document.querySelectorAll(SEL_BOTON);
+      for (var i = 0; i < botones.length; i++) {
+        var b = botones[i];
+        /* El botón tiene dos dueños: esta sección (país) y la 14 (punto
+           Nacex Shop pendiente). Cada una lleva su marca y, al soltar,
+           deja el botón como lo quiera la otra. Un botón apagado por GHL
+           mismo (sin marca de nadie) no se toca. */
+        if (fuera) {
+          if (!b.disabled || b._muraBloqueadoShop) { b.disabled = true; b._muraBloqueado = true; }
+        } else if (b._muraBloqueado) {
+          b._muraBloqueado = false;
+          b.disabled = !!b._muraBloqueadoShop;
+        }
+      }
+      var aviso = document.querySelector('.mura-cp-fuera');
+      if (!fuera) {
+        if (aviso && aviso.parentElement) aviso.parentElement.removeChild(aviso);
+        return;
+      }
+      if (aviso || !botones.length) return;
+      aviso = document.createElement('p');
+      aviso.className = 'mura-cp-fuera';
+      aviso.setAttribute('role', 'status');
+      aviso.appendChild(document.createTextNode(
+        'Para envíos fuera de España, consúltanos: te confirmamos el coste y el plazo antes de hacer el pedido. '));
+      var a = document.createElement('a');
+      a.href = WHATSAPP;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = 'Escríbenos por WhatsApp';
+      aviso.appendChild(a);
+      botones[0].parentElement.insertBefore(aviso, botones[0]);
+    }
+
+    /* ---------- El tabulador sigue al orden visual ---------- */
+
+    function reordenado() {
+      return !!(window.CSS && window.CSS.supports && window.CSS.supports('selector(:has(*))'));
+    }
+    function trasElCP(zip) {
+      var raiz = document.querySelector('.hl-store-checkout-container') || document.body;
+      var todos = Array.prototype.slice.call(raiz.querySelectorAll('input, select, textarea, button, a[href]'))
+        .filter(function (c) { return !c.disabled && c.type !== 'hidden' && !c.classList.contains('mura-cp-otras'); });
+      var i = todos.indexOf(zip);
+      return i === -1 ? null : todos[i + 1] || null;
+    }
+    function alTabular(e) {
+      if (e.key !== 'Tab' || e.altKey || e.ctrlKey || e.metaKey) return;
+      var zip = document.querySelector('.checkout-form [name=zipcode]');
+      var form = formDe(zip);
+      if (!form || !reordenado()) return;
+      var fila = [campo(form, 'address'), zip, campo(form, 'city'), form.querySelector('.mura-cp-otras'),
+                  campo(form, 'country'), campo(form, 'state'), trasElCP(zip)]
+        .filter(function (c) { return !!c; });
+      var i = fila.indexOf(e.target);
+      var destino = i === -1 ? null : fila[i + (e.shiftKey ? -1 : 1)];
+      if (!destino) return;
+      e.preventDefault();
+      destino.focus();
+    }
+
+    /* ---------- Enganches: por delegación, Vue repinta los nodos ---------- */
+
+    function pasada() {
+      var forms = document.querySelectorAll('.checkout-form');
+      for (var i = 0; i < forms.length; i++) {
+        var form = forms[i], pais = campo(form, 'country');
+        if (!pais) continue;
+        var m = memoria(form);
+        /* España por defecto: una vez por nodo, y solo si está sin elegir. */
+        if (pais.value === '' && !pais._muraPais && pais.querySelector('option[value=ES]')) {
+          pais._muraPais = true;
+          poner(pais, 'ES');
+        }
+        if (m.pais === null && pais.value !== '') m.pais = pais.value;
+        provincia(form);
+        pintarOtras(form);
+      }
+      bloqueo();
+    }
+
+    document.addEventListener('focusin', function (e) {
+      var c = e.target, form = formDe(c);
+      if (!form || c.name !== 'zipcode') return;
+      var pais = campo(form, 'country');
+      if (pais && pais.value === 'ES') pedirDatos();
+    }, true);
+
+    function alEscribir(e) {
+      var c = e.target, form = formDe(c);
+      if (form && c.name === 'zipcode') aplicar(form);
+    }
+    document.addEventListener('input', alEscribir, true);
+
+    document.addEventListener('change', function (e) {
+      var c = e.target, form = formDe(c);
+      if (!form) return;
+      if (c.name === 'country') cambioDePais(form, c);
+      else if (c.name === 'zipcode') aplicar(form);
+      else if (c.classList && c.classList.contains('mura-cp-otras') && c.value) {
+        var city = campo(form, 'city');
+        if (city) {
+          memoria(form).ciudad = c.value;
+          poner(city, c.value);
+        }
+        c.selectedIndex = 0;
+      }
+    }, true);
+
+    document.addEventListener('keydown', alTabular, true);
+
+    document.addEventListener('click', function (e) {
+      if (!paisFuera() || !e.target.closest || !e.target.closest(SEL_BOTON)) return;
+      e.preventDefault();
+      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+      else e.stopPropagation();
+    }, true);
+
+    pasada();
+    new MutationObserver(pasada).observe(document.body, { childList: true, subtree: true });
+  }
+
+  /* ============================================================
+     14 · PANEL DE PUNTOS NACEX.SHOP EN /checkout (28/9)
+     ============================================================
+     La tarifa «Recogida en punto Nacex Shop» (gratis siempre) necesita
+     un dato que el checkout de GHL no sabe pedir: EN QUÉ PUNTO. Al
+     marcarla se despliega, debajo de la lista de tarifas, la lista de
+     puntos del CP de envío: nombre, dirección, horario de hoy, «Ver en
+     mapa» y «Elegir». Hay una caja para buscar por otro CP.
+
+     Los datos vienen de n8n (workflow «N04b · Puntos Nacex Shop», en
+     Mura-GHL), que a su vez pregunta a Nacex:
+       GET  URL_PUNTOS?cp=41001 → {ok, puntos:[{codigo, nombre, direccion,
+            poblacion, cp, telefono, horario:{l,m,x,j,v,s,d}, lat, lng}]}
+       POST URL_SELECCION {email, cp_busqueda, codigo} → {ok, texto}
+     El POST guarda la elección POR EMAIL en una tabla de n8n: cuando
+     la clienta paga todavía no existe el pedido, y es «01 Compra»
+     quien, al llegar el pedido, busca el punto por el email y lo copia
+     a la oportunidad. Por eso el email es el puente y por eso, si
+     cambia después de elegir, se vuelve a guardar. El POST va como
+     text/plain: sin preflight CORS, una petición menos.
+
+     CERRADO POR DEFECTO: con Shop marcada, el botón de continuar está
+     apagado hasta que n8n confirma {ok:true}. Si n8n no responde, no
+     hay puntos o falla el guardado, la clienta ve un aviso claro y la
+     salida siempre es «Envío a tu puerta». Nunca se paga con Shop sin
+     punto guardado; y si aun así ocurriera (otro email al pagar), lo
+     recogen «01 Compra» (aviso a Telegram) y el 04 (se niega a llamar
+     a Nacex).
+
+     El punto elegido se recuerda en sessionStorage —sobrevive a una
+     recarga— pero se RECONFIRMA con n8n antes de encender el botón:
+     lo que manda es la tabla de n8n, no el navegador.
+
+     GHL preselecciona la tarifa más barata y lista primero: como la
+     recogida es gratis, se devolvería a toda clienta a Shop con el
+     botón apagado. Por eso, hasta que la clienta toque la lista (o
+     traiga un punto guardado), se marca «Envío a tu puerta» con un
+     click real sobre su radio y la recogida se coloca la última (1/10).
+
+     La tarifa se reconoce por su NOMBRE (`.item-name` del radio
+     marcado, o `.shipping-name-label` del resumen), sin tildes ni
+     mayúsculas, con NOMBRE_SHOP. Si Sonia la rebautiza y deja de
+     contener «nacex shop», hay que cambiarlo aquí.
+
+     El botón lo comparte con la sección 13 (fuera de España): cada
+     una lleva su marca (`_muraBloqueado` / `_muraBloqueadoShop`) y al
+     soltar deja el botón como lo quiera la otra. Como Vue puede
+     repintar el botón, el clic se corta además en captura.
+
+     Pruebas: tienda/pruebas/puntos-shop.test.js
+     (fixture real: tienda/pruebas/fixtures/checkout-tarifas.html) */
+
+  function puntosNacexShop() {
+    var URL_PUNTOS = 'https://n8n.letsbebanana.com/webhook/puntos-nacex-shop';
+    var URL_SELECCION = 'https://n8n.letsbebanana.com/webhook/seleccion-punto-shop';
+    var NOMBRE_SHOP = 'nacex shop';
+    var SEL_BOTON = '.payment-btn';
+    var CLAVE = 'mura_punto';
+    var DIAS = ['d', 'l', 'm', 'x', 'j', 'v', 's'];
+
+    var TXT = {
+      titulo: 'Elige tu punto de recogida',
+      buscar: 'Buscar',
+      cargando: 'Buscando puntos cerca de ti…',
+      elegir: 'Elegir',
+      mapa: 'Ver en mapa',
+      cambiar: 'Cambiar',
+      recoges: 'Recoges tu pedido en: ',
+      pie: 'Elige un punto para continuar.',
+      sinPuntos: 'No hay puntos Nacex Shop para ese código postal. Prueba con otro o elige «Envío a tu puerta».',
+      sinLista: 'Ahora mismo no podemos mostrar los puntos de recogida. Inténtalo de nuevo o elige «Envío a tu puerta».',
+      reintentar: 'Reintentar',
+      sinEmail: 'Escribe tu correo electrónico en «Contacto» para guardar tu punto de recogida.',
+      noGuardado: 'No hemos podido guardar tu punto de recogida. Inténtalo de nuevo o elige «Envío a tu puerta».'
+    };
+
+    /* Estado de la sección. `puntos` es la lista del CP `cp`;
+       `elegido` = {codigo, cp, texto, email}; `confirmado` = n8n ha
+       dicho ok en ESTA visita del panel. */
+    var st = { cp: '', puntos: null, cargando: false, error: null, elegido: null, confirmado: false, guardando: false, aviso: '', serie: 0 };
+    /* GHL preselecciona la tarifa MÁS BARATA, y la recogida en punto es gratis
+       siempre: sin esto, toda clienta entraría con Shop marcada, el panel abierto
+       y el botón apagado. Hasta que la clienta toque la lista (o traiga un punto
+       guardado de antes), la tarifa por defecto es «Envío a tu puerta». */
+    var clientaEligio = false, cambiandoNosotros = false;
+
+    function llano(s) {
+      return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+    }
+    function esShop(texto) { return llano(texto).indexOf(NOMBRE_SHOP) !== -1; }
+
+    function shopMarcada() {
+      var r = document.querySelector('input[name=shipping-option]:checked');
+      if (r) {
+        var fila = r.closest('.shipping-option-container') || r.parentElement;
+        var nombre = fila && fila.querySelector('.item-name');
+        return esShop(nombre ? nombre.textContent : (fila ? fila.textContent : ''));
+      }
+      var etiqueta = document.querySelector('.shipping-name-label');
+      return !!etiqueta && esShop(etiqueta.textContent);
+    }
+    /* Sin lista de tarifas (p. ej. el paso de pago tras una recarga, si GHL
+       lo conservara) no hay dónde elegir punto: bloquear ahí sería un
+       callejón sin salida. La elección ya vive en la tabla de n8n, y si no,
+       «01 Compra» avisa. */
+    function hayLista() { return !!document.querySelector('.shipping-container .shipping-options-wrapper'); }
+    function pendiente() { return shopMarcada() && hayLista() && !(st.elegido && st.confirmado); }
+
+    function etiquetaDe(radio) { return radio.closest('.shipping-option-container') || radio.parentElement; }
+    function nombreDe(radio) {
+      var fila = etiquetaDe(radio), n = fila && fila.querySelector('.item-name');
+      return n ? n.textContent : (fila ? fila.textContent : '');
+    }
+    function radiosTarifa() { return Array.prototype.slice.call(document.querySelectorAll('input[name=shipping-option]')); }
+
+    /* Devuelve a «Envío a tu puerta» cuando Shop está marcada sin que la clienta
+       la haya elegido. El click() real hace que GHL (Vue) recalcule el envío. */
+    function devolverADomicilio() {
+      var rs = radiosTarifa(), casa = null;
+      for (var i = 0; i < rs.length; i++) if (!esShop(nombreDe(rs[i]))) { casa = rs[i]; break; }
+      if (!casa || casa.checked) return false;
+      cambiandoNosotros = true;
+      try { casa.click(); } finally { cambiandoNosotros = false; }
+      return true;
+    }
+    /* La recogida en punto, la última de la lista (la lista es flex en columna, CSS del bloque tienda). */
+    function ordenarTarifas() {
+      var rs = radiosTarifa();
+      for (var i = 0; i < rs.length; i++) {
+        var et = etiquetaDe(rs[i]), orden = esShop(nombreDe(rs[i])) ? '1' : '';
+        if (et && et.style.order !== orden) et.style.order = orden;
+      }
+    }
+
+    function campo(nombre) { return document.querySelector('.checkout-form [name=' + nombre + ']'); }
+    function emailActual() {
+      var c = campo('email');
+      var v = c ? String(c.value || '').trim().toLowerCase() : '';
+      return v || (st.elegido && st.elegido.email) || '';
+    }
+    function cpEnvio() {
+      var c = campo('zipcode');
+      var v = c ? String(c.value || '').trim() : '';
+      return /^\d{5}$/.test(v) ? v : '';
+    }
+
+    function leerGuardado() {
+      try {
+        var g = JSON.parse(window.sessionStorage.getItem(CLAVE) || 'null');
+        return g && g.codigo ? g : null;
+      } catch (e) { return null; }
+    }
+    function guardar(p) {
+      try {
+        if (p) window.sessionStorage.setItem(CLAVE, JSON.stringify(p));
+        else window.sessionStorage.removeItem(CLAVE);
+      } catch (e) { /* sin sessionStorage: se elige de nuevo tras recargar */ }
+    }
+
+    /* ---------- Botón de continuar ---------- */
+
+    function bloqueo() {
+      var pend = pendiente();
+      var bs = document.querySelectorAll(SEL_BOTON);
+      for (var i = 0; i < bs.length; i++) {
+        var b = bs[i];
+        if (pend) {
+          b._muraBloqueadoShop = true;
+          b.disabled = true;
+        } else if (b._muraBloqueadoShop) {
+          b._muraBloqueadoShop = false;
+          b.disabled = !!b._muraBloqueado;
+        }
+      }
+    }
+
+    /* ---------- Red ---------- */
+
+    function pedirPuntos(cp) {
+      st.cp = cp;
+      st.puntos = null;
+      st.error = null;
+      st.aviso = '';
+      if (!window.fetch) { st.error = 'sin_fetch'; pintar(); return; }
+      st.cargando = true;
+      var serie = ++st.serie;
+      pintar();
+      window.fetch(URL_PUNTOS + '?cp=' + encodeURIComponent(cp)).then(function (r) {
+        return r.json();
+      }).then(function (d) {
+        if (serie !== st.serie) return;
+        st.cargando = false;
+        if (!d || !d.ok || !d.puntos) { st.error = (d && d.motivo) || 'sin_respuesta'; }
+        else st.puntos = d.puntos;
+        pintar();
+      }).catch(function () {
+        if (serie !== st.serie) return;
+        st.cargando = false;
+        st.error = 'sin_respuesta';
+        pintar();
+      });
+    }
+
+    /* Guarda (o reconfirma) el punto en n8n. `reconfirma` = venía
+       guardado de antes: si n8n lo rechaza se descarta sin más aviso. */
+    function enviarSeleccion(punto, cp, reconfirma) {
+      var email = emailActual();
+      if (!email) {
+        st.aviso = TXT.sinEmail;
+        pintar();
+        return;
+      }
+      if (!window.fetch) { st.aviso = TXT.noGuardado; pintar(); return; }
+      st.guardando = true;
+      st.confirmado = false;   /* hasta el ok de ESTE guardado (email nuevo incluido) no se paga */
+      st.aviso = '';
+      pintar();
+      var cuerpo = JSON.stringify({ email: email, cp_busqueda: cp, codigo: punto.codigo });
+      window.fetch(URL_SELECCION, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: cuerpo }).then(function (r) {
+        return r.json();
+      }).then(function (d) {
+        st.guardando = false;
+        if (d && d.ok) {
+          st.elegido = { codigo: punto.codigo, cp: cp, texto: d.texto || textoDe(punto), email: email };
+          st.confirmado = true;
+          guardar(st.elegido);
+        } else {
+          fallo(reconfirma);
+        }
+        pintar();
+      }).catch(function () {
+        st.guardando = false;
+        fallo(reconfirma);
+        pintar();
+      });
+    }
+    function fallo(reconfirma) {
+      if (reconfirma) {
+        st.elegido = null;
+        st.confirmado = false;
+        guardar(null);
+        if (st.puntos === null && !st.cargando) pedirPuntos(cpEnvio() || st.cp);
+      } else {
+        st.aviso = TXT.noGuardado;
+      }
+    }
+
+    /* ---------- Pintado ---------- */
+
+    function el(tag, clase, texto) {
+      var n = document.createElement(tag);
+      if (clase) n.className = clase;
+      if (texto) n.textContent = texto;
+      return n;
+    }
+    function textoDe(p) {
+      return [p.nombre, p.direccion, [p.cp, p.poblacion].filter(Boolean).join(' ')].filter(Boolean).join(' · ');
+    }
+    function hoy(p) {
+      var h = p.horario && p.horario[DIAS[new Date().getDay()]];
+      return h ? 'Hoy: ' + h : 'Hoy cerrado';
+    }
+
+    function filaPunto(p) {
+      var fila = el('div', 'mura-punto');
+      var datos = el('div', 'mura-punto-datos');
+      datos.appendChild(el('div', 'mura-punto-nombre', p.nombre || ''));
+      datos.appendChild(el('div', 'mura-punto-dir', [p.direccion, [p.cp, p.poblacion].filter(Boolean).join(' ')].filter(Boolean).join(' · ')));
+      var hoyEl = el('div', 'mura-punto-hoy', hoy(p));
+      if (typeof p.lat === 'number' && typeof p.lng === 'number' && !isNaN(p.lat) && !isNaN(p.lng)) {
+        var a = el('a', 'mura-punto-mapa', TXT.mapa);
+        a.href = 'https://www.google.com/maps?q=' + p.lat + ',' + p.lng;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        hoyEl.appendChild(a);
+      }
+      datos.appendChild(hoyEl);
+      fila.appendChild(datos);
+      var b = el('button', 'mura-punto-elegir', TXT.elegir);
+      b.type = 'button';
+      b.addEventListener('click', function () { enviarSeleccion(p, st.cp, false); });
+      fila.appendChild(b);
+      return fila;
+    }
+
+    function pintar() {
+      var panel = document.querySelector('.mura-puntos');
+      if (!panel) return;
+      while (panel.firstChild) panel.removeChild(panel.firstChild);
+
+      if (st.elegido) {
+        var e = el('div', 'mura-punto-elegido');
+        e.appendChild(el('span', 'mura-punto-elegido-titulo', TXT.recoges));
+        e.appendChild(el('span', 'mura-punto-elegido-texto', st.elegido.texto));
+        var c = el('a', 'mura-punto-cambiar', TXT.cambiar);
+        c.href = '#';
+        c.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          st.elegido = null;
+          st.confirmado = false;
+          guardar(null);
+          if (st.puntos === null && !st.cargando) pedirPuntos(st.cp || cpEnvio());
+          pintar();
+          bloqueo();
+        });
+        e.appendChild(c);
+        panel.appendChild(e);
+        if (st.aviso) panel.appendChild(el('p', 'mura-puntos-aviso', st.aviso));
+        bloqueo();
+        return;
+      }
+
+      panel.appendChild(el('p', 'mura-puntos-titulo', TXT.titulo));
+      var busca = el('div', 'mura-puntos-busca');
+      var caja = el('input', 'mura-puntos-cp');
+      caja.type = 'text';
+      caja.setAttribute('inputmode', 'numeric');
+      caja.setAttribute('maxlength', '5');
+      caja.setAttribute('aria-label', 'Código postal');
+      caja.placeholder = 'Código postal';
+      caja.value = st.cp;
+      var bb = el('button', 'mura-puntos-buscar', TXT.buscar);
+      bb.type = 'button';
+      function buscar() {
+        var v = String(caja.value || '').trim();
+        if (/^\d{5}$/.test(v)) pedirPuntos(v);
+      }
+      bb.addEventListener('click', buscar);
+      caja.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); buscar(); } });
+      busca.appendChild(caja);
+      busca.appendChild(bb);
+      panel.appendChild(busca);
+
+      if (st.cargando || st.guardando) {
+        panel.appendChild(el('p', 'mura-puntos-cargando', TXT.cargando));
+      } else if (st.error) {
+        var av = el('p', 'mura-puntos-aviso', TXT.sinLista + ' ');
+        var re = el('a', 'mura-puntos-reintentar', TXT.reintentar);
+        re.href = '#';
+        re.addEventListener('click', function (ev) { ev.preventDefault(); pedirPuntos(st.cp || cpEnvio()); });
+        av.appendChild(re);
+        panel.appendChild(av);
+      } else if (st.puntos && !st.puntos.length) {
+        panel.appendChild(el('p', 'mura-puntos-aviso', TXT.sinPuntos));
+      } else if (st.puntos) {
+        var lista = el('div', 'mura-puntos-lista');
+        for (var i = 0; i < st.puntos.length; i++) lista.appendChild(filaPunto(st.puntos[i]));
+        panel.appendChild(lista);
+      }
+      if (st.aviso) panel.appendChild(el('p', 'mura-puntos-aviso', st.aviso));
+      panel.appendChild(el('p', 'mura-puntos-pie', TXT.pie));
+      bloqueo();
+    }
+
+    /* ---------- Montar / desmontar ---------- */
+
+    function montar() {
+      var cont = document.querySelector('.shipping-container');
+      var lista = cont && cont.querySelector('.shipping-options-wrapper');
+      if (!lista) return;
+      var panel = el('div', 'mura-puntos');
+      panel.setAttribute('role', 'region');
+      panel.setAttribute('aria-label', TXT.titulo);
+      if (lista.nextSibling) cont.insertBefore(panel, lista.nextSibling);
+      else cont.appendChild(panel);
+
+      if (!st.elegido) st.elegido = leerGuardado();
+      /* Un punto guardado = la clienta eligió Shop antes (recarga): aunque n8n lo
+         rechace después, se queda en Shop con la lista, no se la devuelve a casa. */
+      if (st.elegido) clientaEligio = true;
+      st.confirmado = false;
+      var cp = cpEnvio();
+      if (st.elegido) {
+        pintar();
+        enviarSeleccion({ codigo: st.elegido.codigo }, st.elegido.cp || cp, true);
+      } else if (cp && cp !== st.cp) {
+        pedirPuntos(cp);
+      } else if (st.puntos === null && !st.cargando) {
+        if (cp || st.cp) pedirPuntos(cp || st.cp);
+        else { st.error = 'sin_cp'; pintar(); }
+      } else {
+        pintar();
+      }
+    }
+    function desmontar() {
+      var panel = document.querySelector('.mura-puntos');
+      if (panel && panel.parentElement) panel.parentElement.removeChild(panel);
+      st.confirmado = false;
+      st.aviso = '';
+    }
+
+    function pasada() {
+      ordenarTarifas();
+      if (shopMarcada() && !clientaEligio && !st.elegido && !leerGuardado() && devolverADomicilio()) return;
+      var hay = !!document.querySelector('.mura-puntos');
+      if (shopMarcada()) { if (!hay) montar(); }
+      else if (hay) desmontar();
+      bloqueo();
+    }
+
+    /* ---------- Enganches: por delegación, Vue repinta los nodos ---------- */
+
+    document.addEventListener('change', function (e) {
+      var c = e.target;
+      if (!c || !c.name) return;
+      if (c.name === 'shipping-option') { if (!cambiandoNosotros) clientaEligio = true; pasada(); }
+      else if (c.name === 'email' && st.elegido && shopMarcada()) {
+        var email = String(c.value || '').trim().toLowerCase();
+        if (email && email !== st.elegido.email) enviarSeleccion({ codigo: st.elegido.codigo }, st.elegido.cp, false);
+      }
+    }, true);
+
+    document.addEventListener('click', function (e) {
+      if (!pendiente() || !e.target.closest || !e.target.closest(SEL_BOTON)) return;
+      e.preventDefault();
+      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+      else e.stopPropagation();
+    }, true);
+
+    pasada();
+    new MutationObserver(pasada).observe(document.body, { childList: true, subtree: true });
+  }
+
+  /* ============================================================
+     8 · BOCADILLO MÓVIL — donde haya cabecera .mura-nav
+     ============================================================
+     En móvil (≤719 px) el menú de la cabecera se esconde entero y en
+     su lugar sale el botón de dos rayitas, que al abrirse giran 45° y
+     forman la X.
+
+     Hasta el 1/9 esto era un pegable APARTE (web/tracking-bocadillo
+     .html) que iba pegado a mano debajo del Tracking Code del BODY.
+     Al repegar el body entero se perdió sin que nada avisara, así
+     que ahora vive aquí dentro: el BODY es UN solo bloque y no hay
+     segunda pieza que olvidar.
+
+     El panel se rellena clonando los enlaces de `.mura-links` de la
+     propia cabecera: no hay una segunda lista de menú que mantener.
+
+     DESDE EL 3/10 LA CABECERA DE LAS PÁGINAS DE web/ TRAE SU BOCADILLO.
+     GHL inyecta este código al final de la carga, y hasta entonces la
+     página pintaba su menú a medio esconder: Sonia veía «Prendas» en
+     la cabecera del móvil unos segundos, y luego el salto a las
+     rayitas. Ahora la cabecera vive una sola vez en
+     web/global/cabecera.html (elemento universal de GHL, sale en el
+     HTML inicial) y lleva el botón, este mismo CSS y un oyente gemelo
+     del de abajo (misma bandera `window.muraBocadillo`, así nunca hay
+     dos y un clic no se anula con otro). Esta sección queda para las
+     cabeceras que inyecta el propio global (rutas de tienda) y como
+     red si la cabecera pierde su script.
+     Pruebas: `pruebas/bocadillo.test.js`.
+
+     El CSS (`bocadilloCss`) está definido junto al sistema de diseño y
+     se inyecta ya en la parte HEAD; al montar el botón se repite la
+     llamada por si el BODY va solo. El oyente va delegado en el
+     documento y crea el panel al primer clic: aguanta que GHL repinte
+     la cabecera al hidratar. */
+
+  function montarBocadillo() {
+    if (!window.muraBocadillo) {
+      window.muraBocadillo = 1;
+      document.addEventListener('click', function (e) {
+        var b = e.target.closest && e.target.closest('.mura-burger');
+        if (!b) return;
+        var nav = b.closest('.mura-nav');
+        var links = nav && nav.querySelector('.mura-links');
+        if (!links) return;
+        var m = nav.querySelector('.mura-mnav');
+        if (!m) {
+          m = document.createElement('div');
+          m.className = 'mura-mnav';
+          m.innerHTML = links.innerHTML;
+          nav.appendChild(m);
+        }
+        var o = m.classList.toggle('open');
+        b.classList.toggle('open', o);
+        b.setAttribute('aria-expanded', o ? 'true' : 'false');
+      });
+    }
+
+    function montar() {
+      var nav = document.querySelector('.mura-nav');
+      if (!nav) return false;
+      /* La página ya trae su botón en el HTML (las de web/): no se monta otro. */
+      if (nav.querySelector('.mura-burger')) return true;
+      var dentro = nav.querySelector('.mura-nav-in');
+      var links = nav.querySelector('.mura-links');
+      if (!dentro || !links) return false;
+      estilo('bocadillo', bocadilloCss);
+      var b = document.createElement('button');
+      b.className = 'mura-burger';
+      b.type = 'button';
+      b.setAttribute('aria-label', 'Menú');
+      b.setAttribute('aria-expanded', 'false');
+      b.innerHTML = '<span></span><span></span>';
+      dentro.appendChild(b);
+      return true;
+    }
+
+    /* La cabecera puede inyectarse después (la monta init() más abajo,
+       incluso con retraso de 1200 ms): se espera a que aparezca, con
+       tope para no dejar un observer vivo en páginas sin cabecera. */
+    if (!montar()) {
+      var obs = new MutationObserver(function () { if (montar()) obs.disconnect(); });
+      obs.observe(document.documentElement, { childList: true, subtree: true });
+      setTimeout(function () { obs.disconnect(); }, 10000);
+    }
+  }
+
+  montarBocadillo();
+
+  /* ============================================================
+     15 · AVISO DEL 10 % DE LA NEWSLETTER (29/9)
+     ============================================================
+     Pedido de Sonia: que nada más entrar se vea que la newsletter da
+     un 10 % en la primera compra. Un panel entra deslizándose por el
+     borde izquierdo al segundo de cargar; a los seis segundos se
+     encoge hacia ese borde y queda una pestaña negra, pegada y fija
+     (acompaña al hacer scroll), con «10 %» escrito en vertical de
+     abajo arriba. Pulsar la pestaña vuelve a abrir el panel, y abierto
+     a mano ya no se recoge solo. La equis, «Ahora no» y Escape lo
+     recogen: no lo quitan.
+
+     El botón NO lleva formulario: va al de la newsletter de la home
+     (/#mura-nl). En la propia home baja hasta él sin recargar y deja
+     el cursor en el correo; al llegar desde otra página con #mura-nl
+     en la URL, también.
+
+     CUÁNDO SALE
+       · El panel entero solo la primera página de cada visita
+         (sessionStorage mura_dto_visto); en las siguientes aparece ya
+         la pestaña, sin animación, para no cansar.
+       · La pestaña, siempre, hasta que la persona se suscribe: el
+         formulario de la home deja localStorage mura_dto = 'suscrita'
+         y desde entonces no se monta.
+       · Nunca en el checkout, el carrito, las páginas de gracias, la
+         baja, la suscripción confirmada, la encuesta, la solicitud de
+         devolución ni las legales (RUTAS_SIN_AVISO): ahí se está
+         haciendo otra cosa.
+
+     ESTÉTICA: la de la web. Blanco roto, raya fina, título en serif,
+     botón negro sin esquinas y sin subrayado, «Ahora no» en gris
+     pequeño. En móvil el panel es claramente más pequeño que la
+     pantalla (82 % del ancho, en el tercio inferior) y la pestaña baja
+     con él para no tapar el titular de la portada.
+
+     Va todo con clases .mura-dto-*, fuera de <div class="mura">
+     (vive en el body, fijo), así que trae su tipografía y su
+     box-sizing. El CSS se inyecta desde aquí, al montar: el aviso lo
+     crea este script, no hay HTML que pueda pintar antes.
+
+     Pruebas: tienda/pruebas/aviso-10.test.js */
+
+  var RUTAS_SIN_AVISO = ['/checkout', '/carrito', '/cart', '/thank-you', '/gracias',
+    '/gracias-devolucion', '/cancelar_suscripcion', '/suscripcion-confirmada',
+    '/experiencia', '/devolucion', '/aviso-legal', '/politica-privacidad',
+    '/politica-cookies', '/condiciones-contratacion'];
+
+  var avisoCss = [
+    ".mura-dto { position: fixed; left: 0; top: 50%; transform: translateY(-50%); z-index: 60; pointer-events: none; font-family: 'Jost', sans-serif; font-weight: 300; color: #1D1B18; line-height: 1.5; -webkit-font-smoothing: antialiased; }",
+    '.mura-dto, .mura-dto * { box-sizing: border-box; }',
+    /* el panel: entra desde fuera del borde y, al recogerse, se encoge hacia él */
+    '.mura-dto-panel { pointer-events: auto; position: relative; width: min(360px, calc(100vw - 40px)); background: #F0EEE8; border: 1px solid rgba(29,27,24,.14); border-left: none; box-shadow: 0 18px 50px rgba(24,22,19,.14); padding: 46px 40px 40px; outline: none; transform: translateX(-105%); opacity: 0; transform-origin: left center; transition: transform .6s cubic-bezier(.2,.7,.2,1), opacity .45s ease; }',
+    '.mura-dto.abierto .mura-dto-panel { transform: translateX(0); opacity: 1; }',
+    '.mura-dto.recogido .mura-dto-panel { transform: scale(.13, .37); opacity: 0; pointer-events: none; transition: transform .5s cubic-bezier(.6,0,.4,1), opacity .3s ease .2s; }',
+    '.mura-dto-l { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: #8A857B; margin-bottom: 18px; }',
+    '.mura-dto-raya { width: 32px; height: 1px; background: #1D1B18; margin-bottom: 22px; }',
+    ".mura-dto-t { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; font-size: 36px; line-height: 1.15; margin: 0 0 16px; }",
+    '.mura-dto-p { font-size: 14px; line-height: 1.9; color: #55524B; margin: 0 0 28px; }',
+    ".mura-dto-btn, .mura-dto-btn:hover, .mura-dto-btn:visited { display: flex; align-items: center; justify-content: center; height: 52px; background: #1D1B18; color: #F0EEE8 !important; text-decoration: none !important; font-family: 'Jost', sans-serif; font-size: 11.5px; letter-spacing: .24em; text-transform: uppercase; font-weight: 300; transition: background .2s ease; }",
+    '.mura-dto-btn:hover { background: #38352F; }',
+    ".mura-dto-no { display: block; width: 100%; margin-top: 18px; padding: 4px 0; background: none; border: none; cursor: pointer; text-align: center; font-family: 'Jost', sans-serif; font-weight: 300; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #8A857B; text-decoration: none; }",
+    '.mura-dto-no:hover { color: #1D1B18; }',
+    ".mura-dto-x { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; background: none; border: none; cursor: pointer; font-family: 'Jost', sans-serif; font-weight: 200; font-size: 22px; line-height: 1; color: #8A857B; }",
+    '.mura-dto-x:hover { color: #1D1B18; }',
+    /* la pestaña: aparece cuando el panel ya se ha encogido */
+    '.mura-dto-tab { pointer-events: auto; position: absolute; left: 0; top: 50%; width: 46px; height: 132px; margin: 0; padding: 0; border: none; background: #1D1B18; color: #F0EEE8; cursor: pointer; display: flex; align-items: center; justify-content: center; transform: translate(-100%, -50%); opacity: 0; transition: transform .45s ease .3s, opacity .3s ease .3s; }',
+    '.mura-dto.recogido .mura-dto-tab { transform: translate(0, -50%); opacity: 1; }',
+    ".mura-dto-tab span { writing-mode: vertical-rl; transform: rotate(180deg); font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; letter-spacing: .18em; white-space: nowrap; }",
+    '.mura-dto-tab:hover { background: #38352F; }',
+    /* segunda página de la visita: la pestaña ya está, sin entrar */
+    '.mura-dto.sin-animar, .mura-dto.sin-animar * { transition: none !important; }',
+    '@media (prefers-reduced-motion: reduce) { .mura-dto, .mura-dto * { transition: none !important; } }',
+    /* móvil: más pequeño que la pantalla, en el tercio inferior */
+    '@media (max-width: 719px) {',
+    '  .mura-dto { top: auto; bottom: 12vh; transform: none; }',
+    '  .mura-dto-panel { width: min(320px, 82vw); padding: 36px 30px 30px; }',
+    '  .mura-dto-t { font-size: 30px; }',
+    '  .mura-dto-p { font-size: 13.5px; margin-bottom: 22px; }',
+    '}'
+  ].join('\n');
+
+  function montarAviso10() {
+    var CLAVE = 'mura_dto';              /* localStorage: 'suscrita' → no sale más */
+    var CLAVE_VISTO = 'mura_dto_visto';  /* sessionStorage: el panel ya entró en esta visita */
+    var ENTRA = 1000, SE_RECOGE = 6000;
+    var esHome = path === '';
+
+    /* Al llegar a la home desde el aviso de otra página (/#mura-nl), el
+       navegador ya baja hasta el formulario; aquí solo se deja el cursor
+       en el correo. Va antes de cualquier salida: pasa también si el aviso
+       ya no se monta. */
+    if (esHome && location.hash === '#mura-nl') {
+      var correo0 = document.getElementById('mnl-email');
+      if (correo0) { try { correo0.focus({ preventScroll: true }); } catch (e) {} }
+    }
+
+    if (RUTAS_SIN_AVISO.indexOf(path) !== -1) return;
+    /* Con el banner de cookies sin contestar, el aviso espera a que la
+       clienta elija (23/10): en móvil salían los dos a la vez y el
+       banner (sección 16) tapaba el panel. Al decidir se monta, y el
+       segundo de entrada cuenta desde ahí. */
+    var ck = window.muraConsent;
+    if (ck && !ck.estado().decidido) {
+      var esperando = true;
+      ck.alCambiar(function () { if (esperando) { esperando = false; montarAviso10(); } });
+      return;
+    }
+    /* El BODY de GHL corre con el body ya pintado; el guardia es por si
+       alguien ejecuta la fuente entera desde el <head>. */
+    if (!document.body) { document.addEventListener('DOMContentLoaded', montarAviso10); return; }
+    if (document.querySelector('.mura-dto')) return;
+    try { if (localStorage.getItem(CLAVE) === 'suscrita') return; } catch (e) {}
+    var visto = false;
+    try { visto = sessionStorage.getItem(CLAVE_VISTO) === '1'; } catch (e) {}
+
+    estilo('aviso10', avisoCss);
+
+    var raiz = document.createElement('div');
+    raiz.className = 'mura-dto';
+    raiz.innerHTML =
+      '<div class="mura-dto-panel" role="dialog" aria-label="Newsletter: 10 % en tu primera compra" tabindex="-1">' +
+        '<button type="button" class="mura-dto-x" aria-label="Cerrar">×</button>' +
+        '<div class="mura-dto-l">Newsletter</div>' +
+        '<div class="mura-dto-raya"></div>' +
+        '<p class="mura-dto-t">10 % en tu primera compra.</p>' +
+        '<p class="mura-dto-p">Suscríbete y disfruta de los beneficios de nuestra newsletter desde el primer pedido.</p>' +
+        '<a class="mura-dto-btn" href="/#mura-nl">Quiero mi descuento</a>' +
+        '<button type="button" class="mura-dto-no">Ahora no</button>' +
+      '</div>' +
+      '<button type="button" class="mura-dto-tab" aria-label="Ver el 10 % de descuento de la newsletter"><span>10 %</span></button>';
+    document.body.appendChild(raiz);
+
+    var panel = raiz.querySelector('.mura-dto-panel');
+    var temporizador = null;
+
+    function abrir(solo) {
+      clearTimeout(temporizador);
+      raiz.classList.remove('sin-animar');
+      raiz.classList.remove('recogido');
+      raiz.classList.add('abierto');
+      try { sessionStorage.setItem(CLAVE_VISTO, '1'); } catch (e) {}
+      /* Solo la entrada automática se recoge sola; abierto a mano se
+         queda hasta que lo cierren. */
+      if (solo) temporizador = setTimeout(recoger, SE_RECOGE);
+      else { try { panel.focus({ preventScroll: true }); } catch (e) {} }
+    }
+    function recoger() {
+      clearTimeout(temporizador);
+      temporizador = null;
+      raiz.classList.remove('abierto');
+      raiz.classList.add('recogido');
+    }
+
+    raiz.querySelector('.mura-dto-tab').addEventListener('click', function () { abrir(false); });
+    raiz.querySelector('.mura-dto-x').addEventListener('click', recoger);
+    raiz.querySelector('.mura-dto-no').addEventListener('click', recoger);
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' && raiz.classList.contains('abierto')) recoger();
+    });
+    raiz.querySelector('.mura-dto-btn').addEventListener('click', function (ev) {
+      if (!esHome) return; /* fuera de la home el enlace navega a /#mura-nl */
+      /* Por id con almohadilla, a propósito: poda-css.js toma por clase
+         cualquier `mura-…` que salga en el código, salvo si va tras `#`. */
+      var form = document.querySelector('#mura-nl');
+      if (!form) return;
+      ev.preventDefault();
+      recoger();
+      try { form.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+      var correo = document.getElementById('mnl-email');
+      if (correo) { try { correo.focus({ preventScroll: true }); } catch (e) {} }
+    });
+
+    if (visto) {
+      raiz.classList.add('sin-animar');
+      raiz.classList.add('recogido');
+    } else {
+      temporizador = setTimeout(function () { abrir(true); }, ENTRA);
+    }
+  }
+
+  montarAviso10();
+
   if (!esTienda) return;
 
   /* ============================================================
-     7 · Cabecera en las páginas de tienda
+     7 · Cabecera y pie en las páginas de tienda
      ============================================================
      Usa las MISMAS clases que la cabecera del resto del sitio
      (`.mura-nav`), que ahora viven en la parte 1. Antes esto tenía
@@ -1290,6 +2751,30 @@ window.MURA_PARTE = 'head';
     document.querySelectorAll('header, nav, [class*="header"]').forEach(function (h) {
       if (!h.contains(nav) && !nav.contains(h) && /Business Name/i.test(h.textContent)) h.style.display = 'none';
     });
+
+    /* El pie, el mismo de las páginas de web/ (1/9). Va al final del body;
+       sus reglas viven en la parte 1 y no dependen de `.mura`. El guardia
+       sobra mientras init() solo corra sin `.mura-nav`, pero protege si
+       algún día una ruta de tienda trae su propio pie. */
+    if (!document.querySelector('.mura-foot')) {
+      var pie = document.createElement('footer');
+      pie.className = 'mura-foot';
+      pie.innerHTML = '<div class="mura-foot-in">' +
+        '<div class="mura-foot-cols">' +
+        '<div><div class="mura-foot-h">Explorar</div><div class="mura-foot-c"><a href="/">Inicio</a><a href="/colecciones">Colecciones</a><a href="/prendas">Prendas</a><a href="/novedades">Novedades</a></div></div>' +
+        '<div><div class="mura-foot-h">MÛRA</div><div class="mura-foot-c"><a href="/mura">Nuestra esencia</a><a href="/contacto">Contacto</a></div></div>' +
+        '<div><div class="mura-foot-h">Información</div><div class="mura-foot-c"><a href="/devoluciones">Envíos y devoluciones</a><a href="/politica-privacidad">Política de privacidad</a><a href="/politica-cookies">Política de cookies</a><a href="/condiciones-contratacion">Condiciones de contratación</a><a href="/aviso-legal">Aviso legal</a></div></div>' +
+        '<div><div class="mura-foot-h">Redes</div><div class="mura-foot-c"><a href="https://www.instagram.com/bymurastudio/" target="_blank" rel="noopener">Instagram</a></div></div>' +
+        '</div>' +
+        '<div style="height:1px;background:rgba(29,27,24,.1);margin:clamp(60px,7vw,90px) 0 0"></div>' +
+        '<div style="text-align:center;padding:clamp(60px,7vw,90px) 0 28px;display:flex;flex-direction:column;gap:20px;align-items:center">' +
+        '<p class="mura-serif" style="font-size:clamp(22px,2.2vw,28px);font-style:italic">Vestir con intención.</p>' +
+        '<div class="mura-serif" style="font-size:20px;font-weight:500;letter-spacing:.32em">MÛRA</div>' +
+        '</div>' +
+        '<p style="text-align:center;font-size:10.5px;letter-spacing:.14em;color:#9B968C">© MÛRA 2026 · Todos los derechos reservados.</p>' +
+        '</div>';
+      document.body.appendChild(pie);
+    }
 
     pintarContador();
 
