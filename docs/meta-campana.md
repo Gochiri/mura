@@ -67,3 +67,18 @@ Los IDs de arriba son de la primera creación. Hoy lo que hay en Meta es:
   público en developers.facebook.com → la app → Configuración básica (pide URL de política de privacidad).
 - Subidos a la biblioteca de vídeos de la cuenta, sin anunciar: A `1084761704387445`, B `1126270353704094`,
   C `3468335396670995`, D `1623330019530949` (borradores 9:16).
+
+## Cambio de píxel (9/11/2026)
+
+- El portafolio de MÛRA es nuevo y Meta le impide crear o reclamar cuentas publicitarias y compartir activos con
+  otro negocio durante varias semanas. La cuenta de los anuncios sigue siendo «Mura - ES» (`act_1141864065246239`),
+  que es del portafolio de Profit Technology; la tarjeta es de MÛRA.
+- Se usó «Solicitar acceso» desde MÛRA a esa cuenta y se conectó el píxel de MÛRA, `1799475611078369`
+  (propiedad de MÛRA), a la cuenta desde Conjuntos de datos → Activos conectados.
+- Conjunto nuevo con ese píxel, en pausa: `52588391414956` (22 €/día, Añadir al carrito). Mismos ajustes que el
+  anterior. Copias en `datos/backups/meta_conjunto_pre_pixel_20261109.json` y `meta_conjunto_nuevo_20261109.json`.
+- El conjunto anterior, `52585971218156`, sigue en pausa y vacío, renombrado «NO USAR · antiguo (píxel de Profit)».
+  Pendiente de borrarlo a mano en el Administrador de anuncios.
+- **Pendiente en GHL:** la web sigue mandando eventos al píxel de Profit, `1577201230843977`. Hay que poner
+  `1799475611078369` en `META_PIXEL_ID`, en Head y Body, y probar los eventos.
+- Cuando Meta lo permita, trasladar todo a una cuenta publicitaria de MÛRA.
