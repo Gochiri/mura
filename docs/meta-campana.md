@@ -117,3 +117,7 @@ Los anteriores llevan delante «NO USAR». La app ya permite crear anuncios por 
   Vínculo Burdeos y Gris (S/M 2, M/L 2), 69 €, en Pantalones. Todos en «Colección». Ids en
   `datos/backups/ghl_productos_creados_20261110.json`. La línea `Modelo: … · Color: …` agrupa los colores en la ficha.
 - Stock de las prendas de A: Arco 6, Sastre 3 (una sola S), abrigo de pelo 3, Chaqueta Vínculo burdeos 4.
+- Creados el 10/11: **Chaqueta Entallada Camel** (S 3, M 3, L 3; 149 €; Blazers; visible; broche joya desmontable
+  incluido) y **Pantalón Pinzas Camel** (S/M/L/XL 3 cada una; 69 €; Pantalones; **oculto** hasta que Sara confirme la
+  composición en la etiqueta, que su ficha da como provisional). Ids en
+  `datos/backups/ghl_productos_creados_camel_20261110.json`.

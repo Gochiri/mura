@@ -1,0 +1,39 @@
+[
+ {
+  "nombre": "Chaqueta Entallada Camel",
+  "id": "6af314ccfcb19dc729ddceba",
+  "precios": [
+   "6af314cc1549b73ef5404de7",
+   "6af314cdb15c6f817a0692b2",
+   "6af314cd2a4b1802ab45d7cc"
+  ],
+  "fotos": [
+   "https://files.leadconnectorhq.com/file/6af314c71141542bb474a5c1/chaqueta-entallada-camel-1.jpg",
+   "https://files.leadconnectorhq.com/file/6af314c81c208a123b3c91a5/chaqueta-entallada-camel-2.jpg",
+   "https://files.leadconnectorhq.com/file/6af314c9a00d51f6a702f7f1/chaqueta-entallada-camel-3.jpg",
+   "https://files.leadconnectorhq.com/file/6af314ca1c208a123b3c91b9/chaqueta-entallada-camel-4.jpg",
+   "https://files.leadconnectorhq.com/file/6af314cafbdd54a82791549f/chaqueta-entallada-camel-5.jpg",
+   "https://files.leadconnectorhq.com/file/6af314cba00d51f6a702f815/chaqueta-entallada-camel-6.jpg",
+   "https://files.leadconnectorhq.com/file/6af314cc1c208a123b3c91f5/chaqueta-entallada-camel-7.jpg"
+  ],
+  "visible": true
+ },
+ {
+  "nombre": "Pantalón Pinzas Camel",
+  "id": "6af314d2eb17e6d04aa1abb5",
+  "precios": [
+   "6af314d21a94c38cb982dd0f",
+   "6af314d236f32e9ce399b93b",
+   "6af314d33f669856700f43d9",
+   "6af314d33b1cf43cb5a4fbae"
+  ],
+  "fotos": [
+   "https://files.leadconnectorhq.com/file/6af314cf512d2edab675801e/pantalon-pinzas-camel-1.jpg",
+   "https://files.leadconnectorhq.com/file/6af314cf2962a23219d7d34f/pantalon-pinzas-camel-2.jpg",
+   "https://files.leadconnectorhq.com/file/6af314d0fbdd54a82791551f/pantalon-pinzas-camel-3.jpg",
+   "https://files.leadconnectorhq.com/file/6af314d12962a23219d7d37f/pantalon-pinzas-camel-4.jpg",
+   "https://files.leadconnectorhq.com/file/6af314d12962a23219d7d39f/pantalon-pinzas-camel-5.jpg"
+  ],
+  "visible": false
+ }
+]
