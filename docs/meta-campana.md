@@ -82,3 +82,38 @@ Los IDs de arriba son de la primera creación. Hoy lo que hay en Meta es:
 - **Pendiente en GHL:** la web sigue mandando eventos al píxel de Profit, `1577201230843977`. Hay que poner
   `1799475611078369` en `META_PIXEL_ID`, en Head y Body, y probar los eventos.
 - Cuando Meta lo permita, trasladar todo a una cuenta publicitaria de MÛRA.
+
+## Estado a 10/11/2026: anuncios creados y tienda lista
+
+**Píxel en la web (9/11).** `META_PIXEL_ID = '1799475611078369'` en Head y Body de GHL. El Body tenía la comilla de
+cierre borrada (`'1799475611078369;`), un error de sintaxis que dejaba sin banner de cookies y sin píxel. Corregido
+y comprobado: tras aceptar Publicidad llegan `PageView`, `ViewContent` y `AddToCart` (navegador y servidor,
+deduplicados). El píxel de Profit ya no recibe nada. `InitiateCheckout` no se envía (el checkout es el nativo de GHL);
+no bloquea porque el conjunto optimiza a Añadir al carrito.
+
+**Purchase.** Workflow «01 · Compra confirmada (SP01)», acción «Meta Conversion API» con el conjunto de datos
+«Mura Pixel», evento `Purchase`, valor `Opportunity Value`, moneda cambiada de USD a **EUR** (10/11). Pendiente:
+pasar la conexión de «Administrador de anuncios» a «Integración», filtro de la etiqueta `prueba`, probarlo con un
+pedido de prueba y decidir lo del consentimiento (`docs/capi-purchase-ghl.md`).
+
+**Anuncios en pausa** en el conjunto `52588391414956`, vídeos con música (pista instrumental generada con IA,
+aprobada por Sara) y títulos dentro de la zona segura de Reels/Stories. Un texto y un título por anuncio (el conjunto
+no es de contenido dinámico):
+
+| Anuncio | ID |
+|---|---|
+| A · Nueva colección otoño (v3, «Chaqueta Vínculo») | `52588656496756` |
+| B · El detalle (v2) | `52588421059756` |
+| C · Looks de calle (v3, «conjunto Vínculo en burdeos») | `52588656515756` |
+| D · Así llega tu pedido (v2) | `52588421124356` |
+
+Los anteriores llevan delante «NO USAR». La app ya permite crear anuncios por API.
+
+**Tienda (10/11, por API, con confirmación de Sara).** Copia previa: `datos/backups/ghl_productos_20261110.json`.
+- «Abrigo Pelo Animal Print» estaba oculto; vuelve a estar visible (sale en el anuncio A).
+- Bolsos con el color en el nombre: Bolso Nodo Marrón Chocolate / Negro / Burdeos (agotado) / Taupe y Bolso Ánfora
+  Negro / Marrón Chocolate (agotados, sin reposición).
+- Creados y visibles: Chaqueta Vínculo Burdeos (S 2, M 2) y Gris (S 2, M 1), 65 €, en Blazers; Pantalón Sastre
+  Vínculo Burdeos y Gris (S/M 2, M/L 2), 69 €, en Pantalones. Todos en «Colección». Ids en
+  `datos/backups/ghl_productos_creados_20261110.json`. La línea `Modelo: … · Color: …` agrupa los colores en la ficha.
+- Stock de las prendas de A: Arco 6, Sastre 3 (una sola S), abrigo de pelo 3, Chaqueta Vínculo burdeos 4.
