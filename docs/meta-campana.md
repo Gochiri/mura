@@ -121,3 +121,4 @@ Los anteriores llevan delante «NO USAR». La app ya permite crear anuncios por 
   incluido) y **Pantalón Pinzas Camel** (S/M/L/XL 3 cada una; 69 €; Pantalones; **oculto** hasta que Sara confirme la
   composición en la etiqueta, que su ficha da como provisional). Ids en
   `datos/backups/ghl_productos_creados_camel_20261110.json`.
+- Dominio `stylebymura.com` **verificado** en Meta (10/11).

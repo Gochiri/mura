@@ -130,7 +130,8 @@ un `instagram_business_account.id`; el evento con `events_received: 1`.
 
 ## 6 bis. Verificación del dominio `stylebymura.com`
 
-Estado (19/10): **no verificado**. Meta → Configuración del negocio → Seguridad de la
+Estado (10/11/2026): **verificado** (comprobado en Seguridad e idoneidad de la marca → Dominios).
+Antes, a 19/10: no verificado. Meta → Configuración del negocio → Seguridad de la
 marca → Dominios. Hace falta para configurar los eventos prioritarios de los anuncios
 y para anunciar enlaces a la web sin limitaciones.
 
