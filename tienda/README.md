@@ -85,6 +85,10 @@ que no hay nada nuevo que pegar: basta regenerar y volver a pegar los dos
 
 Sección 11 del global. **ID `yyrkyipd10` puesto el 16/10** (proyecto creado por German); falta pegarlo en GHL.
 
+**Cuenta del proyecto en Clarity:** la de **GHL Team Latam** (confirmado por German el 10/11). Se entra en
+clarity.microsoft.com con esa cuenta; el proyecto es el de `stylebymura.com`. Pendiente: añadir a Sara como
+miembro (Settings → Team) para que los datos no dependan de una sola cuenta.
+
 Para cambiar de proyecto: editar `var CLARITY_ID` en `tienda/codigo-global-tienda.js`,
 ejecutar `./build.sh` y volver a pegar `tracking-code-head.html` y
 `tracking-code-body.html` en GHL. Vacío = no hace nada.
