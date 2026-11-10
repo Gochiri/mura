@@ -122,3 +122,4 @@ Los anteriores llevan delante «NO USAR». La app ya permite crear anuncios por 
   composición en la etiqueta, que su ficha da como provisional). Ids en
   `datos/backups/ghl_productos_creados_camel_20261110.json`.
 - Dominio `stylebymura.com` **verificado** en Meta (10/11).
+- Público (10/11, decisión de German): sugerencia de edad **25–48** a Advantage+ (antes 28–48 en el plan), mujeres, España. Conjunto renombrado «Mujeres 25–48 · España · Advantage+».
