@@ -123,3 +123,7 @@ Los anteriores llevan delante «NO USAR». La app ya permite crear anuncios por 
   `datos/backups/ghl_productos_creados_camel_20261110.json`.
 - Dominio `stylebymura.com` **verificado** en Meta (10/11).
 - Público (10/11, decisión de German): sugerencia de edad **25–48** a Advantage+ (antes 28–48 en el plan), mujeres, España. Conjunto renombrado «Mujeres 25–48 · España · Advantage+».
+
+## Activación (10/11/2026)
+
+German activó la campaña el 10/11. Comprobado por API: campaña `52585971203356`, conjunto `52588391414956` (22 €/día, Añadir al carrito del píxel `1799475611078369`) y los 4 anuncios (A v3, B v2, C v3, D v2) en ACTIVE, sin avisos de revisión. El conjunto antiguo sigue en pausa. Gasto a la activación: 0 €.
