@@ -55,6 +55,20 @@
   de dudas por WhatsApp (wa.me/34637681234, mensaje prerrellenado).
   Todo lo demás queda byte a byte como estaba.
 
+  CAMBIOS DEL 11/11 — datos de Clarity (CLS 0,36 y clics sin respuesta):
+  - Alto reservado antes de que lleguen los datos (nombre, precio,
+    tallas, miniaturas, acordeones) y migas en una línea: la ficha ya
+    no salta al cargar.
+  - «Añadir a mi selección» sin talla elegida ya no se queda mudo:
+    marca las tallas y avisa. Si la prenda tiene una sola talla
+    disponible, se elige sola. Tras añadir sale el botón «Ver carrito
+    y finalizar compra».
+  - La nota de ajuste de la descripción («… de lo habitual», y «Si
+    dudas entre dos tallas…» si va detrás) sale bajo las tallas y al
+    principio de «Talla y ajuste», y deja de repetirse en el texto.
+  - Galería: deslizar la foto con el dedo cambia de foto; tocarla la
+    abre a pantalla completa (deslizar, flechas, Escape o ✕ cierra).
+
   CAMBIO DEL 15/8:
   El enlace "Ver carrito" del aviso "Esta pieza ya forma parte de
   tu selección" iba a /checkout: saltaba directo al formulario de
@@ -121,8 +135,33 @@ a.mura-color-thumb:hover, a.mura-color-thumb:focus-visible { border-color: #8A85
 @media (max-width: 560px) { .mura-look-grid { grid-template-columns: 1fr 1fr; gap: 28px 12px; } }
 </style>
 <!-- mura:css:fin -->
-<!-- CSS propio de la página (no lo genera el build): la lupa de la miga. -->
+<!-- CSS propio de la página (no lo genera el build): la lupa de la miga,
+     los huecos reservados, el aviso de talla y el visor de fotos. -->
 <style>
+/* Huecos reservados mientras llegan los datos (11/11): sin ellos la ficha
+   empieza vacía y todo salta al pintarse. Las miniaturas reservan una
+   fila con la misma proporción 3/4 que tendrán. */
+#md-nombre:empty { min-height: 1.15em; }
+#md-precio:empty { min-height: 1.6em; }
+#md-tallas:empty { min-height: 48px; }
+#md-accs:empty { min-height: 240px; }
+#md-thumbs:empty::before { content: ''; grid-column: 1; aspect-ratio: 3/4; }
+#md-migas { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: calc(100vw - 190px); }
+/* Aviso de talla y nota de ajuste. */
+#md-tallas.falta .mura-talla:not(:disabled) { border-color: #1D1B18; }
+#md-falta { display: none; font-size: 12px; letter-spacing: .06em; color: #8A3B2E; margin: 0 0 6px; }
+#md-tallas.falta + #md-falta { display: block; }
+#md-ajuste { display: none; font-size: 12.5px; line-height: 1.7; color: #55524B; margin: 0 0 8px; }
+/* Foto principal: se puede deslizar y tocar. */
+#md-main { cursor: zoom-in; touch-action: pan-y; }
+/* Visor a pantalla completa. */
+.md-visor { position: fixed; inset: 0; z-index: 9999; background: #F0EEE8; display: flex; align-items: center; justify-content: center; touch-action: pan-y pinch-zoom; }
+.md-visor img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; user-select: none; -webkit-user-drag: none; }
+.md-visor button { position: absolute; border: none; background: rgba(240,238,232,.85); color: #1D1B18; cursor: pointer; font-family: 'Jost', sans-serif; font-weight: 300; }
+.md-visor-x { top: 14px; right: 14px; width: 44px; height: 44px; font-size: 26px; line-height: 1; }
+.md-visor-a, .md-visor-s { top: 50%; transform: translateY(-50%); width: 44px; height: 64px; font-size: 26px; }
+.md-visor-a { left: 8px; } .md-visor-s { right: 8px; }
+.md-visor-n { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: .24em; color: #55524B; }
 /* Lupa en línea: el mismo icono y el mismo campo que la lupa de Prendas, pero
    el campo se despliega a la DERECHA, en la misma línea, y buscar lleva a
    /prendas?q=palabra (aquí no hay rejilla de prendas que filtrar). Clases
@@ -164,7 +203,7 @@ w.querySelector('form').addEventListener('submit',function(e){if(!inp.value.trim
 })();</script>
 <section id="md-ficha" style="max-width:1440px;margin:0 auto;padding:clamp(24px,3vw,48px) clamp(20px,4vw,56px) clamp(80px,10vw,130px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:clamp(36px,5vw,80px);align-items:start">
 <div id="md-fotos" style="display:flex;flex-direction:column;gap:14px">
-<div style="position:relative;aspect-ratio:3/4;background:#E3DFD6;overflow:hidden"><img id="md-img" src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none"></div>
+<div id="md-main" style="position:relative;aspect-ratio:3/4;background:#E3DFD6;overflow:hidden"><img id="md-img" src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none"></div>
 <div id="md-thumbs" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px"></div>
 </div>
 <div id="md-info" style="display:flex;flex-direction:column;max-width:520px">
@@ -174,9 +213,11 @@ w.querySelector('form').addEventListener('submit',function(e){if(!inp.value.trim
 <div id="md-colores" class="mura-colores" style="display:none"></div>
 <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#55524B;margin-bottom:14px">Elegir talla</div>
 <div id="md-tallas" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px"></div>
+<div id="md-falta" role="alert">Elige tu talla para añadir la pieza.</div>
+<div id="md-ajuste"></div>
 <div id="md-ultimas" style="display:none;font-size:11.5px;color:#8A857B;margin-bottom:8px">Últimas piezas disponibles.</div>
 <button class="mura-btn" id="md-add" style="margin-top:24px">Añadir a mi selección</button>
-<div id="md-added" style="display:none;margin-top:14px" class="mura-serif"><span style="font-size:18px;font-style:italic;color:#55524B">Esta pieza ya forma parte de tu selección.</span> <a href="/carrito" style="font-size:14px;border-bottom:1px solid rgba(29,27,24,.4)">Ver carrito</a></div>
+<div id="md-added" style="display:none;margin-top:16px"><p class="mura-serif" style="font-size:17px;font-style:italic;color:#55524B;margin:0 0 12px">Esta pieza ya forma parte de tu selección.</p><a href="/carrito" class="mura-btn" style="background:transparent;color:#1D1B18 !important;border:1px solid #1D1B18">Ver carrito y finalizar compra</a></div>
 <div id="md-agotado" style="display:none;margin-top:24px;padding:22px 24px;border:1px solid rgba(29,27,24,.18);text-align:center">
 <div style="font-size:12px;letter-spacing:.24em;text-transform:uppercase;margin-bottom:10px">Colección finalizada</div>
 <div style="font-size:12.5px;color:#8A857B;line-height:1.8">Esta pieza pertenecía a una colección limitada y ya no volverá a producirse.</div>
@@ -275,6 +316,7 @@ function catalogo(){
 function pintarColores(){
  var box=document.getElementById('md-colores');
  try{
+  box.style.minHeight='';
   if(!modelo){box.style.display='none';return;}
   var mm=llano(modelo),hermanos=piezas.filter(function(p){return llano(modeloDe(p))===mm&&(p.id===pieza.id||!agotada(p))});
   if(hermanos.length<2){box.style.display='none';return;}
@@ -284,7 +326,7 @@ function pintarColores(){
    if(p.id===pieza.id)h+='<span class="mura-color-thumb on" aria-current="true"><img src="'+src+'" alt="'+lbl+'"></span>';
    else h+='<a class="mura-color-thumb" href="/producto?id='+encodeURIComponent(p.id)+'" aria-label="'+lbl+'"><img src="'+src+'" alt=""></a>';
   });
-  box.innerHTML=h+'</div>';box.style.display='block';
+  box.innerHTML=h+'</div>';box.style.display='block';box.style.minHeight='';
  }catch(e){box.style.display='none';}
 }
 /* «Completa tu look»: bajo las fotos en dos columnas; a todo el ancho,
@@ -320,17 +362,31 @@ function toText(html){var d=document.createElement('div');d.innerHTML=html;
  d.querySelectorAll('p,h3').forEach(function(p){p.textContent=p.textContent+'\n\n'});
  return d.textContent.replace(/\n{3,}/g,'\n\n').trim();}
 function acc(title,body){return '<div class="mura-acc"><button>'+title+'<span class="mura-serif" style="font-size:20px">+</span></button><div>'+body+'</div></div>';}
+/* Nota de ajuste escrita en la descripción de GHL («Talla más pequeña de lo
+   habitual.», y «Si dudas entre dos tallas…» si va justo detrás). Se busca
+   en el texto sin etiquetas y se quita del HTML para no repetirla. */
+var ajuste='';
+function notaAjuste(html){
+ var txt=(html||'').replace(/<[^>]*>/g,'\n').replace(/\u00a0/g,' ');
+ var m=txt.match(/[^.\n]*de lo habitual[^.\n]*\.(?:\s*Si dudas entre dos tallas[^.\n]*\.)?/i);
+ if(!m)return {nota:'',html:html};
+ var nota=m[0].replace(/\s+/g,' ').trim(),out=html;
+ m[0].split(/\n+/).forEach(function(frag){frag=frag.trim();if(frag)out=out.replace(frag,'');});
+ return {nota:nota,html:out};
+}
 function tallaAjuste(p){
  var unica=(p.tallas||[]).some(function(t){return /[úu]nic/i.test(t.talla||'')});
  var modelo='<p style="margin:14px 0 0;font-size:12.5px;color:#8A857B;line-height:1.8">Medidas de la modelo — Altura: 1,65 m · Pecho: 87 cm · Cintura: 61 cm · Cadera: 94 cm.</p>';
  var dudas='<p style="margin:14px 0 0;font-size:12.5px;color:#55524B;line-height:1.8">¿Dudas con tu talla? <a href="https://wa.me/34637681234?text=Hola%2C%20tengo%20una%20duda%20con%20mi%20talla" target="_blank" rel="noopener" style="border-bottom:1px solid rgba(29,27,24,.4)">Escríbenos por WhatsApp</a> y te ayudaremos a encontrar la opción más adecuada.</p>';
  if(unica)return '<div style="white-space:normal">'
+  +(ajuste?'<p style="margin:0 0 14px;font-size:12.5px;color:#1D1B18;line-height:1.8">'+esc(ajuste)+'</p>':'')
   +'<p style="margin:0;font-size:12.5px;color:#55524B;line-height:1.8">Talla única. Diseñada para adaptarse aproximadamente a tallas S–L.</p>'
   +'<p style="margin:14px 0 0;font-size:12.5px;color:#55524B;line-height:1.8">La modelo mide 1,65 m y lleva la talla única.</p>'
   +modelo+dudas+'</div>';
  var filas=[['S','84–86 cm','66–70 cm','92–95 cm'],['M','87–90 cm','71–74 cm','96–99 cm'],['L','91–94 cm','75–78 cm','100–103 cm'],['XL','95–98 cm','79–83 cm','104–107 cm']];
  var tabla='<table style="width:100%;border-collapse:collapse;margin:16px 0 0;font-size:12px;line-height:1.6"><thead><tr>'+['Talla','Pecho','Cintura','Cadera'].map(function(h){return '<th style="text-align:left;font-weight:500;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#8A857B;padding:0 8px 8px 0;border-bottom:1px solid rgba(29,27,24,.18)">'+h+'</th>'}).join('')+'</tr></thead><tbody>'+filas.map(function(f){return '<tr>'+f.map(function(c,i){return '<td style="padding:8px 8px 8px 0;border-bottom:1px solid rgba(29,27,24,.1);color:'+(i===0?'#1D1B18':'#55524B')+'">'+c+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table>';
  return '<div style="white-space:normal">'
+  +(ajuste?'<p style="margin:0 0 14px;font-size:12.5px;color:#1D1B18;line-height:1.8">'+esc(ajuste)+'</p>':'')
   +'<p style="margin:0;font-size:12.5px;color:#55524B;line-height:1.8">La modelo mide 1,65 m y lleva la talla S.</p>'
   +modelo+tabla
   +'<p style="margin:16px 0 0;font-size:12.5px;color:#8A857B;line-height:1.8">Las medidas indicadas en esta tabla corresponden al cuerpo y no a las medidas de la prenda. El ajuste puede variar ligeramente según el diseño, el tejido y el patrón de cada pieza.</p>'
@@ -353,21 +409,61 @@ function render(){
   b.innerHTML='<img src="'+src+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block">';
   b.onclick=function(){img=i;render()};th.appendChild(b);
  });
+ th.style.display=imgs.length>1?'grid':'none';
  var ts=document.getElementById('md-tallas');ts.innerHTML='';
  p.tallas.forEach(function(t){
   var off=sold||t.stock===0;
   var b=document.createElement('button');b.className='mura-talla'+(talla===t.talla?' on':'');b.disabled=off;b.textContent=t.talla;
-  b.onclick=function(){talla=t.talla;document.getElementById('md-added').style.display='none';render()};ts.appendChild(b);
+  b.onclick=function(){talla=t.talla;ts.classList.remove('falta');document.getElementById('md-added').style.display='none';render()};ts.appendChild(b);
  });
+ var aj=document.getElementById('md-ajuste');aj.textContent=ajuste;aj.style.display=ajuste&&!sold?'block':'none';
  document.getElementById('md-ultimas').style.display=(p.estado==='ultimas'&&!sold)?'block':'none';
  document.getElementById('md-add').style.display=sold?'none':'flex';
  document.getElementById('md-agotado').style.display=sold?'block':'none';
 }
+/* Galería (11/11): deslizar la foto principal cambia de foto; tocarla abre
+   el visor a pantalla completa. Las miniaturas siguen igual. */
+function fotos(){return pieza?(pieza.imagenes||[]).filter(Boolean):[];}
+function irA(n){var f=fotos();if(f.length<2)return;img=(n+f.length)%f.length;render();}
+function deslizar(el,izq,der,toque){
+ var x0=null,y0=null;
+ el.addEventListener('touchstart',function(e){var t=e.touches[0];x0=t.clientX;y0=t.clientY;},{passive:true});
+ el.addEventListener('touchend',function(e){
+  if(x0===null)return;var t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;
+  if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.3){e.preventDefault();(dx<0?der:izq)();}
+  else if(toque&&Math.abs(dx)<10&&Math.abs(dy)<10){e.preventDefault();toque();}
+ });
+}
+function abrirVisor(){
+ var f=fotos();if(!f.length||document.querySelector('.md-visor'))return;
+ var v=document.createElement('div');v.className='md-visor';v.setAttribute('role','dialog');v.setAttribute('aria-label','Fotos de la prenda');
+ v.innerHTML='<img alt=""><button type="button" class="md-visor-x" aria-label="Cerrar">×</button>'+(f.length>1?'<button type="button" class="md-visor-a" aria-label="Foto anterior">‹</button><button type="button" class="md-visor-s" aria-label="Foto siguiente">›</button><div class="md-visor-n"></div>':'');
+ var vi=v.querySelector('img'),n=v.querySelector('.md-visor-n');
+ function pinta(){vi.src=f[img];vi.alt=pieza.nombre;if(n)n.textContent=(img+1)+' / '+f.length;}
+ function mover(d){irA(img+d);pinta();}
+ function cerrar(){document.removeEventListener('keydown',tecla);v.remove();document.documentElement.style.overflow='';}
+ function tecla(e){if(e.key==='Escape')cerrar();else if(e.key==='ArrowLeft')mover(-1);else if(e.key==='ArrowRight')mover(1);}
+ v.querySelector('.md-visor-x').onclick=cerrar;
+ if(f.length>1){v.querySelector('.md-visor-a').onclick=function(){mover(-1)};v.querySelector('.md-visor-s').onclick=function(){mover(1)};deslizar(v,function(){mover(-1)},function(){mover(1)});}
+ document.addEventListener('keydown',tecla);
+ document.documentElement.style.overflow='hidden';
+ document.body.appendChild(v);pinta();v.querySelector('.md-visor-x').focus();
+}
+(function(){var m=document.getElementById('md-main');
+ deslizar(m,function(){irA(img-1)},function(){irA(img+1)},abrirVisor);
+ m.addEventListener('click',abrirVisor);
+})();
 var GHL_CART_KEY='cart_details_rlc7iAyGF4U1nfwAJOJQ';
 function ghlCart(){try{return JSON.parse(localStorage.getItem(GHL_CART_KEY)||'{"products":[]}')}catch(e){return {products:[]}}}
 function ghlCount(){var n=(ghlCart().products||[]).reduce(function(a,x){return a+(x.quantity||0)},0);document.querySelectorAll('.mura-cart-n').forEach(function(e){e.textContent=n});document.querySelectorAll('.mura-cart-w').forEach(function(e){e.style.display=n>0?'inline':'none'});}
 document.getElementById('md-add').onclick=function(){
- if(!pieza||!talla)return;
+ if(!pieza)return;
+ if(!talla){
+  var ts=document.getElementById('md-tallas');ts.classList.add('falta');
+  var r=ts.getBoundingClientRect();
+  if(r.top<80||r.bottom>window.innerHeight)ts.scrollIntoView({behavior:'smooth',block:'center'});
+  return;
+ }
  var t=null;pieza.tallas.forEach(function(x){if(x.talla===talla)t=x});if(!t)return;
  var cart=ghlCart();cart.products=cart.products||[];
  var ex=null;cart.products.forEach(function(c){if(c.selectedPrice&&c.selectedPrice._id===t.priceId)ex=c});
@@ -391,6 +487,12 @@ fetch(API+'/products?id='+encodeURIComponent(id||'')).then(function(r){return r.
  if(!pieza)return;
  var html=dec(pieza.descripcion),look={nombres:[],html:html};
  try{modelo=modeloDe(pieza);look=sacarLook(html);html=sinModelo(look.html);}catch(e){modelo='';}
+ try{var na=notaAjuste(html);ajuste=na.nota;html=na.html;}catch(e){ajuste='';}
+ /* Una sola talla disponible: se elige sola. */
+ var libres=(pieza.tallas||[]).filter(function(t){return t.stock!==0});
+ if(pieza.estado!=='agotado'&&libres.length===1&&pieza.tallas.length===1)talla=libres[0].talla;
+ /* Si hay otros colores, se reserva su sitio ya (se rellena con el catálogo). */
+ if(modelo){var bc=document.getElementById('md-colores');bc.style.display='block';bc.style.minHeight='100px';}
  var ix=html.search(/<h3[^>]*>\s*(Composición|Cuidados)/i);
  var desc=ix>-1?toText(html.slice(0,ix)):toText(html),comp=ix>-1?toText(html.slice(ix)):'';
  var a=document.getElementById('md-accs');
@@ -404,7 +506,7 @@ fetch(API+'/products?id='+encodeURIComponent(id||'')).then(function(r){return r.
  /* Lo que necesita el catálogo entero va después y aparte: la ficha ya
     está pintada, y si esta llamada falla no se nota. */
  if(modelo||look.nombres.length){
-  catalogo().then(function(ps){if(ps&&ps.length)piezas=ps;pintarColores();pintarLook(look.nombres);}).catch(function(){});
+  catalogo().then(function(ps){if(ps&&ps.length)piezas=ps;pintarColores();pintarLook(look.nombres);}).catch(function(){var bc=document.getElementById('md-colores');bc.style.display='none';bc.style.minHeight='';});
  }
 });
 })();</script>

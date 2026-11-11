@@ -231,3 +231,19 @@ el bloque `<style>…</style>` de su elemento de código; el HTML se queda:
 
 Se puede ir una a una. Mientras conserven la copia, las reglas están
 duplicadas pero son idénticas y no rompen nada.
+
+## Ficha de producto, 11/11 (datos de Clarity)
+
+`producto.html` se rehízo el 11/11 desde lo que había publicado en GHL (la versión del repo llevaba cabecera y pie
+propios; la publicada ya no: van como elementos universales, copiados en `web/global/cabecera.html` y `pie.html`).
+
+Cambios: huecos reservados mientras llegan los datos y migas en una línea; aviso «Elige tu talla» si se pulsa
+«Añadir a mi selección» sin talla (antes no hacía nada) y talla única elegida sola; botón «Ver carrito y finalizar
+compra» tras añadir; la nota «… de lo habitual» de la descripción sale bajo las tallas y en «Talla y ajuste»;
+deslizar la foto principal y tocarla para verla a pantalla completa.
+
+Probado con Playwright en un iPhone 13 emulado, con cabecera y pie reales y el Worker simulado: sin errores,
+carrito y `AddToCart` correctos, visor y deslizar funcionan. Desplazamiento de diseño de la ficha aislada: 0,005 antes
+y 0,000 después, así que el 0,36 de Clarity no viene de esta ficha sola (falta mirarlo por página en Clarity).
+
+**Pegar:** `producto.html` entero → página `producto` → elemento `custom-code-oM1HT_mKKm`.
