@@ -149,3 +149,6 @@ Desde la activación (10/11 por la tarde → 11/11 mediodía), por anuncio:
   probablemente una página en caché con el código viejo; nada desde entonces.
 - Para vigilar: en A y C solo 1 de cada 4–5 clics acaba en visita a la web (en D, 6 de cada 10). Puede ser carga lenta
   en el navegador de Instagram o clics accidentales; se mira de nuevo con 3–4 días de datos.
+- **11/11, 14:25 Madrid:** 38,02 € gastados desde la activación, 159 clics, 76 visitas, 9 «Añadir al carrito» atribuidos y
+  **0 ventas**. En GHL el último pedido es del 2/11 (antes de la campaña): ningún pedido, pagado o no, desde el 10/11.
+  Ningún `InitiateCheckout` ni `Purchase` en el píxel. El píxel de Profit no recibe nada desde el 10/11 a las 13:00 UTC.
