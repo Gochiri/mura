@@ -127,3 +127,25 @@ Los anteriores llevan delante «NO USAR». La app ya permite crear anuncios por 
 ## Activación (10/11/2026)
 
 German activó la campaña el 10/11. Comprobado por API: campaña `52585971203356`, conjunto `52588391414956` (22 €/día, Añadir al carrito del píxel `1799475611078369`) y los 4 anuncios (A v3, B v2, C v3, D v2) en ACTIVE, sin avisos de revisión. El conjunto antiguo sigue en pausa. Gasto a la activación: 0 €.
+
+## Revisión del primer día (11/11/2026, 12:07 Madrid)
+
+Todo activo y sin avisos de revisión (campaña, conjunto y los 4 anuncios volvieron a ACTIVE tras el renombrado).
+Fase de aprendizaje: lectura prudente, no tocar nada en 2–3 días salvo error o rechazo.
+
+Desde la activación (10/11 por la tarde → 11/11 mediodía), por anuncio:
+
+| Anuncio | Gasto | Impr. | Clics enlace | CTR | CPC | Visitas a la web | Añadir al carrito |
+|---|---|---|---|---|---|---|---|
+| A · Nueva colección | 6,23 € | 455 | 23 | 5,1 % | 0,27 € | 5 | 0 |
+| B · El detalle | 7,76 € | 468 | 28 | 6,0 % | 0,28 € | 15 | 6 |
+| C · Looks de calle | 7,53 € | 448 | 22 | 4,9 % | 0,34 € | 6 | 1 |
+| D · Así llega tu pedido | 10,04 € | 577 | 62 | 10,7 % | 0,16 € | 38 | 1 |
+| **Total** | **31,56 €** | **1.948** | **135** | **6,9 %** | **0,23 €** | **64** | **8** |
+
+- Sin compras todavía. Coste por «Añadir al carrito» atribuido: ~3,95 €.
+- Píxel de MÛRA en las últimas 36 h: 697 PageView, 201 ViewContent, 19 AddToCart (navegador y servidor a partes iguales,
+  deduplicados). El píxel de Profit recibió 8 eventos de un solo iPhone en la home el 10/11 (10:00 y 13:00 UTC),
+  probablemente una página en caché con el código viejo; nada desde entonces.
+- Para vigilar: en A y C solo 1 de cada 4–5 clics acaba en visita a la web (en D, 6 de cada 10). Puede ser carga lenta
+  en el navegador de Instagram o clics accidentales; se mira de nuevo con 3–4 días de datos.
