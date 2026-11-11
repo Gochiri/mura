@@ -1,0 +1,83 @@
+<!-- ============================================================
+     MÛRA · CABECERA COMO ELEMENTO UNIVERSAL DE GHL — EN PRUEBA (3/10)
+     ============================================================
+     Hoy cada página de web/ lleva su propia copia de la cabecera, y
+     un cambio en ella obliga a repegar las quince. Esta es la misma
+     cabecera puesta UNA vez: va en un elemento de código guardado en
+     GHL como «elemento universal» («Cabecera MURA»), y ese elemento
+     se añade arriba de cada página.
+
+     ESTADO: prueba. Solo está puesta en /prueba-cabecera. Comprobado
+     el 3/10 que GHL la sirve dentro del HTML desde el primer momento
+     (no tarde, como el Tracking Code). Las páginas siguen con su
+     copia hasta que se decida migrar.
+
+     Trae todo lo suyo: estilos, botón de dos rayas del móvil,
+     contador del carrito y el enlace de la página actual marcado.
+     No depende de <div class="mura"> ni del Tracking Code.
+     ============================================================ -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Jost:wght@200;300;400&display=swap');
+/* Los envoltorios de GHL que contienen la cabecera: sin relleno, a todo
+   el ancho y pegados arriba al hacer scroll. El `sticky` solo aguanta
+   dentro de su contenedor, así que va en los dos niveles: en el
+   elemento de código (cuando la cabecera comparte sección con el
+   contenido de la página, que es como quedó en la prueba del 3/10) y en
+   la sección (cuando la cabecera tiene una sección para ella sola). */
+.c-custom-code:has(.mura-cab) { position: sticky; top: 0; z-index: 50; }
+/* Los elementos de código de las páginas ya publicadas llevan en GHL
+   «alto 100 %» (comprobado el 3/10 en /carrito). Solo en su columna no
+   se nota; con la cabecera y el pie como hermanos, cada uno mediría lo
+   que la columna entera y el escritorio se descuadra. Aquí se devuelve
+   a todos el alto de su contenido. */
+.c-section:has(.mura-cab, .mura, .mura-pie) .c-custom-code { height: auto !important; }
+.c-section:has(.mura-cab) { position: sticky; top: 0; z-index: 50; }
+/* Sin relleno en NINGUNA sección de la página que lleve algo nuestro
+   —cabecera, contenido (`.mura`) o pie—, no solo en la de la cabecera:
+   una sección recién creada en GHL trae 20 px arriba y abajo, y su fila
+   y su columna 10 px más cada una. En /mura-4902 (3/10) eso dejaba una
+   franja blanca de 40 px bajo la cabecera y otra antes del pie. Va
+   aquí, en la cabecera, porque es lo único que está en todas las
+   páginas: una página nueva no tiene que acordarse de poner los
+   rellenos a cero. */
+.c-section:has(.mura-cab, .mura, .mura-pie), .c-section:has(.mura-cab, .mura, .mura-pie) .inner, .c-section:has(.mura-cab, .mura, .mura-pie) .c-wrapper { padding: 0 !important; margin-top: 0 !important; margin-bottom: 0 !important; }
+.mura-cab { width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); background: #F0EEE8; }
+.mura-nav { position: sticky; top: 0; z-index: 50; background: rgba(240,238,232,.92); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(29,27,24,.08); }
+.mura-nav, .mura-nav * { box-sizing: border-box; }
+.mura-nav a { text-decoration: none !important; color: #1D1B18; transition: color .2s ease; }
+.mura-nav a:hover { color: #6E6A61; }
+.mura-nav { font-family: 'Jost', sans-serif; font-weight: 300; -webkit-font-smoothing: antialiased; }
+.mura-nav-in { max-width: 1440px; margin: 0 auto; padding: 0 clamp(20px,4vw,56px); height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.mura-logo { font-family: 'Cormorant Garamond', serif !important; font-size: 26px; font-weight: 500; letter-spacing: .32em; color: #1D1B18 !important; }
+.mura-links { display: flex; align-items: center; gap: clamp(16px,2.6vw,38px); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; }
+.mura-links a { color: #55524B; }
+.mura-links a.on { color: #1D1B18; }
+.mura-cart { font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: #1D1B18 !important; white-space: nowrap; }
+@media (max-width: 440px) { .mura-nav-in { padding: 0 16px; gap: 12px; } .mura-logo { font-size: 21px; letter-spacing: .24em; } .mura-cart { font-size: 10.5px; letter-spacing: .12em; } }
+.mura-nav .mura-burger { display: none; background: none; border: none; padding: 0; cursor: pointer; }
+.mura-nav .mura-mnav { display: none; }
+@media (max-width: 719px) {
+  .mura-nav .mura-nav-in { justify-content: flex-start; }
+  .mura-nav .mura-logo { margin-right: auto; }
+  .mura-nav .mura-links { display: none; }
+  .mura-nav .mura-burger { display: flex; flex-direction: column; justify-content: center; align-items: flex-end; gap: 9px; width: 44px; height: 44px; }
+  .mura-nav .mura-burger span { display: block; width: 34px; height: 1px; background: #1D1B18; transition: transform .25s ease; }
+  .mura-nav .mura-burger.open span:first-child { transform: translateY(5px) rotate(45deg); }
+  .mura-nav .mura-burger.open span:last-child { transform: translateY(-5px) rotate(-45deg); }
+  .mura-nav .mura-mnav.open { display: block; border-top: 1px solid rgba(29,27,24,.08); }
+  .mura-nav .mura-mnav a { display: block; padding: 17px clamp(20px,4vw,56px); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #55524B; border-bottom: 1px solid rgba(29,27,24,.06); }
+  .mura-nav .mura-mnav a:last-child { border-bottom: none; }
+  .mura-nav .mura-mnav a.on { color: #1D1B18; }
+}
+</style>
+<div class="mura-cab">
+<nav class="mura-nav"><div class="mura-nav-in">
+<a href="/" class="mura-logo">MÛRA</a>
+<div class="mura-links"><a href="/">Inicio</a><a href="/colecciones">Colecciones</a><a href="/prendas">Prendas</a><a href="/novedades">Novedades</a><a href="/mura">MÛRA</a><a href="/contacto">Contacto</a></div>
+<a href="/carrito" class="mura-cart">Carrito<span class="mura-cart-w" style="display:none"> (<span class="mura-cart-n">0</span>)</span></a>
+<button class="mura-burger" type="button" aria-label="Menú" aria-expanded="false"><span></span><span></span></button>
+</div></nav>
+</div>
+<script>(function(){var p=location.pathname.replace(/\/+$/,'')||'/';if(p==='/producto')p='/prendas';document.querySelectorAll('.mura-links a, .mura-cart').forEach(function(a){if(a.getAttribute('href')===p)a.classList.add('on')})})();</script>
+<script>(function(){if(window.muraBocadillo)return;window.muraBocadillo=1;document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.mura-burger');if(!b)return;var n=b.closest('.mura-nav'),l=n&&n.querySelector('.mura-links');if(!l)return;var m=n.querySelector('.mura-mnav');if(!m){m=document.createElement('div');m.className='mura-mnav';m.innerHTML=l.innerHTML;n.appendChild(m)}var o=m.classList.toggle('open');b.classList.toggle('open',o);b.setAttribute('aria-expanded',o?'true':'false')})})();</script>
+<script>(function(){try{var d=JSON.parse(localStorage.getItem('cart_details_rlc7iAyGF4U1nfwAJOJQ')||'{"products":[]}');var n=(d.products||[]).reduce(function(a,x){return a+(x.quantity||0)},0);document.querySelectorAll('.mura-cart-n').forEach(function(e){e.textContent=n});document.querySelectorAll('.mura-cart-w').forEach(function(e){e.style.display=n>0?'inline':'none'});}catch(e){}})();</script>

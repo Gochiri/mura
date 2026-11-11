@@ -1,0 +1,53 @@
+<!-- ============================================================
+     MÛRA · PIE COMO ELEMENTO UNIVERSAL DE GHL (3/10)
+     ============================================================
+     El pie de todas las páginas de la web, puesto UNA vez: va en un
+     elemento de código guardado en GHL como «elemento universal»
+     («Pie MURA»), y ese elemento se añade al final de cada página.
+     Un cambio aquí se pega una sola vez y sale en todas.
+
+     Es el mismo pie que hasta el 3/10 iba copiado dentro de cada
+     página (comprobado ese día: idéntico en las quince y en el que
+     inyecta el Tracking Code en las rutas de tienda). Las cuatro
+     páginas legales NO lo llevan: tienen su propio cierre.
+
+     Trae sus estilos y no depende de <div class="mura"> ni del
+     Tracking Code. Compañero de web/global/cabecera.html.
+     ============================================================ -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Jost:wght@200;300;400&display=swap');
+/* Los envoltorios de GHL que contienen el pie, sin relleno, y el pie a
+   todo el ancho (el mismo truco que `.mura` en las páginas). */
+.c-custom-code:has(.mura-pie) { padding: 0 !important; margin-top: 0 !important; margin-bottom: 0 !important; }
+.c-section:has(.mura-pie), .c-section:has(.mura-pie) .inner, .c-section:has(.mura-pie) .c-wrapper { padding: 0 !important; margin-top: 0 !important; margin-bottom: 0 !important; }
+.mura-pie { width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); }
+.mura-foot { background: #F0EEE8; color: #1D1B18; font-family: 'Jost', sans-serif; font-weight: 300; -webkit-font-smoothing: antialiased; }
+.mura-foot, .mura-foot * { box-sizing: border-box; }
+.mura-foot p { margin: 0; }
+.mura-foot a { color: #1D1B18; text-decoration: none; transition: color .2s ease; }
+.mura-foot a:hover { color: #6E6A61; }
+.mura-foot .mura-serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; margin: 0; }
+.mura-foot { border-top: 1px solid rgba(29,27,24,.12); }
+.mura-foot-in { max-width: 1440px; margin: 0 auto; padding: clamp(70px,8vw,110px) clamp(20px,4vw,56px) 30px; }
+.mura-foot-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: clamp(36px,5vw,72px); }
+.mura-foot-h { font-size: 11px; letter-spacing: .28em; text-transform: uppercase; font-weight: 400; margin-bottom: 18px; }
+.mura-foot-c { display: flex; flex-direction: column; gap: 12px; font-size: 13px; }
+.mura-foot-c a { color: #55524B; }
+.mura-foot-c a:hover { color: #1D1B18; }
+</style>
+<div class="mura-pie">
+<footer class="mura-foot"><div class="mura-foot-in">
+<div class="mura-foot-cols">
+<div><div class="mura-foot-h">Explorar</div><div class="mura-foot-c"><a href="/">Inicio</a><a href="/colecciones">Colecciones</a><a href="/prendas">Prendas</a><a href="/novedades">Novedades</a></div></div>
+<div><div class="mura-foot-h">MÛRA</div><div class="mura-foot-c"><a href="/mura">Nuestra esencia</a><a href="/contacto">Contacto</a></div></div>
+<div><div class="mura-foot-h">Información</div><div class="mura-foot-c"><a href="/devoluciones">Envíos y devoluciones</a><a href="/politica-privacidad">Política de privacidad</a><a href="/politica-cookies">Política de cookies</a><a href="/condiciones-contratacion">Condiciones de contratación</a><a href="/aviso-legal">Aviso legal</a></div></div>
+<div><div class="mura-foot-h">Redes</div><div class="mura-foot-c"><a href="https://www.instagram.com/bymurastudio/" target="_blank" rel="noopener">Instagram</a></div></div>
+</div>
+<div style="height:1px;background:rgba(29,27,24,.1);margin:clamp(60px,7vw,90px) 0 0"></div>
+<div style="text-align:center;padding:clamp(60px,7vw,90px) 0 28px;display:flex;flex-direction:column;gap:20px;align-items:center">
+<p class="mura-serif" style="font-size:clamp(22px,2.2vw,28px);font-style:italic">Vestir con intención.</p>
+<div class="mura-serif" style="font-size:20px;font-weight:500;letter-spacing:.32em">MÛRA</div>
+</div>
+<p style="text-align:center;font-size:10.5px;letter-spacing:.14em;color:#9B968C">© MÛRA 2026 · Todos los derechos reservados.</p>
+</div></footer>
+</div>

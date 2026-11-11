@@ -2,23 +2,80 @@
   ============================================================
   MÛRA · FICHA DE PRODUCTO (/producto)
   ============================================================
-  Sustituye el contenido ENTERO del elemento de código
-  personalizado `custom-code-oM1HT_mKKm` de la página "producto"
-  (cmPhl3N0IF3smLo8Oy8x). Se pega tal cual.
+  Sustituye el contenido del elemento de código personalizado
+  `custom-code-oM1HT_mKKm` de la página "producto"
+  (cmPhl3N0IF3smLo8Oy8x). Se pega entero, tal cual.
 
-  16/10: sincronizado con lo que había publicado en GHL (buscador,
-  colores de la misma prenda, «Completa tu look», caché del
-  catálogo) más las dos llamadas a Meta (ViewContent y AddToCart).
-  Antes de esta fecha el archivo del repo estaba desfasado.
+  ⚠️ EL <style> DE ABAJO ES GENERADO: NO EDITARLO A MANO.
+  El sistema de diseño `.mura-*` vive en el Tracking Code global
+  (`tienda/codigo-global-tienda.js`). Del 15/8 al 2/9 esta página
+  no llevaba CSS y dependía solo del global, pero GHL inyecta el
+  Tracking Code por JavaScript al final de la carga (no dentro del
+  <head>), así que la ficha pintaba en nativo varios segundos y
+  siempre en el editor. Era la única página sin CSS propio.
 
-  Lleva su propia copia del CSS entre las marcas mura:css; el
-  global también lo trae, así que están duplicados pero son
-  idénticos.
+  Desde el 2/9 `cd tienda && ./build.sh` saca el CSS de la fuente
+  y lo mete aquí entre los marcadores mura:css:inicio / fin. Tras
+  tocar el global: regenerar y volver a pegar esta página entera.
+  El <style> lleva data-mura="sistema" para que el global vea que
+  ya existe y no lo duplique.
+
+  CAMBIO DEL 10/9 — otros colores y «Completa tu look»:
+  Se lee de la descripción del producto en GHL. OJO: el worker
+  filtra por ?id= y devuelve SOLO esa pieza (visto el 10/9 en la
+  web publicada: la ficha pintaba el título pero ni un hermano),
+  así que cuando hace falta se hace UNA llamada más, a /products
+  sin id, con el catálogo entero. Va después de pintar la ficha,
+  solo si la descripción trae Modelo: o una lista de look, y se
+  guarda en sessionStorage 5 min para no repetirla al saltar de
+  un color a otro.
+  - «Modelo: X» en la línea final (Modelo: … · Color: … ·
+    Fabricación: …). Las piezas con el mismo Modelo son el mismo
+    diseño en otro color: la ficha titula con el Modelo y pinta
+    una miniatura por color entre el precio y «Elegir talla»
+    (.mura-colores). El nombre de GHL se queda con el color,
+    que es lo que identifica el pedido en carrito y emails.
+  - Título 3 «Completa tu look» + lista de nombres (hasta 4):
+    se buscan en el catálogo y se pintan como tarjetas de
+    /prendas (.mura-look). Los nombres que no casan se saltan;
+    sin ninguno, el bloque no aparece. El apartado se recorta
+    del acordeón «Descripción».
+  Colocación: en dos columnas va bajo las fotos; cuando la
+  rejilla se apila (iPad, móvil) va a todo el ancho después
+  del texto. Lo decide colocarLook() mirando la rejilla real.
+  Si falta el dato o algo falla, la ficha es la de siempre.
+
+  CAMBIO DEL 25/8 — desplegable «Talla y ajuste»:
+  Nuevo acordeón entre «Descripción» y «Composición y cuidados».
+  Su contenido depende de las tallas que devuelve el worker:
+  - Si alguna talla contiene «única» → versión talla única, sin
+    tabla (diseñada para adaptarse aprox. a tallas S–L).
+  - Si no → versión S–XL con la tabla de medidas corporales.
+  En ambas: medidas de la modelo (1,65 m · 87 · 61 · 94) y enlace
+  de dudas por WhatsApp (wa.me/34637681234, mensaje prerrellenado).
+  Todo lo demás queda byte a byte como estaba.
+
+  CAMBIO DEL 15/8:
+  El enlace "Ver carrito" del aviso "Esta pieza ya forma parte de
+  tu selección" iba a /checkout: saltaba directo al formulario de
+  pago sin pasar por la revisión del carrito. Ahora va a /carrito.
+
+  CÓMO FUNCIONA (para quien llegue después):
+  - Los productos vienen de un worker de Cloudflare:
+    https://mura-productos.germanborrello-d78.workers.dev/products
+    y la pieza se elige con ?id=… en la URL.
+  - "Añadir a mi selección" escribe en el almacén del carrito de
+    la tienda de GHL (localStorage cart_details_…), el mismo que
+    leen /carrito y el checkout.
   ============================================================
 -->
 <!-- mura:css:inicio -->
 <style data-mura="sistema">
-
+/* GENERADO por tienda/build.sh desde codigo-global-tienda.js — no editar a mano.
+   Es el CSS que el código global inyecta en /producto —solo las reglas de
+   las clases que esta página usa (poda-css.js)—, puesto dentro de la
+   página "producto" para que pinte bien desde el primer momento: GHL
+   inyecta el Tracking Code por JavaScript al final de la carga. */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Jost:wght@200;300;400&display=swap');
 
 /* ---- bloque `sistema` del código global ---- */
@@ -29,19 +86,6 @@
 .mura a { color: #1D1B18; text-decoration: none; transition: color .2s ease; }
 .mura a:hover { color: #6E6A61; }
 .mura { width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); overflow-x: clip; }
-.mura-nav { position: sticky; top: 0; z-index: 50; background: rgba(240,238,232,.92); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(29,27,24,.08); }
-.mura-nav, .mura-nav * { box-sizing: border-box; }
-.mura-nav a { text-decoration: none !important; color: #1D1B18; transition: color .2s ease; }
-.mura-nav a:hover { color: #6E6A61; }
-.mura-nav { font-family: 'Jost', sans-serif; font-weight: 300; }
-.mura-nav-in { max-width: 1440px; margin: 0 auto; padding: 0 clamp(20px,4vw,56px); height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.mura-logo { font-family: 'Cormorant Garamond', serif !important; font-size: 26px; font-weight: 500; letter-spacing: .32em; color: #1D1B18 !important; }
-.mura-links { display: flex; align-items: center; gap: clamp(16px,2.6vw,38px); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; }
-.mura-links a { color: #55524B; }
-.mura-links a.on { color: #1D1B18; }
-.mura-cart { font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: #1D1B18 !important; white-space: nowrap; }
-@media (max-width: 719px) { .mura-links a.hm { display: none; } }
-@media (max-width: 440px) { .mura-nav-in { padding: 0 16px; gap: 12px; } .mura-logo { font-size: 21px; letter-spacing: .24em; } .mura-links { gap: 14px; font-size: 10.5px; } .mura-cart { font-size: 10.5px; letter-spacing: .12em; } }
 .mura-label { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: #8A857B; }
 .mura-btn { display: flex; align-items: center; justify-content: center; height: 56px; border: none; background: #1D1B18; color: #F0EEE8 !important; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .24em; text-transform: uppercase; font-weight: 300; transition: background .2s ease; width: 100%; }
 .mura-btn:hover { background: #38352F; }
@@ -75,24 +119,14 @@ a.mura-color-thumb:hover, a.mura-color-thumb:focus-visible { border-color: #8A85
 .mura-look .mura-card-name { font-size: 16px; }
 .mura-look .mura-card-price { font-size: 11px; }
 @media (max-width: 560px) { .mura-look-grid { grid-template-columns: 1fr 1fr; gap: 28px 12px; } }
-.mura-foot { background: #F0EEE8; color: #1D1B18; font-family: 'Jost', sans-serif; font-weight: 300; -webkit-font-smoothing: antialiased; }
-.mura-foot, .mura-foot * { box-sizing: border-box; }
-.mura-foot p { margin: 0; }
-.mura-foot a { color: #1D1B18; text-decoration: none; transition: color .2s ease; }
-.mura-foot a:hover { color: #6E6A61; }
-.mura-foot .mura-serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; margin: 0; }
-.mura-foot { border-top: 1px solid rgba(29,27,24,.12); }
-.mura-foot-in { max-width: 1440px; margin: 0 auto; padding: clamp(70px,8vw,110px) clamp(20px,4vw,56px) 30px; }
-.mura-foot-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: clamp(36px,5vw,72px); }
-.mura-foot-h { font-size: 11px; letter-spacing: .28em; text-transform: uppercase; font-weight: 400; margin-bottom: 18px; }
-.mura-foot-c { display: flex; flex-direction: column; gap: 12px; font-size: 13px; }
-.mura-foot-c a { color: #55524B; }
-.mura-foot-c a:hover { color: #1D1B18; }
 </style>
 <!-- mura:css:fin -->
-<!-- CSS propio de la página -->
+<!-- CSS propio de la página (no lo genera el build): la lupa de la miga. -->
 <style>
-
+/* Lupa en línea: el mismo icono y el mismo campo que la lupa de Prendas, pero
+   el campo se despliega a la DERECHA, en la misma línea, y buscar lleva a
+   /prendas?q=palabra (aquí no hay rejilla de prendas que filtrar). Clases
+   propias para no chocar con el .mura-busq centrado que inyecta el global. */
 .mura-busql { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .mura-busql-lupa { border: none; background: transparent; cursor: pointer; padding: 0; display: inline-flex; align-items: center; color: #8A857B; line-height: 0; }
 .mura-busql-lupa svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.4; }
@@ -108,12 +142,6 @@ a.mura-color-thumb:hover, a.mura-color-thumb:focus-visible { border-color: #8A85
 .mura-busql-x:hover { color: #6E6A61; }
 </style>
 <div class="mura">
-<nav class="mura-nav"><div class="mura-nav-in">
-<a href="/" class="mura-logo">MÛRA</a>
-<div class="mura-links"><a href="/" class="">Inicio</a><a href="/colecciones" class=" hm">Colecciones</a><a href="/prendas" class="on">Prendas</a><a href="/novedades" class=" hm">Novedades</a><a href="/mura" class=" hm">MÛRA</a><a href="/contacto" class=" hm">Contacto</a></div>
-<a href="/carrito" class="mura-cart">Carrito<span class="mura-cart-w" style="display:none"> (<span class="mura-cart-n">0</span>)</span></a>
-</div></nav>
-<script>(function(){try{var d=JSON.parse(localStorage.getItem('cart_details_rlc7iAyGF4U1nfwAJOJQ')||'{"products":[]}');var n=(d.products||[]).reduce(function(a,x){return a+(x.quantity||0)},0);document.querySelectorAll('.mura-cart-n').forEach(function(e){e.textContent=n});document.querySelectorAll('.mura-cart-w').forEach(function(e){e.style.display=n>0?'inline':'none'});}catch(e){}})();</script>
 <div style="max-width:1440px;margin:0 auto;padding:clamp(20px,3vw,40px) clamp(20px,4vw,56px) 0;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8A857B;display:flex;align-items:center;flex-wrap:wrap;gap:10px">
 <a href="/prendas" style="color:#8A857B">Prendas</a><span>/</span><span style="color:#55524B" id="md-migas"></span>
 <div class="mura-busql" id="md-busql">
@@ -125,6 +153,8 @@ a.mura-color-thumb:hover, a.mura-color-thumb:focus-visible { border-color: #8A85
 </div>
 </div>
 <script>(function(){
+/* Intro envía el formulario a /prendas?q=… sin JavaScript; aquí solo se abre
+   y se cierra, y se frena el envío en vacío. */
 var w=document.getElementById('md-busql'),inp=w.querySelector('input'),lupa=w.querySelector('.mura-busql-lupa');
 function abrir(a){w.classList.toggle('open',a);lupa.setAttribute('aria-expanded',a?'true':'false');if(a)inp.focus();else inp.value='';}
 lupa.onclick=function(){abrir(!w.classList.contains('open'))};
@@ -162,20 +192,6 @@ w.querySelector('form').addEventListener('submit',function(e){if(!inp.value.trim
 <div class="mura-look-grid" id="md-look-grid"></div>
 </div>
 </section>
-<footer class="mura-foot"><div class="mura-foot-in">
-<div class="mura-foot-cols">
-<div><div class="mura-foot-h">Explorar</div><div class="mura-foot-c"><a href="/">Inicio</a><a href="/colecciones">Colecciones</a><a href="/prendas">Prendas</a><a href="/novedades">Novedades</a></div></div>
-<div><div class="mura-foot-h">MÛRA</div><div class="mura-foot-c"><a href="/mura">Nuestra esencia</a><a href="/contacto">Contacto</a></div></div>
-<div><div class="mura-foot-h">Información</div><div class="mura-foot-c"><a href="/devoluciones">Envíos y devoluciones</a><a href="/politica-privacidad">Política de privacidad</a><a href="/politica-cookies">Política de cookies</a><a href="/condiciones-contratacion">Condiciones de contratación</a><a href="/aviso-legal">Aviso legal</a></div></div>
-<div><div class="mura-foot-h">Redes</div><div class="mura-foot-c"><a href="https://www.instagram.com/bymurastudio/" target="_blank" rel="noopener">Instagram</a></div></div>
-</div>
-<div style="height:1px;background:rgba(29,27,24,.1);margin:clamp(60px,7vw,90px) 0 0"></div>
-<div style="text-align:center;padding:clamp(60px,7vw,90px) 0 28px;display:flex;flex-direction:column;gap:20px;align-items:center">
-<p class="mura-serif" style="font-size:clamp(22px,2.2vw,28px);font-style:italic">Vestir con intención.</p>
-<div class="mura-serif" style="font-size:20px;font-weight:500;letter-spacing:.32em">MÛRA</div>
-</div>
-<p style="text-align:center;font-size:10.5px;letter-spacing:.14em;color:#9B968C">© MÛRA 2026 · Todos los derechos reservados.</p>
-</div></footer>
 <script>(function(){
 /* Eventos de Meta (16/10): se piden al global (tracking code). Si el global aún no
    ha cargado, la llamada queda en cola y él la recoge. Se consulta window.muraMeta
@@ -187,15 +203,33 @@ var API='https://mura-productos.germanborrello-d78.workers.dev';
 var id=new URLSearchParams(location.search).get('id');
 var pieza=null,talla=null,img=0,piezas=[],modelo='';
 function dec(s){var t=document.createElement('textarea');t.innerHTML=s||'';return t.value;}
+/* Sin tildes ni mayúsculas, para comparar nombres escritos a mano. */
 function llano(s){s=(s||'').toLowerCase().normalize('NFD');var r='';for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);if(c<768||c>879)r+=s.charAt(i);}return r.replace(/\s+/g,' ').trim();}
+/* «Modelo: X» o «Color: X» en la descripción: termina en el siguiente
+   «·» o salto de línea. Se quitan antes las etiquetas HTML (cada una cuenta
+   como salto) para que un «color: rgb(…)» de un estilo en línea pegado con
+   formato no se confunda con la línea «Color: …» (pasó el 11/9). */
 function campo(html,k){var txt=(html||'').replace(/<[^>]*>/g,'\n');var m=txt.match(new RegExp(k+':\\s*([^·\\n]+)','i'));return m?m[1].trim():'';}
+/* Para meter texto de la descripción en atributos o HTML sin romperlos. */
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 var cacheDesc={};
 function descDe(p){if(cacheDesc[p.id]===undefined)cacheDesc[p.id]=dec(p.descripcion);return cacheDesc[p.id];}
 function modeloDe(p){return campo(descDe(p),'Modelo');}
 function colorDe(p){return campo(descDe(p),'Color')||p.nombre;}
 function tituloDe(p){return modeloDe(p)||p.nombre;}
+/* Quita «Modelo: X» del texto que se muestra (y el «·» que lo separaba). */
 function sinModelo(html){return html.replace(/Modelo:\s*[^·<\n]+?\s*(?:·\s*|(?=<|\n|$))/i,'').replace(/\s*·\s*(<\/|\n|$)/,'$1');}
+/* Apartado «Completa tu look» de la descripción: devuelve los nombres
+   listados y el HTML sin ese apartado. */
+/* Tolerante con cómo lo escriba el cliente (10/9: en GHL quedó como
+   <p>Completa tu look\n· Nombre</p>, sin Título 3 ni lista): la
+   cabecera puede ir en h2-h4, en negrita o en un párrafo normal, y los
+   nombres en las líneas siguientes (li, p, br o salto), con o sin
+   viñeta. Se para en la primera línea que no parece un nombre (más de
+   60 caracteres o acabada en punto) o en la siguiente cabecera, así
+   nunca se traga un párrafo de la descripción. El tope de 4 prendas lo
+   pone pintarLook sobre las ENCONTRADAS: los nombres que no casan no
+   cuentan. */
 function sacarLook(html){
  var mk=/(<(?:h[1-6]|p)[^>]*>(?:\s*<(?:strong|b|em)[^>]*>)*\s*)?Completa tu look\s*:?(?:\s*<\/(?:strong|b|em)>)*/i,m=html.match(mk);
  if(!m)return {nombres:[],html:html};
@@ -214,15 +248,19 @@ function sacarLook(html){
  if(!nombres.length)return {nombres:[],html:html};
  return {nombres:nombres,html:html.slice(0,ini)+rest.slice(corte)};
 }
+/* Las agotadas no se enlazan desde «Completa tu look» ni desde los colores
+   (se ocultan en toda la web); su ficha sigue abriendo por enlace directo. */
+function agotada(p){return p.estado==='agotado';}
 function buscarPieza(nombre){
  var n=llano(nombre);if(!n)return null;
  var i,p;
- for(i=0;i<piezas.length;i++){p=piezas[i];if(llano(p.nombre)===n)return p;}
- for(i=0;i<piezas.length;i++){p=piezas[i];if(p.id!==pieza.id&&llano(modeloDe(p))===n)return p;}
+ for(i=0;i<piezas.length;i++){p=piezas[i];if(!agotada(p)&&llano(p.nombre)===n)return p;}
+ for(i=0;i<piezas.length;i++){p=piezas[i];if(!agotada(p)&&p.id!==pieza.id&&llano(modeloDe(p))===n)return p;}
  return null;
 }
 function precioMin(p){return Math.min.apply(null,(p.tallas||[]).map(function(t){return t.precio}));}
-
+/* Catálogo entero (/products sin id), con caché de 5 min en sessionStorage.
+   Si la caché falla (modo privado, cuota), se pide sin más. */
 var CAT_KEY='mura_catalogo_v1',CAT_TTL=5*60*1000;
 function catalogo(){
  try{var c=JSON.parse(sessionStorage.getItem(CAT_KEY)||'null');
@@ -233,11 +271,12 @@ function catalogo(){
   return ps;
  });
 }
+/* Otros colores del mismo modelo: entre el precio y «Elegir talla». */
 function pintarColores(){
  var box=document.getElementById('md-colores');
  try{
   if(!modelo){box.style.display='none';return;}
-  var mm=llano(modelo),hermanos=piezas.filter(function(p){return llano(modeloDe(p))===mm});
+  var mm=llano(modelo),hermanos=piezas.filter(function(p){return llano(modeloDe(p))===mm&&(p.id===pieza.id||!agotada(p))});
   if(hermanos.length<2){box.style.display='none';return;}
   var h='<div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#55524B">Color — <span style="color:#1D1B18">'+esc(colorDe(pieza))+'</span></div><div class="mura-colores-fila">';
   hermanos.forEach(function(p){
@@ -248,7 +287,9 @@ function pintarColores(){
   box.innerHTML=h+'</div>';box.style.display='block';
  }catch(e){box.style.display='none';}
 }
-
+/* «Completa tu look»: bajo las fotos en dos columnas; a todo el ancho,
+   después del texto, cuando la rejilla se apila. Se decide mirando las
+   columnas reales de la rejilla, no una anchura fija. */
 function colocarLook(){
  try{
   var look=document.getElementById('md-look'),sec=document.getElementById('md-ficha'),fotos=document.getElementById('md-fotos');
@@ -266,9 +307,9 @@ function pintarLook(nombres){
   if(!sel.length){look.style.display='none';return;}
   var g=document.getElementById('md-look-grid');g.innerHTML='';
   sel.forEach(function(p){
-   var sold=p.estado==='agotado',src=(p.imagenes||[]).filter(Boolean)[0];
-   var im=src?'<img src="'+src+'" alt="'+p.nombre+'" loading="lazy" style="opacity:'+(sold?'.45':'1')+'">':'';
-   g.insertAdjacentHTML('beforeend','<a class="mura-card" href="/producto?id='+encodeURIComponent(p.id)+'"><div class="mura-card-img">'+im+'</div><div class="mura-card-name">'+p.nombre+'</div><div class="mura-card-price">'+(sold?'—':precioMin(p)+' €')+'</div></a>');
+   var src=(p.imagenes||[]).filter(Boolean)[0];
+   var im=src?'<img src="'+src+'" alt="'+p.nombre+'" loading="lazy">':'';
+   g.insertAdjacentHTML('beforeend','<a class="mura-card" href="/producto?id='+encodeURIComponent(p.id)+'"><div class="mura-card-img">'+im+'</div><div class="mura-card-name">'+p.nombre+'</div><div class="mura-card-price">'+precioMin(p)+' €</div></a>');
   });
   colocarLook();look.style.display='block';
   window.addEventListener('resize',colocarLook);
@@ -360,7 +401,8 @@ fetch(API+'/products?id='+encodeURIComponent(id||'')).then(function(r){return r.
  }});
  render();
  meta('ViewContent',{content_ids:[pieza.id],content_type:'product',content_name:pieza.nombre,value:precioMin(pieza),currency:'EUR'});
-
+ /* Lo que necesita el catálogo entero va después y aparte: la ficha ya
+    está pintada, y si esta llamada falla no se nota. */
  if(modelo||look.nombres.length){
   catalogo().then(function(ps){if(ps&&ps.length)piezas=ps;pintarColores();pintarLook(look.nombres);}).catch(function(){});
  }
