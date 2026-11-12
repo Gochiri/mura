@@ -152,3 +152,4 @@ Desde la activación (10/11 por la tarde → 11/11 mediodía), por anuncio:
 - **11/11, 14:25 Madrid:** 38,02 € gastados desde la activación, 159 clics, 76 visitas, 9 «Añadir al carrito» atribuidos y
   **0 ventas**. En GHL el último pedido es del 2/11 (antes de la campaña): ningún pedido, pagado o no, desde el 10/11.
   Ningún `InitiateCheckout` ni `Purchase` en el píxel. El píxel de Profit no recibe nada desde el 10/11 a las 13:00 UTC.
+- 12/11: Chaqueta Vínculo Burdeos pasa a S 2 · M 1 · **L 1** (pedido de Sara; añadida la talla L). Copia previa en `datos/backups/ghl_chaqueta_vinculo_burdeos_20261112.json`.

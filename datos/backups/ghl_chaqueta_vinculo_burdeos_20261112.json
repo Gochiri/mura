@@ -1,0 +1,122 @@
+{
+ "product": {
+  "_id": "6af3127690487360ee9e4c85",
+  "locationId": "NxPF5fOicowujokEk5Hm",
+  "name": "Chaqueta Vínculo Burdeos",
+  "description": "<p><strong>Una chaqueta de sastrería entallada con hombreras y péplum estructurado. Su construcción realza la cintura y transforma incluso el conjunto más sencillo.</strong></p><p>Presenta una silueta ajustada, hombros definidos y un péplum que aporta volumen desde la cintura. Incorpora una cremallera invisible frontal que se prolonga hasta la mitad del péplum y está completamente forrada, excepto en esta parte inferior.</p><p>Combínala con el Pantalón Sastre Vínculo para crear un conjunto de líneas arquitectónicas, o llévala con un pantalón básico para elevar el look de forma inmediata. También funciona cerrada como prenda principal, sin necesidad de añadir nada más.</p><h3>Qué nos enamoró de esta pieza</h3><p>La forma en la que construye la figura: las hombreras enmarcan los hombros, el cuerpo entallado define la cintura y el péplum crea una silueta femenina y rotunda. Es una chaqueta capaz de vestir por sí sola y de convertir un pantalón sencillo en un conjunto especial.</p><h3>Completa tu look</h3><ul><li><p>Pantalón Sastre Vínculo Burdeos</p></li><li><p>Pantalón Sastre Vínculo Gris</p></li><li><p>Bolso Nodo Negro</p></li></ul><h3>Composición</h3><ul><li><p>77 % Poliéster</p></li><li><p>17 % Viscosa</p></li><li><p>6 % Elastano</p></li></ul><h3>Cuidados</h3><ul><li><p>Lavado a mano a una temperatura máxima de 30 °C.</p></li><li><p>No utilizar lejía.</p></li><li><p>No secar en secadora.</p></li><li><p>Planchar a baja temperatura.</p></li><li><p>Limpieza profesional en seco permitida.</p></li></ul><p>Talla más pequeña de lo habitual. Si dudas entre dos tallas, recomendamos elegir la superior.</p><p><em>Modelo: Chaqueta Vínculo · Color: Burdeos · Fabricación: Italia</em></p>",
+  "productType": "PHYSICAL",
+  "image": "https://files.leadconnectorhq.com/file/6af31244512d2edab6754084/chaqueta-vinculo-burdeos-1.jpg",
+  "parentId": null,
+  "availableInStore": true,
+  "medias": [
+   {
+    "id": "47428f64baea",
+    "title": "Chaqueta Vínculo Burdeos 1",
+    "url": "https://files.leadconnectorhq.com/file/6af31244512d2edab6754084/chaqueta-vinculo-burdeos-1.jpg",
+    "type": "image",
+    "isFeatured": true
+   },
+   {
+    "id": "343b0fbcadf5",
+    "title": "Chaqueta Vínculo Burdeos 2",
+    "url": "https://files.leadconnectorhq.com/file/6af31273fbdd54a827911a3f/chaqueta-vinculo-burdeos-2.jpg",
+    "type": "image",
+    "isFeatured": false
+   },
+   {
+    "id": "27acb203c3db",
+    "title": "Chaqueta Vínculo Burdeos 3",
+    "url": "https://files.leadconnectorhq.com/file/6af31274923b4bc10955e2d7/chaqueta-vinculo-burdeos-3.jpg",
+    "type": "image",
+    "isFeatured": false
+   },
+   {
+    "id": "f5419f384ecc",
+    "title": "Chaqueta Vínculo Burdeos 4",
+    "url": "https://files.leadconnectorhq.com/file/6af31274512d2edab675455c/chaqueta-vinculo-burdeos-4.jpg",
+    "type": "image",
+    "isFeatured": false
+   },
+   {
+    "id": "1448a9a0c8d2",
+    "title": "Chaqueta Vínculo Burdeos 5",
+    "url": "https://files.leadconnectorhq.com/file/6af31275512d2edab6754570/chaqueta-vinculo-burdeos-5.jpg",
+    "type": "image",
+    "isFeatured": false
+   }
+  ],
+  "variants": [
+   {
+    "id": "talla",
+    "name": "Talla",
+    "options": [
+     {
+      "id": "talla-s",
+      "name": "S"
+     },
+     {
+      "id": "talla-m",
+      "name": "M"
+     }
+    ]
+   }
+  ],
+  "isTaxesEnabled": false,
+  "taxes": [],
+  "isLabelEnabled": false,
+  "collectionIds": [
+   "6a5f993d79dea6c886c15366",
+   "6a5f9fcbb76fa2ad6a2418f0"
+  ],
+  "rating": [],
+  "excludedStoreIds": [],
+  "status": "active",
+  "displayPriority": [],
+  "trackProductInventory": false,
+  "createdAt": "2026-11-10T12:47:50.079Z",
+  "updatedAt": "2026-11-10T12:48:21.381Z",
+  "traceId": "b95ba843-92c5-49b3-b81c-cd5ac63d39e5"
+ },
+ "prices": [
+  {
+   "_id": "6af312763f669856700f0dfc",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "name": "S",
+   "type": "one_time",
+   "currency": "EUR",
+   "amount": 65,
+   "membershipOffers": [],
+   "product": "6af3127690487360ee9e4c85",
+   "deleted": false,
+   "variantOptionIds": [
+    "talla-s"
+   ],
+   "trackInventory": true,
+   "availableQuantity": 2,
+   "allowOutOfStockPurchases": false,
+   "createdAt": "2026-11-10T12:47:50.381Z",
+   "updatedAt": "2026-11-10T12:47:50.381Z",
+   "__v": 0
+  },
+  {
+   "_id": "6af312761d35e5d6ad0f3198",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "name": "M",
+   "type": "one_time",
+   "currency": "EUR",
+   "amount": 65,
+   "membershipOffers": [],
+   "product": "6af3127690487360ee9e4c85",
+   "deleted": false,
+   "variantOptionIds": [
+    "talla-m"
+   ],
+   "trackInventory": true,
+   "availableQuantity": 2,
+   "allowOutOfStockPurchases": false,
+   "createdAt": "2026-11-10T12:47:50.607Z",
+   "updatedAt": "2026-11-10T12:47:50.607Z",
+   "__v": 0
+  }
+ ]
+}
