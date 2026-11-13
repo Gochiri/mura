@@ -1,0 +1,9 @@
+PÁGINA /colecciones · bloque de código de la página (el del medio)
+
+BUSCA (Ctrl+F: mc-grid) la línea que empieza por:
+
+<div id="mc-grid" 
+
+Justo ENCIMA de esa línea, pega esta otra (no borres nada):
+
+<style>/* 13/11: alto reservado mientras llegan las colecciones, para que el pie no salte (CLS 0,24). */#mc-grid:empty{min-height:150vh}</style>

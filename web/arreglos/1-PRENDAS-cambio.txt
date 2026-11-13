@@ -1,0 +1,10 @@
+PÁGINA /prendas · bloque de código de la página (el del medio)
+
+BUSCA esta línea (Ctrl+F: mp-grid):
+
+<div class="mura-grid" id="mp-grid"></div>
+
+SUSTITÚYELA ENTERA por esto:
+
+<style>/* 13/11: huecos mientras llegan las prendas, para que el pie no salte (CLS 0,47). render() los borra. */.mura-card-esq .mura-card-img{animation:muraEsq 1.2s ease-in-out infinite alternate}.mura-card-esq i{display:block;height:14px;width:60%;margin:0 auto;background:#E3DFD6}.mura-card-esq i+i{width:30%;height:10px}@keyframes muraEsq{from{opacity:.5}to{opacity:1}}#mp-filtros:empty{min-height:177px}@media (min-width:720px){#mp-filtros:empty{min-height:91px}}</style>
+<div class="mura-grid" id="mp-grid"><div class="mura-card mura-card-esq" aria-hidden="true"><div class="mura-card-img"></div><i></i><i></i></div><div class="mura-card mura-card-esq" aria-hidden="true"><div class="mura-card-img"></div><i></i><i></i></div><div class="mura-card mura-card-esq" aria-hidden="true"><div class="mura-card-img"></div><i></i><i></i></div><div class="mura-card mura-card-esq" aria-hidden="true"><div class="mura-card-img"></div><i></i><i></i></div><div class="mura-card mura-card-esq" aria-hidden="true"><div class="mura-card-img"></div><i></i><i></i></div><div class="mura-card mura-card-esq" aria-hidden="true"><div class="mura-card-img"></div><i></i><i></i></div></div>

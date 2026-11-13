@@ -263,3 +263,12 @@ el checkout de GHL apunta el origen como «Direct traffic».
 Probado con Playwright (6 casos: sin decidir, aceptar, navegar, suscribirse, retirar, rechazar y suscribirse en la página del anuncio).
 
 **Publicado el 13/11:** cabecera (todas las páginas) y fragmento del formulario de la home, comprobados en vivo sin errores (el envío a n8n se interceptó en la prueba; no se creó ningún contacto). **Pendiente:** los dos nodos de n8n (Sonia). Ojo: el bloque de la home publicado no es igual que `tienda/newsletter-home.html` (la home entera va en un solo bloque); el fragmento se insertó a mano tras `origen:'newsletter-home' };`.
+
+## Saltos al cargar en /prendas y /colecciones (13/11)
+
+Medido en vivo (iPhone 13 emulado): CLS 0,465 en `/prendas` y 0,24 en `/colecciones`; la home y la ficha, casi 0.
+Causa: la rejilla empieza vacía, el pie universal se ve en pantalla y salta cuando llegan las prendas (y en /prendas,
+también la fila de filtros). Arreglo sin tocar el JavaScript publicado (`web/arreglos/`): tarjetas de relleno dentro
+de `#mp-grid` (las borra `render()`), alto reservado a `#mp-filtros` vacío, y `#mc-grid:empty{min-height:150vh}`.
+Probado sobre la página real con la respuesta modificada: /prendas 0,465 → 0,001; /colecciones 0,24 → 0,03; con
+búsqueda sin resultados, 0. Las agotadas ya no salen en la rejilla (el código publicado las filtra).
