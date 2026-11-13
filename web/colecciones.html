@@ -74,6 +74,7 @@ w.querySelector('.mura-busql-x').onclick=function(){abrir(false)};
 inp.addEventListener('keydown',function(e){if(e.key==='Escape')abrir(false)});
 w.querySelector('form').addEventListener('submit',function(e){if(!inp.value.trim()){e.preventDefault();inp.focus();}});
 })();</script>
+<style>/* 13/11: alto reservado mientras llegan las colecciones, para que el pie no salte (CLS 0,24). */#mc-grid:empty{min-height:150vh}</style>
 <div id="mc-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:clamp(20px,2.4vw,32px)"></div>
 </section>
 <script>(function(){

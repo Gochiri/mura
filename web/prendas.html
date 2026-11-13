@@ -95,7 +95,8 @@
 <a href="/prendas" class="mura-link-u">Ver todas las prendas</a>
 </div>
 <p id="mp-busq-nada" style="display:none;text-align:center;font-size:13.5px;line-height:1.8;color:#55524B;padding:clamp(40px,6vw,70px) 20px"></p>
-<div class="mura-grid" id="mp-grid"></div>
+<style>/* 13/11: huecos mientras llegan las prendas, para que el pie no salte (CLS 0,47). render() los borra. */.mura-card-esq .mura-card-img{animation:muraEsq 1.2s ease-in-out infinite alternate}.mura-card-esq i{display:block;height:14px;width:60%;margin:0 auto;background:#E3DFD6}.mura-card-esq i+i{width:30%;height:10px}@keyframes muraEsq{from{opacity:.5}to{opacity:1}}#mp-filtros:empty{min-height:177px}@media (min-width:720px){#mp-filtros:empty{min-height:91px}}</style>
+<div class="mura-grid" id="mp-grid"><div class="mura-card mura-card-esq" aria-hidden="true"><div class="mura-card-img"></div><i></i><i></i></div><div class="mura-card mura-card-esq" aria-hidden="true"><div class="mura-card-img"></div><i></i><i></i></div><div class="mura-card mura-card-esq" aria-hidden="true"><div class="mura-card-img"></div><i></i><i></i></div><div class="mura-card mura-card-esq" aria-hidden="true"><div class="mura-card-img"></div><i></i><i></i></div><div class="mura-card mura-card-esq" aria-hidden="true"><div class="mura-card-img"></div><i></i><i></i></div><div class="mura-card mura-card-esq" aria-hidden="true"><div class="mura-card-img"></div><i></i><i></i></div></div>
 </section>
 <script>(function(){
 var API='https://mura-productos.germanborrello-d78.workers.dev';
