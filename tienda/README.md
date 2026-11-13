@@ -261,3 +261,5 @@ el checkout de GHL apunta el origen como «Direct traffic».
   `datos/ghl_campos_origen.json`, creados el 13/11) y «Poner tag nl» añade `origen-meta` si la fuente es Meta.
 
 Probado con Playwright (6 casos: sin decidir, aceptar, navegar, suscribirse, retirar, rechazar y suscribirse en la página del anuncio).
+
+**Publicado el 13/11:** cabecera (todas las páginas) y fragmento del formulario de la home, comprobados en vivo sin errores (el envío a n8n se interceptó en la prueba; no se creó ningún contacto). **Pendiente:** los dos nodos de n8n (Sonia). Ojo: el bloque de la home publicado no es igual que `tienda/newsletter-home.html` (la home entera va en un solo bloque); el fragmento se insertó a mano tras `origen:'newsletter-home' };`.
