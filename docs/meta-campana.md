@@ -153,3 +153,14 @@ Desde la activación (10/11 por la tarde → 11/11 mediodía), por anuncio:
   **0 ventas**. En GHL el último pedido es del 2/11 (antes de la campaña): ningún pedido, pagado o no, desde el 10/11.
   Ningún `InitiateCheckout` ni `Purchase` en el píxel. El píxel de Profit no recibe nada desde el 10/11 a las 13:00 UTC.
 - 12/11: Chaqueta Vínculo Burdeos pasa a S 2 · M 1 · **L 1** (pedido de Sara; añadida la talla L). Copia previa en `datos/backups/ghl_chaqueta_vinculo_burdeos_20261112.json`.
+
+## Estado a 13/11/2026 (15:30 Madrid)
+
+- Gasto desde la activación: **91,83 €** (10/11: 18,91 · 11/11: 35,63 · 12/11: 23,45 · 13/11 hasta ahora: 13,84).
+  7.014 impresiones, 4.829 personas, 551 clics (CTR 7,9 %, 0,16 €/clic), 278 visitas, 21 «Añadir al carrito».
+- **Primera venta atribuida por Meta: 232,20 €** (anuncio D, 12/11). ROAS atribuido: 2,5.
+- **GHL: 4 pedidos pagados el 12/11** (134 · 120,60 · 120,60 · 232,20 = 607,40 €), los primeros desde el 2/11. Meta solo
+  se atribuye el de 232,20; el resto puede ser orgánico o de quien vio el anuncio sin hacer clic (no medible desde aquí).
+- Por anuncio: D se lleva el 62 % del gasto (56,71 €, 419 clics, 12 carritos, 1 venta); B convierte mejor por euro
+  (14,10 €, 8 carritos); A (7,83 €, 0 vistas de ficha) y C (13,19 €, 1 carrito) flojos. Meta ya les da poco presupuesto.
+- Decisión: no tocar hasta el lunes 16/11 (7 días); entonces valorar pausar A.
