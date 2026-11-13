@@ -1,0 +1,103 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Jost:wght@200;300;400&display=swap');
+.mura, .mura *, .mura *::before, .mura *::after { box-sizing: border-box; }
+.mura { background: #F0EEE8; color: #1D1B18; font-family: 'Jost', sans-serif; font-weight: 300; margin: 0; -webkit-font-smoothing: antialiased; }
+.mura h1, .mura h2, .mura h3, .mura .mura-serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; margin: 0; }
+.mura p { margin: 0; }
+.mura a { color: #1D1B18; text-decoration: none; transition: color .2s ease; }
+.mura a:hover { color: #6E6A61; }
+.mura-label { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: #8A857B; }
+.mura-btn { display: flex; align-items: center; justify-content: center; height: 56px; border: none; background: #1D1B18; color: #F0EEE8 !important; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .24em; text-transform: uppercase; font-weight: 300; transition: background .2s ease; width: 100%; }
+.mura-btn:hover { background: #38352F; }
+.mura-link-u { font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase; border-bottom: 1px solid #1D1B18; padding-bottom: 6px; }
+.mura-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px,100%),1fr)); gap: clamp(28px,3vw,44px) clamp(14px,1.6vw,22px); }
+.mura-card { display: flex; flex-direction: column; gap: 16px; color: #1D1B18 !important; }
+.mura-card-img { position: relative; aspect-ratio: 3/4; background: #E3DFD6; overflow: hidden; }
+.mura-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mura-badge { position: absolute; top: 14px; left: 14px; background: rgba(240,238,232,.92); padding: 6px 12px; font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; }
+.mura-card-name { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 500; text-align: center; }
+.mura-card-price { font-size: 12px; letter-spacing: .14em; color: #55524B; text-align: center; }
+.mura-filtros { display: flex; justify-content: center; gap: clamp(18px,3vw,36px); flex-wrap: wrap; padding: 0 20px clamp(36px,4vw,56px); }
+.mura-filtros button { border: none; background: transparent; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase; font-weight: 300; color: #8A857B; padding: 10px 2px 8px; border-bottom: 1px solid transparent; }
+.mura-filtros button.on { color: #1D1B18; border-bottom-color: #1D1B18; }
+.mura-talla { min-width: 52px; height: 48px; padding: 0 14px; border: 1px solid rgba(29,27,24,.25); background: transparent; color: #1D1B18; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .14em; font-weight: 300; }
+.mura-talla.on { border-color: #1D1B18; background: #1D1B18; color: #F0EEE8; }
+.mura-talla:disabled { color: #B9B4A9; text-decoration: line-through; cursor: default; }
+.mura-acc { border-bottom: 1px solid rgba(29,27,24,.14); }
+.mura-acc > button { width: 100%; display: flex; justify-content: space-between; align-items: center; border: none; background: transparent; cursor: pointer; padding: 20px 2px; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; font-weight: 300; color: #1D1B18; }
+.mura-acc > div { display: none; padding: 0 2px 24px; font-size: 13.5px; line-height: 2; color: #55524B; white-space: pre-line; }
+.mura-acc.open > div { display: block; }
+
+/* full-bleed dentro del contenedor de GHL */
+.mura { width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); overflow-x: clip; }
+/* Lupa en línea: el mismo icono y el mismo campo que la lupa de Prendas, pero
+   el campo se despliega a la DERECHA, en la misma línea, y buscar lleva a
+   /prendas?q=palabra (aquí no hay rejilla de prendas que filtrar). Clases
+   propias para no chocar con el .mura-busq centrado que inyecta el global. */
+.mura-busql { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.mura-busql-lupa { border: none; background: transparent; cursor: pointer; padding: 0; display: inline-flex; align-items: center; color: #8A857B; line-height: 0; }
+.mura-busql-lupa svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.4; }
+.mura-busql-lupa:hover, .mura-busql.open .mura-busql-lupa { color: #1D1B18; }
+.mura-busql-caja { display: none; align-items: center; gap: 12px; width: 220px; max-width: 100%; margin: 0; border-bottom: 1px solid rgba(29,27,24,.25); padding-bottom: 6px; transition: border-color .2s ease; }
+.mura-busql.open .mura-busql-caja { display: flex; }
+.mura-busql-caja:focus-within { border-bottom-color: #1D1B18; }
+.mura-busql-caja input { flex: 1 1 auto; min-width: 0; border: none; background: transparent; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 300; letter-spacing: .1em; text-transform: none; padding: 0; outline: none; }
+.mura-busql-caja input::placeholder { color: #9B968C; letter-spacing: .16em; text-transform: uppercase; font-size: 11px; }
+.mura-busql-caja input::-webkit-search-cancel-button, .mura-busql-caja input::-webkit-search-decoration { -webkit-appearance: none; appearance: none; display: none; }
+.mura-busql-x { border: none; background: transparent; cursor: pointer; color: #1D1B18; padding: 0 2px; display: inline-flex; align-items: center; line-height: 0; }
+.mura-busql-x svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.4; }
+.mura-busql-x:hover { color: #6E6A61; }
+</style>
+<div class="mura">
+<section style="max-width:1440px;margin:0 auto;padding:clamp(60px,8vw,110px) clamp(20px,4vw,56px) clamp(40px,5vw,70px);text-align:center">
+<div class="mura-label" style="margin-bottom:24px">Colecciones</div>
+<h1 style="font-size:clamp(38px,5vw,64px);margin-bottom:20px">Cada colección,<br>una historia.</h1>
+<p style="font-size:14px;line-height:1.9;color:#55524B;max-width:440px;margin:0 auto">Cápsulas limitadas diseñadas para un momento concreto. Cuando una termina, comienza una nueva historia.</p>
+</section>
+<section style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px) clamp(80px,10vw,130px)">
+<div style="margin-bottom:clamp(24px,3vw,40px)">
+<div class="mura-busql" id="mc-busql">
+<button type="button" class="mura-busql-lupa" aria-label="Buscar prendas" aria-expanded="false"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6"></circle><line x1="13.5" y1="13.5" x2="18" y2="18"></line></svg></button>
+<form class="mura-busql-caja" action="/prendas" method="get">
+<input type="search" name="q" placeholder="Buscar" aria-label="Buscar prendas" autocomplete="off">
+<button type="button" class="mura-busql-x" aria-label="Cerrar la búsqueda"><svg viewBox="0 0 20 20" aria-hidden="true"><line x1="4" y1="4" x2="16" y2="16"></line><line x1="16" y1="4" x2="4" y2="16"></line></svg></button>
+</form>
+</div>
+</div>
+<script>(function(){
+/* Intro envía el formulario a /prendas?q=… sin JavaScript; aquí solo se abre
+   y se cierra, y se frena el envío en vacío. */
+var w=document.getElementById('mc-busql'),inp=w.querySelector('input'),lupa=w.querySelector('.mura-busql-lupa');
+function abrir(a){w.classList.toggle('open',a);lupa.setAttribute('aria-expanded',a?'true':'false');if(a)inp.focus();else inp.value='';}
+lupa.onclick=function(){abrir(!w.classList.contains('open'))};
+w.querySelector('.mura-busql-x').onclick=function(){abrir(false)};
+inp.addEventListener('keydown',function(e){if(e.key==='Escape')abrir(false)});
+w.querySelector('form').addEventListener('submit',function(e){if(!inp.value.trim()){e.preventDefault();inp.focus();}});
+})();</script>
+<div id="mc-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:clamp(20px,2.4vw,32px)"></div>
+</section>
+<script>(function(){
+var API='https://mura-productos.germanborrello-d78.workers.dev';
+Promise.all([
+ fetch(API+'/collections').then(function(r){return r.json()}),
+ fetch(API+'/products').then(function(r){return r.json()})
+]).then(function(res){
+ var cols=res[0].colecciones||[],piezas=(res[1].piezas||[]).filter(function(p){return p.estado!=='agotado'}); // las agotadas no cuentan ni dan portada
+ // Colecciones ocultas de momento (pendiente decisión de Sara)
+ var ocultas=['outlet','sale','prendas especiales','prendas del dia','prendas del día','ultimas unidades','últimas unidades','sastreria','sastrería','nueva capsula','nueva cápsula'];
+ cols=cols.filter(function(c){var nm=(c.nombre||'').toLowerCase();return !ocultas.some(function(o){return nm.indexOf(o)>-1})});
+ var usadas={};
+ var g=document.getElementById('mc-grid');
+ cols.forEach(function(c){
+  var ids=c.piezaIds||[];
+  var n=piezas.filter(function(p){return ids.indexOf(p.id)>-1}).length;
+  var fb=null;piezas.forEach(function(p){if(!fb&&ids.indexOf(p.id)>-1&&p.imagenes&&p.imagenes[0])fb=p.imagenes[0]});
+  var src=c.imagen||fb||'';if(src&&usadas[src])src='';if(src)usadas[src]=1; // no repetir la misma foto de portada
+  var img=src?'<img src="'+src+'" alt="'+c.nombre+'" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">':'';
+  g.insertAdjacentHTML('beforeend','<a href="/prendas?coleccion='+c.id+'" style="position:relative;display:block;aspect-ratio:4/5;background:#E3DFD6;overflow:hidden">'+img+
+   '<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(24,22,19,0) 55%,rgba(24,22,19,.45) 100%)"></div>'+
+   '<div style="position:absolute;left:0;right:0;bottom:0;padding:28px;text-align:center"><div class="mura-serif" style="font-size:clamp(24px,2.4vw,32px);color:#F4F2EC;margin-bottom:8px">'+c.nombre+'</div><div style="font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(244,242,236,.85)">'+(n>0?n+' piezas':'Descubrir')+'</div></div></a>');
+ });
+});
+})();</script>
+</div>

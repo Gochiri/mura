@@ -1,0 +1,263 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Jost:wght@200;300;400&display=swap');
+.mura, .mura *, .mura *::before, .mura *::after { box-sizing: border-box; }
+.mura { background: #F0EEE8; color: #1D1B18; font-family: 'Jost', sans-serif; font-weight: 300; margin: 0; -webkit-font-smoothing: antialiased; }
+.mura h1, .mura h2, .mura h3, .mura .mura-serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; margin: 0; }
+.mura p { margin: 0; }
+.mura a { color: #1D1B18; text-decoration: none; transition: color .2s ease; }
+.mura a:hover { color: #6E6A61; }
+.mura-label { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: #8A857B; }
+.mura-btn { display: flex; align-items: center; justify-content: center; height: 56px; border: none; background: #1D1B18; color: #F0EEE8 !important; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .24em; text-transform: uppercase; font-weight: 300; transition: background .2s ease; width: 100%; }
+.mura-btn:hover { background: #38352F; }
+.mura-link-u { font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase; border-bottom: 1px solid #1D1B18; padding-bottom: 6px; }
+.mura-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px,100%),1fr)); gap: clamp(28px,3vw,44px) clamp(14px,1.6vw,22px); }
+.mura-card { display: flex; flex-direction: column; gap: 16px; color: #1D1B18 !important; }
+.mura-card-img { position: relative; aspect-ratio: 3/4; background: #E3DFD6; overflow: hidden; }
+.mura-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mura-badge { position: absolute; top: 14px; left: 14px; background: rgba(240,238,232,.92); padding: 6px 12px; font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; }
+/* Flechas para pasar de foto sin entrar en la ficha: solo en tarjetas con más de
+   una foto. Con ratón aparecen al pasar por la tarjeta; en táctil no hay ratón,
+   así que van siempre a la vista, tenues. Cada flecha son dos trazos: uno marfil más
+   grueso debajo (.u) y el negro fino encima. Sobre fotos claras el marfil no se
+   ve; sobre fotos oscuras es lo que deja leer la flecha, sin círculo de fondo. */
+.mura-card-fl { position: absolute; top: 50%; width: 44px; height: 72px; margin-top: -36px; padding: 0; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #1D1B18; opacity: 0; transition: opacity .25s ease; }
+.mura-card-fl.ant { left: 0; }
+.mura-card-fl.sig { right: 0; }
+.mura-card-fl svg { width: 10px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.2; overflow: visible; }
+.mura-card-fl svg .u { stroke: #F0EEE8; stroke-width: 3; stroke-opacity: .75; stroke-linecap: round; stroke-linejoin: round; }
+.mura-card:hover .mura-card-fl { opacity: .75; }
+.mura-card .mura-card-fl:hover, .mura-card .mura-card-fl:focus-visible { opacity: 1; }
+@media (hover: none) { .mura-card-fl, .mura-card:hover .mura-card-fl { opacity: .7; } }
+.mura-card-name { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 500; text-align: center; }
+.mura-card-price { font-size: 12px; letter-spacing: .14em; color: #55524B; text-align: center; }
+/* Móvil (petición de Sara, 31/10): filas de 2 y de 1 alternas — 2, 1, 2, 1…
+   Cada tercera tarjeta ocupa el ancho entero. Si la última queda sola en una
+   fila de dos, también va a ancho entero, para no dejar un hueco. render()
+   repinta la rejilla con solo lo que se ve, así que el patrón se mantiene al
+   filtrar y al buscar. En las tarjetas estrechas se achican nombre y etiqueta
+   ("Últimas piezas disponibles" no cabe en media pantalla con su tamaño). */
+@media (max-width: 599px) {
+  #mp-grid { grid-template-columns: 1fr 1fr; gap: 32px 12px; }
+  #mp-grid > .mura-card:nth-child(3n), #mp-grid > .mura-card:nth-child(3n+1):last-child { grid-column: 1 / -1; }
+  #mp-grid > .mura-card:not(:nth-child(3n), :nth-child(3n+1):last-child) { gap: 12px; }
+  #mp-grid > .mura-card:not(:nth-child(3n), :nth-child(3n+1):last-child) .mura-card-name { font-size: 16.5px; }
+  #mp-grid > .mura-card:not(:nth-child(3n), :nth-child(3n+1):last-child) .mura-badge { top: 8px; left: 8px; right: 8px; width: fit-content; padding: 5px 8px; font-size: 8px; letter-spacing: .14em; line-height: 1.5; }
+}
+.mura-filtros { display: flex; justify-content: center; align-items: center; gap: clamp(18px,3vw,36px); flex-wrap: wrap; padding: 0 20px clamp(36px,4vw,56px); }
+.mura-filtros button { border: none; background: transparent; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase; font-weight: 300; color: #8A857B; padding: 10px 2px 8px; border-bottom: 1px solid transparent; }
+.mura-filtros button.on { color: #1D1B18; border-bottom-color: #1D1B18; }
+/* Lupa a la derecha de las categorías, y la línea de búsqueda que despliega */
+.mura-filtros button.mura-lupa { padding: 8px 2px; display: inline-flex; align-items: center; color: #8A857B; border-bottom: none; }
+.mura-lupa svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.4; }
+.mura-filtros button.mura-lupa:hover, .mura-filtros button.mura-lupa.on { color: #1D1B18; }
+.mura-busq { max-width: 420px; margin: 0 auto; padding: 0 20px; display: none; }
+.mura-busq.open { display: block; padding-bottom: clamp(30px,3.5vw,46px); }
+.mura-busq-caja { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(29,27,24,.25); padding-bottom: 10px; transition: border-color .2s ease; }
+.mura-busq-caja:focus-within { border-bottom-color: #1D1B18; }
+.mura-busq-caja svg { flex: 0 0 auto; width: 15px; height: 15px; stroke: #8A857B; fill: none; stroke-width: 1.4; }
+.mura-busq input { flex: 1 1 auto; border: none; background: transparent; color: #1D1B18; font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 300; letter-spacing: .1em; padding: 0; outline: none; }
+.mura-busq input::placeholder { color: #9B968C; letter-spacing: .16em; text-transform: uppercase; font-size: 11px; }
+/* La equis de cerrar: dos líneas finas como la lupa, en negro. Se esconde la equis
+   nativa que Chrome pinta en los campos de búsqueda. La regla lleva `.mura-busq`
+   delante para ganar al `.mura-busq-x { display: none }` del código global. */
+.mura-busq input::-webkit-search-cancel-button, .mura-busq input::-webkit-search-decoration { -webkit-appearance: none; appearance: none; display: none; }
+.mura-busq .mura-busq-x { border: none; background: transparent; cursor: pointer; color: #1D1B18; padding: 0 2px; display: inline-flex; align-items: center; line-height: 0; }
+.mura-busq .mura-busq-x svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.4; }
+.mura-busq .mura-busq-x:hover { color: #6E6A61; }
+.mura-talla { min-width: 52px; height: 48px; padding: 0 14px; border: 1px solid rgba(29,27,24,.25); background: transparent; color: #1D1B18; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .14em; font-weight: 300; }
+.mura-talla.on { border-color: #1D1B18; background: #1D1B18; color: #F0EEE8; }
+.mura-talla:disabled { color: #B9B4A9; text-decoration: line-through; cursor: default; }
+.mura-acc { border-bottom: 1px solid rgba(29,27,24,.14); }
+.mura-acc > button { width: 100%; display: flex; justify-content: space-between; align-items: center; border: none; background: transparent; cursor: pointer; padding: 20px 2px; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; font-weight: 300; color: #1D1B18; }
+.mura-acc > div { display: none; padding: 0 2px 24px; font-size: 13.5px; line-height: 2; color: #55524B; white-space: pre-line; }
+.mura-acc.open > div { display: block; }
+
+/* full-bleed dentro del contenedor de GHL */
+.mura { width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); overflow-x: clip; }
+</style>
+<div class="mura">
+<section style="max-width:1440px;margin:0 auto;padding:clamp(60px,8vw,110px) clamp(20px,4vw,56px) clamp(36px,4vw,56px);text-align:center">
+<div class="mura-label" style="margin-bottom:24px" id="mp-label">Prendas · Cápsula 01</div>
+<h1 style="font-size:clamp(38px,5vw,64px);margin-bottom:20px" id="mp-titulo">La primera cápsula.</h1>
+<p style="font-size:14px;line-height:1.9;color:#55524B;max-width:440px;margin:0 auto">Piezas en unidades limitadas. Cuando una colección termina, no vuelve a repetirse.</p>
+</section>
+<div class="mura-filtros" id="mp-filtros"></div>
+<div class="mura-busq" id="mp-busq">
+<div class="mura-busq-caja">
+<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6"></circle><line x1="13.5" y1="13.5" x2="18" y2="18"></line></svg>
+<input type="search" id="mp-busq-i" placeholder="Buscar" aria-label="Buscar prendas" autocomplete="off">
+<button type="button" class="mura-busq-x" id="mp-busq-x" aria-label="Cerrar la búsqueda"><svg viewBox="0 0 20 20" aria-hidden="true"><line x1="4" y1="4" x2="16" y2="16"></line><line x1="16" y1="4" x2="4" y2="16"></line></svg></button>
+</div>
+</div>
+<section style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px) clamp(80px,10vw,130px)">
+<div id="mp-vacio" style="display:none;text-align:center;padding:60px 20px">
+<p class="mura-serif" style="font-size:20px;font-style:italic;color:#55524B;margin-bottom:24px">Esta colección aún no tiene piezas publicadas.</p>
+<a href="/prendas" class="mura-link-u">Ver todas las prendas</a>
+</div>
+<p id="mp-busq-nada" style="display:none;text-align:center;font-size:13.5px;line-height:1.8;color:#55524B;padding:clamp(40px,6vw,70px) 20px"></p>
+<div class="mura-grid" id="mp-grid"></div>
+</section>
+<script>(function(){
+var API='https://mura-productos.germanborrello-d78.workers.dev';
+var params=new URLSearchParams(location.search),colId=params.get('coleccion');
+/* ?q=palabra: llega desde la lupa de Colecciones o de Producto, que no tienen
+   rejilla propia y mandan aquí. Se abre la lupa con la palabra puesta. */
+var qUrl=(params.get('q')||'').trim();
+var piezas=[],colPiezas=null,filtro='Colección',q='',qCruda='',busqAbierta=false,textoCache={};
+/* Categorías del filtro = colecciones de GHL (11/9). Cuentan todas menos la
+   general «Colección» y las temáticas de OCULTAS (la misma lista que en
+   /colecciones). Una categoría nueva en GHL aparece sola en el filtro, sin
+   tocar código. Una pieza puede estar en varias; si no está en ninguna se
+   deduce del nombre con cat(), que queda solo como respaldo. */
+var OCULTAS=['outlet','sale','prendas especiales','prendas del dia','ultimas unidades','sastreria','nueva capsula'];
+var PREFERIDO=['Blazers','Camisas','Tops','Pantalones','Vestidos','Faldas','Accesorios'];
+var categorias=[],catsDe={};
+function esCategoria(c){var nm=llano(c.nombre||'');if(!nm||nm==='coleccion')return false;return !OCULTAS.some(function(o){return nm.indexOf(o)>-1})}
+function cargarCategorias(cols){
+ var cs=cols.filter(esCategoria);
+ categorias=cs.map(function(c){return c.nombre}).sort(function(a,b){
+  var i=PREFERIDO.indexOf(a),j=PREFERIDO.indexOf(b);if(i<0)i=99;if(j<0)j=99;return i-j||a.localeCompare(b)});
+ cs.forEach(function(c){(c.piezaIds||[]).forEach(function(id){(catsDe[id]=catsDe[id]||[]).push(c.nombre)})});
+ /* Sin colecciones (fallo de /collections): categorías deducidas del nombre. */
+ if(!categorias.length)piezas.forEach(function(p){var c=cat(p.nombre);if(categorias.indexOf(c)<0)categorias.push(c)});
+}
+function catsPieza(p){return catsDe[p.id]||[cat(p.nombre)]}
+function tieneCat(p,c){return catsPieza(p).indexOf(c)>-1}
+/* Respaldo por nombre, solo para piezas sin colección de categoría. */
+function cat(n){n=n.toLowerCase();
+ if(n.indexOf('blazer')>-1||n.indexOf('bomber')>-1)return 'Blazers';
+ if(n.indexOf('camisa')>-1||n.indexOf('blusón')>-1||n.indexOf('bluson')>-1)return 'Camisas';
+ if(n.indexOf('top')>-1||n.indexOf('body')>-1)return 'Tops';
+ if(n.indexOf('pantal')>-1)return 'Pantalones';
+ if(n.indexOf('vestido')>-1)return 'Vestidos';
+ if(n.indexOf('falda')>-1)return 'Faldas';
+ return 'Accesorios';}
+/* Sin tildes y en minúsculas: "pantalon" encuentra "Pantalón". NFD separa
+   la tilde en un caracter combinante (código 768-879) y el bucle lo quita. */
+function llano(s){s=(s||'').toLowerCase().normalize('NFD');var r='';for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);if(c<768||c>879)r+=s.charAt(i);}return r}
+/* Texto donde busca la lupa: nombre + categoría + descripción sin HTML.
+   La descripción incluye la línea "Color: …", así que "pantalón verde" casa. */
+function textoDe(p){
+ if(!textoCache[p.id])textoCache[p.id]=llano(p.nombre+' '+catsPieza(p).join(' ')+' '+String(p.descripcion||'').replace(/<[^>]*>/g,' '));
+ return textoCache[p.id];}
+function render(){
+ var g=document.getElementById('mp-grid'),v=document.getElementById('mp-vacio');
+ var data=piezas;
+ if(colPiezas){data=data.filter(function(p){return colPiezas.indexOf(p.id)>-1});}
+ if(filtro!=='Colección')data=data.filter(function(p){return tieneCat(p,filtro)});
+ /* La búsqueda se compone con el filtro de categoría: todas las palabras
+    escritas tienen que aparecer en el texto de la pieza. */
+ if(q){var tokens=q.split(/\s+/);
+  data=data.filter(function(p){var t=textoDe(p);return tokens.every(function(k){return t.indexOf(k)>-1})});
+  /* Primero lo que casa en el NOMBRE; lo que solo casa en la descripción
+     (p. ej. la blazer que "combina con el pantalón verde") va detrás. */
+  data=data.slice().sort(function(a,b){
+   function s(p){var n=llano(p.nombre),x=0;tokens.forEach(function(k){if(n.indexOf(k)>-1)x++});return x}
+   return s(b)-s(a)});}
+ g.innerHTML='';if(obs)obs.disconnect();
+ var nada=document.getElementById('mp-busq-nada');
+ if(q&&data.length===0){nada.textContent='No encontramos ninguna prenda con “'+qCruda+'”. Prueba con otra palabra.';nada.style.display='block';}
+ else{nada.style.display='none';}
+ v.style.display=!q&&data.length===0&&piezas.length>0?'block':'none';
+ data.forEach(function(p){
+  var min=Math.min.apply(null,p.tallas.map(function(t){return t.precio}));
+  var b=p.estado==='ultimas'?'<div class="mura-badge">Últimas piezas disponibles</div>':'';
+  var img=(p.imagenes&&p.imagenes[0])?'<img src="'+p.imagenes[0]+'" alt="'+p.nombre+'" loading="lazy">':'';
+  g.insertAdjacentHTML('beforeend','<a class="mura-card" href="/producto?id='+p.id+'"><div class="mura-card-img" data-id="'+p.id+'">'+img+b+'</div><div class="mura-card-name">'+p.nombre+'</div><div class="mura-card-price">'+min+' €</div></a>');
+  if(!img)return;
+  var caja=g.lastElementChild.querySelector('.mura-card-img');
+  if(p.imagenes.length>1&&!fotosDe[p.id])fotosDe[p.id]=p.imagenes.filter(Boolean);
+  if(fotosDe[p.id])flechas(caja);else if(obs)obs.observe(caja);
+ });
+}
+/* Flechas para pasar de foto desde la tarjeta. El catálogo (/products) solo trae
+   la primera foto de cada pieza; la galería entera llega pidiendo la pieza por su
+   id (?id=), como hace la ficha. Se pide cuando la tarjeta se acerca a la
+   pantalla, una vez por pieza, y las flechas se añaden solo si hay más de una
+   foto. Si un día el catálogo trae todas las fotos, render() las usa y no se
+   pide nada. */
+var fotosDe={},galerias={};
+var FLECHAS='<button type="button" class="mura-card-fl ant" aria-label="Foto anterior"><svg viewBox="0 0 10 20" aria-hidden="true"><polyline class="u" points="8.5,1.5 1.5,10 8.5,18.5"></polyline><polyline points="8.5,1.5 1.5,10 8.5,18.5"></polyline></svg></button><button type="button" class="mura-card-fl sig" aria-label="Foto siguiente"><svg viewBox="0 0 10 20" aria-hidden="true"><polyline class="u" points="1.5,1.5 8.5,10 1.5,18.5"></polyline><polyline points="1.5,1.5 8.5,10 1.5,18.5"></polyline></svg></button>';
+function flechas(caja){
+ var f=fotosDe[caja.getAttribute('data-id')];
+ if(f&&f.length>1&&!caja.querySelector('.mura-card-fl'))caja.insertAdjacentHTML('beforeend',FLECHAS);
+}
+function galeria(id){
+ if(!galerias[id])galerias[id]=fetch(API+'/products?id='+encodeURIComponent(id)).then(function(r){return r.json()}).then(function(d){
+  var p=(d.piezas||[]).filter(function(x){return x.id===id})[0];
+  fotosDe[id]=((p&&p.imagenes)||[]).filter(Boolean);
+ }).catch(function(){delete galerias[id]});
+ return galerias[id];
+}
+var obs=('IntersectionObserver' in window)?new IntersectionObserver(function(es){
+ es.forEach(function(en){
+  if(!en.isIntersecting)return;
+  var caja=en.target;obs.unobserve(caja);
+  galeria(caja.getAttribute('data-id')).then(function(){flechas(caja)});
+ });
+},{rootMargin:'300px'}):null;
+/* Las flechas cambian la foto y NO abren la ficha (la tarjeta entera es un
+   enlace). Un solo oyente en la rejilla, porque render() la repinta. La foto por
+   la que va cada tarjeta se guarda en data-i; tras la última vuelve a la
+   primera. Las fotos extra solo se descargan al pulsar, y de paso se adelanta la
+   siguiente en ese sentido para que el clic que venga no espere. */
+document.getElementById('mp-grid').addEventListener('click',function(e){
+ var f=e.target.closest&&e.target.closest('.mura-card-fl');if(!f)return;
+ e.preventDefault();
+ var caja=f.closest('.mura-card-img'),im=caja.querySelector('img'),fotos=fotosDe[caja.getAttribute('data-id')];
+ if(!im||!fotos||fotos.length<2)return;
+ var n=fotos.length,paso=f.classList.contains('sig')?1:-1;
+ var i=((parseInt(caja.getAttribute('data-i'),10)||0)+paso+n)%n;
+ caja.setAttribute('data-i',i);im.src=fotos[i];
+ new Image().src=fotos[(i+paso+n)%n];
+});
+function filtros(){
+ /* Solo las categorías con alguna pieza en lo que se está viendo: dentro de
+    una colección temática no salen botones que dejarían la rejilla vacía. */
+ var base=colPiezas?piezas.filter(function(p){return colPiezas.indexOf(p.id)>-1}):piezas;
+ var cats=['Colección'].concat(categorias.filter(function(c){return base.some(function(p){return tieneCat(p,c)})}));
+ var f=document.getElementById('mp-filtros');f.innerHTML='';
+ cats.forEach(function(c){
+  var btn=document.createElement('button');btn.textContent=c;if(c===filtro)btn.className='on';
+  btn.onclick=function(){filtro=c;filtros();render()};f.appendChild(btn);
+ });
+ /* La lupa, a la derecha de las categorías. */
+ var lupa=document.createElement('button');
+ lupa.type='button';lupa.className='mura-lupa'+(busqAbierta?' on':'');
+ lupa.setAttribute('aria-label','Buscar prendas');
+ lupa.innerHTML='<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6"></circle><line x1="13.5" y1="13.5" x2="18" y2="18"></line></svg>';
+ lupa.onclick=function(){toggleBusq(!busqAbierta)};
+ f.appendChild(lupa);
+}
+function toggleBusq(abrir){
+ busqAbierta=abrir;
+ document.getElementById('mp-busq').classList.toggle('open',abrir);
+ var l=document.querySelector('.mura-lupa');if(l)l.classList.toggle('on',abrir);
+ var inp=document.getElementById('mp-busq-i');
+ if(abrir){inp.focus();}
+ else{inp.value='';qCruda='';q='';render();}
+}
+document.getElementById('mp-busq-i').addEventListener('input',function(){qCruda=this.value.trim();q=llano(qCruda);render()});
+document.getElementById('mp-busq-x').addEventListener('click',function(){toggleBusq(false)});
+/* Catálogo y colecciones a la vez. Si /collections fallara, la página sigue
+   funcionando con las categorías deducidas del nombre. */
+Promise.all([
+ fetch(API+'/products').then(function(r){return r.json()}),
+ fetch(API+'/collections').then(function(r){return r.json()}).catch(function(){return {}})
+]).then(function(res){
+ /* Las piezas agotadas (0 unidades en todas las tallas) no se muestran:
+    GHL no tiene ajuste para ocultarlas y el catálogo las trae todas. */
+ piezas=(res[0].piezas||[]).filter(function(p){return p.estado!=='agotado'});var cols=res[1].colecciones||[];cargarCategorias(cols);
+ if(colId){var c=cols.filter(function(x){return x.id===colId})[0];
+  /* Desde /colecciones: si es una categoría, se abre con ese filtro puesto y
+     el resto de botones siguen funcionando; si es temática (Prendas del día…),
+     se limita la rejilla a sus piezas y se muestra su nombre. */
+  if(c&&esCategoria(c)){filtro=c.nombre;}
+  else if(c){colPiezas=c.piezaIds||[];document.getElementById('mp-titulo').textContent=c.nombre;document.getElementById('mp-label').textContent='Colección';}
+ }
+ filtros();
+ if(qUrl){document.getElementById('mp-busq-i').value=qUrl;qCruda=qUrl;q=llano(qUrl);toggleBusq(true);}
+ render();
+});
+})();</script>
+</div>
