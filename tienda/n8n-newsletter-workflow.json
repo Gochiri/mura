@@ -192,7 +192,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify(Object.fromEntries(Object.entries({ locationId: 'NxPF5fOicowujokEk5Hm', email: $('Webhook newsletter').item.json.body.email, firstName: $('Webhook newsletter').item.json.body.first_name, lastName: $('Webhook newsletter').item.json.body.last_name, phone: $('Webhook newsletter').item.json.body.phone, dateOfBirth: $('Webhook newsletter').item.json.body.fecha_nacimiento, source: $('Webhook newsletter').item.json.body.origen || 'newsletter-web' }).filter(([,v]) => v !== '' && v != null))) }}",
+        "jsonBody": "={{ JSON.stringify(Object.fromEntries(Object.entries({ locationId: 'NxPF5fOicowujokEk5Hm', email: $('Webhook newsletter').item.json.body.email, firstName: $('Webhook newsletter').item.json.body.first_name, lastName: $('Webhook newsletter').item.json.body.last_name, phone: $('Webhook newsletter').item.json.body.phone, dateOfBirth: $('Webhook newsletter').item.json.body.fecha_nacimiento, source: $('Webhook newsletter').item.json.body.origen || 'newsletter-web', customFields: [['TFcfrXYQEVkceLrsUwNh','origen_fuente'],['TsWpl0Ruj14aQExe8Ymb','origen_medio'],['H3Hdw340TwSgbNEu5K9i','origen_campana'],['5TnYmVZ70fLAWhHSQLvf','origen_anuncio'],['2TyFnk7n80k5CTyvkPlp','origen_entrada'],['FpQ4DRr31zqiupKkuApY','origen_fecha'],['OnLq8TJNstBIn8UrURRV','origen_fbclid']].map(([id, k]) => ({ id: id, field_value: String($('Webhook newsletter').item.json.body[k] || '') })).filter(c => c.field_value) }).filter(([,v]) => v !== '' && v != null && !(Array.isArray(v) && !v.length)))) }}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -270,7 +270,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ tags: ['nl'] }) }}",
+        "jsonBody": "={{ JSON.stringify({ tags: ['nl'].concat(/^(meta|facebook|instagram|fb|ig)$/i.test($('Webhook newsletter').item.json.body.origen_fuente || '') ? ['origen-meta'] : []) }) }}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",

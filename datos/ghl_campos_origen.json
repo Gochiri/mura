@@ -1,0 +1,37 @@
+{
+ "origen_fuente": {
+  "id": "TFcfrXYQEVkceLrsUwNh",
+  "fieldKey": "contact.origen_web__fuente",
+  "nombre": "Origen web · fuente"
+ },
+ "origen_medio": {
+  "id": "TsWpl0Ruj14aQExe8Ymb",
+  "fieldKey": "contact.origen_web__medio",
+  "nombre": "Origen web · medio"
+ },
+ "origen_campana": {
+  "id": "H3Hdw340TwSgbNEu5K9i",
+  "fieldKey": "contact.origen_web__campaa",
+  "nombre": "Origen web · campaña"
+ },
+ "origen_anuncio": {
+  "id": "5TnYmVZ70fLAWhHSQLvf",
+  "fieldKey": "contact.origen_web__anuncio",
+  "nombre": "Origen web · anuncio"
+ },
+ "origen_entrada": {
+  "id": "2TyFnk7n80k5CTyvkPlp",
+  "fieldKey": "contact.origen_web__pgina_de_entrada",
+  "nombre": "Origen web · página de entrada"
+ },
+ "origen_fecha": {
+  "id": "FpQ4DRr31zqiupKkuApY",
+  "fieldKey": "contact.origen_web__fecha",
+  "nombre": "Origen web · fecha"
+ },
+ "origen_fbclid": {
+  "id": "OnLq8TJNstBIn8UrURRV",
+  "fieldKey": "contact.origen_web__fbclid",
+  "nombre": "Origen web · fbclid"
+ }
+}

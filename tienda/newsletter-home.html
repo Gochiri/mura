@@ -111,6 +111,18 @@ form.addEventListener('submit',function(ev){
   consentimiento:'rgpd-aceptado',
   origen:'newsletter-home'
  };
+ /* Origen de la visita (13/11): el anuncio o la web de la que llegó. Si
+    esta misma página trae UTM o fbclid, se usa eso (leer la dirección no
+    guarda nada); si no, lo que la cabecera guardó con consentimiento en
+    `mura_origen`, si tiene menos de 30 días. n8n lo escribe en los campos
+    «Origen web · …» del contacto. */
+ var org={};
+ try{
+  var q=new URLSearchParams(location.search);
+  if(q.get('utm_source')||q.get('fbclid'))org={fuente:q.get('utm_source')||'meta',medio:q.get('utm_medium')||'',campana:q.get('utm_campaign')||'',anuncio:q.get('utm_content')||'',fbclid:q.get('fbclid')||'',entrada:location.pathname,fecha:new Date().toISOString()};
+  else{var g=JSON.parse(localStorage.getItem('mura_origen')||'null');if(g&&g.fecha&&Date.now()-Date.parse(g.fecha)<30*864e5)org=g;}
+ }catch(e){}
+ ['fuente','medio','campana','anuncio','entrada','fecha','fbclid'].forEach(function(k){datos['origen_'+k]=org[k]||'';});
 
  btn.disabled=true;btn.style.opacity='.55';msg('Un momento…');
  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)})

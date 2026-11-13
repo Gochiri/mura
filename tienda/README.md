@@ -247,3 +247,17 @@ carrito y `AddToCart` correctos, visor y deslizar funcionan. Desplazamiento de d
 y 0,000 después, así que el 0,36 de Clarity no viene de esta ficha sola (falta mirarlo por página en Clarity).
 
 **Pegar:** `producto.html` entero → página `producto` → elemento `custom-code-oM1HT_mKKm`.
+
+## Origen de cada suscripción y venta (13/11)
+
+Para saber qué anuncio trae cada venta: las compradoras del 12/11 se suscribieron a la newsletter justo antes de comprar, y
+el checkout de GHL apunta el origen como «Direct traffic».
+
+- `web/global/cabecera.html`: recuerda de dónde llegó la última visita externa (UTM, `fbclid`, web de referencia) en
+  `localStorage` `mura_origen`, **solo si la clienta acepta Análisis o Publicidad** (decisión del 13/11). Si lo retira, se borra.
+- `tienda/newsletter-home.html`: manda ese origen con el alta (`origen_fuente`, `_medio`, `_campana`, `_anuncio`,
+  `_entrada`, `_fecha`, `_fbclid`). Si la página del formulario trae UTM, usa esa (leer la URL no guarda nada).
+- `tienda/n8n-newsletter-workflow.json`: «Upsert contacto» escribe los campos «Origen web · …» (ids en
+  `datos/ghl_campos_origen.json`, creados el 13/11) y «Poner tag nl» añade `origen-meta` si la fuente es Meta.
+
+Probado con Playwright (6 casos: sin decidir, aceptar, navegar, suscribirse, retirar, rechazar y suscribirse en la página del anuncio).

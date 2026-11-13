@@ -80,4 +80,35 @@
 </div>
 <script>(function(){var p=location.pathname.replace(/\/+$/,'')||'/';if(p==='/producto')p='/prendas';document.querySelectorAll('.mura-links a, .mura-cart').forEach(function(a){if(a.getAttribute('href')===p)a.classList.add('on')})})();</script>
 <script>(function(){if(window.muraBocadillo)return;window.muraBocadillo=1;document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.mura-burger');if(!b)return;var n=b.closest('.mura-nav'),l=n&&n.querySelector('.mura-links');if(!l)return;var m=n.querySelector('.mura-mnav');if(!m){m=document.createElement('div');m.className='mura-mnav';m.innerHTML=l.innerHTML;n.appendChild(m)}var o=m.classList.toggle('open');b.classList.toggle('open',o);b.setAttribute('aria-expanded',o?'true':'false')})})();</script>
+<script>/* De dónde llegó la visita (13/11). Las compradoras del 12/11 se
+   suscribieron a la newsletter justo antes de comprar, y el checkout de
+   GHL pierde el origen («Direct traffic»). Aquí se recuerda de dónde
+   llegó la última visita que vino de fuera —UTM de los anuncios, fbclid
+   de Meta o una web externa— y el formulario de la newsletter de la home
+   lo manda con el alta a los campos «Origen web · …» del contacto (ids en
+   datos/ghl_campos_origen.json del repo).
+   SOLO CON CONSENTIMIENTO (decisión del 13/11): se guarda en localStorage
+   `mura_origen` si la clienta acepta Análisis o Publicidad en el banner
+   (se lee `mura_consent` igual que el banner: v 1, 365 días); si lo
+   acepta más tarde en la misma página, se guarda al oír `mura:consent`;
+   si lo retira, se borra. Va aquí y no en el Tracking Code porque la
+   cabecera sale en todas las páginas y GHL la sirve desde el principio. */
+(function(){
+ var K='mura_origen',nuevo=null;
+ try{
+  var q=new URLSearchParams(location.search);
+  var o={fuente:q.get('utm_source')||'',medio:q.get('utm_medium')||'',campana:q.get('utm_campaign')||'',anuncio:q.get('utm_content')||'',fbclid:q.get('fbclid')||''};
+  if(!o.fuente&&o.fbclid)o.fuente='meta';
+  if(!o.fuente){
+   var ref='';try{ref=document.referrer?new URL(document.referrer).hostname.replace(/^www\./,''):'';}catch(e){}
+   var yo=location.hostname.replace(/^www\./,'');
+   if(ref&&ref!==yo&&!/leadconnectorhq|gohighlevel|msgsndr|letsbebanana/.test(ref)){o.fuente=ref;o.medio='referencia';}
+  }
+  if(o.fuente){o.entrada=location.pathname;o.fecha=new Date().toISOString();nuevo=o;}
+ }catch(e){}
+ function permitido(c){try{c=c||JSON.parse(localStorage.getItem('mura_consent')||'null');if(!c)return null;if(c.v!==undefined&&c.v!==1)return null;if(c.ts&&Date.now()-c.ts>365*864e5)return null;return !!(c.analitica||c.marketing);}catch(e){return null;}}
+ function aplicar(c){var p=permitido(c);if(p===null)return;try{if(!p){localStorage.removeItem(K);return;}if(nuevo){localStorage.setItem(K,JSON.stringify(nuevo));nuevo=null;}}catch(e){}}
+ aplicar();
+ window.addEventListener('mura:consent',function(ev){aplicar(ev.detail?{v:1,ts:Date.now(),analitica:ev.detail.analitica,marketing:ev.detail.marketing}:null);});
+})();</script>
 <script>(function(){try{var d=JSON.parse(localStorage.getItem('cart_details_rlc7iAyGF4U1nfwAJOJQ')||'{"products":[]}');var n=(d.products||[]).reduce(function(a,x){return a+(x.quantity||0)},0);document.querySelectorAll('.mura-cart-n').forEach(function(e){e.textContent=n});document.querySelectorAll('.mura-cart-w').forEach(function(e){e.style.display=n>0?'inline':'none'});}catch(e){}})();</script>
