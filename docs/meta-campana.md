@@ -164,3 +164,4 @@ Desde la activación (10/11 por la tarde → 11/11 mediodía), por anuncio:
 - Por anuncio: D se lleva el 62 % del gasto (56,71 €, 419 clics, 12 carritos, 1 venta); B convierte mejor por euro
   (14,10 €, 8 carritos); A (7,83 €, 0 vistas de ficha) y C (13,19 €, 1 carrito) flojos. Meta ya les da poco presupuesto.
 - Decisión: no tocar hasta el lunes 16/11 (7 días); entonces valorar pausar A.
+- 14/11: anuncio A (`52588656496756`) pausado por German (0 carritos con 8,25 €). Siguen B, C y D. Totales a 14/11 21:00: 117,37 €, 757 clics, 24 carritos, 1 compra atribuida (232,20 €); sin ventas el 13 y 14/11.
