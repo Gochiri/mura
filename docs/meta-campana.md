@@ -165,3 +165,14 @@ Desde la activación (10/11 por la tarde → 11/11 mediodía), por anuncio:
   (14,10 €, 8 carritos); A (7,83 €, 0 vistas de ficha) y C (13,19 €, 1 carrito) flojos. Meta ya les da poco presupuesto.
 - Decisión: no tocar hasta el lunes 16/11 (7 días); entonces valorar pausar A.
 - 14/11: anuncio A (`52588656496756`) pausado por German (0 carritos con 8,25 €). Siguen B, C y D. Totales a 14/11 21:00: 117,37 €, 757 clics, 24 carritos, 1 compra atribuida (232,20 €); sin ventas el 13 y 14/11.
+
+## Fin de semana 14–15/11
+
+- 14/11: 16,72 € · 160 clics · 111 visitas · 1 carrito. 15/11: 27,68 € · 211 clics · 131 visitas · 151 fichas vistas ·
+  **12 carritos** (el mejor día en carritos). Meta ya da casi todo a D (35,39 € del finde) y algo a B (8,38 €); C apenas
+  gasta (0,42 €).
+- **Venta del 14/11, 23:03 Madrid: 72 € (Bolso Nodo Taupe), del anuncio D.** No pasó por la newsletter; GHL guardó en
+  el contacto la URL de entrada con `utm_content=D_asi_llega_tu_pedido` y el `fbclid`. Meta todavía no la atribuye en
+  sus informes (el píxel sí recibió el Purchase).
+- Total desde el 10/11: 146,45 € · 990 clics · 566 visitas · 36 carritos. Ventas confirmadas de los anuncios:
+  232,20 + 72 = **304,20 €** (≈ 2,1 € por euro).
