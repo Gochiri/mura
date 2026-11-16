@@ -240,6 +240,25 @@ w.querySelector('form').addEventListener('submit',function(e){if(!inp.value.trim
    Publicidad no se envía nada: lo decide el global, no esta página. */
 window.muraMeta=window.muraMeta||{q:[],track:function(){this.q.push(arguments)}};
 function meta(n,d){return window.muraMeta.track(n,d)}
+/* Qué prenda se mira y cuál se añade al carrito, en Clarity (16/11). Meta solo
+   cuenta los AddToCart; Sara quiere saber QUÉ prendas son. Se marca la sesión
+   con las etiquetas `prenda_vista` y `prenda_carrito` (nombre de la pieza) y el
+   evento `anadir_carrito`, que además pide a Clarity guardar esa grabación.
+   Solo con permiso de Análisis: `window.clarity` no existe hasta que el global
+   carga Clarity tras aceptar el banner. Como el global llega tarde, se reintenta
+   durante 15 s; si no hay permiso, no se envía nada. La etiqueta guarda la lista
+   de la sesión para que dos prendas no se pisen. */
+function clar(clave,valor,evento){
+ var n=0;(function ir(){
+  if(typeof window.clarity!=='function'){if(++n<30)setTimeout(ir,500);return;}
+  try{
+   var k='mura_cl_'+clave,l=JSON.parse(sessionStorage.getItem(k)||'[]');
+   if(l.indexOf(valor)<0){l.push(valor);sessionStorage.setItem(k,JSON.stringify(l));}
+   window.clarity('set',clave,l);
+   if(evento){window.clarity('event',evento);window.clarity('upgrade',evento);}
+  }catch(e){}
+ })();
+}
 var API='https://mura-productos.germanborrello-d78.workers.dev';
 var id=new URLSearchParams(location.search).get('id');
 var pieza=null,talla=null,img=0,piezas=[],modelo='';
@@ -477,6 +496,7 @@ document.getElementById('md-add').onclick=function(){
  });
  localStorage.setItem(GHL_CART_KEY,JSON.stringify(cart));
  meta('AddToCart',{content_ids:[pieza.id],content_type:'product',content_name:pieza.nombre,contents:[{id:pieza.id,quantity:1,item_price:t.precio}],value:t.precio,currency:'EUR'});
+ clar('prenda_carrito',pieza.nombre,'anadir_carrito');
  ghlCount();
  document.getElementById('md-added').style.display='block';
 };
@@ -503,6 +523,7 @@ fetch(API+'/products?id='+encodeURIComponent(id||'')).then(function(r){return r.
  }});
  render();
  meta('ViewContent',{content_ids:[pieza.id],content_type:'product',content_name:pieza.nombre,value:precioMin(pieza),currency:'EUR'});
+ clar('prenda_vista',pieza.nombre);
  /* Lo que necesita el catálogo entero va después y aparte: la ficha ya
     está pintada, y si esta llamada falla no se nota. */
  if(modelo||look.nombres.length){

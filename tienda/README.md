@@ -274,3 +274,10 @@ Probado sobre la página real con la respuesta modificada: /prendas 0,465 → 0,
 búsqueda sin resultados, 0. Las agotadas ya no salen en la rejilla (el código publicado las filtra).
 
 **Publicado y medido en vivo el 13/11** (móvil / escritorio): /prendas 0,001 / 0,012 · /colecciones 0 / 0,013 · home 0,007 · ficha 0,001 / 0,043. Queda un caso raro: búsqueda sin resultados en escritorio (`/prendas?q=…` que no casa), 0,24, porque al quitar los rellenos el pie sube.
+
+### Prendas vistas y añadidas en Clarity (16/11)
+
+`producto.html` marca cada sesión en Clarity con las etiquetas `prenda_vista` y `prenda_carrito` (nombre de la
+pieza) y el evento `anadir_carrito`, que además pide guardar la grabación. Meta solo cuenta los AddToCart; esto dice
+qué prendas son. Solo con permiso de Análisis (sin él `window.clarity` no existe y no se envía nada). Se lee en
+Clarity → Panel → Filtros → Etiquetas personalizadas → `prenda_carrito`, eligiendo cada valor.
