@@ -111,4 +111,49 @@
  aplicar();
  window.addEventListener('mura:consent',function(ev){aplicar(ev.detail?{v:1,ts:Date.now(),analitica:ev.detail.analitica,marketing:ev.detail.marketing}:null);});
 })();</script>
+<style>
+/* Barra de «tu selección» (18/11). Clarity: la clienta añade una prenda,
+   vuelve a Prendas a seguir mirando y se va con el carrito lleno; al salir
+   de la ficha nada le recuerda el paso siguiente salvo el «Carrito (1)»
+   de la cabecera. Solo en móvil (es el 95 % del tráfico), solo con algo
+   en el carrito y nunca en /carrito ni en el checkout. Queda por debajo
+   del visor de fotos de la ficha y del banner de cookies. */
+.mura-barra { display: none; }
+@media (max-width: 719px) {
+  .mura-barra.on { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: #1D1B18; color: #F0EEE8 !important; text-decoration: none !important; font-family: 'Jost', sans-serif; font-weight: 300; -webkit-font-smoothing: antialiased; box-shadow: 0 -6px 20px rgba(29,27,24,.12); }
+  .mura-barra-t { font-size: 12px; letter-spacing: .08em; line-height: 1.4; }
+  .mura-barra-t { display: flex; flex-direction: column; gap: 2px; }
+  .mura-barra-l { font-size: 10px; letter-spacing: .24em; text-transform: uppercase; color: #B9B4A9; }
+  .mura-barra-t b { font-weight: 400; font-size: 13px; letter-spacing: .06em; white-space: nowrap; }
+  .mura-barra-c { flex: none; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; border: 1px solid rgba(240,238,232,.6); padding: 11px 14px; white-space: nowrap; }
+  body.mura-barra-hueco { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+}
+</style>
+<a href="/carrito" class="mura-barra" id="mura-barra" aria-label="Ver tu selección y finalizar la compra"><span class="mura-barra-t"><span class="mura-barra-l">Tu selección</span><b class="mura-barra-n"></b></span><span class="mura-barra-c">Finalizar compra →</span></a>
+<script>(function(){
+ if(window.muraBarra)return;window.muraBarra=1;
+ var KEY='cart_details_rlc7iAyGF4U1nfwAJOJQ',ult=null;
+ var p=location.pathname.replace(/\/+$/,'');
+ var fuera=/^\/(carrito|checkout|thank-you|gracias)/.test(p);
+ var b=document.getElementById('mura-barra');if(!b)return;
+ if(b.parentNode!==document.body)document.body.appendChild(b);
+ function eur(n){return (Math.round(n*100)/100).toLocaleString('es-ES',{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2})+' €';}
+ function pinta(){
+  var raw;try{raw=localStorage.getItem(KEY)||'';}catch(e){return;}
+  if(raw===ult)return;ult=raw;
+  var n=0,t=0;try{(JSON.parse(raw||'{}').products||[]).forEach(function(x){var q=x.quantity||0;n+=q;t+=q*((x.selectedPrice&&x.selectedPrice.amount)||0);});}catch(e){}
+  /* De paso, el contador de la cabecera también se pone al día. */
+  document.querySelectorAll('.mura-cart-n').forEach(function(e){e.textContent=n});
+  document.querySelectorAll('.mura-cart-w').forEach(function(e){e.style.display=n>0?'inline':'none'});
+  var si=n>0&&!fuera;
+  b.querySelector('.mura-barra-n').textContent=n+(n===1?' pieza · ':' piezas · ')+eur(t);
+  b.classList.toggle('on',si);document.body.classList.toggle('mura-barra-hueco',si);
+ }
+ pinta();
+ /* La ficha añade al carrito sin recargar: se mira cada segundo (solo lee). */
+ setInterval(pinta,1000);
+ window.addEventListener('storage',pinta);
+ window.addEventListener('pageshow',function(){ult=null;pinta();});
+ b.addEventListener('click',function(){try{if(typeof window.clarity==='function')window.clarity('event','barra_carrito');}catch(e){}});
+})();</script>
 <script>(function(){try{var d=JSON.parse(localStorage.getItem('cart_details_rlc7iAyGF4U1nfwAJOJQ')||'{"products":[]}');var n=(d.products||[]).reduce(function(a,x){return a+(x.quantity||0)},0);document.querySelectorAll('.mura-cart-n').forEach(function(e){e.textContent=n});document.querySelectorAll('.mura-cart-w').forEach(function(e){e.style.display=n>0?'inline':'none'});}catch(e){}})();</script>

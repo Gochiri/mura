@@ -281,3 +281,11 @@ búsqueda sin resultados, 0. Las agotadas ya no salen en la rejilla (el código 
 pieza) y el evento `anadir_carrito`, que además pide guardar la grabación. Meta solo cuenta los AddToCart; esto dice
 qué prendas son. Solo con permiso de Análisis (sin él `window.clarity` no existe y no se envía nada). Se lee en
 Clarity → Panel → Filtros → Etiquetas personalizadas → `prenda_carrito`, eligiendo cada valor.
+
+### Barra «Tu selección» en móvil (18/11)
+
+En la cabecera universal (`web/global/cabecera.html`, «Cabecera MURA» en GHL). En móvil, cuando el carrito tiene algo,
+sale abajo fija «Tu selección · N piezas · total» con «Finalizar compra →» a `/carrito`. No sale en `/carrito`, el
+checkout ni las de gracias. Lee el carrito de GHL cada segundo (la ficha añade sin recargar) y, de paso, pone al día el
+contador de la cabecera. Al pulsarla manda a Clarity el evento `barra_carrito`. Motivo: en Clarity (16–17/11) las
+clientas añadían, volvían a Prendas a seguir mirando y se iban con el carrito lleno.
