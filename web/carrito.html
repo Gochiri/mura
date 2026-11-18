@@ -54,9 +54,22 @@
 </div>
 <div id="mcar-list" style="display:flex;flex-direction:column;gap:22px"></div>
 <div id="mcar-resumen" style="display:none;border-top:1px solid rgba(29,27,24,.14);margin-top:32px;padding-top:24px">
-<div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:24px"><span>Total</span><span id="mcar-total"></span></div>
+<div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:14px"><span>Subtotal</span><span id="mcar-total"></span></div>
+<!-- Envío (18/11). Clarity: las clientas se iban sin saber cuánto costaba
+     el envío, y MÛRA tiene envío gratis y no lo decía en ningún sitio.
+     Tarifas de la zona «España» de la tienda de GHL (leídas por API el
+     18/11): a domicilio con Nacex 3 € hasta 99,98 € y gratis desde
+     99,99 €; recogida en punto Nacex Shop, siempre gratis. Si cambian
+     en GHL, cambiar ENVIO y GRATIS_DESDE abajo. -->
+<div id="mcar-envio" style="font-size:13px;color:#55524B;line-height:1.7;margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;gap:16px"><span>Envío a domicilio (Nacex)</span><span id="mcar-envio-casa"></span></div>
+<div style="display:flex;justify-content:space-between;gap:16px"><span>Recogida en punto Nacex</span><span>Gratis</span></div>
+</div>
+<p id="mcar-falta" style="display:none;font-size:12.5px;color:#1D1B18;line-height:1.7;margin:0 0 6px"></p>
+<div id="mcar-barra" style="display:none;height:2px;background:rgba(29,27,24,.12);margin:0 0 22px"><div id="mcar-barra-in" style="height:100%;background:#1D1B18;width:0"></div></div>
+<div id="mcar-hueco" style="height:12px"></div>
 <a href="/checkout" class="mura-btn" id="mcar-cta">Completar pedido</a>
-<p style="font-size:11px;color:#8A857B;line-height:1.8;margin-top:16px;text-align:center">Los datos de envío y el pago se completan de forma segura en el siguiente paso.<br>15 días para devoluciones desde la recepción.</p>
+<p style="font-size:11px;color:#8A857B;line-height:1.8;margin-top:16px;text-align:center">Eliges la entrega y pagas de forma segura en el siguiente paso.<br>15 días para devoluciones desde la recepción.</p>
 </div>
 </section>
 <script>(function(){
@@ -126,6 +139,15 @@ function render(){
  });
  var total=items.reduce(function(a,c){return a+((c.selectedPrice&&c.selectedPrice.amount)||0)*(c.quantity||1)},0);
  document.getElementById('mcar-total').textContent=fmt(total);
+ envio(total);
+}
+var ENVIO=3,GRATIS_DESDE=99.99;
+function envio(total){
+ var gratis=total>=GRATIS_DESDE,falta=Math.max(0,100-total);
+ document.getElementById('mcar-envio-casa').textContent=gratis?'Gratis':fmt(ENVIO);
+ var f=document.getElementById('mcar-falta'),b=document.getElementById('mcar-barra');
+ if(gratis){f.textContent='Tu envío a domicilio es gratis.';f.style.display='block';b.style.display='none';document.getElementById('mcar-hueco').style.display='block';}
+ else{f.textContent='Te faltan '+fmt(falta)+' para el envío gratis a domicilio.';f.style.display='block';b.style.display='block';document.getElementById('mcar-barra-in').style.width=Math.min(100,total)+'%';document.getElementById('mcar-hueco').style.display='none';}
 }
 render();
 })();</script>

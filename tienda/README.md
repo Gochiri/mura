@@ -289,3 +289,10 @@ sale abajo fija «Tu selección · N piezas · total» con «Finalizar compra �
 checkout ni las de gracias. Lee el carrito de GHL cada segundo (la ficha añade sin recargar) y, de paso, pone al día el
 contador de la cabecera. Al pulsarla manda a Clarity el evento `barra_carrito`. Motivo: en Clarity (16–17/11) las
 clientas añadían, volvían a Prendas a seguir mirando y se iban con el carrito lleno.
+
+### Carrito: envío a la vista (18/11)
+
+`web/carrito.html` es la fuente del elemento de código de `/carrito` desde el 18/11 (el de `tienda/carrito.html` es el
+antiguo, con cabecera y pie copiados dentro). Bajo el subtotal: envío a domicilio 3 € o «Gratis» desde 99,99 €,
+recogida en punto Nacex gratis, y «Te faltan X € para el envío gratis» con una barra de progreso. Las tarifas son las de
+la zona «España» de la tienda de GHL; si cambian allí, se cambian `ENVIO` y `GRATIS_DESDE` en el script.
