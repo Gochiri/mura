@@ -176,3 +176,11 @@ Desde la activación (10/11 por la tarde → 11/11 mediodía), por anuncio:
   sus informes (el píxel sí recibió el Purchase).
 - Total desde el 10/11: 146,45 € · 990 clics · 566 visitas · 36 carritos. Ventas confirmadas de los anuncios:
   232,20 + 72 = **304,20 €** (≈ 2,1 € por euro).
+
+## Pipeline «Ventas / Pedidos» (18/11)
+
+- **«Venta web» es el archivo de ventas web cerradas**, no una cola: Sara mueve ahí a mano los pedidos ya enviados
+  (M100019 el 14/11, M100022 el 18/11). No sirve para contar ventas de un periodo: se filtra por fecha de creación.
+- No mover pedidos antiguos a «05 Entregado»: dispara el workflow 05 (correo «Tu pedido ha llegado», Telegram a Sara
+  y el recorrido de experiencia y reseña).
+- Borradas el 18/11 las oportunidades de prueba M100014 y M100015 (copia en `datos/backups/ghl_oportunidades_prueba_20261118.json`).
