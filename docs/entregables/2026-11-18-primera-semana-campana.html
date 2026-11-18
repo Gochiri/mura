@@ -1,0 +1,224 @@
+<title>MÛRA · Primera semana de campaña</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap">
+<style>
+/* Documento A4 de MÛRA: hojas crema apiladas, una idea por hoja, pensado para
+   descargarse en PDF. Un solo aspecto a propósito (papel), en claro siempre. */
+:root {
+  --papel: #F6F2EB;
+  --tinta: #1E1B1A;
+  --suave: #6B645C;
+  --linea: #D9D1C5;
+  --mesa: #E4DDD2;
+  --fondo-nota: #EDE7DC;
+  --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --sans: 'Jost', 'Helvetica Neue', Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { background: var(--mesa); color: var(--tinta); font-family: var(--sans); font-weight: 300; font-size: 14.5px; line-height: 1.65; padding-block: 28px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); -webkit-font-smoothing: antialiased; }
+.hoja { background: var(--papel); width: 100%; max-width: 210mm; min-height: 297mm; margin: 0 auto 28px; padding: 16mm 17mm 14mm; display: flex; flex-direction: column; box-shadow: 0 2px 18px rgba(30,27,26,.10); }
+.cab { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; border-bottom: 1px solid var(--linea); padding-bottom: 10px; margin-bottom: 26px; }
+.marca { font-family: var(--serif); font-size: 21px; font-weight: 500; letter-spacing: .42em; }
+.cab span { font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--suave); text-align: right; }
+.pie { margin-top: auto; padding-top: 18px; display: flex; justify-content: space-between; gap: 16px; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--suave); border-top: 1px solid var(--linea); }
+.cuerpo { display: flex; flex-direction: column; gap: 18px; padding-bottom: 20px; }
+h1 { font-family: var(--serif); font-weight: 400; font-size: 38px; line-height: 1.12; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--serif); font-weight: 500; font-size: 25px; line-height: 1.2; margin: 0; text-wrap: balance; }
+h3 { font-family: var(--sans); font-weight: 400; font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: var(--suave); margin: 0 0 8px; }
+p { margin: 0; max-width: 68ch; }
+strong { font-weight: 500; }
+.entrada { font-family: var(--serif); font-size: 19px; line-height: 1.5; font-style: italic; color: var(--tinta); }
+.cifras { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--tinta); border-bottom: 1px solid var(--linea); }
+.cifras div { padding: 14px 10px 14px 0; min-width: 0; }
+.cifras div + div { border-left: 1px solid var(--linea); padding-left: 14px; }
+.cifras b { display: block; font-family: var(--serif); font-weight: 500; font-size: 30px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.cifras small { display: block; font-size: 11.5px; color: var(--suave); line-height: 1.45; margin-top: 4px; }
+.tabla { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+th { text-align: left; font-weight: 400; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--suave); padding: 0 10px 8px 0; border-bottom: 1px solid var(--tinta); }
+td { padding: 9px 10px 9px 0; border-bottom: 1px solid var(--linea); vertical-align: top; }
+td.n, th.n { text-align: right; padding-right: 0; padding-left: 10px; white-space: nowrap; }
+td em { font-style: normal; color: var(--suave); font-size: 12px; display: block; }
+.nota { background: var(--fondo-nota); padding: 14px 16px; font-size: 13.5px; }
+.nota p + p { margin-top: 8px; }
+.dos { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 30px; }
+.dos > div { min-width: 0; }
+ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 7px; }
+li { padding-left: 16px; position: relative; max-width: 66ch; }
+li::before { content: '·'; position: absolute; left: 3px; font-weight: 500; }
+.pasos { display: flex; flex-direction: column; }
+.paso { display: grid; grid-template-columns: 110px 1fr; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--linea); }
+.paso:first-child { border-top: 1px solid var(--tinta); }
+.paso span { font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--suave); padding-top: 3px; }
+.fuente { font-size: 11px; color: var(--suave); line-height: 1.5; }
+@media (max-width: 640px) {
+  body { padding-block: 0; padding-left: 0; padding-right: 0; }
+  .hoja { min-height: 0; margin-bottom: 10px; padding: 26px max(18px, env(safe-area-inset-right, 0px)) 22px max(18px, env(safe-area-inset-left, 0px)); box-shadow: none; }
+  h1 { font-size: 30px; } h2 { font-size: 22px; }
+  .cifras { grid-template-columns: 1fr 1fr; }
+  .cifras div:nth-child(3) { border-left: none; padding-left: 0; }
+  .cifras div:nth-child(n+3) { border-top: 1px solid var(--linea); }
+  .dos { grid-template-columns: 1fr; }
+  .paso { grid-template-columns: 1fr; gap: 2px; }
+  .cab span { display: none; }
+}
+@page { size: A4; margin: 0; }
+@media print {
+  body { background: var(--papel); padding: 0; }
+  .hoja { box-shadow: none; margin: 0; max-width: none; width: 210mm; height: 297mm; min-height: 0; page-break-after: always; }
+}
+</style>
+
+<section class="hoja">
+  <div class="cab"><div class="marca">MÛRA</div><span>Campaña en Meta · 10 al 18 de noviembre de 2026</span></div>
+  <div class="cuerpo">
+    <h1>La primera semana de campaña, en claro.</h1>
+    <p class="entrada">Los anuncios están trayendo gente interesada y a buen precio. Donde se nos escapa la venta es entre el carrito y el pago, y ahí es donde hemos trabajado esta semana.</p>
+
+    <div class="cifras">
+      <div><b>195,76 €</b><small>invertidos en Meta en 9 días</small></div>
+      <div><b>728</b><small>visitas a la web desde los anuncios</small></div>
+      <div><b>43</b><small>veces que alguien añadió una prenda al carrito</small></div>
+      <div><b>4</b><small>pedidos pagados, por 545,40 €</small></div>
+    </div>
+
+    <div>
+      <h3>Qué anuncio trae a la gente</h3>
+      <div class="tabla"><table>
+        <thead><tr><th>Anuncio</th><th class="n">Invertido</th><th class="n">Visitas</th><th class="n">Carritos</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Así llega tu pedido</strong><em>El vídeo del paquete. De cada 100 personas que lo ven, 11 hacen clic.</em></td><td class="n">137,11 €</td><td class="n">609</td><td class="n">30</td></tr>
+          <tr><td><strong>El detalle</strong><em>Las prendas vistas de cerca.</em></td><td class="n">34,92 €</td><td class="n">97</td><td class="n">12</td></tr>
+          <tr><td>Looks de calle<em>Casi sin respuesta. Meta ha dejado de enseñarlo.</em></td><td class="n">15,47 €</td><td class="n">12</td><td class="n">1</td></tr>
+          <tr><td>Nueva colección otoño<em>Pausado el 14 de noviembre.</em></td><td class="n">8,26 €</td><td class="n">10</td><td class="n">0</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="dos">
+      <div>
+        <h3>Lo que funciona</h3>
+        <ul>
+          <li>Cada visita cuesta unos 27 céntimos (195,76 € entre 728 visitas).</li>
+          <li>Las dos ventas que sabemos seguro que vienen de los anuncios (232,20 € y 72 €) llegaron por «Así llega tu pedido».</li>
+          <li>Gana el producto de cerca y el empaque. Los looks de calle no han funcionado, como tú misma notaste.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Lo que todavía no</h3>
+        <ul>
+          <li>De 43 carritos han salido 4 pedidos: más o menos 1 de cada 10.</li>
+          <li>La mayoría se va antes de empezar el pago. El problema no está en traer gente, está en ese paso.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="fuente">Fuentes: informes de la cuenta publicitaria de Meta (inversión, visitas, carritos) y pedidos de la tienda en GHL, del 10 al 18 de noviembre. De los 4 pedidos, 2 no tienen origen registrado: pueden venir de los anuncios o no. No se cuenta un pedido repetido de 134 € del día 12.</p>
+  </div>
+  <div class="pie"><span>Profit Technology para MÛRA</span><span>1 / 4</span></div>
+</section>
+
+<section class="hoja">
+  <div class="cab"><div class="marca">MÛRA</div><span>Qué prendas interesan y dónde se pierde la venta</span></div>
+  <div class="cuerpo">
+    <h2>Las prendas que más interesan</h2>
+    <div class="dos">
+      <div>
+        <h3>Vendidas desde el 10 de noviembre</h3>
+        <ul>
+          <li><strong>Conjunto Vínculo en gris</strong>: chaqueta y pantalón.</li>
+          <li><strong>Conjunto Vínculo en burdeos</strong>: chaqueta y pantalón.</li>
+          <li><strong>Bomber Efecto Cocodrilo</strong> y <strong>Bomber Encaje Atelier</strong>, en un mismo pedido.</li>
+          <li><strong>Bolso Nodo Taupe</strong>.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Añadidas al carrito desde el lunes 16</h3>
+        <ul>
+          <li>Pantalón Animal Verde y Top Animal Verde</li>
+          <li>Pantalón Sastre Cinturón Integrado</li>
+          <li>Camisa Blanca Cuello Lazo</li>
+          <li>Camisa Blanca Volantes Joya</li>
+          <li>Bolso Nodo Taupe</li>
+          <li>Chaqueta Vínculo Burdeos</li>
+        </ul>
+      </div>
+    </div>
+    <div class="nota">
+      <p><strong>Los conjuntos se compran enteros.</strong> El Vínculo se vendió dos veces con chaqueta y pantalón juntos, y el Animal Verde se añadió al carrito también completo. Merece la pena enseñarlos siempre como look.</p>
+      <p>La lista del carrito existe desde el lunes 16, cuando empezamos a registrarla. Son pocos días: es una primera pista, y en una semana tendremos el recuento por prenda.</p>
+    </div>
+
+    <h2>Dónde se nos va la venta</h2>
+    <p>Hemos visto las grabaciones de las visitas que añadieron algo al carrito. Las tres clientas reales hicieron lo mismo: llegaron desde el anuncio del paquete, miraron entre 4 y 9 páginas, añadieron una prenda, <strong>siguieron mirando ropa y se fueron</strong> sin pasar por el carrito.</p>
+    <div class="dos">
+      <div>
+        <h3>Lo que vimos</h3>
+        <ul>
+          <li>Al salir de la ficha, nada les recordaba que tenían una prenda guardada ni cómo terminar la compra.</li>
+          <li>El carrito no decía cuánto cuesta el envío, y tampoco que puede ser gratis.</li>
+          <li>Casi todas navegan desde dentro de Instagram o Facebook. Si cierran y vuelven más tarde desde otro navegador, el carrito aparece vacío.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Lo que sí está funcionando</h3>
+        <ul>
+          <li>El aviso de «te has dejado algo» sale bien. En noviembre, 3 personas dejaron el pago a medias: 2 terminaron comprando después de recibirlo, por 352,80 € en total.</li>
+          <li>De las 7 personas que llegaron a empezar el pago, 4 compraron. Hay que llevar a más gente hasta ahí.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="fuente">Fuentes: pedidos y conversaciones de la tienda en GHL; grabaciones del mapa de calor (Microsoft Clarity) del 16 y 17 de noviembre. Tres visitas son pocas para conclusiones firmes; lo seguimos midiendo.</p>
+  </div>
+  <div class="pie"><span>Profit Technology para MÛRA</span><span>2 / 4</span></div>
+</section>
+
+<section class="hoja">
+  <div class="cab"><div class="marca">MÛRA</div><span>Lo que hemos cambiado</span></div>
+  <div class="cuerpo">
+    <h2>Mejoras ya publicadas esta semana</h2>
+    <div class="dos">
+      <div>
+        <h3>En la web</h3>
+        <ul>
+          <li><strong>Una barra fija en el móvil</strong> con «Tu selección», las piezas, el total y el botón «Finalizar compra». Sigue visible mientras la clienta mira otras prendas.</li>
+          <li><strong>El envío, a la vista en el carrito</strong>: a domicilio 3 €, gratis desde 100 €, y recogida gratis en punto Nacex. Si no llega a 100 €, le dice cuánto le falta.</li>
+          <li><strong>La misma línea de envío en cada ficha</strong>, debajo del botón de añadir.</li>
+          <li><strong>Registro de qué prenda se mira y cuál se añade al carrito</strong>, para poder decirte cuáles potenciar.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>En los correos</h3>
+        <ul>
+          <li><strong>Asunto nuevo en el aviso de carrito</strong>: «Tu selección sigue aquí.», en lugar del genérico que salía.</li>
+          <li><strong>Un segundo aviso a las 24 horas</strong> para quien no ha terminado la compra: recuerda que sus piezas siguen guardadas, ofrece ayuda con la talla por WhatsApp y cuenta el envío y las devoluciones.</li>
+        </ul>
+        <p class="fuente" style="margin-top:10px">El texto del segundo aviso te lo enseñamos en la reunión para tu visto bueno.</p>
+      </div>
+    </div>
+
+    <h2>Dos cosas para decidir juntos</h2>
+    <div class="pasos">
+      <div class="paso"><span>Decisión</span><p><strong>Envío gratis desde 99 €.</strong> Cuatro piezas cuestan 99 € justos y pagan 3 € de envío por un euro: la Bomber Efecto Cocodrilo, la Camisa Abeja Joya Azul Marino, la Sobrefalda Negra Bordado Lentejuelas y el Pantalón Sastre Cinturón Integrado.</p></div>
+      <div class="paso"><span>Decisión</span><p><strong>El texto del botón «Añadir a mi selección».</strong> Puede que se entienda como guardar en favoritos y no como comprar. Lo vemos con los datos de la semana que viene.</p></div>
+    </div>
+  </div>
+  <div class="pie"><span>Profit Technology para MÛRA</span><span>3 / 4</span></div>
+</section>
+
+<section class="hoja">
+  <div class="cab"><div class="marca">MÛRA</div><span>Próximos pasos</span></div>
+  <div class="cuerpo">
+    <h2>Próximos pasos</h2>
+    <div class="pasos">
+      <div class="paso"><span>Tú · esta semana</span><p><strong>Grabar las piezas de fiesta en el formato que funciona:</strong> preparar un pedido (manos, papel, caja, tarjeta), detalles muy de cerca (lentejuelas, encaje, caída de la tela) y, si hay look completo, en interior y con luz cálida. Vertical, sin música ni texto. Si llega al Drive antes del sábado 22, montamos a tiempo para Black Friday.</p></div>
+      <div class="paso"><span>Nosotros</span><p><strong>Anuncios nuevos de fiestas y Black Friday</strong> con ese material, y retirar «Looks de calle».</p></div>
+      <div class="paso"><span>Nosotros</span><p><strong>Propuesta de Black Friday (viernes 27):</strong> días, acceso anticipado para la newsletter y cómo encaja con el 10 % de bienvenida. El descuento lo decides tú; te traemos las cuentas.</p></div>
+      <div class="paso"><span>Nosotros</span><p><strong>Volver a mirar las grabaciones en una semana</strong> para ver si, con la barra y el envío a la vista, más gente llega al pago. Y traerte el recuento de prendas más añadidas.</p></div>
+      <div class="paso"><span>Reunión</span><p>Esta semana, el día que mejor te venga. Te enseñamos también dónde mirar tú estos números y qué decisión tomar con cada uno.</p></div>
+    </div>
+    <p class="fuente">No podemos asegurarte cuántas ventas vendrán ni cuándo. Sí sabemos qué anuncio trae a la gente y en qué paso se iba, y eso es lo que estamos corrigiendo.</p>
+  </div>
+  <div class="pie"><span>Profit Technology para MÛRA</span><span>4 / 4</span></div>
+</section>
