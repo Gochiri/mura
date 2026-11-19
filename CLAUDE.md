@@ -158,6 +158,15 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 - **Estilo con Sara:** cercano y claro. Las decisiones de dinero se explican con
   cuentas, nunca con promesas.
 
+## Reunión del 19/11 (acta: `docs/2026-11-19-reunion-sara.md`)
+
+- **Mantenimiento de 500 €/mes: cancelado** por Sara con Sonia (semana del 9/11). Sin definir quién sube productos y stock.
+- **Black Friday 27–30/11** (newsletter desde el 26): por cupón, 20 % / 15 % / sin descuento por tramos; no se acumula
+  al 10 %; misma campaña y conjunto, 2 anuncios de fiestas el 24/11; presupuesto subido solo esos días.
+- **Gestión 350 €/mes:** cuenta desde el 10/11 (mes del 10 al 10).
+- Web desde el 18/11: barra «Tu selección», envío en carrito y ficha, etiquetas de Clarity `prenda_vista` /
+  `prenda_carrito`. LS03 con segundo correo a las 24 h (`correos/20-carrito-abandonado-2.html`).
+
 ## Pendientes abiertos (13/10)
 
 | Pendiente | Quién |
