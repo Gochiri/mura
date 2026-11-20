@@ -163,7 +163,7 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 - **Mantenimiento de 500 €/mes: cancelado** por Sara con Sonia (semana del 9/11). Sin definir quién sube productos y stock.
 - **Black Friday 27–30/11** (newsletter desde el 26): por cupón, 20 % / 15 % / sin descuento por tramos; no se acumula
   al 10 %; misma campaña y conjunto, 2 anuncios de fiestas el 24/11; presupuesto subido solo esos días.
-- **20/11, Sara por WhatsApp:** Black Friday pasa a **toda la web al 15 %** (un solo cupón); **envío gratis desde
+- **20/11, Sara por WhatsApp:** Black Friday pasa a **toda la web con un solo cupón** (dijo 15 % y horas después propuso 20 %; sin cerrar); **envío gratis desde
   99 €**; fecha límite de Navidad **viernes 18/12** (Nacex), con servicio de 12 h por 10 € por decidir.
 - **Gestión 350 €/mes:** cuenta desde el 10/11 (mes del 10 al 10).
 - Web desde el 18/11: barra «Tu selección», envío en carrito y ficha, etiquetas de Clarity `prenda_vista` /

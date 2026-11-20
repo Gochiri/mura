@@ -58,3 +58,11 @@ Documento que se le envió antes: `docs/entregables/2026-11-18-primera-semana-ca
 - **Fecha límite para Navidad:** Nacex le dice **viernes 18/12**. Los envíos son de 24/48 h laborables; lo pedido por
   la mañana sale el mismo día y lo pedido desde las 16 h, a la mañana siguiente. Nacex tiene además un servicio de
   12 h por 10 €, que se puede ofrecer para los pedidos de última hora (por decidir cómo).
+
+**Más tarde, el mismo 20/11:**
+
+- **Sara propone subir el descuento al 20 % en toda la web** (su pareja opina que un 15 % apenas se distingue del 10 %
+  de bienvenida). Pendiente de que lo cierre; sigue sin decir si el bolso de piel y las novedades entran.
+- **Grabación:** subido al Drive el empaquetado de fiesta (encaje, preparación de pedido), el conjunto animal print
+  (pantalón y top en un mismo paquete) y prendas de encaje saliendo de la bolsa. Falta la parte nocturna (exterior e
+  interior con luz cálida), que graba esa noche. Todo en calidad de cámara de fotos. Falta que pase la carpeta.
