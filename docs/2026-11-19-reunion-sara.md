@@ -66,3 +66,13 @@ Documento que se le envió antes: `docs/entregables/2026-11-18-primera-semana-ca
 - **Grabación:** subido al Drive el empaquetado de fiesta (encaje, preparación de pedido), el conjunto animal print
   (pantalón y top en un mismo paquete) y prendas de encaje saliendo de la bolsa. Falta la parte nocturna (exterior e
   interior con luz cálida), que graba esa noche. Todo en calidad de cámara de fotos. Falta que pase la carpeta.
+
+**Cierre del 20/11:**
+
+- **Envío gratis desde 99 €: hecho.** Tarifa de GHL cambiada por API (3 € hasta 98,99 €, gratis desde 99 €; copia en
+  `datos/backups/ghl_envio_zona_20261120.json`) y carrito, ficha y plantilla del segundo correo publicados y
+  comprobados contra el repo.
+- **Sara confirma el 20 %.** Cupón creado por API: código `BLACK20`, 20 % sobre toda la tienda, programado del jueves
+  26/11 a las 00:00 al lunes 30/11 a las 23:59 (hora peninsular), sin límite de usos. Sin excluir el bolso de piel ni
+  las novedades (Sara no lo ha contestado). Falta probar en modo test: que no se suma a `BIENVENIDA10` y si el envío
+  gratis se calcula antes o después del descuento.
