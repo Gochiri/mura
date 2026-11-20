@@ -184,3 +184,4 @@ Desde la activación (10/11 por la tarde → 11/11 mediodía), por anuncio:
 - No mover pedidos antiguos a «05 Entregado»: dispara el workflow 05 (correo «Tu pedido ha llegado», Telegram a Sara
   y el recorrido de experiencia y reseña).
 - Borradas el 18/11 las oportunidades de prueba M100014 y M100015 (copia en `datos/backups/ghl_oportunidades_prueba_20261118.json`).
+- **20/11:** anuncio C · Looks de calle pausado por API con el OK de German (copia en `datos/backups/meta_ad_C_20261120.json`). Activos: D y B.
