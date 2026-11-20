@@ -293,6 +293,6 @@ clientas añadían, volvían a Prendas a seguir mirando y se iban con el carrito
 ### Carrito: envío a la vista (18/11)
 
 `web/carrito.html` es la fuente del elemento de código de `/carrito` desde el 18/11 (el de `tienda/carrito.html` es el
-antiguo, con cabecera y pie copiados dentro). Bajo el subtotal: envío a domicilio 3 € o «Gratis» desde 99,99 €,
+antiguo, con cabecera y pie copiados dentro). Bajo el subtotal: envío a domicilio 3 € o «Gratis» desde 99 € (hasta el 20/11, 99,99 €; lo bajó Sara),
 recogida en punto Nacex gratis, y «Te faltan X € para el envío gratis» con una barra de progreso. Las tarifas son las de
 la zona «España» de la tienda de GHL; si cambian allí, se cambian `ENVIO` y `GRATIS_DESDE` en el script.

@@ -58,9 +58,10 @@
 <!-- Envío (18/11). Clarity: las clientas se iban sin saber cuánto costaba
      el envío, y MÛRA tiene envío gratis y no lo decía en ningún sitio.
      Tarifas de la zona «España» de la tienda de GHL (leídas por API el
-     18/11): a domicilio con Nacex 3 € hasta 99,98 € y gratis desde
-     99,99 €; recogida en punto Nacex Shop, siempre gratis. Si cambian
-     en GHL, cambiar ENVIO y GRATIS_DESDE abajo. -->
+     18/11): a domicilio con Nacex 3 €; recogida en punto Nacex Shop,
+     siempre gratis. Desde el 20/11, por decisión de Sara, el envío a
+     domicilio es gratis desde 99 € (antes 99,99 €). Si cambian en GHL,
+     cambiar ENVIO y GRATIS_DESDE abajo. -->
 <div id="mcar-envio" style="font-size:13px;color:#55524B;line-height:1.7;margin-bottom:12px">
 <div style="display:flex;justify-content:space-between;gap:16px"><span>Envío a domicilio (Nacex)</span><span id="mcar-envio-casa"></span></div>
 <div style="display:flex;justify-content:space-between;gap:16px"><span>Recogida en punto Nacex</span><span>Gratis</span></div>
@@ -141,13 +142,13 @@ function render(){
  document.getElementById('mcar-total').textContent=fmt(total);
  envio(total);
 }
-var ENVIO=3,GRATIS_DESDE=99.99;
+var ENVIO=3,GRATIS_DESDE=99;
 function envio(total){
- var gratis=total>=GRATIS_DESDE,falta=Math.max(0,100-total);
+ var gratis=total>=GRATIS_DESDE,falta=Math.max(0,GRATIS_DESDE-total);
  document.getElementById('mcar-envio-casa').textContent=gratis?'Gratis':fmt(ENVIO);
  var f=document.getElementById('mcar-falta'),b=document.getElementById('mcar-barra');
  if(gratis){f.textContent='Tu envío a domicilio es gratis.';f.style.display='block';b.style.display='none';document.getElementById('mcar-hueco').style.display='block';}
- else{f.textContent='Te faltan '+fmt(falta)+' para el envío gratis a domicilio.';f.style.display='block';b.style.display='block';document.getElementById('mcar-barra-in').style.width=Math.min(100,total)+'%';document.getElementById('mcar-hueco').style.display='none';}
+ else{f.textContent='Te faltan '+fmt(falta)+' para el envío gratis a domicilio.';f.style.display='block';b.style.display='block';document.getElementById('mcar-barra-in').style.width=Math.min(100,total/GRATIS_DESDE*100)+'%';document.getElementById('mcar-hueco').style.display='none';}
 }
 render();
 })();</script>

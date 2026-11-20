@@ -47,3 +47,14 @@ Documento que se le envió antes: `docs/entregables/2026-11-18-primera-semana-ca
 - **Gestión (350 €/mes):** el mes va del 10 al 10. Pendiente de pago (problema con la tarjeta); Henry le pasa el importe.
 - **Tarjeta de Meta:** Sara recargó 100 €. Con el presupuesto subido hace falta saldo suficiente.
 - **No se habló:** el pedido repetido de 134 € del 12/11 y el texto del botón «Añadir a mi selección».
+
+## Respuestas de Sara del 20/11 (WhatsApp)
+
+- **Descuento de Black Friday: toda la web al 15 %.** Sustituye a los tramos del 20 % / 15 % / sin descuento; con un
+  solo cupón desaparece la duda de los dos cupones en un pedido. Por confirmar: si el bolso de piel y las novedades
+  entran también.
+- **Envío gratis: baja a 99 €.** Cambia la tarifa en GHL (zona «España») y el texto en carrito, ficha y segundo correo
+  de carrito abandonado.
+- **Fecha límite para Navidad:** Nacex le dice **viernes 18/12**. Los envíos son de 24/48 h laborables; lo pedido por
+  la mañana sale el mismo día y lo pedido desde las 16 h, a la mañana siguiente. Nacex tiene además un servicio de
+  12 h por 10 €, que se puede ofrecer para los pedidos de última hora (por decidir cómo).
