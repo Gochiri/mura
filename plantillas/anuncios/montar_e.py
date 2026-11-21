@@ -63,7 +63,9 @@ def montar(var, nombre, w, h, ytexto):
     dt = []
     for txt, a, b in TEXTOS:
         txt = txt.replace(":", r"\:")
-        dt.append(f"drawtext=expansion=none:fontfile={FU}/Cormorant.ttf:text='{txt}':fontsize=62:fontcolor=white:"
+        # con código en pantalla se usa Jost: en Cormorant el «20» parece «2o»
+        fuente, cuerpo = ("Jost400.ttf", 50) if var == "E_BF" else ("Cormorant.ttf", 62)
+        dt.append(f"drawtext=expansion=none:fontfile={FU}/{fuente}:text='{txt}':fontsize={cuerpo}:fontcolor=white:"
                   f"box=1:boxcolor={TINTA}@0.62:boxborderw=26:x=(w-text_w)/2:y={ytexto}:"
                   f"enable='between(t,{a:.2f},{b:.2f})'")
     filt.append("[c]" + ",".join(dt) + "[o]")
