@@ -4,7 +4,7 @@
 Uso: python3 montar_e.py <carpeta_planos> <carpeta_fuentes> <carpeta_salida>
   - carpeta_planos: los brutos de Sara ya pasados a 1080x1920 sin audio (C0616.mp4…).
   - carpeta_fuentes: Cormorant.ttf y Jost400.ttf.
-Genera E_9x16.mp4 y E_4x5.mp4, sin música (se mezcla aparte).
+Genera E y E_BF (la copia de Black Friday) en 9x16 y 4x5, sin música (se mezcla aparte).
 """
 import subprocess, sys, os
 PX, FU, OUT = sys.argv[1:4]
@@ -25,14 +25,23 @@ ZOOM = 0.07  # cuánto se acerca o se aleja cada plano
 # (texto, desde, hasta) sobre la línea de tiempo
 t = [0]
 for _, _, d in CORTES: t.append(t[-1] + d)
-TEXTOS = [
-    ("Así llega tu pedido de fiesta", t[0] + 0.2, t[2] - 0.15),
-    ("Preparado a mano, pieza a pieza", t[2] + 0.15, t[5] - 0.15),
-    ("Envío en 24/48 h · Gratis desde 99 €", t[5] + 0.15, t[7] - 0.15)  # la bolsa final va limpia, sin texto encima del logo,
-]
+VARIANTES = {
+    # se publica el 24/11, sin descuento; sigue en diciembre
+    "E": dict(textos=["Así llega tu pedido de fiesta", "Preparado a mano, pieza a pieza",
+                      "Envío en 24/48 h · Gratis desde 99 €"],
+              final=["COLECCIÓN DE FIESTA", "stylebymura.com"]),
+    # copia para Black Friday, solo del 27 al 30/11
+    "E_BF": dict(textos=["Black Friday en MÛRA", "20 % en toda la web",
+                         "Con el código BLACK20"],
+                 final=["20 % · DEL 27 AL 30 DE NOVIEMBRE · CÓDIGO BLACK20", "stylebymura.com"]),
+}
+TRAMOS = [(t[0] + 0.2, t[2] - 0.15), (t[2] + 0.15, t[5] - 0.15),
+          (t[5] + 0.15, t[7] - 0.15)]  # la bolsa final va limpia, sin texto encima del logo
 TINTA, CREMA = "0x1E1B1A", "0xF6F2EB"
 
-def montar(nombre, w, h, ytexto):
+def montar(var, nombre, w, h, ytexto):
+    V = VARIANTES[var]
+    TEXTOS = [(x, a, b) for x, (a, b) in zip(V["textos"], TRAMOS)]
     ins, filt = [], []
     for i, (p, s, d) in enumerate(CORTES):
         ins += ["-ss", str(s), "-t", str(d), "-i", f"{PX}/{p}.mp4"]
@@ -46,15 +55,15 @@ def montar(nombre, w, h, ytexto):
     n = len(CORTES)
     ins += ["-f", "lavfi", "-t", str(FINAL), "-i", f"color=c={CREMA}:s={w}x{h}:r=25"]
     filt.append(
-        f"[{n}:v]drawtext=fontfile={FU}/Cormorant.ttf:text='M Û R A':fontsize=110:fontcolor={TINTA}:x=(w-text_w)/2:y=h*0.40,"
-        f"drawtext=fontfile={FU}/Jost400.ttf:text='COLECCIÓN DE FIESTA':fontsize=42:fontcolor={TINTA}:x=(w-text_w)/2:y=h*0.40+180,"
-        f"drawtext=fontfile={FU}/Jost400.ttf:text='stylebymura.com':fontsize=46:fontcolor={TINTA}:x=(w-text_w)/2:y=h*0.40+280,"
+        f"[{n}:v]drawtext=expansion=none:fontfile={FU}/Cormorant.ttf:text='M Û R A':fontsize=110:fontcolor={TINTA}:x=(w-text_w)/2:y=h*0.40,"
+        f"drawtext=expansion=none:fontfile={FU}/Jost400.ttf:text='{V['final'][0]}':fontsize={42 if len(V['final'][0]) < 25 else 34}:fontcolor={TINTA}:x=(w-text_w)/2:y=h*0.40+180,"
+        f"drawtext=expansion=none:fontfile={FU}/Jost400.ttf:text='{V['final'][1]}':fontsize=46:fontcolor={TINTA}:x=(w-text_w)/2:y=h*0.40+280,"
         f"format=yuv420p,setsar=1[v{n}]")
     filt.append("".join(f"[v{i}]" for i in range(n + 1)) + f"concat=n={n+1}:v=1:a=0[c]")
     dt = []
     for txt, a, b in TEXTOS:
         txt = txt.replace(":", r"\:")
-        dt.append(f"drawtext=fontfile={FU}/Cormorant.ttf:text='{txt}':fontsize=62:fontcolor=white:"
+        dt.append(f"drawtext=expansion=none:fontfile={FU}/Cormorant.ttf:text='{txt}':fontsize=62:fontcolor=white:"
                   f"box=1:boxcolor={TINTA}@0.62:boxborderw=26:x=(w-text_w)/2:y={ytexto}:"
                   f"enable='between(t,{a:.2f},{b:.2f})'")
     filt.append("[c]" + ",".join(dt) + "[o]")
@@ -62,6 +71,7 @@ def montar(nombre, w, h, ytexto):
                     "-map", "[o]", "-an", "-c:v", "libx264", "-crf", "18", "-preset", "medium",
                     "-movflags", "+faststart", f"{OUT}/{nombre}.mp4"], check=True)
 
-montar("E_9x16", 1080, 1920, 1190)
-montar("E_4x5", 1080, 1350, 1130)
+for v in VARIANTES:
+    montar(v, v + "_9x16", 1080, 1920, 1190)
+    montar(v, v + "_4x5", 1080, 1350, 1130)
 print("duración", t[-1] + FINAL)
