@@ -21,6 +21,7 @@ CORTES = [
     ("C0627", 0.6, 2.6),   # la bolsa en la mano
 ]
 FINAL = 2.6  # tarjeta final
+ZOOM = 0.07  # cuánto se acerca o se aleja cada plano
 # (texto, desde, hasta) sobre la línea de tiempo
 t = [0]
 for _, _, d in CORTES: t.append(t[-1] + d)
@@ -37,7 +38,11 @@ def montar(nombre, w, h, ytexto):
         ins += ["-ss", str(s), "-t", str(d), "-i", f"{PX}/{p}.mp4"]
         f = 1.0 if p == "C0627" else 0.55  # en la bolsa, el logo queda abajo
         recorte = f"crop={w}:{h}:(iw-{w})/2:(ih-{h})*{f}," if h < 1920 else ""
-        filt.append(f"[{i}:v]{recorte}eq=gamma=1.08:contrast=1.03,setsar=1,fps=25,format=yuv420p[v{i}]")
+        # zoom sutil: los planos pares se acercan (1,00 → 1,07) y los impares se alejan (1,07 → 1,00)
+        z = f"(1+{ZOOM}*t/{d})" if i % 2 == 0 else f"(1+{ZOOM}*(1-t/{d}))"
+        zoom = (f"scale=w='2*trunc(iw*{z}/2)':h='2*trunc(ih*{z}/2)':eval=frame:flags=bicubic,"
+                f"crop={w}:{h}:(iw-{w})/2:(ih-{h})/2,")
+        filt.append(f"[{i}:v]fps=25,{recorte}{zoom}eq=gamma=1.08:contrast=1.03,setsar=1,format=yuv420p[v{i}]")
     n = len(CORTES)
     ins += ["-f", "lavfi", "-t", str(FINAL), "-i", f"color=c={CREMA}:s={w}x{h}:r=25"]
     filt.append(
