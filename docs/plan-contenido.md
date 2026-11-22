@@ -392,3 +392,18 @@ documento de Sara) y hay que refrescarlo antes de cada grabación: las de talla
 - Descuentos en el texto de los anuncios. El 10 % de la newsletter se queda en
   la web, no en la pauta.
 - Hablar a cámara.
+
+## Anuncios de fiestas y Black Friday (22/11)
+
+Material: carpeta de Drive «Propuesta fiesta. Contenido semana black. 20 Nov» (Sara, 20–21/11). Un ángulo por
+anuncio, tras ver que D atrae visitas y B (detalle) convierte mejor (10–21/11: 4,8 % frente a 12,3 % de visitas que
+añaden al carrito).
+
+| Anuncio | Ángulo | Ritmo | Entra | Script |
+|---|---|---|---|---|
+| E · Fiesta, así llega | Experiencia (pedido del conjunto Animal Verde) | Planos de 2 s, zoom suave alterno | 24/11 | `plantillas/anuncios/montar_e.py` |
+| B2 · Detalle de fiesta | Detalle: lentejuelas, abalorios, encaje | Pausado: planos de 2,5–3 s, fundidos de 0,5 s | 24/11 (sustituye a B) | `plantillas/anuncios/montar_fiesta.py` |
+| F · Fiesta de noche | Ocasión: fotos del pasillo, tono cálido | Se acelera de 2,2 a 1,5 s; el último respira | 24/11 | ídem |
+| G · Black Friday | Oferta: los papeles, 20 % y BLACK20 | Cortes de <1 s, golpes de zoom, destellos | 27/11 | ídem |
+
+Música pendiente. Textos sin revisar por Sara.
