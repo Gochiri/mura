@@ -48,20 +48,23 @@ def TARJ(lineas, fondo, tinta, dur, tr=("fade", 0.0), tam=None):
 # ---------------------------------------------------------------- anuncios
 # tr = transición de ENTRADA a ese plano: (tipo de xfade, duración en s)
 ANUNCIOS = {
-    # B2 · sensorial y pausado: planos largos, fundidos de medio segundo, acercamientos lentos
+    # B2 · sensorial y pausado, v2 (22/11). Sara: «sale la misma tela muchas veces». Ahora cada plano
+    #   es una prenda o un tejido distinto: encaje blanco, bordado negro, abalorios, lentejuelas
+    #   del pantalón blanco, blusa de encaje, pantalón de encaje, flecos y el cuello puesto.
     "B2": dict(
         planos=[
-            V("C0343", 0.0, 1.8, z=(1.0, 1.08)),                                  # bordado de cerca (a 2,3 s entra un brazo movido)
-            F_("1BkZbqB_", 2.7, z=(1.04, 1.16), c=((.5, .55), (.5, .45)), tr=("fade", .5)),  # mano sobre lentejuelas
-            V("C0632", 2.0, 2.8, z=(1.10, 1.0), tr=("fade", .5)),                 # flecos de lentejuelas
-            F_("1Invnp4N", 2.6, z=(1.0, 1.14), c=((.5, .40), (.5, .33)), tr=("fade", .5)),   # cuello de abalorios
-            V("C0343", 3.6, 2.5, z=(1.10, 1.0), tr=("fade", .5)),                 # el bordado a contraluz
-            F_("1N9GpWSo", 2.5, z=(1.0, 1.08), c=((.5, .38), (.5, .34)), tr=("fade", .5)),   # el cuello puesto
-            V("C0635", 2.6, 3.2, z=(1.0, 1.06), tr=("fade", .5)),                 # la blusa sale de la bolsa
+            V("IMG_9827", 3.0, 2.4, z=(1.0, 1.10)),                               # camisa de encaje blanco
+            V("C0343", 0.0, 1.8, z=(1.08, 1.0), tr=("fade", .5)),                # bordado negro
+            F_("1Invnp4N", 2.2, z=(1.0, 1.14), c=((.5, .40), (.5, .33)), tr=("fade", .5)),   # cuello de abalorios
+            V("IMG_9827", 14.0, 2.4, z=(1.08, 1.0), tr=("fade", .5)),            # pantalón blanco con lentejuelas
+            V("C0635", 2.6, 2.6, z=(1.0, 1.06), tr=("fade", .5)),                # blusa de encaje negro
+            V("IMG_9834", 5.0, 2.4, z=(1.06, 1.0), tr=("fade", .5)),             # pantalón de encaje negro
+            F_("1uAsIJMU", 2.3, z=(1.55, 1.40), c=((.5, .74), (.5, .70)), tr=("fade", .5)),  # falda de flecos
+            F_("1N9GpWSo", 2.3, z=(1.0, 1.08), c=((.5, .38), (.5, .34)), tr=("fade", .5)),   # el cuello puesto
             TARJ(["M Û R A", "COLECCIÓN DE FIESTA", "stylebymura.com"], CREMA, TINTA, 2.8, tr=("fade", .7)),
         ],
-        textos=[("Mírala de cerca", 0.3, 4.1), ("Lentejuelas, encaje y abalorios", 4.7, 11.7),
-                ("Colección de fiesta MÛRA", 12.2, 17.5)],
+        textos=[("Mírala de cerca", 0.3, 3.9), ("Encaje, lentejuelas y abalorios", 4.5, 13.2),
+                ("Colección de fiesta MÛRA", 13.7, 18.2)],
         estilo=dict(fuente="CormorantIt.ttf", cuerpo=72, caja=0.42),
         color="eq=contrast=1.04:gamma=1.04",
     ),
