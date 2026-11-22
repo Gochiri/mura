@@ -407,3 +407,6 @@ añaden al carrito).
 | G · Black Friday | Oferta: los papeles, 20 % y BLACK20 | Cortes de <1 s, golpes de zoom, destellos | 27/11 | ídem |
 
 Música pendiente. Textos sin revisar por Sara.
+
+**Música (22/11, generada por German con Suno):** B2 «Elegance in Silence» desde 0 s; F «Evening Glamour» desde 16,5 s
+(donde entra el ritmo); G «Runway Impact» desde 17,0 s (entra la parte fuerte). Fundido de salida en la tarjeta final.
