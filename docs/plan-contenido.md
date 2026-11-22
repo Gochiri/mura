@@ -410,3 +410,6 @@ Música pendiente. Textos sin revisar por Sara.
 
 **Música (22/11, generada por German con Suno):** B2 «Elegance in Silence» desde 0 s; F «Evening Glamour» desde 16,5 s
 (donde entra el ritmo); G «Runway Impact» desde 17,0 s (entra la parte fuerte). Fundido de salida en la tarjeta final.
+
+**Validación (22/11):** Sara valida E, B2 v2, F v3 y G con música. Le gustan más con los cambios (más variedad de
+prendas en B2 y F). Pendiente: subirlos a Meta y el stock de las prendas de B2 y F.
