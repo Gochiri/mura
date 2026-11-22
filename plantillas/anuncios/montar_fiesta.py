@@ -11,7 +11,7 @@ Cada anuncio sale en 9x16 y 4x5, sin música (se mezcla aparte).
 El movimiento se calcula en Python fotograma a fotograma (transformación afín con
 precisión de subpíxel), para que los acercamientos lentos no tiemblen.
 """
-import glob, os, subprocess, sys
+import glob, math, os, subprocess, sys
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 PX, FO, FU, OUT = sys.argv[1:5]
@@ -65,22 +65,36 @@ ANUNCIOS = {
         estilo=dict(fuente="CormorantIt.ttf", cuerpo=72, caja=0.42),
         color="eq=contrast=1.04:gamma=1.04",
     ),
-    # F · expectación y glamour: el ritmo se acelera y el último plano respira; tono cálido
+    # F · fiesta de noche, v2 (22/11): 19 fotos en tres actos con cortes secos y zoom alterno.
+    #   1) el pasillo de noche  2) los detalles, muy rápidos  3) los dos looks sobre pared clara
+    #   y cierre con el plano de las mangas, que se queda más rato.
     "F": dict(
         planos=[
-            F_("1STMc7ss", 2.2, z=(1.0, 1.12), c=((.5, .58), (.5, .46))),        # viene por el pasillo
-            F_("18eyYtEr", 1.9, z=(1.12, 1.0), c=((.52, .40), (.5, .50)), tr=("fade", .2)),
-            F_("1GL-FKvr", 1.7, z=(1.0, 1.14), c=((.5, .45), (.5, .32)), tr=("fade", .2)),
-            F_("1DAY28kp", 1.6, z=(1.12, 1.0), c=((.5, .30), (.5, .45)), tr=("fade", .2)),
-            F_("1pBXw1t2", 1.5, z=(1.0, 1.12), c=((.5, .55), (.5, .45)), tr=("fade", .2)),
-            F_("1Zv_wGr8", 1.5, z=(1.0, 1.10), c=((.5, .5), (.5, .42)), rot=90, tr=("fade", .2)),
-            F_("10emf1mR", 2.6, z=(1.0, 1.16), c=((.5, .45), (.5, .36)), tr=("fade", .2)),  # abre las mangas
-            TARJ(["M Û R A", "COLECCIÓN DE FIESTA", "stylebymura.com"], CREMA, TINTA, 2.6, tr=("fadeblack", .5)),
+            F_("1STMc7ss", 1.5, z=(1.0, 1.10), c=((.5, .58), (.5, .48))),        # viene por el pasillo
+            F_("18eyYtEr", 1.1, z=(1.10, 1.0), c=((.52, .42), (.5, .50))),
+            F_("1Zv_wGr8", 1.1, z=(1.0, 1.10), rot=90),
+            F_("1DAY28kp", 1.1, z=(1.10, 1.0), c=((.5, .30), (.5, .42))),       # brazo en la pared
+            F_("1GL-FKvr", 1.0, z=(1.0, 1.12), c=((.5, .42), (.5, .32))),
+            F_("1pBXw1t2", 1.0, z=(1.10, 1.0)),
+            F_("1Invnp4N", 0.8, z=(1.0, 1.10), c=((.5, .40), (.5, .34)), tr=("fadewhite", .1)),  # cuello en percha
+            F_("1BkZbqB_", 0.8, z=(1.10, 1.0)),                                    # lentejuelas
+            F_("1N9GpWSo", 0.9, z=(1.0, 1.10), c=((.5, .36), (.5, .32))),        # el cuello puesto
+            F_("1jTDJCvs", 0.7, z=(1.15, 1.0)),                                    # abalorios sueltos
+            F_("1IZ5cKru", 1.0, z=(1.0, 1.08), tr=("fadewhite", .1)),             # blazer y flecos, andando
+            F_("1Gj5PvAT", 0.9, z=(1.08, 1.0), c=((.5, .45), (.5, .5))),
+            F_("1uAsIJMU", 1.1, z=(1.0, 1.10), c=((.5, .50), (.5, .40))),        # gira con la blazer
+            F_("1oOXivhX", 0.9, z=(1.10, 1.0), c=((.5, .40), (.5, .50))),
+            F_("1ST0tgGw", 0.9, z=(1.0, 1.08)),
+            F_("12pOiMbP", 1.0, z=(1.0, 1.08), rot=-90),                          # encaje sobre pared clara
+            F_("1iMCT7tb", 1.0, z=(1.08, 1.0)),
+            F_("1zif9vnC", 0.9, z=(1.0, 1.08)),
+            F_("10emf1mR", 2.3, z=(1.0, 1.16), c=((.5, .45), (.5, .36)), tr=("fade", .3)),  # abre las mangas
+            TARJ(["M Û R A", "COLECCIÓN DE FIESTA", "stylebymura.com"], CREMA, TINTA, 2.5, tr=("fade", .5)),
         ],
-        textos=[("Diciembre pide brillo", 0.3, 4.0), ("Encaje y abalorios para tus noches", 4.3, 8.8),
-                ("Colección de fiesta MÛRA", 9.1, 13.0)],
-        estilo=dict(fuente="Cormorant.ttf", cuerpo=72, caja=0),
-        color="colorbalance=rs=.05:gs=.01:bs=-.06:rm=.04:bm=-.04,eq=contrast=1.05:saturation=1.05,vignette=PI/5",
+        textos=[("Diciembre pide brillo", 0.2, 6.6), ("Encaje, lentejuelas y abalorios", 6.9, 10.0),
+                ("Dos looks para tus noches", 10.2, 16.0), ("Colección de fiesta MÛRA", 16.4, 19.9)],
+        estilo=dict(fuente="Cormorant.ttf", cuerpo=72, caja=0.42),
+        color="colorbalance=rs=.03:bs=-.03:rm=.02:bm=-.02,eq=contrast=1.04:saturation=1.03",
     ),
     # G · energía: cortes cortos, golpes de zoom, destellos en blanco, tarjeta final en negro
     "G": dict(
@@ -129,7 +143,8 @@ def tarjeta(p, W, H):
 
 
 def segmento(p, W, H, extra, ruta, color):
-    n = round((p["dur"] + extra) * FPS)
+    # un fotograma de margen: si el plano se queda corto, xfade corta el vídeo ahí
+    n = math.ceil((p["dur"] + extra) * FPS) + 1
     enc = subprocess.Popen(["ffmpeg", "-nostdin", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24",
                             "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
                             *([] if p["tipo"] == "tarjeta" else ["-vf", color]), "-c:v", "libx264", "-crf", "16",
@@ -194,8 +209,9 @@ def montar(nombre, cfg, W, H, ytexto, sufijo):
     subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-y", *ins, "-filter_complex", ";".join(f),
                     "-map", "[o]", "-an", "-r", str(FPS), "-c:v", "libx264", "-crf", "18", "-preset", "medium",
                     "-movflags", "+faststart", f"{OUT}/{nombre}_{sufijo}.mp4"], check=True)
-    for s in segs:
-        os.remove(s)
+    if not os.environ.get('GUARDAR'):
+        for s in segs:
+            os.remove(s)
     print(nombre, sufijo, "duración", round(sum(p["dur"] for p in pl), 2))
 
 
