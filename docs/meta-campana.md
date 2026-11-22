@@ -185,3 +185,19 @@ Desde la activación (10/11 por la tarde → 11/11 mediodía), por anuncio:
   y el recorrido de experiencia y reseña).
 - Borradas el 18/11 las oportunidades de prueba M100014 y M100015 (copia en `datos/backups/ghl_oportunidades_prueba_20261118.json`).
 - **20/11:** anuncio C · Looks de calle pausado por API con el OK de German (copia en `datos/backups/meta_ad_C_20261120.json`). Activos: D y B.
+
+## Anuncios de fiestas y Black Friday (22/11)
+
+Subidos **en pausa** por API con `tienda/meta-subir-anuncios.py` (misma estructura que D: página e Instagram de MÛRA,
+vídeo 9:16 con miniatura propia, botón «Comprar», destino `/prendas`, mejoras automáticas de Meta desactivadas).
+Copia previa en `datos/backups/meta_anuncios_20261122.json`.
+
+| Anuncio | Id | utm_campaign / utm_content | Plan |
+|---|---|---|---|
+| E · Así llega tu pedido de fiesta | 52591554747156 | fiestas_2026 / E_asi_llega_fiesta | Activar 24/11 |
+| B2 · Mírala de cerca | 52591554813156 | fiestas_2026 / B2_detalle_fiesta | Activar 24/11; pausar B |
+| F · Fiesta de noche | 52591554852356 | fiestas_2026 / F_fiesta_noche | Activar 24/11; una semana de prueba (Sara) |
+| G · Black Friday | 52591554954356 | black_friday_2026 / G_black_friday | Activar 27/11; pausar el 30/11 por la noche |
+
+Activar, pausar y subir el presupuesto (40 €/día del 26 al 30) solo con el OK de German. El 1/12 entra un anuncio de
+Navidad con lo que Sara graba con Jaime el viernes 27 por la tarde.
