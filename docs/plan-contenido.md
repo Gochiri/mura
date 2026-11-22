@@ -403,7 +403,7 @@ añaden al carrito).
 |---|---|---|---|---|
 | E · Fiesta, así llega | Experiencia (pedido del conjunto Animal Verde) | Planos de 2 s, zoom suave alterno | 24/11 | `plantillas/anuncios/montar_e.py` |
 | B2 · Detalle de fiesta | Detalle: lentejuelas, abalorios, encaje | Pausado: planos de 2,5–3 s, fundidos de 0,5 s | 24/11 (sustituye a B) | `plantillas/anuncios/montar_fiesta.py` |
-| F · Fiesta de noche (v2) | Ocasión: 19 fotos en tres actos (pasillo, detalles, dos looks) | Cortes secos de 0,7–1,5 s, zoom alterno; el último respira | 24/11 | ídem |
+| F · Fiesta de noche (v3) | Ocasión: alterna los dos looks de noche, cada foto una vez, y suma blusa y falda de encaje saliendo de la bolsa (Sara: «siempre veo el mismo outfit») | 13,7 s, cortes de 0,7–1,3 s; el último respira | 24/11 | ídem |
 | G · Black Friday | Oferta: los papeles, 20 % y BLACK20 | Cortes de <1 s, golpes de zoom, destellos | 27/11 | ídem |
 
 Música pendiente. Textos sin revisar por Sara.

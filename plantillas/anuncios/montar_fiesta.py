@@ -65,34 +65,25 @@ ANUNCIOS = {
         estilo=dict(fuente="CormorantIt.ttf", cuerpo=72, caja=0.42),
         color="eq=contrast=1.04:gamma=1.04",
     ),
-    # F · fiesta de noche, v2 (22/11): 19 fotos en tres actos con cortes secos y zoom alterno.
-    #   1) el pasillo de noche  2) los detalles, muy rápidos  3) los dos looks sobre pared clara
-    #   y cierre con el plano de las mangas, que se queda más rato.
+    # F · fiesta de noche, v3 (22/11). Sara: «siempre veo el mismo outfit». Las fotos de noche solo
+    #   tienen dos looks, así que se alternan (encaje / blazer con flecos), cada foto sale una vez y
+    #   entran otras prendas sacadas de la bolsa (blusa y falda de encaje). Más corto: 13,5 s.
     "F": dict(
         planos=[
-            F_("1STMc7ss", 1.5, z=(1.0, 1.10), c=((.5, .58), (.5, .48))),        # viene por el pasillo
-            F_("18eyYtEr", 1.1, z=(1.10, 1.0), c=((.52, .42), (.5, .50))),
-            F_("1Zv_wGr8", 1.1, z=(1.0, 1.10), rot=90),
-            F_("1DAY28kp", 1.1, z=(1.10, 1.0), c=((.5, .30), (.5, .42))),       # brazo en la pared
-            F_("1GL-FKvr", 1.0, z=(1.0, 1.12), c=((.5, .42), (.5, .32))),
-            F_("1pBXw1t2", 1.0, z=(1.10, 1.0)),
-            F_("1Invnp4N", 0.8, z=(1.0, 1.10), c=((.5, .40), (.5, .34)), tr=("fadewhite", .1)),  # cuello en percha
-            F_("1BkZbqB_", 0.8, z=(1.10, 1.0)),                                    # lentejuelas
-            F_("1N9GpWSo", 0.9, z=(1.0, 1.10), c=((.5, .36), (.5, .32))),        # el cuello puesto
-            F_("1jTDJCvs", 0.7, z=(1.15, 1.0)),                                    # abalorios sueltos
-            F_("1IZ5cKru", 1.0, z=(1.0, 1.08), tr=("fadewhite", .1)),             # blazer y flecos, andando
-            F_("1Gj5PvAT", 0.9, z=(1.08, 1.0), c=((.5, .45), (.5, .5))),
-            F_("1uAsIJMU", 1.1, z=(1.0, 1.10), c=((.5, .50), (.5, .40))),        # gira con la blazer
-            F_("1oOXivhX", 0.9, z=(1.10, 1.0), c=((.5, .40), (.5, .50))),
-            F_("1ST0tgGw", 0.9, z=(1.0, 1.08)),
-            F_("12pOiMbP", 1.0, z=(1.0, 1.08), rot=-90),                          # encaje sobre pared clara
-            F_("1iMCT7tb", 1.0, z=(1.08, 1.0)),
-            F_("1zif9vnC", 0.9, z=(1.0, 1.08)),
-            F_("10emf1mR", 2.3, z=(1.0, 1.16), c=((.5, .45), (.5, .36)), tr=("fade", .3)),  # abre las mangas
-            TARJ(["M Û R A", "COLECCIÓN DE FIESTA", "stylebymura.com"], CREMA, TINTA, 2.5, tr=("fade", .5)),
+            F_("1STMc7ss", 1.3, z=(1.0, 1.10), c=((.5, .58), (.5, .48))),        # look 1: encaje, pasillo
+            F_("1IZ5cKru", 1.0, z=(1.08, 1.0)),                                    # look 2: blazer y flecos
+            F_("1DAY28kp", 1.0, z=(1.0, 1.10), c=((.5, .30), (.5, .40))),        # look 1: brazo en la pared
+            F_("1uAsIJMU", 1.0, z=(1.10, 1.0), c=((.5, .50), (.5, .42))),        # look 2: gira
+            F_("1Invnp4N", 0.7, z=(1.0, 1.10), c=((.5, .40), (.5, .34)), tr=("fadewhite", .1)),  # cuello
+            F_("1BkZbqB_", 0.7, z=(1.10, 1.0)),                                    # lentejuelas
+            V("C0635", 3.0, 1.3, z=(1.0, 1.06), tr=("fadewhite", .1)),           # blusa de encaje
+            V("C0638", 3.6, 1.3, z=(1.06, 1.0)),                                   # falda de encaje
+            V("C0636", 1.8, 1.1, z=(1.0, 1.06)),                                   # top de encaje
+            F_("10emf1mR", 2.0, z=(1.0, 1.14), c=((.5, .45), (.5, .36)), tr=("fade", .3)),  # abre las mangas
+            TARJ(["M Û R A", "COLECCIÓN DE FIESTA", "stylebymura.com"], CREMA, TINTA, 2.3, tr=("fade", .5)),
         ],
-        textos=[("Diciembre pide brillo", 0.2, 6.6), ("Encaje, lentejuelas y abalorios", 6.9, 10.0),
-                ("Dos looks para tus noches", 10.2, 16.0), ("Colección de fiesta MÛRA", 16.4, 19.9)],
+        textos=[("Diciembre pide brillo", 0.2, 4.2), ("Encaje, lentejuelas y abalorios", 4.4, 8.9),
+                ("Colección de fiesta MÛRA", 9.1, 11.0)],
         estilo=dict(fuente="Cormorant.ttf", cuerpo=72, caja=0.42),
         color="colorbalance=rs=.03:bs=-.03:rm=.02:bm=-.02,eq=contrast=1.04:saturation=1.03",
     ),
