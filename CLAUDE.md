@@ -9,6 +9,10 @@ Desde octubre de 2026 el proyecto entra en una segunda fase: **campañas en Meta
 Este archivo resume lo que una sesión nueva necesita saber; el detalle vive en
 `docs/`.
 
+> **Sesión nueva: lee primero `docs/TRASPASO.md`** (estado real a 25/11/2026, calendario, ids vigentes,
+> trampas del entorno y procedimientos) y sus anexos en `docs/traspaso/`. Donde este archivo y el
+> traspaso no coincidan, manda el traspaso.
+
 ## Quién es quién
 
 | Persona | Papel |
@@ -41,7 +45,7 @@ Acta: `docs/2026-10-09-reunion-sara.md`.
 - Sara prevé: Black Friday, Navidad y rebajas → pausa → relanzar con la colección
   de primavera en marzo.
 
-**Mantenimiento (500 €/mes) — abierto.** Sara pide bajarlo porque el mes va a 0 €
+**Mantenimiento (500 €/mes) — CANCELADO por Sara con Sonia (semana del 9/11).** Historia: Sara pidió bajarlo porque el mes va a 0 €
 en ventas y propone pagar por incidencia en vez de vigilancia continua. El equipo
 le debe una propuesta. En el documento «Lo que tiene MÛRA» ya se le enseñó la
 alternativa de 249 €/h. Sara da por hecho que el servidor del catálogo de la web
@@ -169,20 +173,20 @@ Plan completo: `docs/campanas-meta.md`. Lo esencial:
 - Web desde el 18/11: barra «Tu selección», envío en carrito y ficha, etiquetas de Clarity `prenda_vista` /
   `prenda_carrito`. LS03 con segundo correo a las 24 h (`correos/20-carrito-abandonado-2.html`).
 
-## Pendientes abiertos (13/10)
+## Pendientes abiertos (13/10; lista actualizada y priorizada en `docs/TRASPASO.md` §8)
 
 | Pendiente | Quién |
 |---|---|
 | Worker v2.1 desplegado el 21/10: la web vuelve a mostrar productos. Queda desplegar el arreglo de la foto de Accesorios | German |
-| **Campaña en Meta creada en pausa el 21/10** (`docs/meta-campana.md`): campaña `52549695358270` y conjunto `52549695445670`, 22 €/día, inicio 2/11. Para activarla faltan: tarjeta de Sara en la cuenta publicitaria (hoy no hay método de pago), los anuncios, Purchase por GHL y el dominio verificado | German + Sara |
+| **Campaña en Meta: ACTIVA desde el 10/11.** Vigente: cuenta `act_1141864065246239` («Mura - ES», del portafolio de Profit), campaña `52585971203356`, conjunto `52588391414956` (22 €/día, AddToCart del píxel `1799475611078369`), dominio verificado. Anuncios y calendario en `docs/meta-campana.md` y `docs/TRASPASO.md`. La campaña `52549695358270` y el conjunto `52549695445670` de octubre ya no se usan | German |
 | **URGENTE · Rotar el PIT de GHL.** El 21/10 se encontró un token `pit-…` escrito en 5 archivos del repo (`datos/fix_stock.py`, `datos/fix_tpl.py` y 3 copias de workflows) desde agosto; se ha retirado de los archivos, pero sigue en el historial de git. Hay que generar uno nuevo en GHL, revocar el viejo y actualizarlo en el Worker (`GHL_TOKEN`), en n8n y donde se use | German + Sonia |
-| Propuesta de mantenimiento más barata (por incidencia u horas) | German + Sonia |
+| ~~Propuesta de mantenimiento más barata~~ — obsoleto: Sara canceló el mantenimiento (semana del 9/11). Queda sin definir quién sube productos y stock | German + Sara |
 | Cobro: productos y links de pago en la subcuenta de Profit (link A, 425 €), datos fiscales de Sara vía su gestor y factura de cada pago. Instrucciones y estado de los links en `docs/cobros-sara.md` | German + Henry |
 | Meta por API, todo en el portafolio de MÛRA (ID `1239463275926698`; Henry y Oliver son administradores como personas): cuenta publicitaria en EUR con la tarjeta de Sara (el píxel ya existe), usuario del sistema `Conversions API System User` con los activos y la app `MURA Ads` (`1139141968627775`); token con caso de uso de Instagram ya regenerado (16/10) y comprobaciones 1–5 de `docs/meta-api.md` superadas, token sin caducidad (16/10) (`docs/meta-api.md`) | Henry u Oliver; la tarjeta, Sara |
-| Verificar el dominio `stylebymura.com` en Meta por DNS (registro TXT; la metaetiqueta del Head de GHL no sirve), `docs/meta-api.md` | Quien gestione el DNS (Sonia o Sara) |
+| ~~Verificar el dominio en Meta~~ — hecho el 10/11 por registro TXT | — |
 | Banner de consentimiento: código hecho, probado y pegado en GHL (16/10, `tienda/README.md`). Comprobación de cookies hecha por German (16/10); falta corregir la política (`legal/politica-cookies-cambios-2026-10-16.md`), cerrar con GHL el seguimiento `msgsndr_id` y `v2_`/`v3_`, y confirmar que `/politica-cookies` está publicada | Sonia / Claude |
-| Píxel de Meta (paso 1, navegador): pegado en GHL y comprobado en producción (16/10, `tienda/README.md`): PageView, ViewContent y AddToCart llegan al píxel con valor y `eventID`; vistos en Events Manager → Probar eventos (Procesados, origen Navegador). Pendiente de aclarar: `PageView` sale como «Evento personalizado» y hay un aviso en la cabecera. Paso 2: `Purchase` a Meta desde un workflow de GHL, sin n8n (guía en `docs/capi-purchase-ghl.md`, pendiente de montar y de la duda de consentimiento) | German pega, Claude el código |
-| Clarity: código hecho y probado con el ID del proyecto puesto (16/10, `tienda/README.md`); pegado en GHL; tras aceptar carga bien y antes no carga (16/10). Falta comprobar que llegan sesiones al panel. Después, píxel + CAPI con eventos propios | German instala, Claude el código |
+| Píxel de Meta (paso 1, navegador): pegado en GHL y comprobado en producción (16/10, `tienda/README.md`): PageView, ViewContent y AddToCart llegan al píxel con valor y `eventID`; vistos en Events Manager → Probar eventos (Procesados, origen Navegador). Pendiente de aclarar: `PageView` sale como «Evento personalizado» y hay un aviso en la cabecera. Paso 2: `Purchase` montado en SP01 con la acción «Meta Conversion API» (conexión Administrador de anuncios, EUR); falta pasarlo a «Integración», filtrar pruebas y decidir el consentimiento (`docs/capi-purchase-ghl.md`, `docs/TRASPASO.md` §8) | German pega, Claude el código |
+| Clarity: código hecho y probado con el ID del proyecto puesto (16/10, `tienda/README.md`); pegado en GHL; tras aceptar carga bien y antes no carga (16/10). Llegan sesiones (usadas en el informe del 18/11); etiquetas `prenda_vista`/`prenda_carrito` desde el 16/11. Después, píxel + CAPI con eventos propios | German instala, Claude el código |
 | Plan de contenido (`docs/plan-contenido.md`, lienzo https://claude.ai/artifact/V1XTYr6s5LSiWdJrhb1ddG). **Cambios del 24/10 a petición de Sara** (`docs/plan-contenido.md`, apartado «Cambios del 24/10»; documento para ella: https://claude.ai/artifact/Apkpa4fVtBhtQCD9AP2D9E): el backstage sale del primer lote, prioridad a looks de calle de día y de noche (Sevilla), ficha 9 «Cinco prendas» (la graba el 25/10) y bruto de los reels ya publicados (13/9, 21/9, 7/10, 10/9, 9/10, traje verde). Falta: la lista de looks para Sevilla, refrescar el stock antes de grabar, anuncios montados y campaña en pausa el 2/11, grabación 2 (fiestas) del 10 al 16/11. La revisión de la home se hace con los datos de los primeros 7–10 días de anuncios | German + Sara; montaje, Claude |
 | Las 10 fechas de los pendientes del presupuesto (página 3 de «Lo que tiene MÛRA», hoy `[FECHA]`) | Sonia + German |
 | Comprobar si el formulario de devolución valida pedido + correo, como dice el PDF de Sonia (el flujo que dejamos solo comprueba que el contacto existe) | Sonia |

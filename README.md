@@ -1,5 +1,7 @@
 # Mûra — GoHighLevel
 
+> Para retomar el proyecto en una sesión nueva: `docs/TRASPASO.md`.
+
 Proyecto de implementación de la subcuenta **Mûra** (tienda de moda, [stylebymura.com](http://stylebymura.com/)) en GoHighLevel.
 
 - **Location ID:** `NxPF5fOicowujokEk5Hm`
