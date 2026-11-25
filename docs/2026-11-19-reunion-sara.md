@@ -76,3 +76,10 @@ Documento que se le envió antes: `docs/entregables/2026-11-18-primera-semana-ca
   26/11 a las 00:00 al lunes 30/11 a las 23:59 (hora peninsular), sin límite de usos. Sin excluir el bolso de piel ni
   las novedades (Sara no lo ha contestado). Falta probar en modo test: que no se suma a `BIENVENIDA10` y si el envío
   gratis se calcula antes o después del descuento.
+
+**Prueba del cupón en el checkout real (25/11, sin pagar ni dejar datos):** con un cupón temporal idéntico a `BLACK20`
+(20 %, toda la tienda), borrado después; copia previa en `datos/backups/ghl_cupones_20261125.json`.
+
+- Prenda de 109 €: sin cupón, envío gratis. Con el 20 %: descuento 21,80 €, **el envío pasa a 3 €** y el total queda en
+  90,20 €. **GHL calcula el envío gratis sobre el importe ya descontado.**
+- **No se acumulan:** al meter `BIENVENIDA10` después, sustituye al 20 % (total 101,10 €). Solo cabe un código por pedido.

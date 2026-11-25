@@ -136,7 +136,7 @@ Workflow `1e240ed6-846d-42ad-8e34-e4eecc36f67f`: Abandoned Checkout (10 min) →
 ## 5. Riesgos abiertos que hay que mirar ya
 
 ### 5.1 El carrito promete envío gratis que el checkout puede cobrar (Black Friday)
-`web/carrito.html` compara el **subtotal sin descuento** con 99 €. Si GHL calcula la tarifa **después** del cupón, un carrito de 110 € con `BLACK20` (88 €) verá «Tu envío es gratis» y pagará 3 € en el checkout. **No está comprobado** cuál de las dos cosas hace GHL. Opciones: (a) probarlo en modo test antes del 26; (b) cambiar el texto del carrito a «antes de descuentos»; (c) bajar temporalmente el umbral de la tarifa a 79,20 € (= 99 × 0,8) del 26 al 30. Decide German.
+`web/carrito.html` compara el **subtotal sin descuento** con 99 €. **Comprobado el 25/11 en el checkout real:** GHL calcula la tarifa **después** del cupón (109 € con 20 % → 87,20 € + 3 € de envío). Un carrito de 99–123 € con `BLACK20` verá «Tu envío es gratis» en `/carrito` y pagará 3 € en el checkout. Los cupones no se acumulan (el segundo sustituye al primero). Opciones: (a) probarlo en modo test antes del 26; (b) cambiar el texto del carrito a «antes de descuentos»; (c) bajar temporalmente el umbral de la tarifa a 79,20 € (= 99 × 0,8) del 26 al 30. Decide German.
 
 ### 5.2 PayPal
 Ver §3.2. Si está roto, se pierden ventas justo con el presupuesto subido.
