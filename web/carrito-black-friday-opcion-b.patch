@@ -1,0 +1,11 @@
+--- a/web/carrito.html
++++ b/web/carrito.html
+@@ -147,7 +147,7 @@
+  var gratis=total>=GRATIS_DESDE,falta=Math.max(0,GRATIS_DESDE-total);
+  document.getElementById('mcar-envio-casa').textContent=gratis?'Gratis':fmt(ENVIO);
+  var f=document.getElementById('mcar-falta'),b=document.getElementById('mcar-barra');
+- if(gratis){f.textContent='Tu envío a domicilio es gratis.';f.style.display='block';b.style.display='none';document.getElementById('mcar-hueco').style.display='block';}
++ if(gratis){var bf=Date.now()>=Date.UTC(2026,10,25,23)&&Date.now()<Date.UTC(2026,10,30,23);f.textContent=(bf&&total<GRATIS_DESDE/0.8)?'Envío gratis desde 99 €. Si usas un código de descuento, verás el envío definitivo en el pago.':'Tu envío a domicilio es gratis.';f.style.display='block';b.style.display='none';document.getElementById('mcar-hueco').style.display='block';}
+  else{f.textContent='Te faltan '+fmt(falta)+' para el envío gratis a domicilio.';f.style.display='block';b.style.display='block';document.getElementById('mcar-barra-in').style.width=Math.min(100,total/GRATIS_DESDE*100)+'%';document.getElementById('mcar-hueco').style.display='none';}
+ }
+ render();
