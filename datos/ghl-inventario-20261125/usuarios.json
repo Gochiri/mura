@@ -1,0 +1,34 @@
+{
+ "users": [
+  {
+   "id": "iJ0me9HEj59XorkctZHc",
+   "name": "German Emiliano Borrello",
+   "type": null,
+   "role": null,
+   "roles": {
+    "type": "account",
+    "role": "admin",
+    "locationIds": [
+     "NxPF5fOicowujokEk5Hm"
+    ],
+    "restrictSubAccount": false
+   },
+   "deleted": false
+  },
+  {
+   "id": "otc1t7Wd18y2ZmZ8LZU4",
+   "name": "Sara Dominguez",
+   "type": null,
+   "role": null,
+   "roles": {
+    "type": "account",
+    "role": "admin",
+    "locationIds": [
+     "NxPF5fOicowujokEk5Hm"
+    ],
+    "restrictSubAccount": false
+   },
+   "deleted": false
+  }
+ ]
+}

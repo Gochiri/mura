@@ -1,0 +1,122 @@
+{
+ "customValues": [
+  {
+   "id": "Lu69xevlTbUBK3cJYouO",
+   "name": "Marketing - New Booking Thank You Page URL",
+   "fieldKey": "{{ custom_values.new_booking_ty_url }}",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "documentType": "field"
+  },
+  {
+   "id": "ErS58lhSr0mgoxQBG1Il",
+   "name": "Hours of Operation",
+   "fieldKey": "{{ custom_values.hours_of_operation }}",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "documentType": "field"
+  },
+  {
+   "id": "7o5a3nk6cKkZfe3s9sa4",
+   "name": "Marketing - Website Booking Page URL",
+   "fieldKey": "{{ custom_values.marketing__website_booking_page_url }}",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "documentType": "field"
+  },
+  {
+   "id": "HMP3Ylr15FbGBXxLotuc",
+   "name": "Promotion Name",
+   "fieldKey": "{{ custom_values.promotion_name }}",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "documentType": "field"
+  },
+  {
+   "id": "oAnhsilQ6O15JHVKfzxA",
+   "name": "url devoluciones",
+   "fieldKey": "{{ custom_values.url_devoluciones }}",
+   "value": "https://www.stylebymura.com/devoluciones",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "documentType": "field"
+  },
+  {
+   "id": "FBLfpmf7IrgXfx0qMHPR",
+   "name": "url coleccion",
+   "fieldKey": "{{ custom_values.url_coleccion }}",
+   "value": "https://www.stylebymura.com/colecciones",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "documentType": "field"
+  },
+  {
+   "id": "bOzZzgTUQYvlWcdqi5R3",
+   "name": "url home",
+   "fieldKey": "{{ custom_values.url_home }}",
+   "value": "https://www.stylebymura.com",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "documentType": "field"
+  },
+  {
+   "id": "8B61fIdz3kQKmvPa1QC5",
+   "name": "url politica privacidad",
+   "fieldKey": "{{ custom_values.url_politica_privacidad }}",
+   "value": "https://www.stylebymura.com/politica-privacidad",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "documentType": "field"
+  },
+  {
+   "id": "pgkq0YgzDAjzDBsOZyWR",
+   "name": "url contacto",
+   "fieldKey": "{{ custom_values.url_contacto }}",
+   "value": "https://www.stylebymura.com/contacto",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "documentType": "field"
+  },
+  {
+   "id": "9EaNa5MGCw1wHGBv4cAJ",
+   "name": "Contador Pedidos",
+   "fieldKey": "{{ custom_values.contador_pedidos }}",
+   "value": "100023",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "documentType": "field"
+  },
+  {
+   "id": "tlnOIT8yni1Ox7qeSZLo",
+   "name": "url pieza",
+   "fieldKey": "{{ custom_values.url_pieza }}",
+   "value": "",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "documentType": "field"
+  },
+  {
+   "id": "2lydcv75rCemIdPUmcf7",
+   "name": "url feedback",
+   "fieldKey": "{{ custom_values.url_feedback }}",
+   "value": "https://api.leadconnectorhq.com/widget/form/fvVToLx0e9pEjSRD6zq7",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "documentType": "field"
+  },
+  {
+   "id": "jgROgNVr5KtNcrMZ4dio",
+   "name": "url resena google",
+   "fieldKey": "{{ custom_values.url_resena_google }}",
+   "value": "",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "documentType": "field"
+  },
+  {
+   "id": "2S2b9lrVpft9p1adZxN5",
+   "name": "url formulario devolucion",
+   "fieldKey": "{{ custom_values.url_formulario_devolucion }}",
+   "value": "https://www.stylebymura.com/devolucion",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "documentType": "field"
+  },
+  {
+   "id": "1LlNs0Dj61lygDjOvst2",
+   "name": "unsuscribe",
+   "fieldKey": "{{ custom_values.unsuscribe }}",
+   "value": "https://www.stylebymura.com/cancelar_suscripcion",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "documentType": "field",
+   "parentId": null
+  }
+ ],
+ "traceId": "596c7efb-6cb0-4bac-a973-22d437d43425"
+}

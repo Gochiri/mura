@@ -1,0 +1,70 @@
+{
+ "data": [
+  {
+   "_id": "6a764f72df6bb6cc8e548c29",
+   "altType": "location",
+   "altId": "NxPF5fOicowujokEk5Hm",
+   "name": "España",
+   "countries": [
+    {
+     "code": "ES",
+     "states": []
+    }
+   ],
+   "zipCodes": [],
+   "createdAt": "2026-08-07T21:34:42.474Z",
+   "updatedAt": "2026-08-07T21:34:42.474Z",
+   "shippingRates": [
+    {
+     "_id": "6a764f7ad2a595a78307f718",
+     "altType": "location",
+     "altId": "NxPF5fOicowujokEk5Hm",
+     "name": "Envío a tu puerta (Nacex)",
+     "shippingZoneId": "6a764f72df6bb6cc8e548c29",
+     "currency": "EUR",
+     "amount": 3,
+     "conditionType": "price",
+     "isCarrierRate": false,
+     "shippingCarrierServices": [],
+     "createdAt": "2026-08-07T21:34:50.164Z",
+     "updatedAt": "2026-11-20T18:19:29.238Z",
+     "maxCondition": 98.99,
+     "minCondition": 0
+    },
+    {
+     "_id": "6aae4dd8a3e65b12c464df47",
+     "altType": "location",
+     "altId": "NxPF5fOicowujokEk5Hm",
+     "name": "Envío a tu puerta (Nacex)",
+     "shippingZoneId": "6a764f72df6bb6cc8e548c29",
+     "description": "",
+     "currency": "EUR",
+     "amount": 0,
+     "conditionType": "price",
+     "minCondition": 99,
+     "maxCondition": 0,
+     "isCarrierRate": false,
+     "shippingCarrierServices": [],
+     "createdAt": "2026-09-19T08:54:48.623Z",
+     "updatedAt": "2026-11-20T18:19:29.637Z"
+    },
+    {
+     "_id": "6abe01f9264fb342282f59f9",
+     "altType": "location",
+     "altId": "NxPF5fOicowujokEk5Hm",
+     "name": "Recogida en punto Nacex Shop",
+     "shippingZoneId": "6a764f72df6bb6cc8e548c29",
+     "currency": "EUR",
+     "amount": 0,
+     "conditionType": "none",
+     "isCarrierRate": false,
+     "shippingCarrierServices": [],
+     "createdAt": "2026-10-01T06:47:21.178Z",
+     "updatedAt": "2026-10-01T06:47:21.178Z"
+    }
+   ]
+  }
+ ],
+ "total": 1,
+ "traceId": "ae2bb50d-38cc-4d4c-b4d6-6d0641201e04"
+}

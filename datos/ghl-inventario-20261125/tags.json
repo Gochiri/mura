@@ -1,0 +1,325 @@
+{
+ "tags": [
+  {
+   "id": "XdWiagv6hBJQvWqF59Wx",
+   "name": "abrio",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "VTB9cl2bXEHOdpkS1IOk",
+   "name": "add",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "ia6vLyMbOud05S8S2ccM",
+   "name": "carrito-abandonado",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": "6a845e6b18f942d74b7551c1",
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "Sui9DcDGb0tltB463iSl",
+   "name": "carrito-frio",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": "6a845e6b18f942d74b7551c1",
+   "description": null,
+   "color": "#0BA5EC"
+  },
+  {
+   "id": "Le3GixleVdHGMlZqcf4N",
+   "name": "carrito-no-recuperado",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": "6a845e6b18f942d74b7551c1",
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "MLxLW8X8Ew13wfaKGNVz",
+   "name": "compra-1",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": "6a845e6b18f942d74b7551c1",
+   "description": null,
+   "color": "#EAAA08"
+  },
+  {
+   "id": "igHHKmqiosxY794gqxeM",
+   "name": "compra-2",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": "6a845e6b18f942d74b7551c1",
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "jJGH0DNRdfXdZTi5eiXQ",
+   "name": "compradora-activa",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "aRz9vw9N126vCBSJ829t",
+   "name": "devolucion-activa",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "tFPb7igJqWS89wf53iiK",
+   "name": "devolucion-no-encontrada",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": "6a845e6b18f942d74b7551c1",
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "mkS14WEIUAKuVWEWixlH",
+   "name": "email-04-listo",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "xTO6Xcj7KfJOvBMclDda",
+   "name": "email-08-listo",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "YOg4Sx8XyZbWBynDBx9c",
+   "name": "encuesta-completada",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": "6a845e6b18f942d74b7551c1",
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "OozQZEimb8y8RCQSWsTm",
+   "name": "etiqueta-por-imprimir",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": "6a845e6b18f942d74b7551c1",
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "gxMPpR1YMToZnH00shcy",
+   "name": "experiencia",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "DsKT4COBP7O9g2Ai9POB",
+   "name": "feedback",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "6ZezEBrnh4BqbOJ7unDj",
+   "name": "follow-up",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "WDjjAIKb5kZJUDkK0nsp",
+   "name": "high priority",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "0dGDZXR8F8uvObLoyyvX",
+   "name": "inactivo",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "BM5zbLSP8NOUHq72MnC9",
+   "name": "instagram-lead",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "pJDJH0FuQslKdqzn3YuS",
+   "name": "lead-frio",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "cDQCrFG94AITnT20gt1m",
+   "name": "lead-nuevo",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "06xauBLbrrEP84RIsAfX",
+   "name": "newsletter-suscrita",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "PTUl5KfpWndSI0OmrtsS",
+   "name": "nl",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "DVkglsUnbDSFlUrkDXuh",
+   "name": "nl-prueba",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "IYZEaxtS7ADFBjKsmCSX",
+   "name": "nl-sin-confirmar",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "qXBhmClAW1Rtww47ryMV",
+   "name": "nueva-capsula-ready",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "asyuWp025EMX2cqrFEuW",
+   "name": "origen-meta",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "P6uyQWlgM4QtDcm9HvTh",
+   "name": "pedido-confirmado",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": "6a845e6b18f942d74b7551c1",
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "tADzPMfituIfESK2oPK4",
+   "name": "pedido-en-preparacion",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": "6a845e6b18f942d74b7551c1",
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "wzrPFMbVyzF6XfBGPa5j",
+   "name": "pedido-entregado",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": "6a845e6b18f942d74b7551c1",
+   "description": null,
+   "color": "#15B79E"
+  },
+  {
+   "id": "CgIPgt810x6YCEuIcAsv",
+   "name": "pedido-enviado",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": "6a845e6b18f942d74b7551c1",
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "sq3nsF3iRZUyScJZtFi6",
+   "name": "recurrente",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "XyamabsHkZTBj1DnflMV",
+   "name": "reviewera",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "k1wdT7fvuRS5ilFgHDZl",
+   "name": "solicitud-devolucion",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "MpgznHcJ5C88GhJT3DkB",
+   "name": "stock-bajo",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "DTNGvXEciyFXwjK4yfMC",
+   "name": "venta-cash",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": "#EAAA08"
+  },
+  {
+   "id": "N6D1e1QvEo0Oz5WVzAwv",
+   "name": "venta-márketing",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": "#EAAA08"
+  },
+  {
+   "id": "ojIdtcpaobEdAlwX0Wz9",
+   "name": "vip",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  },
+  {
+   "id": "RZMkB9OQAdvaLMGvDhhf",
+   "name": "warm lead",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "categoryId": null,
+   "description": null,
+   "color": null
+  }
+ ],
+ "traceId": "a08f997a-61c0-4eae-ad06-a9c5c730249d"
+}

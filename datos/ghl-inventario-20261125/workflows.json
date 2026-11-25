@@ -1,0 +1,176 @@
+{
+ "workflows": [
+  {
+   "id": "ba5d585c-8482-4810-b2f2-6983616b81a4",
+   "name": "01 · Compra confirmada (SP01)",
+   "status": "published",
+   "version": 71,
+   "createdAt": "2026-03-25T21:17:16.545Z",
+   "updatedAt": "2026-11-09T20:15:32.535Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "b5feddb8-3aac-4f9f-aff8-db0eb9e68270",
+   "name": "02 · Etiquetado compra 1-2",
+   "status": "published",
+   "version": 17,
+   "createdAt": "2026-08-07T15:39:58.619Z",
+   "updatedAt": "2026-09-01T20:14:20.446Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "cc2c8b77-a5e3-4f00-85e0-bc6900b3eb4c",
+   "name": "03 · Email preparacion",
+   "status": "published",
+   "version": 23,
+   "createdAt": "2026-08-07T15:39:42.411Z",
+   "updatedAt": "2026-09-03T11:54:46.546Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "6d73077b-c9ea-4c8d-b1d5-f3167ef2cc4f",
+   "name": "04a · Envio - webhook Nacex + watchdog",
+   "status": "published",
+   "version": 38,
+   "createdAt": "2026-08-11T17:58:11.488Z",
+   "updatedAt": "2026-10-07T13:49:51.513Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "8e6ccd5a-8c90-4d41-b567-9947e61ed627",
+   "name": "05 · Entrega - mover + email",
+   "status": "published",
+   "version": 26,
+   "createdAt": "2026-07-29T11:14:28.522Z",
+   "updatedAt": "2026-09-18T14:50:58.003Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "cb923da8-dd56-4d75-b8e4-77abf25d4e07",
+   "name": "06-12 · Journey post-entrega",
+   "status": "published",
+   "version": 15,
+   "createdAt": "2026-08-07T15:40:00.544Z",
+   "updatedAt": "2026-09-01T20:19:03.061Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "94779fd6-15bb-4387-9af0-244409fcd671",
+   "name": "06b · Encuesta post-compra completada",
+   "status": "published",
+   "version": 14,
+   "createdAt": "2026-08-13T23:32:54.575Z",
+   "updatedAt": "2026-08-29T20:13:50.674Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "6b3064f7-e5e2-4b87-9863-21e6aeb1d1cf",
+   "name": "08a · Devolucion - webhook Nacex",
+   "status": "published",
+   "version": 13,
+   "createdAt": "2026-07-29T14:30:22.285Z",
+   "updatedAt": "2026-08-29T17:56:40.567Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "466bbb08-ae6a-448e-8cc1-9e49b77d3a84",
+   "name": "08b · Email etiqueta devolucion",
+   "status": "published",
+   "version": 13,
+   "createdAt": "2026-08-07T15:39:37.992Z",
+   "updatedAt": "2026-09-01T12:21:24.039Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "8b5fe6af-0d7d-4e62-8682-cbb045400f81",
+   "name": "08c · Devolucion no encontrada",
+   "status": "published",
+   "version": 10,
+   "createdAt": "2026-08-07T15:39:40.708Z",
+   "updatedAt": "2026-09-01T12:23:03.439Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "2197b479-93f6-4d95-bc83-917cca391b67",
+   "name": "08d · Devolucion cerrada - limpiar tag",
+   "status": "published",
+   "version": 5,
+   "createdAt": "2026-08-17T15:15:14.262Z",
+   "updatedAt": "2026-09-01T20:13:03.406Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "c8487fc1-1a00-4b13-b512-9b41a2aa71f6",
+   "name": "AP01 · Control de Stock / Inventario Bajo",
+   "status": "draft",
+   "version": 3,
+   "createdAt": "2026-03-25T21:17:14.885Z",
+   "updatedAt": "2026-08-08T14:04:12.801Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "603de6df-18af-48ff-8b07-508f0cb5ba87",
+   "name": "AP02 · Lanzamiento Nueva Cápsula",
+   "status": "draft",
+   "version": 3,
+   "createdAt": "2026-03-25T21:17:15.088Z",
+   "updatedAt": "2026-08-08T14:04:22.390Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "ab8ade85-851b-47a3-b46f-62a7e9f80ccc",
+   "name": "LS01 · Lead Instagram / Redes",
+   "status": "draft",
+   "version": 2,
+   "createdAt": "2026-03-25T21:17:15.280Z",
+   "updatedAt": "2026-08-08T13:54:08.901Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "f62a24a8-0a2c-4a60-9910-d57a44e34136",
+   "name": "LS02 · Opt-in Newsletter Web",
+   "status": "published",
+   "version": 21,
+   "createdAt": "2026-03-25T21:17:15.504Z",
+   "updatedAt": "2026-09-04T14:40:24.448Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "1e240ed6-846d-42ad-8e34-e4eecc36f67f",
+   "name": "LS03 · Recuperación Carrito Abandonado",
+   "status": "published",
+   "version": 13,
+   "createdAt": "2026-03-25T21:17:15.715Z",
+   "updatedAt": "2026-11-18T19:36:34.743Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "bd86a6cc-6eb3-46a2-8295-514c2e871f46",
+   "name": "PS01 · Solicitud de Reseña / Review",
+   "status": "draft",
+   "version": 2,
+   "createdAt": "2026-03-25T21:17:15.921Z",
+   "updatedAt": "2026-08-08T13:55:18.195Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "56f4c576-885b-4669-b70d-42ddff01fffd",
+   "name": "PS02 · Fidelización VIP / Recurrencia",
+   "status": "draft",
+   "version": 2,
+   "createdAt": "2026-03-25T21:17:16.149Z",
+   "updatedAt": "2026-08-08T13:55:18.195Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "f07f8353-d6e8-4614-a64d-4390d7e305bb",
+   "name": "SP05 · Reactivación Leads Fríos",
+   "status": "draft",
+   "version": 2,
+   "createdAt": "2026-03-25T21:17:17.353Z",
+   "updatedAt": "2026-03-25T21:17:20.124Z",
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  }
+ ],
+ "traceId": "95dfd07d-4826-475b-ab57-ec60af753d9a"
+}

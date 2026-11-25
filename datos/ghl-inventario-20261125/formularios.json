@@ -1,0 +1,26 @@
+{
+ "forms": [
+  {
+   "id": "HBK7tGDlcIFN0vaXoksg",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "name": "Formulario Devolución v2"
+  },
+  {
+   "id": "fmuHvvOjkGBAkPU2LTZN",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "name": "Opt-in Newsletter"
+  },
+  {
+   "id": "a9TsRb4XPYYWJBIrHCif",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "name": "Form 1"
+  },
+  {
+   "id": "fvVToLx0e9pEjSRD6zq7",
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "name": "Encuesta Post-Compra"
+  }
+ ],
+ "total": 4,
+ "traceId": "482d5367-871a-9dd9-9a12-86961d308a7e"
+}

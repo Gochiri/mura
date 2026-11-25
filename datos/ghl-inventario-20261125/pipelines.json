@@ -1,0 +1,210 @@
+{
+ "pipelines": [
+  {
+   "id": "Y47eLa4dAIZTKLu2UpuX",
+   "name": "Leads / Comunidad",
+   "showInFunnel": true,
+   "showInPieChart": true,
+   "useOpportunityProbability": false,
+   "dateAdded": "2026-03-25T21:17:10.290Z",
+   "dateUpdated": "2026-08-29T16:58:05.398Z",
+   "stages": [
+    {
+     "id": "7e15158e-c40d-4db4-9e0a-4e7f03f12db9",
+     "name": "01 Lead Nuevo",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 0,
+     "stageWinProbability": 14.29,
+     "originId": "ZWM2YTZiNGQtYjAxNS00ZGUyLTk5ZDgtODhhNGM2NGEyZjJh"
+    },
+    {
+     "id": "f0fe0f26-70a5-412d-8986-324f7f0234c3",
+     "name": "02 Interesada",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 1,
+     "stageWinProbability": 28.57,
+     "originId": "YmZkMGVlMDYtOTIyZi00MDIzLTljOTEtMmM3MTVjOWJkYzRk"
+    },
+    {
+     "id": "a1fffbf6-a908-4ed5-8db7-8419db2d6ca7",
+     "name": "03 Suscrita Newsletter",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 2,
+     "stageWinProbability": 42.86,
+     "originId": "MzY2NzcyMjAtOGVhYi00NzIyLTg3ODQtNzBhYWQ4MjQ2ODBj"
+    },
+    {
+     "id": "c4e6394b-b8e6-430a-85f9-4d8559db6fd0",
+     "name": "04 Primera Compradora",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 3,
+     "stageWinProbability": 57.14,
+     "originId": "NjQxNWVlMWItN2YzMi00YTVhLThmZDUtOWU4MGQ2ZTA2MDEy"
+    },
+    {
+     "id": "eb42208b-de79-4e1c-8239-9c4f36a95218",
+     "name": "05 Recurrente",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 4,
+     "stageWinProbability": 71.43,
+     "originId": "ODI5NGQ5MWQtNTZlZS00Mjk2LWE1MjEtNmYyNjI0YWFlOWFj"
+    },
+    {
+     "id": "24520481-c54f-474c-bc25-387b038e7b50",
+     "name": "06 VIP",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 5,
+     "stageWinProbability": 85.71,
+     "originId": "MDdmZDg5ODItN2I5Mi00ZTc2LThlZmYtZWE1NzVmYTlmYTZh"
+    },
+    {
+     "id": "bb3d9b61-ccb8-4f38-b711-f5addcc91726",
+     "name": "07 Baja Newsletter",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 6,
+     "stageWinProbability": 85.71,
+     "color": "#64748B"
+    }
+   ],
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "originId": "GbLZFwTHGAq1giSNtRAh"
+  },
+  {
+   "id": "X7wvJysuBVmdXXl1b8zx",
+   "name": "Ventas / Pedidos",
+   "showInFunnel": true,
+   "showInPieChart": true,
+   "useOpportunityProbability": false,
+   "dateAdded": "2026-03-25T21:17:10.351Z",
+   "dateUpdated": "2026-09-18T14:49:33.243Z",
+   "stages": [
+    {
+     "id": "b24a170f-281f-4596-9c1d-667f415fcd2b",
+     "name": "01 · Carrito Abandonado",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 0,
+     "stageWinProbability": 9.09,
+     "originId": "ODZlNGUwNTctMGIzYS00MzJjLWJlNDctZDAyZjYzM2E5YmY4"
+    },
+    {
+     "id": "169e313b-c8f0-47d4-956c-ff02da730fe5",
+     "name": "02 · Pedido Nuevo",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 1,
+     "stageWinProbability": 18.18,
+     "originId": "MWQxMTEyNDEtOGJmOC00ZjQzLWFmNjctZjc4MjNhNjc3MTE2"
+    },
+    {
+     "id": "f492640e-ddfc-4963-aaee-2b587a9065dc",
+     "name": "03 En Preparacion",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 2,
+     "stageWinProbability": 27.27,
+     "originId": "NGQ4MjAwN2EtZTgyNC00YjcyLTlkMGYtNGMzZDQ0OTRlMDA2"
+    },
+    {
+     "id": "a1a2f1fa-b9a2-4741-8f89-11ada366f227",
+     "name": "04 Enviado",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 3,
+     "stageWinProbability": 36.36,
+     "originId": "MmY2YzUyOTgtZjhhZi00YzlmLTg5NzgtOWNmNWQzNjcyMmRi"
+    },
+    {
+     "id": "789b85f8-5a2b-468a-936c-d643308340c3",
+     "name": "05 Entregado",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 4,
+     "stageWinProbability": 45.45,
+     "originId": "NTAwYTliZDctODg3Ni00M2UyLWIzNGMtZjI3NDc2ZDA1YjI0"
+    },
+    {
+     "id": "fb63bc74-f716-4b6e-b3de-df1c24304fde",
+     "name": "06 Devolucion o Cambio",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 5,
+     "stageWinProbability": 54.55,
+     "originId": "ZThlYzU4M2QtNjk0Ni00MjUzLWFiZDItOTdhN2U4OGU2MjBh"
+    },
+    {
+     "id": "d43b2438-8dbd-42a0-b134-01136f4fe806",
+     "name": "07 Devolucion Verificada",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 6,
+     "stageWinProbability": 63.64
+    },
+    {
+     "id": "6701274a-417f-4288-b9d1-5bc658565881",
+     "name": "08 Incidencia Devolucion",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 7,
+     "stageWinProbability": 72.73
+    },
+    {
+     "id": "e786e623-9862-426d-b940-bc26234e1c19",
+     "name": "09 Reembolso",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 8,
+     "stageWinProbability": 81.82
+    },
+    {
+     "id": "ad78ca83-2b17-4edf-8615-994db5f1194e",
+     "name": "Venta web",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 9,
+     "stageWinProbability": 90.91,
+     "originId": "ZjczYmI0NDEtZDc5Ny00YjIyLTgyZGUtZjBkNTJiNTVlNDgy",
+     "color": "#16A34A"
+    },
+    {
+     "id": "146b7663-9e9f-4d9d-8af4-cfbd3297357a",
+     "name": "Venta efectivo",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 10,
+     "stageWinProbability": 100,
+     "color": "#16A34A"
+    },
+    {
+     "id": "a156beb4-a60f-40f8-8cb6-aa8e13093381",
+     "name": "Venta márketing",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 11,
+     "stageWinProbability": 100,
+     "color": "#16A34A"
+    },
+    {
+     "id": "1caed4f0-3a9f-4ae9-a702-341bc1c44be0",
+     "name": "11 Cerrado Perdido",
+     "showInFunnel": true,
+     "showInPieChart": true,
+     "position": 12,
+     "stageWinProbability": 100,
+     "originId": "M2Q0YmIzOWYtOTFlZS00NmQzLWE4NzgtNzBmYmNlMzgwM2E3"
+    }
+   ],
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "originId": "kJPWNtobz4igF54Y8rMB",
+   "colorRenderMode": "none"
+  }
+ ],
+ "traceId": "de422ca3-e93d-4fcc-ad48-585bfda2dffc"
+}

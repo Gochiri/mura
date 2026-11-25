@@ -1,0 +1,25 @@
+{
+ "links": [
+  {
+   "id": "9C634Z92jluRfJtddgIZ",
+   "name": "TL-SP03-EXPERIENCIA-POSITIVA",
+   "redirectTo": "www.google.com",
+   "fieldKey": "{{trigger_link.9C634Z92jluRfJtddgIZ}}",
+   "isInternal": false,
+   "folderId": null,
+   "deleted": false,
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  },
+  {
+   "id": "K2PitLvfhgpKPvX6GeF4",
+   "name": "TL-LS02-CONFIRMAR-OPTIN",
+   "redirectTo": "https://www.stylebymura.com/suscripcion-confirmada",
+   "fieldKey": "{{trigger_link.K2PitLvfhgpKPvX6GeF4}}",
+   "isInternal": false,
+   "folderId": null,
+   "deleted": false,
+   "locationId": "NxPF5fOicowujokEk5Hm"
+  }
+ ],
+ "traceId": "1230e9e3-ca67-4c4b-8316-fe601c399784"
+}

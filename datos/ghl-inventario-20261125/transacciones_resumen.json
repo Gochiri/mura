@@ -1,0 +1,545 @@
+{
+ "data": [
+  {
+   "_id": "6b04082e58c2da9f4fde96ed",
+   "createdAt": "2026-11-23T09:32:30.435Z",
+   "amount": 120.6,
+   "currency": "eur",
+   "status": "refunded",
+   "paymentProviderType": "stripe",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6aff7346377c1166cefac4f6",
+   "createdAt": "2026-11-19T22:08:06.240Z",
+   "amount": 134,
+   "currency": "EUR",
+   "status": "pending",
+   "paymentProviderType": "paypal",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6aff6f097003f428e9d4840b",
+   "createdAt": "2026-11-19T21:50:01.933Z",
+   "amount": 134,
+   "currency": "EUR",
+   "status": "pending",
+   "paymentProviderType": "paypal",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6aff6d9dcb6a522ec5131398",
+   "createdAt": "2026-11-19T21:43:57.323Z",
+   "amount": 69,
+   "currency": "EUR",
+   "status": "pending",
+   "paymentProviderType": "paypal",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6aff5f31cb6a522ec50a81b3",
+   "createdAt": "2026-11-19T20:42:25.989Z",
+   "amount": 102,
+   "currency": "eur",
+   "status": "failed",
+   "paymentProviderType": "stripe",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6aff1f7bee7a5f09504c8a73",
+   "createdAt": "2026-11-19T16:10:35.407Z",
+   "amount": 69,
+   "currency": "EUR",
+   "status": "pending",
+   "paymentProviderType": "paypal",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6af8dac08f7d16d8536f5334",
+   "createdAt": "2026-11-14T22:03:44.730Z",
+   "amount": 72,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6af616e28e2b628fc81fc49d",
+   "createdAt": "2026-11-12T19:43:30.093Z",
+   "amount": 232.2,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6af6061f1a67f47829adc6b4",
+   "createdAt": "2026-11-12T18:31:59.904Z",
+   "amount": 120.6,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6af52cae88490fa6442ed26d",
+   "createdAt": "2026-11-12T03:04:14.847Z",
+   "amount": 120.6,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6af52c1691210f247e1299eb",
+   "createdAt": "2026-11-12T03:01:42.830Z",
+   "amount": 134,
+   "currency": "eur",
+   "status": "refunded",
+   "paymentProviderType": "stripe",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6ae8a248d1515ce0ef30183e",
+   "createdAt": "2026-11-02T14:46:32.430Z",
+   "amount": 151.2,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6ae7a91bd1e3379d34d1eacd",
+   "createdAt": "2026-11-01T21:03:23.066Z",
+   "amount": 159,
+   "currency": "EUR",
+   "status": "failed",
+   "paymentProviderType": "paypal",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6abb7b981d1965478cdee1ac",
+   "createdAt": "2026-09-29T08:49:28.118Z",
+   "amount": 58,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6ab8653cfcf9a8da621f5915",
+   "createdAt": "2026-09-27T00:37:16.135Z",
+   "amount": 134,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6ab3f56dff94a9dd710cd784",
+   "createdAt": "2026-09-23T15:51:09.347Z",
+   "amount": 133.2,
+   "currency": "EUR",
+   "status": "pending",
+   "paymentProviderType": "paypal",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6aaf8efce386f06be876c118",
+   "createdAt": "2026-09-20T07:45:00.155Z",
+   "amount": 72,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6aaf8e0e228fcc8cfb56b3d9",
+   "createdAt": "2026-09-20T07:41:02.063Z",
+   "amount": 773,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6aaf8c129e75eeb37bb8720b",
+   "createdAt": "2026-09-20T07:32:34.175Z",
+   "amount": 72,
+   "currency": "eur",
+   "status": "pending",
+   "paymentProviderType": "stripe",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a99dad7bf07b279ea931bd9",
+   "createdAt": "2026-09-03T20:38:47.560Z",
+   "amount": 145.2,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a99d89629de981569e0f5e9",
+   "createdAt": "2026-09-03T20:29:10.690Z",
+   "amount": 29.1,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a99cc4866be300790863c40",
+   "createdAt": "2026-09-03T19:36:40.738Z",
+   "amount": 161,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a9958bf1a83ab56ac1dc885",
+   "createdAt": "2026-09-03T11:23:43.971Z",
+   "amount": 74.1,
+   "currency": "EUR",
+   "status": "succeeded",
+   "paymentProviderType": "paypal",
+   "liveMode": true,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a91457510d19910bd61c989",
+   "createdAt": "2026-08-28T08:23:17.366Z",
+   "amount": 103.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a914045d56cc1a4e9df9e14",
+   "createdAt": "2026-08-28T08:01:09.265Z",
+   "amount": 103.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a913f9108f3521318bc5361",
+   "createdAt": "2026-08-28T07:58:09.283Z",
+   "amount": 203.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a913c5f11fcf6911f7d1faa",
+   "createdAt": "2026-08-28T07:44:31.796Z",
+   "amount": 83.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a90d4f6c3d68b773d96caff",
+   "createdAt": "2026-08-28T00:23:18.551Z",
+   "amount": 73.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a90d289d464ebe8d530b4cc",
+   "createdAt": "2026-08-28T00:12:57.570Z",
+   "amount": 93.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a90d21baf243c9260bda342",
+   "createdAt": "2026-08-28T00:11:07.870Z",
+   "amount": 163.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a90cec6410a10b52ad6e551",
+   "createdAt": "2026-08-27T23:56:54.857Z",
+   "amount": 163.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a90cd772079b1bebb8ac37d",
+   "createdAt": "2026-08-27T23:51:19.416Z",
+   "amount": 163.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a90ccc48da4b489bb49ac3d",
+   "createdAt": "2026-08-27T23:48:20.377Z",
+   "amount": 123.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a90bddbcaef30218c25a277",
+   "createdAt": "2026-08-27T22:44:43.964Z",
+   "amount": 203.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a9072ea4c4c5c7de62842ac",
+   "createdAt": "2026-08-27T17:24:58.746Z",
+   "amount": 163.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a9071fb6c601cdfe0078edd",
+   "createdAt": "2026-08-27T17:20:59.741Z",
+   "amount": 163.95,
+   "currency": "eur",
+   "status": "failed",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a833be084f3b0ce44ab2058",
+   "createdAt": "2026-08-17T16:50:40.398Z",
+   "amount": 123.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a81e6126d350ca8cdf0b396",
+   "createdAt": "2026-08-16T16:32:18.691Z",
+   "amount": 103.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a81dc99ea2aae91cd21304b",
+   "createdAt": "2026-08-16T15:51:53.061Z",
+   "amount": 109.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a7f548d20e612259d6e011c",
+   "createdAt": "2026-08-14T17:46:53.625Z",
+   "amount": 73.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a7f50fa0b7e72d1c7093e64",
+   "createdAt": "2026-08-14T17:31:38.769Z",
+   "amount": 33.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a7f4a026b5fec82b4574413",
+   "createdAt": "2026-08-14T17:01:54.583Z",
+   "amount": 83.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a7f42daf37c187e8d275728",
+   "createdAt": "2026-08-14T16:31:22.580Z",
+   "amount": 103.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a7f41cb31d17fa7a74dfeba",
+   "createdAt": "2026-08-14T16:26:51.291Z",
+   "amount": 83.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a7f3d258d58de7b370c454b",
+   "createdAt": "2026-08-14T16:07:01.577Z",
+   "amount": 93.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a7f3aa5ae0e1278af746e22",
+   "createdAt": "2026-08-14T15:56:21.875Z",
+   "amount": 163.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a7e4816da119342f913f693",
+   "createdAt": "2026-08-13T22:41:26.907Z",
+   "amount": 103.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a7e010d2672446cad770b27",
+   "createdAt": "2026-08-13T17:38:21.504Z",
+   "amount": 163.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a7dfca0f1fbb803fea6d5fc",
+   "createdAt": "2026-08-13T17:19:28.675Z",
+   "amount": 93.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a7dfbd1113bc4c9805ec209",
+   "createdAt": "2026-08-13T17:16:01.145Z",
+   "amount": 173.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a7dfa0cb2d2f7e528be296f",
+   "createdAt": "2026-08-13T17:08:28.042Z",
+   "amount": 83.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a7df703b9696160e853fda5",
+   "createdAt": "2026-08-13T16:55:31.256Z",
+   "amount": 93.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a7def92b9696160e8508c34",
+   "createdAt": "2026-08-13T16:23:46.318Z",
+   "amount": 163.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  },
+  {
+   "_id": "6a765129c90a0015aa453874",
+   "createdAt": "2026-08-07T21:42:01.501Z",
+   "amount": 93.95,
+   "currency": "eur",
+   "status": "succeeded",
+   "paymentProviderType": "stripe",
+   "liveMode": false,
+   "entitySourceType": "website"
+  }
+ ],
+ "total": 54
+}

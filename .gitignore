@@ -10,3 +10,4 @@ gohighlevel-cli/
 # Secretos
 .env
 *.env
+__pycache__/

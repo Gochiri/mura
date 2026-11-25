@@ -1,0 +1,47 @@
+{
+ "location": {
+  "id": "NxPF5fOicowujokEk5Hm",
+  "name": "MÛRA",
+  "timezone": "Europe/Madrid",
+  "country": "ES",
+  "website": "http://stylebymura.com/",
+  "dateAdded": "2026-02-18T21:28:56.650Z",
+  "settings": {
+   "allowDuplicateContact": false,
+   "allowDuplicateOpportunity": false,
+   "allowFacebookNameMerge": false,
+   "disableContactTimezone": false,
+   "contactUniqueIdentifiers": [
+    "email",
+    "phone"
+   ],
+   "crmSettings": {
+    "deSyncOwners": true,
+    "syncFollowers": {
+     "contact": true,
+     "opportunity": true
+    }
+   },
+   "saasSettings": {
+    "saasMode": "not_activated",
+    "twilioRebilling": {
+     "markup": 10,
+     "enabled": false
+    }
+   }
+  },
+  "social": {
+   "facebookUrl": "",
+   "googlePlus": "",
+   "linkedIn": "",
+   "foursquare": "",
+   "twitter": "",
+   "yelp": "",
+   "instagram": "",
+   "youtube": "",
+   "pinterest": "",
+   "blogRss": "",
+   "googlePlacesId": ""
+  }
+ }
+}

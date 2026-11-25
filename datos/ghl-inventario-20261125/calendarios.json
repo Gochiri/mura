@@ -1,0 +1,686 @@
+{
+ "calendars": [
+  {
+   "id": "9yMgHXmOLajxswoUmbDw",
+   "notifications": [],
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "groupId": "tAsDZ1WrEXVavOPkLqog",
+   "teamMembers": [],
+   "eventType": "RoundRobin_OptimizeForEqualDistribution",
+   "name": "Hair Styling",
+   "description": "",
+   "widgetSlug": "hairstylingandmore-7096276b-3c78-4995-9c26-4d420e3ac84c",
+   "calendarType": "service_booking",
+   "widgetType": "default",
+   "eventTitle": "{{contact.name}}",
+   "eventColor": "#039BE5",
+   "slotDuration": 60,
+   "slotDurationUnit": "mins",
+   "slotInterval": 15,
+   "slotIntervalUnit": "mins",
+   "slotBuffer": 0,
+   "slotBufferUnit": "mins",
+   "appoinmentPerSlot": 1,
+   "appoinmentPerDay": 9007199254740991,
+   "appointmentPerSlot": 1,
+   "appointmentPerDay": 9007199254740991,
+   "openHours": [
+    {
+     "daysOfTheWeek": [
+      1
+     ],
+     "hours": [
+      {
+       "openHour": 0,
+       "openMinute": 0,
+       "closeHour": 0,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      2
+     ],
+     "hours": [
+      {
+       "openHour": 0,
+       "openMinute": 0,
+       "closeHour": 0,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      3
+     ],
+     "hours": [
+      {
+       "openHour": 0,
+       "openMinute": 0,
+       "closeHour": 0,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      4
+     ],
+     "hours": [
+      {
+       "openHour": 0,
+       "openMinute": 0,
+       "closeHour": 0,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      5
+     ],
+     "hours": [
+      {
+       "openHour": 0,
+       "openMinute": 0,
+       "closeHour": 0,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      6
+     ],
+     "hours": [
+      {
+       "openHour": 0,
+       "openMinute": 0,
+       "closeHour": 0,
+       "closeMinute": 0
+      }
+     ]
+    }
+   ],
+   "enableRecurring": false,
+   "recurring": {
+    "monthDays": [],
+    "weekDays": [],
+    "bookingOption": "skip",
+    "count": 1,
+    "freq": "DAILY",
+    "bookingOverlapDefaultStatus": "",
+    "interval": null
+   },
+   "formId": "",
+   "stickyContact": false,
+   "autoConfirm": true,
+   "googleInvitationEmails": false,
+   "allowReschedule": true,
+   "allowCancellation": true,
+   "shouldAssignContactToTeamMember": false,
+   "shouldSkipAssigningContactForExisting": false,
+   "notes": "Phone:- {{contact.phone}}\nEmail:- {{contact.email}}\n\nNeed to make a change to this event?\nReschedule:-\n{{reschedule_link}}\n\nCancel:-\n{{cancellation_link}}",
+   "pixelId": "",
+   "formSubmitType": "ThankYouMessage",
+   "formSubmitThanksMessage": "Thank you for your appointment request. We will contact you shortly to confirm your request. Please call our office at {{location.phone}} if you have any questions.",
+   "availabilityType": 0,
+   "availabilities": [],
+   "guestType": "collect_detail",
+   "consentLabel": "I confirm that I want to receive messages from this company using any contact information I provide.",
+   "allowBookingAfterUnit": "days",
+   "allowBookingForUnit": "days",
+   "preBuffer": 0,
+   "preBufferUnit": "mins",
+   "isActive": false,
+   "enableClientPortalBooking": false
+  },
+  {
+   "id": "GJVV2GNeHU3I0ERHRPhN",
+   "notifications": [
+    {
+     "shouldSendToContact": false,
+     "shouldSendToSelectedUsers": false,
+     "selectedUsers": "",
+     "shouldSendToUser": false,
+     "templateId": "default",
+     "type": "email",
+     "shouldSendToGuest": false
+    }
+   ],
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "groupId": "",
+   "name": "Schedule an Appointment",
+   "description": "",
+   "widgetSlug": "scheduleanappointmentcallwithus-230ad544-8f6f-4125-9d14-f1b202f0becc-7fdb3832-39a9-4c80-a146-60233fb444a1-aaa07f1f-456b-4ccc-81e4-adb0ad437aa3-0b2d0529-cb48-461f-b8b5-712b398e91eb-fcbf65a8-70d2-4009-b786-ac4166822f0b-0f63997e-5577-46ae-9f21-00d7deb09698-e6c21248-3365-4355-9454-17fdbd70ec1e-8b95828a-650c-41a7-9b5b-453855dce734-8dda7b22-1142-4021-8dfc-111b3ef84155-f97c6afe-ae0a-48f4-a6cb-868f7ec9020c-5c4b1d30-8e32-4a3d-9142-617df2faa33d-15d6fb8b-f278-4503-98e4-f435ca7bb65e-1cb0ec42-d374-4a1a-b923-59c59dcc4791-c04f60e7-15a7-4cfc-a977-30d02f1c83fe-9e2a0269-9b69-4caa-95c7-327b47eef86a-7148a0f8-56fc-4953-a6df-77b62b6e9945-ed5e651a-2e21-4efb-8b0c-df72430b9029-ec456e66-05c8-4c0a-ae49-fd8279cf8ce5",
+   "calendarType": "event",
+   "widgetType": "default",
+   "eventTitle": "{{contact.name}}",
+   "eventColor": "#039BE5",
+   "meetingLocation": "",
+   "slotDuration": 30,
+   "slotDurationUnit": "mins",
+   "slotInterval": 30,
+   "slotIntervalUnit": "mins",
+   "slotBuffer": 0,
+   "slotBufferUnit": "mins",
+   "appoinmentPerSlot": 1,
+   "appoinmentPerDay": "",
+   "appointmentPerSlot": 1,
+   "appointmentPerDay": "",
+   "openHours": [
+    {
+     "daysOfTheWeek": [
+      1
+     ],
+     "hours": [
+      {
+       "openHour": 8,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      2
+     ],
+     "hours": [
+      {
+       "openHour": 8,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      3
+     ],
+     "hours": [
+      {
+       "openHour": 8,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      4
+     ],
+     "hours": [
+      {
+       "openHour": 8,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      5
+     ],
+     "hours": [
+      {
+       "openHour": 8,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    }
+   ],
+   "enableRecurring": false,
+   "recurring": {
+    "monthDays": [],
+    "weekDays": [],
+    "bookingOption": "skip",
+    "count": 1,
+    "freq": "DAILY",
+    "bookingOverlapDefaultStatus": "",
+    "interval": null
+   },
+   "formId": "",
+   "stickyContact": false,
+   "autoConfirm": true,
+   "googleInvitationEmails": false,
+   "allowReschedule": true,
+   "allowCancellation": true,
+   "shouldAssignContactToTeamMember": false,
+   "shouldSkipAssigningContactForExisting": false,
+   "notes": "Phone:- {{contact.phone}}\nEmail:- {{contact.email}}\n\nNeed to make a change to this event?\nReschedule:-\n{{reschedule_link}}\n\nCancel:-\n{{cancellation_link}}",
+   "pixelId": "",
+   "formSubmitType": "ThankYouMessage",
+   "formSubmitThanksMessage": "Thank you for your appointment request. We will contact you shortly to confirm your request. Please call our office at {{location.phone}} if you have any questions.",
+   "availabilityType": 0,
+   "availabilities": [],
+   "guestType": "collect_detail",
+   "consentLabel": "I confirm that I want to receive messages from this company using any contact information I provide.",
+   "allowBookingAfterUnit": "days",
+   "allowBookingForUnit": "days",
+   "preBuffer": 0,
+   "preBufferUnit": "mins",
+   "isActive": true,
+   "enableClientPortalBooking": false
+  },
+  {
+   "id": "K1nutLQcizCLrECahBGk",
+   "notifications": [],
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "groupId": "tAsDZ1WrEXVavOPkLqog",
+   "teamMembers": [],
+   "eventType": "RoundRobin_OptimizeForEqualDistribution",
+   "name": "Haircuts",
+   "description": "",
+   "widgetSlug": "haircutsandmore-676d4984-258a-4060-b576-cdbb16c16154",
+   "calendarType": "service_booking",
+   "widgetType": "default",
+   "eventTitle": "{{contact.name}}",
+   "eventColor": "#039BE5",
+   "slotDuration": 60,
+   "slotDurationUnit": "mins",
+   "slotInterval": 15,
+   "slotIntervalUnit": "mins",
+   "slotBuffer": 0,
+   "slotBufferUnit": "mins",
+   "appoinmentPerSlot": 1,
+   "appoinmentPerDay": 9007199254740991,
+   "appointmentPerSlot": 1,
+   "appointmentPerDay": 9007199254740991,
+   "openHours": [
+    {
+     "daysOfTheWeek": [
+      1
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      2
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      3
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      4
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      5
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      6
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    }
+   ],
+   "enableRecurring": false,
+   "recurring": {
+    "monthDays": [],
+    "weekDays": [],
+    "bookingOption": "skip",
+    "count": 1,
+    "freq": "DAILY",
+    "bookingOverlapDefaultStatus": "",
+    "interval": null
+   },
+   "formId": "",
+   "stickyContact": false,
+   "autoConfirm": true,
+   "googleInvitationEmails": false,
+   "allowReschedule": true,
+   "allowCancellation": true,
+   "shouldAssignContactToTeamMember": false,
+   "shouldSkipAssigningContactForExisting": false,
+   "notes": "Phone:- {{contact.phone}}\nEmail:- {{contact.email}}\n\nNeed to make a change to this event?\nReschedule:-\n{{reschedule_link}}\n\nCancel:-\n{{cancellation_link}}",
+   "pixelId": "",
+   "formSubmitType": "ThankYouMessage",
+   "formSubmitThanksMessage": "Thank you for your appointment request. We will contact you shortly to confirm your request. Please call our office at {{location.phone}} if you have any questions.",
+   "availabilityType": 0,
+   "availabilities": [],
+   "guestType": "collect_detail",
+   "consentLabel": "I confirm that I want to receive messages from this company using any contact information I provide.",
+   "allowBookingAfterUnit": "days",
+   "allowBookingForUnit": "days",
+   "preBuffer": 0,
+   "preBufferUnit": "mins",
+   "isActive": false,
+   "enableClientPortalBooking": false
+  },
+  {
+   "id": "O1eMdbZfKi3Z6FCJwbhW",
+   "notifications": [],
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "groupId": "tAsDZ1WrEXVavOPkLqog",
+   "teamMembers": [],
+   "eventType": "RoundRobin_OptimizeForEqualDistribution",
+   "name": "Beard Trims",
+   "description": "",
+   "widgetSlug": "beardtrimsandmore-a746539d-a96f-4c3d-9897-af8b7dfcdae2",
+   "calendarType": "service_booking",
+   "widgetType": "default",
+   "eventTitle": "{{contact.name}}",
+   "eventColor": "#039BE5",
+   "slotDuration": 60,
+   "slotDurationUnit": "mins",
+   "slotInterval": 15,
+   "slotIntervalUnit": "mins",
+   "slotBuffer": 0,
+   "slotBufferUnit": "mins",
+   "appoinmentPerSlot": 1,
+   "appoinmentPerDay": 9007199254740991,
+   "appointmentPerSlot": 1,
+   "appointmentPerDay": 9007199254740991,
+   "openHours": [
+    {
+     "daysOfTheWeek": [
+      1
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      2
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      3
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      4
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      5
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      6
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    }
+   ],
+   "enableRecurring": false,
+   "recurring": {
+    "monthDays": [],
+    "weekDays": [],
+    "bookingOption": "skip",
+    "count": 1,
+    "freq": "DAILY",
+    "bookingOverlapDefaultStatus": "",
+    "interval": null
+   },
+   "formId": "",
+   "stickyContact": false,
+   "autoConfirm": true,
+   "googleInvitationEmails": false,
+   "allowReschedule": true,
+   "allowCancellation": true,
+   "shouldAssignContactToTeamMember": false,
+   "shouldSkipAssigningContactForExisting": false,
+   "notes": "Phone:- {{contact.phone}}\nEmail:- {{contact.email}}\n\nNeed to make a change to this event?\nReschedule:-\n{{reschedule_link}}\n\nCancel:-\n{{cancellation_link}}",
+   "pixelId": "",
+   "formSubmitType": "ThankYouMessage",
+   "formSubmitThanksMessage": "Thank you for your appointment request. We will contact you shortly to confirm your request. Please call our office at {{location.phone}} if you have any questions.",
+   "availabilityType": 0,
+   "availabilities": [],
+   "guestType": "collect_detail",
+   "consentLabel": "I confirm that I want to receive messages from this company using any contact information I provide.",
+   "allowBookingAfterUnit": "days",
+   "allowBookingForUnit": "days",
+   "preBuffer": 0,
+   "preBufferUnit": "mins",
+   "isActive": false,
+   "enableClientPortalBooking": false
+  },
+  {
+   "id": "d85sbxOpOSqrES7LDaAd",
+   "notifications": [],
+   "locationId": "NxPF5fOicowujokEk5Hm",
+   "groupId": "tAsDZ1WrEXVavOPkLqog",
+   "teamMembers": [],
+   "eventType": "RoundRobin_OptimizeForEqualDistribution",
+   "name": "Hot Towel Shaves",
+   "description": "",
+   "widgetSlug": "hottowelshavesandmore-831846e1-37d6-42e0-9b2e-664828fb292c",
+   "calendarType": "service_booking",
+   "widgetType": "default",
+   "eventTitle": "{{contact.name}}",
+   "eventColor": "#039BE5",
+   "slotDuration": 60,
+   "slotDurationUnit": "mins",
+   "slotInterval": 15,
+   "slotIntervalUnit": "mins",
+   "slotBuffer": 0,
+   "slotBufferUnit": "mins",
+   "appoinmentPerSlot": 1,
+   "appoinmentPerDay": 9007199254740991,
+   "appointmentPerSlot": 1,
+   "appointmentPerDay": 9007199254740991,
+   "openHours": [
+    {
+     "daysOfTheWeek": [
+      1
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      2
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      3
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      4
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      5
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    },
+    {
+     "daysOfTheWeek": [
+      6
+     ],
+     "hours": [
+      {
+       "openHour": 9,
+       "openMinute": 0,
+       "closeHour": 17,
+       "closeMinute": 0
+      }
+     ]
+    }
+   ],
+   "enableRecurring": false,
+   "recurring": {
+    "monthDays": [],
+    "weekDays": [],
+    "bookingOption": "skip",
+    "count": 1,
+    "freq": "DAILY",
+    "bookingOverlapDefaultStatus": "",
+    "interval": null
+   },
+   "formId": "",
+   "stickyContact": false,
+   "autoConfirm": true,
+   "googleInvitationEmails": false,
+   "allowReschedule": true,
+   "allowCancellation": true,
+   "shouldAssignContactToTeamMember": false,
+   "shouldSkipAssigningContactForExisting": false,
+   "notes": "Phone:- {{contact.phone}}\nEmail:- {{contact.email}}\n\nNeed to make a change to this event?\nReschedule:-\n{{reschedule_link}}\n\nCancel:-\n{{cancellation_link}}",
+   "pixelId": "",
+   "formSubmitType": "ThankYouMessage",
+   "formSubmitThanksMessage": "Thank you for your appointment request. We will contact you shortly to confirm your request. Please call our office at {{location.phone}} if you have any questions.",
+   "availabilityType": 0,
+   "availabilities": [],
+   "guestType": "collect_detail",
+   "consentLabel": "I confirm that I want to receive messages from this company using any contact information I provide.",
+   "allowBookingAfterUnit": "days",
+   "allowBookingForUnit": "days",
+   "preBuffer": 0,
+   "preBufferUnit": "mins",
+   "isActive": false,
+   "enableClientPortalBooking": false
+  }
+ ],
+ "traceId": "831dfb629149cff3783868d4b023c8b2"
+}

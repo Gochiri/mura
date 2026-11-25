@@ -1,0 +1,24 @@
+{
+ "etapas": {
+  "Leads / Comunidad / 01 Lead Nuevo": 0,
+  "Leads / Comunidad / 02 Interesada": 0,
+  "Leads / Comunidad / 03 Suscrita Newsletter": 64,
+  "Leads / Comunidad / 04 Primera Compradora": 0,
+  "Leads / Comunidad / 05 Recurrente": 0,
+  "Leads / Comunidad / 06 VIP": 0,
+  "Leads / Comunidad / 07 Baja Newsletter": 0,
+  "Ventas / Pedidos / 01 · Carrito Abandonado": 8,
+  "Ventas / Pedidos / 02 · Pedido Nuevo": 0,
+  "Ventas / Pedidos / 03 En Preparacion": 1,
+  "Ventas / Pedidos / 04 Enviado": 2,
+  "Ventas / Pedidos / 05 Entregado": 0,
+  "Ventas / Pedidos / 06 Devolucion o Cambio": 0,
+  "Ventas / Pedidos / 07 Devolucion Verificada": 0,
+  "Ventas / Pedidos / 08 Incidencia Devolucion": 0,
+  "Ventas / Pedidos / 09 Reembolso": 0,
+  "Ventas / Pedidos / Venta web": 9,
+  "Ventas / Pedidos / Venta efectivo": 0,
+  "Ventas / Pedidos / Venta márketing": 0,
+  "Ventas / Pedidos / 11 Cerrado Perdido": 0
+ }
+}
