@@ -4,6 +4,8 @@ Estado consultado por API el 25/11 a las 18:45–19:30 (hora de Madrid). No se h
 
 ## 1. Riesgo carrito/cupón (TRASPASO §5.1)
 
+> **Resuelto el 25/11 a las 21:50 (Madrid), prueba en el checkout real desde la sesión de Claude** (se permitió `stcdn.leadconnectorhq.com` en el entorno). Cupón temporal idéntico a `BLACK20` (20 %, toda la tienda), sin correo ni datos: no se creó contacto ni carrito abandonado; el cupón se borró. Resultado con el Pantalón Palazzo Blanco (109 €): sin cupón, envío gratis; **con el 20 %, el envío pasa a 3 €** (109 − 21,80 + 3 = 90,20 €). **GHL calcula el envío gratis sobre el importe ya descontado → aplica la opción (c) o la (b).** Y **no se acumulan**: al aplicar `BIENVENIDA10` después, sustituye al 20 % (total 101,10 €). La prueba (a) de abajo ya no hace falta.
+
 **Comprobado por API (solo lectura):**
 
 - `BLACK20`: 20 %, `scheduled`, del 25/11 23:00 UTC al 30/11 22:59:59 UTC (es decir, del 26/11 a las 00:00 al 30/11 a las 23:59 peninsular), sin límite de usos ni de productos.
