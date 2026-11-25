@@ -201,3 +201,6 @@ Copia previa en `datos/backups/meta_anuncios_20261122.json`.
 
 Activar, pausar y subir el presupuesto (40 €/día del 26 al 30) solo con el OK de German. El 1/12 entra un anuncio de
 Navidad con lo que Sara graba con Jaime el viernes 27 por la tarde.
+
+- **25/11:** E, B2 y F activados y B pausado, con el OK de German (copia en `datos/backups/meta_anuncios_20261125.json`).
+  Activos: D, E, B2 y F, a 22 €/día. G sigue en pausa hasta el viernes 27.
