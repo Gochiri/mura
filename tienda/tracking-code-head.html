@@ -2713,6 +2713,9 @@ window.MURA_PARTE = 'head';
     '.mura-dto-p { font-size: 14px; line-height: 1.9; color: #55524B; margin: 0 0 28px; }',
     ".mura-dto-btn, .mura-dto-btn:hover, .mura-dto-btn:visited { display: flex; align-items: center; justify-content: center; height: 52px; background: #1D1B18; color: #F0EEE8 !important; text-decoration: none !important; font-family: 'Jost', sans-serif; font-size: 11.5px; letter-spacing: .24em; text-transform: uppercase; font-weight: 300; transition: background .2s ease; }",
     '.mura-dto-btn:hover { background: #38352F; }',
+    /* Black Friday: el código, grande y copiable */
+    ".mura-dto-cod { display: flex; width: 100%; align-items: center; justify-content: space-between; margin: 0 0 14px; padding: 14px 16px; background: none; border: 1px dashed #1D1B18; cursor: pointer; font-family: 'Jost', sans-serif; font-weight: 400; font-size: 17px; letter-spacing: .22em; color: #1D1B18; }",
+    ".mura-dto-cod span { font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: #8A857B; font-weight: 300; }",
     ".mura-dto-no { display: block; width: 100%; margin-top: 18px; padding: 4px 0; background: none; border: none; cursor: pointer; text-align: center; font-family: 'Jost', sans-serif; font-weight: 300; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #8A857B; text-decoration: none; }",
     '.mura-dto-no:hover { color: #1D1B18; }',
     ".mura-dto-x { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; background: none; border: none; cursor: pointer; font-family: 'Jost', sans-serif; font-weight: 200; font-size: 22px; line-height: 1; color: #8A857B; }",
@@ -2734,9 +2737,23 @@ window.MURA_PARTE = 'head';
     '}'
   ].join('\n');
 
+  /* BLACK FRIDAY (27/11): mientras dura la campaña, el mismo panel anuncia
+     el código en vez del 10 % de la newsletter, y sale también a quien ya
+     está suscrita. Fuera de las fechas vuelve solo al 10 %: no hay que
+     volver a pegar nada el 1/12. Fechas en UTC: del 27/11 00:00 al 30/11
+     23:59 hora peninsular, igual que el cupón BLACK20 en GHL. */
+  var CAMPANA = {
+    desde: Date.UTC(2026, 10, 26, 23, 0, 0),
+    hasta: Date.UTC(2026, 10, 30, 22, 59, 59),
+    codigo: 'BLACK20',
+    pct: '20 %'
+  };
+  function hayCampana() { var t = Date.now(); return t >= CAMPANA.desde && t <= CAMPANA.hasta; }
+
   function montarAviso10() {
+    var BF = hayCampana();
     var CLAVE = 'mura_dto';              /* localStorage: 'suscrita' → no sale más */
-    var CLAVE_VISTO = 'mura_dto_visto';  /* sessionStorage: el panel ya entró en esta visita */
+    var CLAVE_VISTO = BF ? 'mura_bf_visto' : 'mura_dto_visto';  /* sessionStorage: el panel ya entró en esta visita */
     var ENTRA = 1000, SE_RECOGE = 6000;
     var esHome = path === '';
 
@@ -2764,7 +2781,7 @@ window.MURA_PARTE = 'head';
        alguien ejecuta la fuente entera desde el <head>. */
     if (!document.body) { document.addEventListener('DOMContentLoaded', montarAviso10); return; }
     if (document.querySelector('.mura-dto')) return;
-    try { if (localStorage.getItem(CLAVE) === 'suscrita') return; } catch (e) {}
+    if (!BF) { try { if (localStorage.getItem(CLAVE) === 'suscrita') return; } catch (e) {} }
     var visto = false;
     try { visto = sessionStorage.getItem(CLAVE_VISTO) === '1'; } catch (e) {}
 
@@ -2772,7 +2789,19 @@ window.MURA_PARTE = 'head';
 
     var raiz = document.createElement('div');
     raiz.className = 'mura-dto';
-    raiz.innerHTML =
+    raiz.innerHTML = BF ?
+      '<div class="mura-dto-panel" role="dialog" aria-label="Black Friday: ' + CAMPANA.pct + ' en toda la web" tabindex="-1">' +
+        '<button type="button" class="mura-dto-x" aria-label="Cerrar">\u00d7</button>' +
+        '<div class="mura-dto-l">Black Friday</div>' +
+        '<div class="mura-dto-raya"></div>' +
+        '<p class="mura-dto-t">' + CAMPANA.pct + ' en toda la web.</p>' +
+        '<p class="mura-dto-p">Hasta el lunes 30. Escribe el código al pagar; no se acumula con el 10 % de bienvenida.</p>' +
+        '<button type="button" class="mura-dto-cod" aria-label="Copiar el código ' + CAMPANA.codigo + '">' + CAMPANA.codigo + '<span>Copiar</span></button>' +
+        '<a class="mura-dto-btn" href="/prendas">Ver prendas</a>' +
+        '<button type="button" class="mura-dto-no">Ahora no</button>' +
+      '</div>' +
+      '<button type="button" class="mura-dto-tab" aria-label="Ver el código de Black Friday"><span>\u2212' + CAMPANA.pct + '</span></button>'
+    :
       '<div class="mura-dto-panel" role="dialog" aria-label="Newsletter: 10 % en tu primera compra" tabindex="-1">' +
         '<button type="button" class="mura-dto-x" aria-label="Cerrar">\u00d7</button>' +
         '<div class="mura-dto-l">Newsletter</div>' +
@@ -2812,8 +2841,14 @@ window.MURA_PARTE = 'head';
     document.addEventListener('keydown', function (ev) {
       if (ev.key === 'Escape' && raiz.classList.contains('abierto')) recoger();
     });
+    var cod = raiz.querySelector('.mura-dto-cod');
+    if (cod) cod.addEventListener('click', function () {
+      var hecho = function () { var s = cod.querySelector('span'); if (s) s.textContent = 'Copiado'; };
+      try { navigator.clipboard.writeText(CAMPANA.codigo).then(hecho, hecho); } catch (e) { hecho(); }
+      try { if (typeof window.clarity === 'function') window.clarity('event', 'copiar_codigo_bf'); } catch (e) {}
+    });
     raiz.querySelector('.mura-dto-btn').addEventListener('click', function (ev) {
-      if (!esHome) return; /* fuera de la home el enlace navega a /#mura-nl */
+      if (BF || !esHome) return; /* fuera de la home el enlace navega a /#mura-nl */
       /* Por id con almohadilla, a propósito: poda-css.js toma por clase
          cualquier `mura-…` que salga en el código, salvo si va tras `#`. */
       var form = document.querySelector('#mura-nl');
