@@ -63,6 +63,7 @@ window.MURA_PARTE = 'head';
        7. Cabecera y pie inyectados + idioma → rutas de tienda
       10. El checkout señala qué campo falta → solo /checkout
       11. El EDITAR del checkout salta /cart → solo /checkout
+      19. Aviso de Bizum en el paso de pago → solo /checkout
       15. Aviso del 10 % de la newsletter  → todas menos las de servicio
       16. Banner de cookies y API de consentimiento → todas las páginas
       17. Clarity tras aceptar «Análisis» → todas menos checkout y post-compra
@@ -121,6 +122,29 @@ window.MURA_PARTE = 'head';
   var RUTAS_REJILLA = ['/prendas', '/colecciones', '/novedades'];
   var esTienda = RUTAS_TIENDA.indexOf(path) !== -1;
   var esRejilla = RUTAS_REJILLA.indexOf(path) !== -1;
+
+  /* ============================================================
+     0c · El país por defecto es España, no el de la IP (12/11)
+     ============================================================
+     El checkout de GHL saca el país del TELÉFONO (y de su selector
+     de prefijo, si se enciende) de la IP de la clienta, no de la
+     dirección. Lo guarda en sessionStorage `ghl_geo_country_v1` =
+     {country, expiresAt} y, si ahí hay un país vigente, no consulta
+     la IP (bundle D2GKgMhx.js, leído el 12/11). Con IP de EE. UU. o
+     Reino Unido (VPN, relay privado del iPhone, estar fuera) rechazaba
+     612345678; con IP francesa lo guardaba como +33.
+
+     Se deja «ES» en todas las páginas y en las dos partes: cuando la
+     clienta llega al checkout desde la ficha o el carrito, GHL ya lo
+     encuentra. Quien no viva en España cambia el prefijo a mano
+     (escribiendo +XX o con el selector de bandera), igual que cambia
+     el país de la dirección. Si alguien entra directo a /checkout y
+     GHL ya ha mirado la IP, queda la red de la sección 10 (+34 a los
+     números con forma española). */
+  try {
+    window.sessionStorage.setItem('ghl_geo_country_v1',
+      JSON.stringify({ country: 'ES', expiresAt: Date.now() + 30 * 24 * 3600e3 }));
+  } catch (e) { /* navegación privada o sin almacenamiento: queda la sección 10 */ }
 
   /* ============================================================
      0 · /cart se retira: el carrito bueno es /carrito
@@ -538,7 +562,7 @@ window.MURA_PARTE = 'head';
     /* Sin tildes y en minúsculas: quien busca "cardigan" tiene que encontrar
        "Cárdigan", y quien busca "MURA" tiene que encontrar "MÛRA". */
     function llano(s) {
-      return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+      return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
 
     function arrancar() {
@@ -731,7 +755,11 @@ window.MURA_PARTE = 'head';
        un velo del mismo tono. El icono rojo del aviso de GHL se oculta
        por lo mismo: el texto en su caja ya lo dice todo (y el texto en
        sí lo reescribe la sección 9, que trataba de usted). */
-    '.mura-falta { border-bottom: 2px solid #1D1B18 !important; background: rgba(29,27,24,.05) !important; }',
+    /* `.is-danger` es la marca de GHL para un campo que rechaza aunque
+       esté relleno (teléfono inválido, email mal escrito). La regla
+       general de input/select de arriba le borraba el borde: aquí se
+       le da la misma marca que a los vacíos (12/11). */
+    '.mura-falta, .hl-checkout-input.is-danger { border-bottom: 2px solid #1D1B18 !important; background: rgba(29,27,24,.05) !important; }',
     '.alert-danger svg, .alert-danger img, .alert-danger i { display: none !important; }',
 
     /* ---------- Envío de cortesía: el precio perdonado, tachado (sección 12) ---------- */
@@ -758,6 +786,9 @@ window.MURA_PARTE = 'head';
     /* El «consúltanos» de fuera de España: la misma caja que el aviso de GHL. */
     '.mura-cp-fuera { margin: 28px 0 0 0; padding: 14px 16px; border: 1px solid rgba(29,27,24,.25); font-size: 13.5px; line-height: 1.8; color: #1D1B18; }',
     '.mura-cp-fuera a { text-decoration: none !important; border-bottom: 1px solid #1D1B18; color: #1D1B18 !important; white-space: nowrap; }',
+    /* La línea del paso de pago sobre Bizum (sección 19): nota al pie,
+       no aviso — gris y pequeña, sin caja. */
+    '.mura-aviso-pago { margin: 24px 0 0 0; font-size: 12.5px; line-height: 1.7; letter-spacing: .02em; color: #55524B; }',
     '.mura-cp-otras { display: block; width: 100%; margin-top: 10px; padding: 4px 0 !important; font-size: 12px !important; letter-spacing: .04em; color: #55524B !important; border-bottom: none !important; cursor: pointer; }',
 
     /* ---------- Panel de puntos NACEX.shop (sección 14) ----------
@@ -1304,7 +1335,11 @@ window.MURA_PARTE = 'head';
 
      La página que llame a `muraMeta` puede correr ANTES que este
      bloque: por eso `track` existe como cola desde el principio y
-     este bloque la vacía al cargarse. */
+     este bloque la vacía al cargarse.
+
+     El ID lo lleva el equipo de marketing y manda el que esté en GHL
+     (12/11: GHL servía 1799475611078369; el 31/10 había sido
+     1577201230843977). Antes de tocar este archivo, compara-ghl. */
 
   var META_PIXEL_ID = '1799475611078369';
 
@@ -1397,6 +1432,7 @@ window.MURA_PARTE = 'head';
   if (path === '/checkout') tacharEnvio();
   if (path === '/checkout') direccionPorCP();
   if (path === '/checkout') puntosNacexShop();
+  if (path === '/checkout') avisoPago();
 
   /* El banner va antes del `return` de las rutas no-tienda: sale en
      TODAS las páginas. El pie se enlaza en dos pasadas porque el tema
@@ -1442,7 +1478,7 @@ window.MURA_PARTE = 'head';
     var PRECIO = '3,00 €';
 
     function llano(s) {
-      return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+      return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
     function esDomicilio(texto) {
       var t = llano(texto);
@@ -1486,6 +1522,49 @@ window.MURA_PARTE = 'head';
   }
 
   /* ============================================================
+     19 · El paso de pago avisa de que Bizum tarda (12/11)
+     ============================================================
+     El 12/11/2026 una clienta pagó con Bizum y la aprobación en la
+     app del banco tardó casi cuatro minutos. Antes de aprobarla volvió
+     a la tienda e hizo el pedido otra vez; luego aprobó los dos y se
+     le cobró dos veces. GHL, además, no llegó a cerrar el primero (ni
+     recibo ni 01 Compra). Esta línea va a la causa: que se sepa que
+     se espera y no se repite.
+
+     Va justo antes del botón del paso 2, `#make-payment` («Confirmar
+     pedido»); si GHL no lo pinta (con algunos medios lo oculta), antes
+     de `.order-form-footer` («Pago seguro»). Clases leídas del bundle
+     de la tienda de GHL el 12/11 (Caj7I9OA.js). Los dos pasos del
+     checkout están siempre en el DOM y GHL oculta con display el que
+     no toca, así que la línea solo se ve en el paso de pago sin
+     hacer nada más. El botón del paso 1 también es `.payment-btn`,
+     pero sin id: por eso se busca por el id.
+
+     Pruebas: tienda/pruebas/aviso-pago.test.js */
+
+  function avisoPago() {
+    var TEXTO = 'Si pagas con Bizum, confírmalo en la app de tu banco. ' +
+      'Puede tardar un par de minutos; no es necesario repetir el pedido.';
+
+    function pasada() {
+      var ancla = document.getElementById('make-payment') ||
+        document.querySelector('.order-form-footer');
+      if (!ancla || !ancla.parentNode) return;
+      var previo = ancla.previousElementSibling;
+      if (previo && previo.classList.contains('mura-aviso-pago')) return;
+      var viejos = document.querySelectorAll('.mura-aviso-pago');
+      for (var i = 0; i < viejos.length; i++) viejos[i].parentNode.removeChild(viejos[i]);
+      var p = document.createElement('p');
+      p.className = 'mura-aviso-pago';
+      p.textContent = TEXTO;
+      ancla.parentNode.insertBefore(p, ancla);
+    }
+
+    pasada();
+    new MutationObserver(pasada).observe(document.body, { childList: true, subtree: true });
+  }
+
+  /* ============================================================
      10 · El checkout señala qué campo falta (3/9)
      ============================================================
      Dos problemas del checkout de GHL, vistos por Sonia:
@@ -1514,7 +1593,8 @@ window.MURA_PARTE = 'head';
          validación ya lo ve relleno y pasa.
        · Cuando GHL pinta su aviso (.alert-danger fuera del resumen;
          el del cupón no cuenta) se marcan los campos obligatorios
-         vacíos (.mura-falta) y se lleva la vista al primero.
+         vacíos y los que GHL rechaza estando rellenos —los lleva con
+         `is-danger`— (.mura-falta) y se lleva la vista al primero.
 
      La marca se quita en cuanto se escribe en el campo. Si GHL
      repinta el formulario y se la lleva por delante, no pasa nada:
@@ -1542,6 +1622,36 @@ window.MURA_PARTE = 'head';
       return c.closest('.checkout-form > div, .email-field, .phone-input') || c.parentElement;
     }
 
+    /* El teléfono, con +34 por defecto (12/11). GHL valida el teléfono
+       con el país de la IP de la clienta (sessionStorage
+       `ghl_geo_country_v1`), no con el de la dirección, y no enseña
+       selector de prefijo. Con IP de EE. UU. o Reino Unido (VPN, relay
+       privado del iPhone, estar fuera) rechaza `612345678`; con IP
+       francesa lo guarda como +33. Si el número tiene forma española
+       (9 cifras de 6 a 9, con o sin 0034/34 delante) y no trae «+», se
+       reescribe «+34 …» y se avisa a GHL con input/change: su
+       libphonenumber ve el prefijo y lo da por español. Un número con
+       prefijo propio no se toca. Solo se vende a España (sección 13). */
+    function prefijoEspana(c) {
+      if (!c || c.name !== 'phone' || !c.closest('.checkout-form')) return;
+      var v = (c.value || '').trim();
+      if (!v || v.charAt(0) === '+') return;
+      var d = v.replace(/[\s.\-()\/]/g, '');
+      if (/^0034\d{9}$/.test(d)) d = d.slice(4);
+      else if (/^34[6-9]\d{8}$/.test(d)) d = d.slice(2);
+      if (!/^[6-9]\d{8}$/.test(d)) return;
+      c.value = '+34 ' + d;
+      c.dispatchEvent(new Event('input', { bubbles: true }));
+      c.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    /* En captura, antes que GHL. Al escribir: GHL reformatea en cada
+       tecla y, con IP francesa, a la novena cifra ya lo ha hecho
+       «06 12 34 56 78» (+33); aquí se llega antes y lee «+34 …». Al
+       salir del campo: autorrelleno o pegado que no dieron `input`. */
+    document.addEventListener('input', function (e) { prefijoEspana(e.target); }, true);
+    document.addEventListener('blur', function (e) { prefijoEspana(e.target); }, true);
+
     /* El aviso de validación de GHL, si está pintado. El del cupón
        también es .alert-danger pero vive en el resumen: no cuenta. */
     function avisoGHL() {
@@ -1559,7 +1669,12 @@ window.MURA_PARTE = 'head';
       var hayAsteriscos = !!document.querySelector(
         '.checkout-form .required-field, .email-field .required-field, .phone-input .required-field'
       );
+      /* Además de los vacíos, los que GHL rechaza estando rellenos
+         (`is-danger`: teléfono que libphonenumber da por inválido,
+         email mal escrito). Antes del 12/11 solo se miraban los
+         vacíos y una clienta se quedó con el aviso y nada marcado. */
       var vacios = campos().filter(function (c) {
+        if (c.classList.contains('is-danger')) return true;
         if (c.value && c.value.trim() !== '') return false;
         var w = envoltorio(c);
         return hayAsteriscos ? !!(w && w.querySelector('.required-field')) : true;
@@ -1587,6 +1702,7 @@ window.MURA_PARTE = 'head';
 
       /* Poner al día el estado de GHL con lo que ya está escrito.
          Corre en captura: llega antes que el manejador que valida. */
+      prefijoEspana(document.querySelector('.checkout-form [name=phone]'));
       campos().forEach(function (c) {
         if (c.value && c.value.trim() !== '') {
           c.dispatchEvent(new Event('input', { bubbles: true }));
@@ -1617,7 +1733,10 @@ window.MURA_PARTE = 'head';
     document.addEventListener('input', function (e) {
       var c = e.target;
       if (c && c.classList && c.classList.contains('mura-falta') && c.value.trim() !== '') {
-        c.classList.remove('mura-falta');
+        /* El is-danger de GHL solo se recalcula al volver a pulsar:
+           se quita también para que el campo corregido no siga
+           pareciendo malo (si sigue mal, GHL lo vuelve a poner). */
+        c.classList.remove('mura-falta', 'is-danger');
       }
     }, true);
   }
@@ -2655,7 +2774,7 @@ window.MURA_PARTE = 'head';
     raiz.className = 'mura-dto';
     raiz.innerHTML =
       '<div class="mura-dto-panel" role="dialog" aria-label="Newsletter: 10 % en tu primera compra" tabindex="-1">' +
-        '<button type="button" class="mura-dto-x" aria-label="Cerrar">×</button>' +
+        '<button type="button" class="mura-dto-x" aria-label="Cerrar">\u00d7</button>' +
         '<div class="mura-dto-l">Newsletter</div>' +
         '<div class="mura-dto-raya"></div>' +
         '<p class="mura-dto-t">10 % en tu primera compra.</p>' +

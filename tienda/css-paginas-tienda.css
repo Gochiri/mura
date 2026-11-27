@@ -178,7 +178,7 @@ a.mura-color-thumb:hover, a.mura-color-thumb:focus-visible { border-color: #8A85
 .hl_page-preview--content .payment-btn .cart-icon { display: none !important; }
 .hl_page-preview--content .payment-btn:disabled { background: rgba(29,27,24,.35) !important; pointer-events: none; }
 .hl_page-preview--content .alert-danger { border: 1px solid rgba(29,27,24,.25) !important; background: transparent !important; border-radius: 0 !important; padding: 12px 14px; font-size: 13px; }
-.hl_page-preview--content .mura-falta { border-bottom: 2px solid #1D1B18 !important; background: rgba(29,27,24,.05) !important; }
+.hl_page-preview--content .mura-falta, .hl_page-preview--content .hl-checkout-input.is-danger { border-bottom: 2px solid #1D1B18 !important; background: rgba(29,27,24,.05) !important; }
 .hl_page-preview--content .alert-danger svg, .hl_page-preview--content .alert-danger img, .hl_page-preview--content .alert-danger i { display: none !important; }
 .hl_page-preview--content .mura-tachado { text-decoration: line-through; opacity: .55; font-weight: 300; margin-right: .35em; }
 .hl_page-preview--content .checkout-form > div:has([name=country]) ~ * { order: 3; }
@@ -187,6 +187,7 @@ a.mura-color-thumb:hover, a.mura-color-thumb:focus-visible { border-color: #8A85
 .hl_page-preview--content .hl-input-col-2 > div:has([name=zipcode]) { order: -1; }
 .hl_page-preview--content .mura-cp-fuera { margin: 28px 0 0 0; padding: 14px 16px; border: 1px solid rgba(29,27,24,.25); font-size: 13.5px; line-height: 1.8; color: #1D1B18; }
 .hl_page-preview--content .mura-cp-fuera a { text-decoration: none !important; border-bottom: 1px solid #1D1B18; color: #1D1B18 !important; white-space: nowrap; }
+.hl_page-preview--content .mura-aviso-pago { margin: 24px 0 0 0; font-size: 12.5px; line-height: 1.7; letter-spacing: .02em; color: #55524B; }
 .hl_page-preview--content .mura-cp-otras { display: block; width: 100%; margin-top: 10px; padding: 4px 0 !important; font-size: 12px !important; letter-spacing: .04em; color: #55524B !important; border-bottom: none !important; cursor: pointer; }
 .hl_page-preview--content .shipping-options-wrapper { display: flex; flex-direction: column; }
 .hl_page-preview--content .mura-puntos { margin: 18px 0 0 0; padding: 18px 0 0 0; border-top: 1px solid rgba(29,27,24,.15); }
