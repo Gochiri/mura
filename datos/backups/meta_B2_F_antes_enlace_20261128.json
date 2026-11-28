@@ -1,0 +1,560 @@
+{
+ "52591554813156": {
+  "name": "B2 · Mírala de cerca",
+  "status": "ACTIVE",
+  "creative": {
+   "id": "1099042669779381",
+   "name": "B2 · Mírala de cerca 2026-11-22-6f42ca888d45ca1e46f61917e44cf2a9",
+   "object_story_spec": {
+    "page_id": "1239437265929299",
+    "instagram_user_id": "17841410968485139",
+    "video_data": {
+     "video_id": "2116727068969676",
+     "title": "Mírala de cerca",
+     "message": "Encaje, lentejuelas y abalorios. Piezas de fiesta para mirarlas de cerca. Descubre la colección de fiesta de MÛRA.",
+     "call_to_action": {
+      "type": "SHOP_NOW",
+      "value": {
+       "link": "https://stylebymura.com/prendas?coleccion=6b057443982fac50b3bcff51"
+      }
+     },
+     "image_hash": "0c6848d9deaa3e6d4023d3d698dfdf85"
+    }
+   },
+   "url_tags": "utm_source=meta&utm_medium=paid_social&utm_campaign=fiestas_2026&utm_content=B2_detalle_fiesta",
+   "degrees_of_freedom_spec": {
+    "creative_features_spec": {
+     "adapt_to_placement": {
+      "enroll_status": "OPT_OUT"
+     },
+     "add_text_overlay": {
+      "enroll_status": "OPT_OUT"
+     },
+     "ads_with_benefits": {
+      "enroll_status": "OPT_OUT"
+     },
+     "advantage_plus_creative": {
+      "enroll_status": "OPT_OUT"
+     },
+     "app_highlights": {
+      "enroll_status": "OPT_OUT"
+     },
+     "audio": {
+      "enroll_status": "OPT_OUT"
+     },
+     "auto_promotion_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "biz_ai": {
+      "enroll_status": "OPT_OUT"
+     },
+     "carousel_to_video": {
+      "enroll_status": "OPT_OUT"
+     },
+     "catalog_feed_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "creative_stickers": {
+      "enroll_status": "OPT_OUT"
+     },
+     "customize_product_recommendation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "cv_transformation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "description_automation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "dha_optimization": {
+      "enroll_status": "OPT_OUT"
+     },
+     "dynamic_cta_text": {
+      "enroll_status": "OPT_OUT"
+     },
+     "dynamic_partner_content": {
+      "enroll_status": "OPT_OUT"
+     },
+     "enable_ncs_testimonials": {
+      "enroll_status": "OPT_OUT"
+     },
+     "enhance_cta": {
+      "enroll_status": "OPT_OUT"
+     },
+     "fb_feed_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "fb_reels_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "fb_story_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "feed_caption_optimization": {
+      "enroll_status": "OPT_OUT"
+     },
+     "generate_cta": {
+      "enroll_status": "OPT_OUT"
+     },
+     "hide_price": {
+      "enroll_status": "OPT_OUT"
+     },
+     "hyperlink_formatting": {
+      "enroll_status": "OPT_OUT"
+     },
+     "ig_feed_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "ig_glados_feed": {
+      "enroll_status": "OPT_OUT"
+     },
+     "ig_reels_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "ig_stream_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "ig_video_native_subtitle": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_animation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_auto_crop": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_background_gen": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_banner": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_brightness_and_contrast": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_end_card": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_enhancement": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_templates": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_text_translation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_touchups": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_uncrop": {
+      "enroll_status": "OPT_OUT"
+     },
+     "inline_comment": {
+      "enroll_status": "OPT_OUT"
+     },
+     "local_store_extension": {
+      "enroll_status": "OPT_OUT"
+     },
+     "media_liquidity_animated_image": {
+      "enroll_status": "OPT_OUT"
+     },
+     "media_order": {
+      "enroll_status": "OPT_OUT"
+     },
+     "media_type_automation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "multi_creative_post_carousel": {
+      "enroll_status": "OPT_OUT"
+     },
+     "multi_photo_to_video": {
+      "enroll_status": "OPT_OUT"
+     },
+     "music_generation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "pac_genai_recomposition": {
+      "enroll_status": "OPT_OUT"
+     },
+     "pac_recomposition": {
+      "enroll_status": "OPT_OUT"
+     },
+     "pac_relaxation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "product_browsing": {
+      "enroll_status": "OPT_OUT"
+     },
+     "product_extensions": {
+      "enroll_status": "OPT_OUT"
+     },
+     "product_metadata_automation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "product_tags": {
+      "enroll_status": "OPT_OUT"
+     },
+     "profile_card": {
+      "enroll_status": "OPT_OUT"
+     },
+     "profile_extension": {
+      "enroll_status": "OPT_OUT"
+     },
+     "replace_media_text": {
+      "enroll_status": "OPT_OUT"
+     },
+     "reveal_details_over_time": {
+      "enroll_status": "OPT_OUT"
+     },
+     "show_destination_blurbs": {
+      "enroll_status": "OPT_OUT"
+     },
+     "show_summary": {
+      "enroll_status": "OPT_OUT"
+     },
+     "site_extensions": {
+      "enroll_status": "OPT_OUT"
+     },
+     "standard_enhancements_catalog": {
+      "enroll_status": "OPT_OUT"
+     },
+     "text_extraction_for_headline": {
+      "enroll_status": "OPT_OUT"
+     },
+     "text_extraction_for_tap_target": {
+      "enroll_status": "OPT_OUT"
+     },
+     "text_formatting_optimization": {
+      "enroll_status": "OPT_OUT"
+     },
+     "text_generation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "text_optimizations": {
+      "enroll_status": "OPT_OUT"
+     },
+     "text_overlay_translation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "text_translation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "translate_voiceover": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_auto_crop": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_filtering": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_highlight": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_highlights": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_to_image": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_uncrop": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_uncrop_9x16_to_9x18": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_voiceover": {
+      "enroll_status": "OPT_OUT"
+     },
+     "wa_mm_image_filtering": {
+      "enroll_status": "OPT_OUT"
+     },
+     "wa_mm_text_truncation_length": {
+      "enroll_status": "OPT_OUT"
+     }
+    }
+   }
+  },
+  "id": "52591554813156"
+ },
+ "52591554852356": {
+  "name": "F · Fiesta de noche",
+  "status": "ACTIVE",
+  "creative": {
+   "id": "2219499892284334",
+   "name": "F · Fiesta de noche 2026-11-22-a289bb4ce66fabd0f9f2eb797789e1f8",
+   "object_story_spec": {
+    "page_id": "1239437265929299",
+    "instagram_user_id": "17841410968485139",
+    "video_data": {
+     "video_id": "1525779779404038",
+     "title": "Colección de fiesta MÛRA",
+     "message": "Diciembre pide brillo. Encaje y abalorios para las cenas, las fiestas y Nochevieja. Envío gratis desde 99 €.",
+     "call_to_action": {
+      "type": "SHOP_NOW",
+      "value": {
+       "link": "https://stylebymura.com/prendas?coleccion=6b057443982fac50b3bcff51"
+      }
+     },
+     "image_hash": "42ce11890c6ffeb59e601a6a26a24bac"
+    }
+   },
+   "url_tags": "utm_source=meta&utm_medium=paid_social&utm_campaign=fiestas_2026&utm_content=F_fiesta_noche",
+   "degrees_of_freedom_spec": {
+    "creative_features_spec": {
+     "adapt_to_placement": {
+      "enroll_status": "OPT_OUT"
+     },
+     "add_text_overlay": {
+      "enroll_status": "OPT_OUT"
+     },
+     "ads_with_benefits": {
+      "enroll_status": "OPT_OUT"
+     },
+     "advantage_plus_creative": {
+      "enroll_status": "OPT_OUT"
+     },
+     "app_highlights": {
+      "enroll_status": "OPT_OUT"
+     },
+     "audio": {
+      "enroll_status": "OPT_OUT"
+     },
+     "auto_promotion_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "biz_ai": {
+      "enroll_status": "OPT_OUT"
+     },
+     "carousel_to_video": {
+      "enroll_status": "OPT_OUT"
+     },
+     "catalog_feed_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "creative_stickers": {
+      "enroll_status": "OPT_OUT"
+     },
+     "customize_product_recommendation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "cv_transformation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "description_automation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "dha_optimization": {
+      "enroll_status": "OPT_OUT"
+     },
+     "dynamic_cta_text": {
+      "enroll_status": "OPT_OUT"
+     },
+     "dynamic_partner_content": {
+      "enroll_status": "OPT_OUT"
+     },
+     "enable_ncs_testimonials": {
+      "enroll_status": "OPT_OUT"
+     },
+     "enhance_cta": {
+      "enroll_status": "OPT_OUT"
+     },
+     "fb_feed_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "fb_reels_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "fb_story_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "feed_caption_optimization": {
+      "enroll_status": "OPT_OUT"
+     },
+     "generate_cta": {
+      "enroll_status": "OPT_OUT"
+     },
+     "hide_price": {
+      "enroll_status": "OPT_OUT"
+     },
+     "hyperlink_formatting": {
+      "enroll_status": "OPT_OUT"
+     },
+     "ig_feed_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "ig_glados_feed": {
+      "enroll_status": "OPT_OUT"
+     },
+     "ig_reels_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "ig_stream_tag": {
+      "enroll_status": "OPT_OUT"
+     },
+     "ig_video_native_subtitle": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_animation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_auto_crop": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_background_gen": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_banner": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_brightness_and_contrast": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_end_card": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_enhancement": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_templates": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_text_translation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_touchups": {
+      "enroll_status": "OPT_OUT"
+     },
+     "image_uncrop": {
+      "enroll_status": "OPT_OUT"
+     },
+     "inline_comment": {
+      "enroll_status": "OPT_OUT"
+     },
+     "local_store_extension": {
+      "enroll_status": "OPT_OUT"
+     },
+     "media_liquidity_animated_image": {
+      "enroll_status": "OPT_OUT"
+     },
+     "media_order": {
+      "enroll_status": "OPT_OUT"
+     },
+     "media_type_automation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "multi_creative_post_carousel": {
+      "enroll_status": "OPT_OUT"
+     },
+     "multi_photo_to_video": {
+      "enroll_status": "OPT_OUT"
+     },
+     "music_generation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "pac_genai_recomposition": {
+      "enroll_status": "OPT_OUT"
+     },
+     "pac_recomposition": {
+      "enroll_status": "OPT_OUT"
+     },
+     "pac_relaxation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "product_browsing": {
+      "enroll_status": "OPT_OUT"
+     },
+     "product_extensions": {
+      "enroll_status": "OPT_OUT"
+     },
+     "product_metadata_automation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "product_tags": {
+      "enroll_status": "OPT_OUT"
+     },
+     "profile_card": {
+      "enroll_status": "OPT_OUT"
+     },
+     "profile_extension": {
+      "enroll_status": "OPT_OUT"
+     },
+     "replace_media_text": {
+      "enroll_status": "OPT_OUT"
+     },
+     "reveal_details_over_time": {
+      "enroll_status": "OPT_OUT"
+     },
+     "show_destination_blurbs": {
+      "enroll_status": "OPT_OUT"
+     },
+     "show_summary": {
+      "enroll_status": "OPT_OUT"
+     },
+     "site_extensions": {
+      "enroll_status": "OPT_OUT"
+     },
+     "standard_enhancements_catalog": {
+      "enroll_status": "OPT_OUT"
+     },
+     "text_extraction_for_headline": {
+      "enroll_status": "OPT_OUT"
+     },
+     "text_extraction_for_tap_target": {
+      "enroll_status": "OPT_OUT"
+     },
+     "text_formatting_optimization": {
+      "enroll_status": "OPT_OUT"
+     },
+     "text_generation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "text_optimizations": {
+      "enroll_status": "OPT_OUT"
+     },
+     "text_overlay_translation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "text_translation": {
+      "enroll_status": "OPT_OUT"
+     },
+     "translate_voiceover": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_auto_crop": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_filtering": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_highlight": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_highlights": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_to_image": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_uncrop": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_uncrop_9x16_to_9x18": {
+      "enroll_status": "OPT_OUT"
+     },
+     "video_voiceover": {
+      "enroll_status": "OPT_OUT"
+     },
+     "wa_mm_image_filtering": {
+      "enroll_status": "OPT_OUT"
+     },
+     "wa_mm_text_truncation_length": {
+      "enroll_status": "OPT_OUT"
+     }
+    }
+   }
+  },
+  "id": "52591554852356"
+ }
+}

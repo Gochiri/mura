@@ -209,3 +209,11 @@ Navidad con lo que Sara graba con Jaime el viernes 27 por la tarde.
   (copias en `datos/backups/meta_anuncios_20261128.json` y `meta_conjunto_presupuesto_20261128.json`). Activos: D, E, B2,
   F y G. Pendiente: **lunes 30 por la noche, pausar G y volver a 22 €/día** (`tienda/meta-presupuesto.sh 22 --ejecutar`),
   con OK de German.
+
+- **28/11:** con el OK de German, tras mirar la competencia (`docs/competencia-anuncios-20261128.md`):
+  - **B2 y F ahora llevan a la colección «Fiesta»** (`https://stylebymura.com/prendas?coleccion=6b057443982fac50b3bcff51`,
+    filtro ya puesto en `/prendas`). Creatividades nuevas `2913051639077878` (B2) y `1622952689515392` (F); copia previa en
+    `datos/backups/meta_B2_F_antes_enlace_20261128.json`.
+  - **H · Carrusel looks de fiesta** (`52593036744356`, creatividad `1322948396624366`) creado **en pausa**: 8 fotos del 20/11
+    en 1:1 (`anuncios/carrusel_fiesta/`), todas a la colección «Fiesta», `utm_content=H_carrusel_fiesta`. Falta el OK de
+    Sara y el de German para activarlo.
