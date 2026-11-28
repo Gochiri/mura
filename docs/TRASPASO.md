@@ -148,7 +148,7 @@ Los JSON de n8n del repo tienen `allowedOrigins: https://stylebymura.com`, y la 
 `CLARITY_EXCLUIR` excluye `/devoluciones` (informativa) pero no `/devolucion` (formulario con datos personales) ni `/experiencia`. Corregir en `tienda/codigo-global-tienda.js`, `build.sh`, y que German pegue Head y Body.
 
 ### 5.4 bis · Las páginas publicadas usan otro Worker (28/11)
-La home, `/prendas`, `/colecciones` y `/producto` publicadas piden el catálogo a **`mura-productos.moncho-azpeitia.workers.dev`**, no a `germanborrello-d78` como el repo. El 20/11 la ficha publicada aún usaba el de German. Hay que saber quién lo cambió y por qué, y **rehacer esos archivos del repo con lo publicado antes de tocarlos** (si no, se volvería al Worker antiguo). El entorno de Claude no deja llegar a ese dominio, así que las pruebas en navegador salen sin productos.
+La home, `/prendas`, `/colecciones` y `/producto` publicadas piden el catálogo a **`mura-productos.moncho-azpeitia.workers.dev`**, no a `germanborrello-d78` como el repo. El 20/11 la ficha publicada aún usaba el de German. **Lo cambió Sonia** (confirmado por German el 28/11), junto con vídeos en la galería de la ficha (26/11). El 28/11 se pasaron al repo las versiones publicadas de la ficha, `/prendas` y `/colecciones`; falta el código del Worker nuevo (pedírselo a Sonia) y el de la home, que no está en el repo. El entorno de Claude no deja llegar a ese dominio, así que las pruebas en navegador salen sin productos.
 
 ### 5.5 Más en el anexo 1, §8 (23 puntos: precios con 24 h de caché en la rejilla, piezas sin precio salen a «0 €», Worker sin paginar más de 100 productos, `mura_dto` que nadie escribe, `100vw`, etc.).
 

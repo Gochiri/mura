@@ -296,3 +296,13 @@ clientas añadían, volvían a Prendas a seguir mirando y se iban con el carrito
 antiguo, con cabecera y pie copiados dentro). Bajo el subtotal: envío a domicilio 3 € o «Gratis» desde 99 € (hasta el 20/11, 99,99 €; lo bajó Sara),
 recogida en punto Nacex gratis, y «Te faltan X € para el envío gratis» con una barra de progreso. Las tarifas son las de
 la zona «España» de la tienda de GHL; si cambian allí, se cambian `ENVIO` y `GRATIS_DESDE` en el script.
+
+### Cambio de Sonia: Worker nuevo y vídeos en la ficha (26/11)
+
+Sonia cambió en GHL el Worker del catálogo en `/producto`, `/prendas`, `/colecciones` y la home: ahora es
+**`https://mura-productos.moncho-azpeitia.workers.dev`** (otra cuenta de Cloudflare), en lugar de `germanborrello-d78`.
+En la ficha añadió además **vídeos en la galería** (miniatura con triángulo, vídeo en el visor; `medios()` mezcla fotos y
+vídeos en el orden de GHL). El 28/11 se pasaron al repo las versiones publicadas de `tienda/producto.html`,
+`web/prendas.html` y `web/colecciones.html` (la ficha publicada no trae el comentario de cabecera ni el bloque
+`mura:css`). **El código de ese Worker no está en el repo**: `tienda/worker-productos.js` es el antiguo. Pedírselo a
+Sonia antes de tocar nada del catálogo. El entorno de Claude no llega a ese dominio (403 del proxy).

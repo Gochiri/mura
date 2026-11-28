@@ -1,89 +1,3 @@
-<!--
-  ============================================================
-  MÛRA · FICHA DE PRODUCTO (/producto)
-  ============================================================
-  Sustituye el contenido del elemento de código personalizado
-  `custom-code-oM1HT_mKKm` de la página "producto"
-  (cmPhl3N0IF3smLo8Oy8x). Se pega entero, tal cual.
-
-  ⚠️ EL <style> DE ABAJO ES GENERADO: NO EDITARLO A MANO.
-  El sistema de diseño `.mura-*` vive en el Tracking Code global
-  (`tienda/codigo-global-tienda.js`). Del 15/8 al 2/9 esta página
-  no llevaba CSS y dependía solo del global, pero GHL inyecta el
-  Tracking Code por JavaScript al final de la carga (no dentro del
-  <head>), así que la ficha pintaba en nativo varios segundos y
-  siempre en el editor. Era la única página sin CSS propio.
-
-  Desde el 2/9 `cd tienda && ./build.sh` saca el CSS de la fuente
-  y lo mete aquí entre los marcadores mura:css:inicio / fin. Tras
-  tocar el global: regenerar y volver a pegar esta página entera.
-  El <style> lleva data-mura="sistema" para que el global vea que
-  ya existe y no lo duplique.
-
-  CAMBIO DEL 10/9 — otros colores y «Completa tu look»:
-  Se lee de la descripción del producto en GHL. OJO: el worker
-  filtra por ?id= y devuelve SOLO esa pieza (visto el 10/9 en la
-  web publicada: la ficha pintaba el título pero ni un hermano),
-  así que cuando hace falta se hace UNA llamada más, a /products
-  sin id, con el catálogo entero. Va después de pintar la ficha,
-  solo si la descripción trae Modelo: o una lista de look, y se
-  guarda en sessionStorage 5 min para no repetirla al saltar de
-  un color a otro.
-  - «Modelo: X» en la línea final (Modelo: … · Color: … ·
-    Fabricación: …). Las piezas con el mismo Modelo son el mismo
-    diseño en otro color: la ficha titula con el Modelo y pinta
-    una miniatura por color entre el precio y «Elegir talla»
-    (.mura-colores). El nombre de GHL se queda con el color,
-    que es lo que identifica el pedido en carrito y emails.
-  - Título 3 «Completa tu look» + lista de nombres (hasta 4):
-    se buscan en el catálogo y se pintan como tarjetas de
-    /prendas (.mura-look). Los nombres que no casan se saltan;
-    sin ninguno, el bloque no aparece. El apartado se recorta
-    del acordeón «Descripción».
-  Colocación: en dos columnas va bajo las fotos; cuando la
-  rejilla se apila (iPad, móvil) va a todo el ancho después
-  del texto. Lo decide colocarLook() mirando la rejilla real.
-  Si falta el dato o algo falla, la ficha es la de siempre.
-
-  CAMBIO DEL 25/8 — desplegable «Talla y ajuste»:
-  Nuevo acordeón entre «Descripción» y «Composición y cuidados».
-  Su contenido depende de las tallas que devuelve el worker:
-  - Si alguna talla contiene «única» → versión talla única, sin
-    tabla (diseñada para adaptarse aprox. a tallas S–L).
-  - Si no → versión S–XL con la tabla de medidas corporales.
-  En ambas: medidas de la modelo (1,65 m · 87 · 61 · 94) y enlace
-  de dudas por WhatsApp (wa.me/34637681234, mensaje prerrellenado).
-  Todo lo demás queda byte a byte como estaba.
-
-  CAMBIOS DEL 11/11 — datos de Clarity (CLS 0,36 y clics sin respuesta):
-  - Alto reservado antes de que lleguen los datos (nombre, precio,
-    tallas, miniaturas, acordeones) y migas en una línea: la ficha ya
-    no salta al cargar.
-  - «Añadir a mi selección» sin talla elegida ya no se queda mudo:
-    marca las tallas y avisa. Si la prenda tiene una sola talla
-    disponible, se elige sola. Tras añadir sale el botón «Ver carrito
-    y finalizar compra».
-  - La nota de ajuste de la descripción («… de lo habitual», y «Si
-    dudas entre dos tallas…» si va detrás) sale bajo las tallas y al
-    principio de «Talla y ajuste», y deja de repetirse en el texto.
-  - Galería: deslizar la foto con el dedo cambia de foto; tocarla la
-    abre a pantalla completa (deslizar, flechas, Escape o ✕ cierra).
-
-  CAMBIO DEL 15/8:
-  El enlace "Ver carrito" del aviso "Esta pieza ya forma parte de
-  tu selección" iba a /checkout: saltaba directo al formulario de
-  pago sin pasar por la revisión del carrito. Ahora va a /carrito.
-
-  CÓMO FUNCIONA (para quien llegue después):
-  - Los productos vienen de un worker de Cloudflare:
-    https://mura-productos.germanborrello-d78.workers.dev/products
-    y la pieza se elige con ?id=… en la URL.
-  - "Añadir a mi selección" escribe en el almacén del carrito de
-    la tienda de GHL (localStorage cart_details_…), el mismo que
-    leen /carrito y el checkout.
-  ============================================================
--->
-<!-- mura:css:inicio -->
 <style data-mura="sistema">
 /* GENERADO por tienda/build.sh desde codigo-global-tienda.js — no editar a mano.
    Es el CSS que el código global inyecta en /producto —solo las reglas de
@@ -157,6 +71,10 @@ a.mura-color-thumb:hover, a.mura-color-thumb:focus-visible { border-color: #8A85
 /* Visor a pantalla completa. */
 .md-visor { position: fixed; inset: 0; z-index: 9999; background: #F0EEE8; display: flex; align-items: center; justify-content: center; touch-action: pan-y pinch-zoom; }
 .md-visor img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; user-select: none; -webkit-user-drag: none; }
+.md-visor video { max-width: 100%; max-height: 100%; object-fit: contain; display: block; background: #1E1B1A; }
+/* Vídeos (26/11): triángulo de «reproducir» sobre la miniatura del vídeo. Sin radio: la marca es arquitectónica. */
+.md-play { position: absolute; left: 50%; top: 50%; width: 28px; height: 28px; margin: -14px 0 0 -14px; background: rgba(30,27,26,.7); display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.md-play::after { content: ''; display: block; width: 0; height: 0; border-style: solid; border-width: 6px 0 6px 10px; border-color: transparent transparent transparent #F6F2EB; margin-left: 2px; }
 .md-visor button { position: absolute; border: none; background: rgba(240,238,232,.85); color: #1D1B18; cursor: pointer; font-family: 'Jost', sans-serif; font-weight: 300; }
 .md-visor-x { top: 14px; right: 14px; width: 44px; height: 44px; font-size: 26px; line-height: 1; }
 .md-visor-a, .md-visor-s { top: 50%; transform: translateY(-50%); width: 44px; height: 64px; font-size: 26px; }
@@ -203,7 +121,7 @@ w.querySelector('form').addEventListener('submit',function(e){if(!inp.value.trim
 })();</script>
 <section id="md-ficha" style="max-width:1440px;margin:0 auto;padding:clamp(24px,3vw,48px) clamp(20px,4vw,56px) clamp(80px,10vw,130px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:clamp(36px,5vw,80px);align-items:start">
 <div id="md-fotos" style="display:flex;flex-direction:column;gap:14px">
-<div id="md-main" style="position:relative;aspect-ratio:3/4;background:#E3DFD6;overflow:hidden"><img id="md-img" src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none"></div>
+<div id="md-main" style="position:relative;aspect-ratio:3/4;background:#E3DFD6;overflow:hidden"><img id="md-img" src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none"><video id="md-video" muted loop playsinline autoplay preload="metadata" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none"></video></div>
 <div id="md-thumbs" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px"></div>
 </div>
 <div id="md-info" style="display:flex;flex-direction:column;max-width:520px">
@@ -263,7 +181,7 @@ function clar(clave,valor,evento){
   }catch(e){}
  })();
 }
-var API='https://mura-productos.germanborrello-d78.workers.dev';
+var API='https://mura-productos.moncho-azpeitia.workers.dev';
 var id=new URLSearchParams(location.search).get('id');
 var pieza=null,talla=null,img=0,piezas=[],modelo='';
 function dec(s){var t=document.createElement('textarea');t.innerHTML=s||'';return t.value;}
@@ -423,16 +341,29 @@ function render(){
  var sel=null;p.tallas.forEach(function(t){if(t.talla===talla)sel=t});
  var min=Math.min.apply(null,p.tallas.map(function(t){return t.precio}));
  document.getElementById('md-precio').textContent=(sel?sel.precio:min)+' €';
- var im=document.getElementById('md-img');
- if(imgs.length){im.src=imgs[img];im.alt=p.nombre;im.style.display='block';}
+ /* Galería: fotos y vídeos mezclados en el orden de GHL (medios()). */
+ var ms=medios(),im=document.getElementById('md-img'),vd=document.getElementById('md-video');
+ if(img>=ms.length)img=Math.max(0,ms.length-1);
+ var act=ms[img];
+ if(act&&act.tipo==='video'){
+  im.style.display='none';
+  if(vd.getAttribute('src')!==act.mp4){vd.setAttribute('poster',act.poster||'');vd.setAttribute('src',act.mp4);}
+  vd.muted=true;vd.loop=true;vd.style.display='block';
+  try{var pr=vd.play();if(pr&&pr.catch)pr.catch(function(){});}catch(e){}
+ }else{
+  vd.style.display='none';
+  if(vd.getAttribute('src')){vd.removeAttribute('src');try{vd.load()}catch(e){}}
+  if(act){im.src=act.src;im.alt=p.nombre;im.style.display='block';}
+ }
  var th=document.getElementById('md-thumbs');th.innerHTML='';
- if(imgs.length>1)imgs.forEach(function(src,i){
+ if(ms.length>1)ms.forEach(function(m,i){
   var b=document.createElement('button');
-  b.style.cssText='border:none;padding:0;cursor:pointer;background:#E3DFD6;aspect-ratio:3/4;overflow:hidden;opacity:'+(i===img?'1':'.55')+';outline:'+(i===img?'1px solid #1D1B18':'none')+';outline-offset:-1px';
-  b.innerHTML='<img src="'+src+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block">';
+  b.style.cssText='position:relative;border:none;padding:0;cursor:pointer;background:#E3DFD6;aspect-ratio:3/4;overflow:hidden;opacity:'+(i===img?'1':'.55')+';outline:'+(i===img?'1px solid #1D1B18':'none')+';outline-offset:-1px';
+  b.setAttribute('aria-label',m.tipo==='video'?'Vídeo de la prenda':'Foto '+(i+1));
+  b.innerHTML='<img src="'+(m.tipo==='video'?(m.poster||''):m.src)+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block">'+(m.tipo==='video'?'<span class="md-play" aria-hidden="true"></span>':'');
   b.onclick=function(){img=i;render()};th.appendChild(b);
  });
- th.style.display=imgs.length>1?'grid':'none';
+ th.style.display=ms.length>1?'grid':'none';
  var ts=document.getElementById('md-tallas');ts.innerHTML='';
  p.tallas.forEach(function(t){
   var off=sold||t.stock===0;
@@ -447,8 +378,24 @@ function render(){
 }
 /* Galería (11/11): deslizar la foto principal cambia de foto; tocarla abre
    el visor a pantalla completa. Las miniaturas siguen igual. */
-function fotos(){return pieza?(pieza.imagenes||[]).filter(Boolean):[];}
-function irA(n){var f=fotos();if(f.length<2)return;img=(n+f.length)%f.length;render();}
+/* Vídeos (26/11): el worker manda `videos` [{mp4, poster, posicion}]. La galería
+   trabaja con una lista de MEDIOS: las fotos en su orden y cada vídeo insertado
+   en la posición que tenía entre los medios de GHL (donde lo puso Sara). Un
+   vídeo que el navegador no puede reproducir (evento error) se apunta en
+   videosRotos y desaparece de la lista: nunca un recuadro negro. */
+var videosRotos={};
+function medios(){
+ if(!pieza)return [];
+ var lista=(pieza.imagenes||[]).filter(Boolean).map(function(s){return {tipo:'foto',src:s}});
+ var vids=(pieza.videos||[]).filter(function(v){return v&&v.mp4&&!videosRotos[v.mp4]});
+ vids.slice().sort(function(a,b){return (a.posicion||0)-(b.posicion||0)}).forEach(function(v){
+  var pos=Math.min(Math.max(v.posicion||0,0),lista.length);
+  lista.splice(pos,0,{tipo:'video',mp4:v.mp4,poster:v.poster||''});
+ });
+ return lista;
+}
+function videoRoto(src){if(src)videosRotos[src]=1;var n=medios().length;if(img>=n)img=Math.max(0,n-1);}
+function irA(n){var f=medios();if(f.length<2)return;img=(n+f.length)%f.length;render();}
 function deslizar(el,izq,der,toque){
  var x0=null,y0=null;
  el.addEventListener('touchstart',function(e){var t=e.touches[0];x0=t.clientX;y0=t.clientY;},{passive:true});
@@ -459,13 +406,31 @@ function deslizar(el,izq,der,toque){
  });
 }
 function abrirVisor(){
- var f=fotos();if(!f.length||document.querySelector('.md-visor'))return;
+ var f=medios();if(!f.length||document.querySelector('.md-visor'))return;
  var v=document.createElement('div');v.className='md-visor';v.setAttribute('role','dialog');v.setAttribute('aria-label','Fotos de la prenda');
- v.innerHTML='<img alt=""><button type="button" class="md-visor-x" aria-label="Cerrar">×</button>'+(f.length>1?'<button type="button" class="md-visor-a" aria-label="Foto anterior">‹</button><button type="button" class="md-visor-s" aria-label="Foto siguiente">›</button><div class="md-visor-n"></div>':'');
- var vi=v.querySelector('img'),n=v.querySelector('.md-visor-n');
- function pinta(){vi.src=f[img];vi.alt=pieza.nombre;if(n)n.textContent=(img+1)+' / '+f.length;}
+ v.innerHTML='<img alt="" style="display:none"><video muted loop playsinline preload="metadata" style="display:none"></video><button type="button" class="md-visor-x" aria-label="Cerrar">×</button>'+(f.length>1?'<button type="button" class="md-visor-a" aria-label="Foto anterior">‹</button><button type="button" class="md-visor-s" aria-label="Foto siguiente">›</button><div class="md-visor-n"></div>':'');
+ var vi=v.querySelector('img'),vv=v.querySelector('video'),n=v.querySelector('.md-visor-n');
+ function pinta(){
+  f=medios();if(!f.length){cerrar();return;}
+  if(img>=f.length)img=f.length-1;
+  var m=f[img];
+  if(m.tipo==='video'){
+   vi.style.display='none';
+   if(vv.getAttribute('src')!==m.mp4){vv.setAttribute('poster',m.poster||'');vv.setAttribute('src',m.mp4);}
+   vv.muted=true;vv.loop=true;vv.style.display='block';
+   try{var pr=vv.play();if(pr&&pr.catch)pr.catch(function(){});}catch(e){}
+  }else{
+   vv.style.display='none';
+   if(vv.getAttribute('src')){vv.removeAttribute('src');try{vv.load()}catch(e){}}
+   vi.src=m.src;vi.alt=pieza.nombre;vi.style.display='block';
+  }
+  if(n)n.textContent=(img+1)+' / '+f.length;
+ }
+ /* Un toque sobre el vídeo lo pausa o lo reanuda (no cierra el visor). */
+ vv.addEventListener('click',function(e){e.stopPropagation();try{if(vv.paused){var pr=vv.play();if(pr&&pr.catch)pr.catch(function(){});}else vv.pause();}catch(e2){}});
+ vv.addEventListener('error',function(){if(vv.getAttribute('src')){videoRoto(vv.getAttribute('src'));vv.removeAttribute('src');render();pinta();}});
  function mover(d){irA(img+d);pinta();}
- function cerrar(){document.removeEventListener('keydown',tecla);v.remove();document.documentElement.style.overflow='';}
+ function cerrar(){document.removeEventListener('keydown',tecla);try{vv.pause()}catch(e){}v.remove();document.documentElement.style.overflow='';}
  function tecla(e){if(e.key==='Escape')cerrar();else if(e.key==='ArrowLeft')mover(-1);else if(e.key==='ArrowRight')mover(1);}
  v.querySelector('.md-visor-x').onclick=cerrar;
  if(f.length>1){v.querySelector('.md-visor-a').onclick=function(){mover(-1)};v.querySelector('.md-visor-s').onclick=function(){mover(1)};deslizar(v,function(){mover(-1)},function(){mover(1)});}
@@ -473,9 +438,11 @@ function abrirVisor(){
  document.documentElement.style.overflow='hidden';
  document.body.appendChild(v);pinta();v.querySelector('.md-visor-x').focus();
 }
-(function(){var m=document.getElementById('md-main');
+(function(){var m=document.getElementById('md-main'),vd=document.getElementById('md-video');
  deslizar(m,function(){irA(img-1)},function(){irA(img+1)},abrirVisor);
  m.addEventListener('click',abrirVisor);
+ /* El navegador no puede con el vídeo (formato, red, Cloudinary «procesando»): fuera de la galería. */
+ vd.addEventListener('error',function(){if(vd.getAttribute('src')){videoRoto(vd.getAttribute('src'));vd.removeAttribute('src');render();}});
 })();
 var GHL_CART_KEY='cart_details_rlc7iAyGF4U1nfwAJOJQ';
 function ghlCart(){try{return JSON.parse(localStorage.getItem(GHL_CART_KEY)||'{"products":[]}')}catch(e){return {products:[]}}}
