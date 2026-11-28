@@ -219,3 +219,6 @@ Navidad con lo que Sara graba con Jaime el viernes 27 por la tarde.
     Sara y el de German para activarlo.
   - **H v2 (28/11):** German avisó de fotos de baja calidad y frías. Fuera las de 1027 px (pasillo) y la de 939 px;
     ahora 7 fotos de 2585 px o más, con tono cálido igualado (rojo/azul 1,22) y algo de nitidez. Creatividad nueva.
+- **28/11 (15:30 UTC):** con el OK de German, **E pausado hasta el lunes 30** para que Meta reparta el gasto hacia G
+  (en 8 h, G había recibido 1,96 € de ~21 €, con 3 carritos de 4 visitas). Activos: D, B2, F y G. Reactivar E el 1/12
+  junto con el cierre del Black Friday (copia en `datos/backups/meta_anuncios_20261128_antes_pausar_E.json`).
