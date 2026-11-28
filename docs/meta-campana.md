@@ -217,3 +217,5 @@ Navidad con lo que Sara graba con Jaime el viernes 27 por la tarde.
   - **H · Carrusel looks de fiesta** (`52593036744356`, creatividad `1322948396624366`) creado **en pausa**: 8 fotos del 20/11
     en 1:1 (`anuncios/carrusel_fiesta/`), todas a la colección «Fiesta», `utm_content=H_carrusel_fiesta`. Falta el OK de
     Sara y el de German para activarlo.
+  - **H v2 (28/11):** German avisó de fotos de baja calidad y frías. Fuera las de 1027 px (pasillo) y la de 939 px;
+    ahora 7 fotos de 2585 px o más, con tono cálido igualado (rojo/azul 1,22) y algo de nitidez. Creatividad nueva.
