@@ -204,3 +204,8 @@ Navidad con lo que Sara graba con Jaime el viernes 27 por la tarde.
 
 - **25/11:** E, B2 y F activados y B pausado, con el OK de German (copia en `datos/backups/meta_anuncios_20261125.json`).
   Activos: D, E, B2 y F, a 22 €/día. G sigue en pausa hasta el viernes 27.
+
+- **28/11 (07:15 UTC):** con el OK de German, **G · Black Friday activado** y **presupuesto del conjunto a 40 €/día**
+  (copias en `datos/backups/meta_anuncios_20261128.json` y `meta_conjunto_presupuesto_20261128.json`). Activos: D, E, B2,
+  F y G. Pendiente: **lunes 30 por la noche, pausar G y volver a 22 €/día** (`tienda/meta-presupuesto.sh 22 --ejecutar`),
+  con OK de German.
